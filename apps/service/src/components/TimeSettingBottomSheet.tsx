@@ -48,22 +48,23 @@ export default function TimeSettingSheet({
   return (
     <div
       className={cn(
-        "animate-fade-in fixed inset-0 z-50 flex items-end justify-center",
-        "bg-black/30 pb-16 backdrop-blur-[2px]",
+        "animate-fade-in fixed inset-0 z-100 flex items-end justify-center",
+        "bg-black/30 backdrop-blur-[2px]",
       )}
       onClick={handleBackdropClick}
     >
       <div
         className={cn(
-          "animate-slide-up flex w-full flex-col items-center",
-          "rounded-t-8 bg-brand-white pt-6 pb-8 shadow-2xl",
-          "px-8",
+          "animate-slide-up flex w-full flex-col",
+          "h-131 rounded-xl",
+          "bg-brand-white shadow-2xl",
+          "px-8 pt-6 pb-8",
         )}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="mb-6 h-1 w-20 rounded-full bg-gray-200" />
-        <h2 className="text-h2-m mb-10">{title}</h2>
-        <div className="mb-12 grid h-50 w-full grid-cols-1 grid-rows-1 place-items-center">
+        <div className="mx-auto mb-6 h-1 w-20 rounded-full bg-gray-100" />
+        <div className="text-h2-m mb-4">{title}</div>
+        <div className="grid h-71 w-full grid-cols-1 grid-rows-1 place-items-center">
           <div className="bg-primary-50 pointer-events-none z-0 col-start-1 row-start-1 h-11 w-full rounded-lg" />
           <div className="z-10 col-start-1 row-start-1 flex h-full w-full items-center justify-center gap-4">
             <TimeColumn
@@ -84,7 +85,8 @@ export default function TimeSettingSheet({
           type="button"
           onClick={handleSave}
           className={cn(
-            "text-body1-m flex w-full items-center justify-center rounded-2xl py-4",
+            "text-body1-m flex w-full items-center justify-center rounded-2xl",
+            "mt-auto h-14",
             "bg-brand-dark text-brand-white",
           )}
         >
@@ -128,8 +130,11 @@ function TimeColumn({ items, selectedItem, onSelect }: TimeColumnProps) {
       className={cn(
         "scrollbar-hide z-10 flex h-full flex-col items-center",
         "snap-y snap-mandatory overflow-y-auto",
+        // 스크롤바 숨기기
+        "[&::-webkit-scrollbar]:hidden", // Chrome, Safari, Edge
+        "[-ms-overflow-style:none]", // IE
         "w-15",
-        "py-19.5",
+        "py-30",
       )}
     >
       {items.map((item) => {
