@@ -46,10 +46,10 @@ const DropDown = ({
       </button>
 
       {isOpen && (
-        <ul className="bg-brand-white absolute z-50 mt-2 w-full overflow-hidden rounded-xl border border-gray-200 shadow-lg">
+        <div className="bg-brand-white absolute z-50 mt-2 w-full overflow-hidden rounded-xl border border-gray-200 shadow-lg">
           {options.map((option) => (
-            <li
-              role="button"
+            <button
+              type="button"
               key={option}
               onClick={() => {
                 setSelectedOption(option);
@@ -58,9 +58,9 @@ const DropDown = ({
               className="text-body1-m flex h-12 cursor-pointer items-center px-4 text-gray-700 transition-colors hover:bg-gray-100"
             >
               {option}
-            </li>
+            </button>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );
