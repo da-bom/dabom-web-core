@@ -2,8 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import bytesToGB from "@repo/shared/src/utils/bytestoGB";
-import { Icon, MainBox } from "@shared";
+import { Icon, MainBox, bytesToGB } from "@shared";
 import CUSTOMER_LIST from "src/data/customerList";
 
 import MonthNavigator from "@service/components/MonthNavigator";

@@ -8,7 +8,7 @@ export { default as RadioGroup } from "./components/RadioGroup";
 export { default as SubBox } from "./components/SubBox";
 export { default as Switch } from "./components/Switch";
 export { default as TextField } from "./components/TextField";
-export { default as bytestoGB } from "./utils/bytestoGB";
+export * from "./utils/bytestoGB";
 export { default as cn } from "./utils/cn";
 export { default as formatSize } from "./utils/formatSize";
 export { default as Bell } from "./assets/icons/Bell";
