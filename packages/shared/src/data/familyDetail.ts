@@ -36,7 +36,7 @@ export const FAMILY_DETAIL = {
   ] as CustomerDetail[],
   totalQuotaBytes: 107374182400,
   usedBytes: 53687091200,
-  usedPercent: 50.0,
+  usedPercent: 50,
   currentMonth: "2024-01",
   createdAt: "2024-01-01T00:00:00Z",
   updatedAt: "2024-01-01T00:00:00Z",

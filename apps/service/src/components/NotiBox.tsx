@@ -20,7 +20,7 @@ const NotiBox = ({
         "flex flex-col justify-center px-5",
         "bg-brand-white rounded-lg border shadow-sm transition-all",
 
-        !isRead ? "border-primary-400" : "border-grayscale-200",
+        isRead ? "border-grayscale-200" : "border-primary-400",
         className,
       )}
     >
