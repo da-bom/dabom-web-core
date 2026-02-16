@@ -20,4 +20,8 @@ const formatSize = (bytes: number) => {
   };
 };
 
+export const gbToBytes = (gb: number) => {
+  return gb * 1024 * 1024 * 1024;
+};
+
 export default formatSize;

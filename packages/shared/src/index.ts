@@ -37,4 +37,5 @@ export { default as PolicyColor } from "./assets/icons/PolicyColor";
 export { default as Reset } from "./assets/icons/Reset";
 export { default as Smile } from "./assets/icons/Smile";
 export { default as Table } from "./assets/icons/Table";
+export { default as Timeset } from "./assets/icons/Timeset";
 export { default as Warning } from "./assets/icons/Warning";
