@@ -1,4 +1,6 @@
-const formatSize = (bytes: number) => {
+const BYTES_PER_GB = 1024 * 1024 * 1024;
+
+export const formatSize = (bytes: number) => {
   if (bytes === 0) {
     return {
       value: 0,
@@ -20,4 +22,9 @@ const formatSize = (bytes: number) => {
   };
 };
 
-export default formatSize;
+export const bytesToGB = (bytes: number) =>
+  Number((bytes / BYTES_PER_GB).toFixed(1));
+
+export const gbToBytes = (gb: number) => {
+  return gb * BYTES_PER_GB;
+};
