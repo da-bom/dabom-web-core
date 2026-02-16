@@ -1,17 +1,14 @@
-import React from "react";
-
+import bytesToGB from "@repo/shared/src/utils/bytestoGB";
 import { Icon } from "@shared";
-
-import { ViewMember } from "../types/dataUsage";
-
-interface MemberItemProps {
-  member: ViewMember;
-}
+import { CustomerListType } from "src/types/dataUsage";
 
 const WARNING_THRESHOLD = 0.6;
 
-export const MemberItem = ({ member }: MemberItemProps) => {
-  const usageRatio = member.limitGB > 0 ? member.usageGB / member.limitGB : 0;
+const CustomerItem = ({ customer }: { customer: CustomerListType }) => {
+  const usageRatio =
+    customer.monthlyLimitBytes > 0
+      ? customer.monthlyUsedBytes / customer.monthlyLimitBytes
+      : 0;
   const showWarning = usageRatio >= WARNING_THRESHOLD;
 
   return (
@@ -19,8 +16,8 @@ export const MemberItem = ({ member }: MemberItemProps) => {
       <div className="h-8 w-8 rounded-full bg-gray-200" />
 
       <div className="flex items-center gap-2 pt-1">
-        <span className="text-body2-d">{member.name}</span>
-        {member.isMe && (
+        <span className="text-body2-d">{customer.name}</span>
+        {customer.isMe && (
           <span className="bg-primary text-caption-d rounded-full px-3 py-0.5 text-[13px] text-white">
             나
           </span>
@@ -29,17 +26,17 @@ export const MemberItem = ({ member }: MemberItemProps) => {
 
       <div className="flex flex-col items-end gap-1 pt-1">
         <div className="text-body2-d">
-          <span>{member.usageGB}GB</span>
-          <span>/{member.limitGB}GB</span>
+          <span>{bytesToGB(customer.monthlyUsedBytes)}GB</span>
+          <span>/{bytesToGB(customer.monthlyLimitBytes)}GB</span>
         </div>
 
         {showWarning && (
           <div className="flex items-center gap-1">
             <Icon
-              name="Warning"
+              name="WarningOutline"
               width={12}
               height={12}
-              className="bg-negative"
+              className="text-negative"
             />
             <span className="text-caption-m text-negative">
               데이터 사용량 조절이 필요해요
@@ -50,3 +47,5 @@ export const MemberItem = ({ member }: MemberItemProps) => {
     </li>
   );
 };
+
+export default CustomerItem;

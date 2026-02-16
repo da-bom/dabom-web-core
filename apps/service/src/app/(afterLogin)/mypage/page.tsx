@@ -1,6 +1,6 @@
 import { Icon, MainBox } from "@shared";
 
-import { ProgressBar } from "@service/components/ProgressBar";
+import ProgressBar from "@service/components/ProgressBar";
 
 const data = {
   name: "김철수",

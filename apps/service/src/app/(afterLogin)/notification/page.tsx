@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
-
-import { NotiBox } from "@service/components/NotiBox";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import {
   NotificationItem,
   fetchNotifications,
-} from "../../../../../../packages/shared/src/data/notification";
+} from "@shared/data/notification";
+
+import NotiBox from "@service/components/NotiBox";
 
 const NOTICE_MESSAGE = "30일이 지난 메세지는 자동 삭제됩니다.";
 
@@ -39,7 +39,8 @@ export default function NotificationPage() {
       if (response.hasMore) {
         setPage((prev) => prev + 1);
       }
-      // TODO: API 연결 후 추가 구현 예정
+      // TODO: API 연결 후 추가 구현 및 주석 제거 예정
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
     } finally {
       setIsLoading(false);

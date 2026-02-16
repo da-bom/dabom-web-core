@@ -9,7 +9,7 @@ interface NotiBoxProps {
   className?: string;
 }
 
-export const NotiBox = ({
+const NotiBox = ({
   title,
   description,
   isRead = true,
@@ -19,8 +19,7 @@ export const NotiBox = ({
     <div
       className={cn(
         "bg-brand-white flex h-20 w-full flex-col justify-center rounded-lg border-2 px-4 transition-all",
-
-        !isRead ? "border-primary" : "border-gray-200",
+        isRead ? "border-grayscale-200" : "border-primary-400",
         className,
       )}
     >
@@ -38,3 +37,5 @@ export const NotiBox = ({
     </div>
   );
 };
+
+export default NotiBox;

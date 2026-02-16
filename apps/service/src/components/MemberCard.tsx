@@ -1,9 +1,6 @@
 "use client";
 
-import React from "react";
-
-import { cn } from "@shared";
-import { formatSize } from "@shared";
+import { cn, formatSize } from "@shared";
 
 const MAX_LIMIT_GB = 70;
 

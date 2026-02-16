@@ -1,7 +1,5 @@
 "use client";
 
-import React from "react";
-
 import { Icon } from "@repo/shared/src";
 
 interface MonthNavigatorProps {
@@ -10,7 +8,7 @@ interface MonthNavigatorProps {
   onNext: () => void;
 }
 
-export const MonthNavigator = ({
+const MonthNavigator = ({
   currentDateText,
   onPrev,
   onNext,
@@ -49,3 +47,5 @@ export const MonthNavigator = ({
     </div>
   );
 };
+
+export default MonthNavigator;

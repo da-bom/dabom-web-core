@@ -1,15 +1,14 @@
 export { default as Badge } from "./components/Badge";
 export { default as Button } from "./components/Button";
 export { default as DropDown } from "./components/DropDown";
-export { default as Header } from "./components/Header";
 export { default as Icon } from "./components/Icon";
 export { default as InputField } from "./components/InputField";
 export { default as MainBox } from "./components/MainBox";
-export { default as NavBar } from "./components/NavBar";
 export { default as RadioGroup } from "./components/RadioGroup";
 export { default as SubBox } from "./components/SubBox";
 export { default as Switch } from "./components/Switch";
 export { default as TextField } from "./components/TextField";
+export { default as bytestoGB } from "./utils/bytestoGB";
 export { default as cn } from "./utils/cn";
 export { default as formatSize } from "./utils/formatSize";
 export { default as Bell } from "./assets/icons/Bell";

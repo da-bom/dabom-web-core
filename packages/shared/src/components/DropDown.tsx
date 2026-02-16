@@ -31,9 +31,11 @@ const DropDown = ({
 
   return (
     <div className="relative w-82" ref={containerRef}>
-      <div
+      <button
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
         className="bg-brand-white flex h-12 w-full cursor-pointer items-center justify-between rounded-xl border-[1px] border-gray-200 px-4 hover:border-gray-300 active:bg-gray-50"
+        aria-label="dropdown"
       >
         <span className="text-body1-m text-gray-800">{selectedOption}</span>
         <div
@@ -41,12 +43,13 @@ const DropDown = ({
         >
           <Icon name="Chevron" className="-rotate-90"></Icon>
         </div>
-      </div>
+      </button>
 
       {isOpen && (
-        <ul className="bg-brand-white absolute z-50 mt-2 w-full overflow-hidden rounded-xl border border-gray-200 shadow-lg">
+        <div className="bg-brand-white absolute z-50 mt-2 w-full overflow-hidden rounded-xl border border-gray-200 shadow-lg">
           {options.map((option) => (
-            <li
+            <button
+              type="button"
               key={option}
               onClick={() => {
                 setSelectedOption(option);
@@ -55,9 +58,9 @@ const DropDown = ({
               className="text-body1-m flex h-12 cursor-pointer items-center px-4 text-gray-700 transition-colors hover:bg-gray-100"
             >
               {option}
-            </li>
+            </button>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );

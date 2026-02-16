@@ -10,15 +10,14 @@ export interface ApiFamilyDetail {
   currentMonth: string;
 }
 
-export interface ViewMember {
-  id: number;
+export interface CustomerListType {
+  customerId: number;
   name: string;
-  role: string;
-  usageGB: number;
-  limitGB: number;
-  isMe: boolean;
-  alertMessage: string | null;
-  color: string;
+  monthlyUsedBytes: number;
+  monthlyLimitBytes: number;
+  isBlocked: boolean;
+  isMe?: boolean;
+  blockReason?: string;
 }
 
 export interface DashboardViewModel {
@@ -26,6 +25,6 @@ export interface DashboardViewModel {
   totalLimitGB: number;
   usagePercent: number;
   displayDate: string;
-  members: ViewMember[];
+  members: CustomerListType[];
   chartGradient: string;
 }

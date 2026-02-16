@@ -1,7 +1,5 @@
 "use client";
 
-import React from "react";
-
 import { cn } from "@shared";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 
@@ -17,11 +15,7 @@ const SIZE_CONFIG = {
   md: { height: "h-4", barSize: 12 },
 };
 
-export const ProgressBar = ({
-  value,
-  size = "md",
-  className,
-}: ProgressBarProps) => {
+const ProgressBar = ({ value, size = "md", className }: ProgressBarProps) => {
   const data = [{ name: "Progress", current: value }];
   const { height, barSize } = SIZE_CONFIG[size];
 
@@ -51,3 +45,5 @@ export const ProgressBar = ({
     </div>
   );
 };
+
+export default ProgressBar;
