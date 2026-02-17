@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 
-import { gbToBytes } from "@repo/shared/src/utils/formatSize";
+import { gbToBytes } from "@shared";
 
 import { FAMILY_DETAIL } from "@shared/data/familyDetail";
 

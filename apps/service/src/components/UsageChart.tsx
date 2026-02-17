@@ -2,7 +2,7 @@
 
 import { Pie } from "react-chartjs-2";
 
-import bytesToGB from "@repo/shared/src/utils/bytestoGB";
+import { bytesToGB } from "@shared";
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
 import { CHART_COLOR } from "src/app/(afterLogin)/home/contents";
 import { CustomerListType } from "src/types/dataUsage";

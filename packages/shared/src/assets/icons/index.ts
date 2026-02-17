@@ -24,5 +24,7 @@ export { default as PolicyColor } from "./PolicyColor";
 export { default as Reset } from "./Reset";
 export { default as Smile } from "./Smile";
 export { default as Table } from "./Table";
+export { default as Time } from "./Time";
+export { default as Timeset } from "./Timeset";
 export { default as Warning } from "./Warning";
-export { default as WarningOutline } from './WarningOutline';
+export { default as WarningOutline } from "./WarningOutline";
