@@ -73,21 +73,20 @@ export default function TimeSettingSheet({
         type="button"
         aria-label="닫기"
         className={cn(
-          "fixed inset-0 bg-black/30 backdrop-blur-[2px]",
+          "fixed inset-0 cursor-default bg-black/30 backdrop-blur-[2px]",
           isClosing ? "animate-fade-out" : "animate-fade-in",
         )}
         onClick={handleBackdropClick}
         onKeyDown={handleKeyDown}
       />
-      <div
-        role="dialog"
+      <dialog
+        open
         aria-modal="true"
         aria-labelledby="sheet-title"
         className={cn(
           "bg-brand-white flex h-131 w-full flex-col rounded-xl px-8 pt-6 pb-8 shadow-2xl",
           isClosing ? "animate-slide-down" : "animate-slide-up",
         )}
-        onClick={(e) => e.stopPropagation()}
         onAnimationEnd={handleAnimationEnd}
       >
         <div className="mx-auto mb-6 h-1 w-20 rounded-full bg-gray-100" />
@@ -118,7 +117,7 @@ export default function TimeSettingSheet({
             변경사항 저장
           </Button>
         </div>
-      </div>
+      </dialog>
     </div>
   );
 }
