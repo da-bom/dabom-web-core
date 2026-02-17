@@ -49,8 +49,8 @@ export default function TimeSettingSheet({
     }
   };
 
-  const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) startClosing();
+  const handleBackdropClick = () => {
+    startClosing();
   };
 
   const handleSave = () => {
@@ -59,10 +59,8 @@ export default function TimeSettingSheet({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" || e.key === " ") {
-      startClosing();
-    }
-    if (e.key === "Escape") {
+    if (e.key === "Enter" || e.key === " " || e.key === "Escape") {
+      e.preventDefault();
       startClosing();
     }
   };
@@ -70,18 +68,17 @@ export default function TimeSettingSheet({
   if (!isOpen) return null;
 
   return (
-    <div
-      role="button"
-      tabIndex={0}
-      aria-label="Close modal"
-      onKeyDown={handleKeyDown}
-      className={cn(
-        "fixed inset-0 z-100 flex items-end justify-center",
-        "bg-black/30 backdrop-blur-[2px]",
-        isClosing ? "animate-fade-out" : "animate-fade-in",
-      )}
-      onClick={handleBackdropClick}
-    >
+    <div className="fixed inset-0 z-100 flex items-end justify-center">
+      <button
+        type="button"
+        aria-label="닫기"
+        className={cn(
+          "fixed inset-0 bg-black/30 backdrop-blur-[2px]",
+          isClosing ? "animate-fade-out" : "animate-fade-in",
+        )}
+        onClick={handleBackdropClick}
+        onKeyDown={handleKeyDown}
+      />
       <div
         role="dialog"
         aria-modal="true"
@@ -132,7 +129,11 @@ interface TimeColumnProps {
   onSelect: (val: string) => void;
 }
 
-function TimeColumn({ items, selectedItem, onSelect }: TimeColumnProps) {
+function TimeColumn({
+  items,
+  selectedItem,
+  onSelect,
+}: Readonly<TimeColumnProps>) {
   const listRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
@@ -157,7 +158,6 @@ function TimeColumn({ items, selectedItem, onSelect }: TimeColumnProps) {
     <ul
       ref={listRef}
       onScroll={handleScroll}
-      tabIndex={0}
       className="scrollbar-hide z-10 flex h-full w-15 snap-y snap-mandatory flex-col items-center overflow-y-auto py-30 [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
     >
       {items.map((item) => {
@@ -165,8 +165,7 @@ function TimeColumn({ items, selectedItem, onSelect }: TimeColumnProps) {
         return (
           <li
             key={item}
-            aria-selected={isSelected}
-            role="option"
+            aria-current={isSelected ? "true" : undefined}
             className={cn(
               "flex h-11 shrink-0 snap-center items-center justify-center",
               isSelected ? "text-h1-m text-primary" : "text-h2-m text-gray-500",
