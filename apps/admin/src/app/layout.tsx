@@ -2,9 +2,7 @@ import "@globalstyles";
 
 export default function RootLayout({
   children,
-}: {
-  children: Readonly<React.ReactNode>;
-}) {
+}: Readonly<{ children: Readonly<React.ReactNode> }>) {
   return (
     <html lang="ko">
       <body>{children}</body>

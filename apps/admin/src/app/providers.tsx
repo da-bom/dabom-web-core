@@ -6,9 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export function Providers({
   children,
-}: {
-  children: Readonly<React.ReactNode>;
-}) {
+}: Readonly<{ children: Readonly<React.ReactNode> }>) {
   const [queryClient] = useState(() => new QueryClient());
 
   return (
