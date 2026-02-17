@@ -4,6 +4,8 @@ import React, { useEffect, useRef, useState } from "react";
 
 import { cn } from "@shared";
 
+import { HOURS, MINUTES } from "@shared/data/times";
+
 interface TimeSettingSheetProps {
   isOpen: boolean;
   onClose: () => void;
@@ -12,12 +14,6 @@ interface TimeSettingSheetProps {
   onSave: (newTime: string) => void;
 }
 
-const HOURS = Array.from({ length: 24 }, (_, i) =>
-  i.toString().padStart(2, "0"),
-);
-const MINUTES = Array.from({ length: 12 }, (_, i) =>
-  (i * 5).toString().padStart(2, "0"),
-);
 const ITEM_HEIGHT = 44;
 
 export default function TimeSettingSheet({
@@ -57,12 +53,7 @@ export default function TimeSettingSheet({
         role="dialog"
         aria-modal="true"
         aria-labelledby="sheet-title"
-        className={cn(
-          "animate-slide-up flex w-full flex-col",
-          "h-131 rounded-xl",
-          "bg-brand-white shadow-2xl",
-          "px-8 pt-6 pb-8",
-        )}
+        className="animate-slide-up bg-brand-white flex h-131 w-full flex-col rounded-xl px-8 pt-6 pb-8 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mx-auto mb-6 h-1 w-20 rounded-full bg-gray-100" />
@@ -144,15 +135,7 @@ function TimeColumn({ items, selectedItem, onSelect }: TimeColumnProps) {
       ref={listRef}
       onScroll={handleScroll}
       tabIndex={0}
-      className={cn(
-        "scrollbar-hide z-10 flex h-full flex-col items-center",
-        "snap-y snap-mandatory overflow-y-auto",
-        // 스크롤바 숨기기
-        "[&::-webkit-scrollbar]:hidden", // Chrome, Safari, Edge
-        "[-ms-overflow-style:none]", // IE
-        "w-15",
-        "py-30",
-      )}
+      className="scrollbar-hide z-10 flex h-full w-15 snap-y snap-mandatory flex-col items-center overflow-y-auto py-30 [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
     >
       {items.map((item) => {
         const isSelected = item === selectedItem;
@@ -162,10 +145,9 @@ function TimeColumn({ items, selectedItem, onSelect }: TimeColumnProps) {
             aria-selected={isSelected}
             role="option"
             className={cn(
-              "flex shrink-0 snap-center items-center justify-center",
-              "h-11",
+              "flex h-11 shrink-0 snap-center items-center justify-center",
               isSelected
-                ? "text-h1-m text-primary scale-110 font-bold transition-all duration-200"
+                ? "text-h1-m text-primary font-bold transition-all duration-200"
                 : "text-h2-m text-gray-500 opacity-50 transition-all duration-200",
             )}
           >
