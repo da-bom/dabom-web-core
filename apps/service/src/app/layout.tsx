@@ -1,5 +1,6 @@
 import "@globalstyles";
-import { Providers } from "@shared";
+
+import { Providers } from "./providers";
 
 export default function RootLayout({
   children,
