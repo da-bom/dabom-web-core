@@ -1,6 +1,7 @@
 export * from "./utils/cn";
 export * from "./utils/formatSize";
 export * from "./utils/http";
+export * from "./utils/providers";
 export * from "./assets/icons";
 export { default as Badge } from "./components/Badge";
 export { default as Button } from "./components/Button";

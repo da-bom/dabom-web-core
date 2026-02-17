@@ -1,4 +1,4 @@
-import Providers from "../providers";
+import { Providers } from "@shared";
 
 export default function RootLayout({
   children,

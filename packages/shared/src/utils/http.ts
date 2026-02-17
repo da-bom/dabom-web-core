@@ -7,8 +7,6 @@ import {
   ERROR_MESSAGE_MAP,
 } from "../types/error";
 
-console.log("🛠️ ENV CHECK:", process.env.NEXT_PUBLIC_API_BASE_URL);
-
 export const http = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
   timeout: 5000,

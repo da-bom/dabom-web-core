@@ -25,7 +25,7 @@ export const useLogin = () => {
       localStorage.setItem("access_token", data.accessToken);
       localStorage.setItem("refresh_token", data.refreshToken);
 
-      router.push("/home");
+      router.push("/policy");
     },
 
     onError: (error: ApiErrorResponse) => {

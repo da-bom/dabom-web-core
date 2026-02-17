@@ -2,18 +2,21 @@
 
 import { useState } from "react";
 
-import { useRouter } from "next/navigation";
-
 import { Button, InputField } from "@shared";
+import { useLogin } from "src/hooks/useLogin";
 
 export default function LoginPage() {
-  const router = useRouter();
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    router.push("/");
+  const { mutate: login, isPending: isLoading } = useLogin();
+
+  const handleLogin = () => {
+    if (!phone || !password) {
+      alert("이메일과 비밀번호를 입력해주세요.");
+      return;
+    }
+    login({ phone, password });
   };
 
   return (
@@ -41,7 +44,7 @@ export default function LoginPage() {
             />
 
             <div className="mt-53.25 flex justify-center">
-              <Button type="submit" size="lg" color="dark">
+              <Button type="submit" size="lg" color="dark" disabled={isLoading}>
                 로그인
               </Button>
             </div>
