@@ -11,8 +11,8 @@ export interface CustomerState {
   customerId: number;
   limitBytes: number;
   isTimeEnabled: boolean;
-  timeStart: string | null;
-  timeEnd: string | null;
+  startTime: string | null;
+  endTime: string | null;
 }
 
 interface MemberCardProps {
@@ -175,7 +175,7 @@ export default function MemberCard({
                 </button>
               </div>
 
-              {state.isTimeEnabled && state.timeStart && state.timeEnd ? (
+              {state.isTimeEnabled && state.startTime && state.endTime ? (
                 <div className="bg-background-sub flex h-20 w-full flex-col items-center justify-center gap-2 rounded-lg">
                   <div className="flex items-center justify-center">
                     <button
@@ -183,7 +183,7 @@ export default function MemberCard({
                       onClick={() => handlers.onTimeClick(idStr, "start")}
                       className="border-primary-200 bg-primary-50 flex h-6 w-15 items-center justify-center rounded border"
                     >
-                      <span className="text-body1-m">{state.timeStart}</span>
+                      <span className="text-body1-m">{state.startTime}</span>
                     </button>
                     <span className="text-body1-m mx-2">부터</span>
 
@@ -192,7 +192,7 @@ export default function MemberCard({
                       onClick={() => handlers.onTimeClick(idStr, "end")}
                       className="border-primary-200 bg-primary-50 flex h-6 w-15 items-center justify-center rounded border"
                     >
-                      <span className="text-body1-m">{state.timeEnd}</span>
+                      <span className="text-body1-m">{state.endTime}</span>
                     </button>
                     <span className="text-body1-m ml-2">까지</span>
                   </div>

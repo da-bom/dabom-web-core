@@ -13,8 +13,8 @@ export interface CustomerState {
   customerId: number;
   limitBytes: number;
   isTimeEnabled: boolean; // API 가족 구성원 정책 수정 (추가 요청할 예정)
-  timeStart: string | null; // API 가족 구성원 정책 수정 (추가 요청할 예정)
-  timeEnd: string | null; // API 가족 구성원 정책 수정 (추가 요청할 예정)
+  startTime: string | null; // API 가족 구성원 정책 수정 (추가 요청할 예정)
+  endTime: string | null; // API 가족 구성원 정책 수정 (추가 요청할 예정)
 }
 
 export default function PolicyManagementPage() {
@@ -32,8 +32,8 @@ export default function PolicyManagementPage() {
         customerId: c.customerId,
         limitBytes: c.monthlyLimitBytes,
         isTimeEnabled: true,
-        timeStart: "23:00",
-        timeEnd: "07:00",
+        startTime: "23:00",
+        endTime: "07:00",
       };
     });
     return initial;
@@ -106,8 +106,8 @@ export default function PolicyManagementPage() {
 
     try {
       const currentState = memberStates[targetId];
-      const updatedStart = type === "start" ? newTime : currentState.timeStart;
-      const updatedEnd = type === "end" ? newTime : currentState.timeEnd;
+      const updatedStart = type === "start" ? newTime : currentState.startTime;
+      const updatedEnd = type === "end" ? newTime : currentState.endTime;
 
       console.log(
         `[API 요청 - 시간] ID: ${targetId} | Start: ${updatedStart} - End: ${updatedEnd}`,
@@ -126,8 +126,8 @@ export default function PolicyManagementPage() {
     : null;
   const initialTimeForSheet = activeCustomerState
     ? sheetConfig.type === "start"
-      ? activeCustomerState.timeStart
-      : activeCustomerState.timeEnd
+      ? activeCustomerState.startTime
+      : activeCustomerState.endTime
     : "00:00";
 
   return (
