@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import { Icon, cn } from "@shared";
 
@@ -16,6 +16,10 @@ const Header = ({
   onBackClick,
 }: HeaderProps) => {
   const router = useRouter();
+  const pathname = usePathname();
+
+  const hideBackBtnPaths = ["/home", "/notification", "/policy"];
+  const shouldShowBack = isBackVisible && !hideBackBtnPaths.includes(pathname);
 
   const handleBack = () => {
     if (onBackClick) {
@@ -33,7 +37,7 @@ const Header = ({
       )}
     >
       <div className="flex w-10 items-center justify-start">
-        {isBackVisible && (
+        {shouldShowBack && (
           <button
             type="button"
             onClick={handleBack}

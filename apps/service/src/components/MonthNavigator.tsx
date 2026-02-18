@@ -22,7 +22,7 @@ const MonthNavigator = ({
   };
 
   return (
-    <div className="flex items-center justify-center gap-10 py-2 select-none">
+    <div className="flex items-center justify-center gap-10 py-6 select-none">
       <button
         onClick={handlePrev}
         className="flex items-center justify-center transition-opacity hover:opacity-70 active:scale-95"

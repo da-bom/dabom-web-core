@@ -18,6 +18,9 @@ export interface CustomerState {
 }
 
 export default function PolicyManagementPage() {
+  // TODO: 추후 실제 유저 권한 데이터로 교체
+  const currentUserRole = "OWNER";
+
   const { customers } = FAMILY_DETAIL;
 
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
@@ -55,6 +58,8 @@ export default function PolicyManagementPage() {
 
     onLimitChange: (id: string, newGB: number) => {
       const newBytes = gbToBytes(newGB);
+
+      // throw new Error("테스트용 에러 발생!");
 
       setMemberStates((prev) => ({
         ...prev,
@@ -135,9 +140,11 @@ export default function PolicyManagementPage() {
   return (
     <section className="flex min-h-screen w-full justify-center">
       <div className="mt-4 w-full px-4 pb-20">
-        <div className="text-body1-m mb-4">
-          변경을 원하는 구성원을 선택하세요.
-        </div>
+        {currentUserRole === "OWNER" && (
+          <div className="text-body1-m mb-4">
+            변경을 원하는 구성원을 선택하세요.
+          </div>
+        )}
 
         <ul className="flex flex-col gap-4">
           {customers.map((customer) => (

@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import { Icon, MainBox, bytesToGB } from "@shared";
+import { Icon, MainBox, bytesToGB, cn } from "@shared";
 import CUSTOMER_LIST from "src/data/customerList";
 
 import MonthNavigator from "@service/components/MonthNavigator";
@@ -65,13 +65,14 @@ const UsageDashboard = () => {
     updateUrl(newYear, newMonth, viewMode);
   };
 
-  const toggleViewMode = () => {
-    const newMode = viewMode === "list" ? "chart" : "list";
-    updateUrl(year, month, newMode);
+  const handleModeChange = (mode: "list" | "chart") => {
+    if (viewMode !== mode) {
+      updateUrl(year, month, mode);
+    }
   };
 
   return (
-    <div className="flex w-full flex-col gap-8 px-5 pt-15">
+    <div className="flex w-full flex-col gap-2 px-5 pt-15">
       <MainBox className="w-full p-5">
         <div className="flex flex-col gap-2">
           <span className="text-body1-m text-brand-dark">
@@ -92,22 +93,43 @@ const UsageDashboard = () => {
         </div>
       </MainBox>
 
-      <div className="flex flex-col">
+      <div className="flex flex-col items-center gap-4">
         <MonthNavigator
           currentDateText={displayDate}
           onPrev={handlePrevMonth}
           onNext={handleNextMonth}
         />
-        {/* TODO: 디자인 수정 */}
-        <button
-          onClick={toggleViewMode}
-          className="text-caption-m cursor-pointer text-gray-500 underline underline-offset-4"
-        >
-          {viewMode === "list" ? "📊 차트 보기" : "📋 리스트 보기"}
-        </button>
+
+        <div className="bg-brand-white flex h-8 w-full max-w-87.5 items-center rounded-full border border-gray-200">
+          <button
+            onClick={() => handleModeChange("list")}
+            className={cn(
+              "text-caption-m flex h-5 flex-1 items-center justify-center gap-1 rounded-full transition-colors",
+              viewMode === "list"
+                ? "bg-primary-50 text-primary"
+                : "bg-transparent text-gray-400",
+            )}
+          >
+            {/* <Icon name="List" /> */}
+            <span>리스트</span>
+          </button>
+
+          <button
+            onClick={() => handleModeChange("chart")}
+            className={cn(
+              "text-caption-m flex h-5 flex-1 items-center justify-center gap-1 rounded-full transition-colors",
+              viewMode === "chart"
+                ? "bg-primary-50 text-primary"
+                : "bg-transparent text-gray-400",
+            )}
+          >
+            {/* <Icon name="Graph" /> */}
+            <span>차트</span>
+          </button>
+        </div>
       </div>
 
-      <MainBox className="m-auto w-full p-5">
+      <MainBox className="m-auto w-full rounded-xl p-5">
         {CUSTOMER_LIST.customers.length === 0 ? (
           <div className="flex flex-1 items-center justify-center text-gray-400">
             <p>등록된 가족 구성원이 없어요.</p>
