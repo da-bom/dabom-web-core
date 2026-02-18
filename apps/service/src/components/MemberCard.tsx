@@ -169,8 +169,8 @@ export default function MemberCard({
               </div>
 
               {isEditingByOther ? (
-                <div className="bg-background-sub flex h-[49px] w-full items-center justify-center gap-2 rounded-lg">
-                  {/* <Icon name="Stop" /> */}
+                <div className="bg-background-sub flex h-12.5 w-full items-center justify-center gap-2 rounded-lg">
+                  <Icon name="Stop" />
                   <span className="text-caption-m text-gray-800">
                     다른 가족이 수정 중이에요.
                   </span>
@@ -240,8 +240,8 @@ export default function MemberCard({
               </div>
 
               {isEditingByOther ? (
-                <div className="bg-background-sub flex h-[49px] w-full items-center justify-center gap-2 rounded-lg">
-                  {/* <Icon name="Stop" /> */}
+                <div className="bg-background-sub flex h-12.25 w-full items-center justify-center gap-2 rounded-lg">
+                  <Icon name="Stop" />
                   <span className="text-caption-m text-gray-800">
                     다른 가족이 수정 중이에요.
                   </span>
