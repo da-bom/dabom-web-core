@@ -110,7 +110,7 @@ const UsageDashboard = () => {
                 : "bg-transparent text-gray-400",
             )}
           >
-            {/* <Icon name="List" /> */}
+            <Icon name={viewMode === "list" ? "ListColor" : "List"} />
             <span>리스트</span>
           </button>
 
@@ -123,7 +123,7 @@ const UsageDashboard = () => {
                 : "bg-transparent text-gray-400",
             )}
           >
-            {/* <Icon name="Graph" /> */}
+            <Icon name={viewMode === "chart" ? "GraphColor" : "Graph"} />
             <span>차트</span>
           </button>
         </div>

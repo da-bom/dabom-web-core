@@ -156,6 +156,7 @@ export default function PolicyManagementPage() {
               }}
               state={memberStates[customer.customerId.toString()]}
               isSelected={selectedId === customer.customerId.toString()}
+              isEditingByOther={false} // true면 차단
               handlers={handlers}
             />
           ))}

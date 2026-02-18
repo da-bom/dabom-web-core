@@ -160,7 +160,12 @@ export default function MemberCard({
             <div className="flex w-full flex-col gap-2">
               <div className="flex w-full items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="bg-primary h-3 w-3 rounded-sm" />
+                  <Icon
+                    name="WarningOutline"
+                    width={13}
+                    height={13}
+                    className="text-primary"
+                  />
                   <span className="text-body1-m">데이터 사용 한도</span>
                 </div>
                 <span className="text-body1-m text-primary font-bold">
@@ -213,7 +218,7 @@ export default function MemberCard({
             <div className="flex w-full flex-col gap-4">
               <div className="flex w-full items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="bg-primary h-3 w-3 rounded-sm" />
+                  <Icon name="Time" />
                   <span className="text-body1-m">시간 제한</span>
                 </div>
 
