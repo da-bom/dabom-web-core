@@ -2,31 +2,33 @@
 
 import { useState } from "react";
 
-import { Button, InputField } from "@shared";
+import { Button, Icon, InputField } from "@shared";
 import { useLogin } from "src/hooks/useLogin";
 
 export default function LoginPage() {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoginFailed, setIsLoginFailed] = useState(true);
 
   const { mutate: login, isPending: isLoading } = useLogin();
 
-  const handleLogin = () => {
+  const handleLogin = (e?: React.FormEvent) => {
+    e?.preventDefault();
     if (!phone || !password) {
-      alert("이메일과 비밀번호를 입력해주세요.");
+      alert("전화번호와 비밀번호를 입력해주세요.");
       return;
     }
     login({ phone, password });
   };
 
   return (
-    <div className="bg-background-base min-h-screen">
-      <main className="px-5 pt-53.25">
+    <div className="flex flex-col items-center justify-center">
+      <main className="mt-46.75 flex w-full justify-center">
         <form
           onSubmit={handleLogin}
-          className="flex flex-col items-center gap-8"
+          className="flex w-[340px] flex-col items-center"
         >
-          <div className="flex flex-col gap-10">
+          <div className="flex w-full flex-col gap-10">
             <InputField
               label="전화번호"
               type="tel"
@@ -35,19 +37,36 @@ export default function LoginPage() {
               onChange={(value) => setPhone(value)}
             />
 
-            <InputField
-              label="비밀번호"
-              type="password"
-              placeholder="비밀번호를 입력해주세요"
-              value={password}
-              onChange={(value) => setPassword(value)}
-            />
+            <div className="flex flex-col gap-2">
+              <InputField
+                label="비밀번호"
+                type="password"
+                placeholder="비밀번호를 입력해주세요"
+                value={password}
+                onChange={(value) => {
+                  setPassword(value);
+                  setIsLoginFailed(false);
+                }}
+              />
 
-            <div className="mt-53.25 flex justify-center">
-              <Button type="submit" size="lg" color="dark" disabled={isLoading}>
-                로그인
-              </Button>
+              {isLoginFailed && (
+                <div className="mt-2 flex flex-row items-center justify-center gap-1">
+                  <Icon
+                    name="Warning"
+                    className="text-negative h-[14px] w-[14px]"
+                  />
+                  <span className="text-body2-m text-negative">
+                    아이디 또는 비밀번호가 일치하지 않습니다.
+                  </span>
+                </div>
+              )}
             </div>
+          </div>
+
+          <div className="mt-57 flex w-full justify-center">
+            <Button type="submit" size="lg" color="dark" disabled={isLoading}>
+              로그인
+            </Button>
           </div>
         </form>
       </main>

@@ -18,28 +18,24 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="bg-background-base min-h-screen">
-      <main className="px-5 pt-44.5">
-        <Bomi className="mx-auto animate-bounce" />
-        <Logo className="mx-auto h-7 w-38" />
+    <div className="bg-background-base flex min-h-screen flex-col items-center justify-center">
+      <main className="flex w-82 flex-col items-center">
+        <div className="flex flex-col items-center gap-17.5">
+          <Bomi className="h-50 w-50 animate-bounce" />
+          <Logo className="h-8.25 w-46" />
+        </div>
 
-        <form onSubmit={handleLogin} className="flex flex-col gap-8">
-          <div className="flex flex-col gap-2">
-            <div className="mt-35 flex justify-center">
-              <Button type="submit" size="lg" color="dark">
-                회원가입
-              </Button>
-            </div>
+        <form
+          onSubmit={handleLogin}
+          className="mt-[120px] flex w-full flex-col gap-2"
+        >
+          <Button type="submit" size="lg" color="dark">
+            회원가입
+          </Button>
 
-            <section className="flex items-center justify-center gap-2 text-sm text-gray-600">
-              <span>이미 계정이 있다면?</span>
-              <Link
-                href="/login"
-                className="font-medium text-black underline underline-offset-4 transition-colors hover:text-gray-800"
-              >
-                로그인
-              </Link>
-            </section>
+          <div className="flex items-center justify-center gap-1 text-[12px] font-medium text-black">
+            <span>이미 계정이 있다면?</span>
+            <Link href="/login">로그인</Link>
           </div>
         </form>
       </main>
