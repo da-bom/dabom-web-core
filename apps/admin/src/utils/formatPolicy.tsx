@@ -29,11 +29,17 @@ export const formatPolicy = ({ policies }: { policies: PolicyType[] }) => {
           ),
         ),
         cell(
-          <Link href={`/policy/${p.policyId}`}>
-            <Button color="light" size="sm">
+          p.isActive ? (
+            <Link href={`/policy/${p.policyId}`}>
+              <Button color="light" size="sm">
+                수정
+              </Button>
+            </Link>
+          ) : (
+            <Button color="gray" size="sm">
               수정
             </Button>
-          </Link>,
+          ),
         ),
       ],
     };

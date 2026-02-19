@@ -11,12 +11,12 @@ const PolicyDetailModal = () => {
 
   return (
     <div
-      role="button"
+      role="presentation"
       onClick={() => router.back()}
       className="fixed inset-0 z-50 flex h-screen justify-end bg-black/20"
       aria-label="닫기"
     >
-      <dialog
+      <aside
         onClick={(e) => e.stopPropagation()}
         className="bg-brand-white flex h-full w-175 flex-col border-l border-gray-300 px-11 py-8 shadow-[-4px_0_10px_rgba(0,0,0,0.1)]"
       >
@@ -101,7 +101,7 @@ const PolicyDetailModal = () => {
             변경사항 저장
           </Button>
         </div>
-      </dialog>
+      </aside>
     </div>
   );
 };
