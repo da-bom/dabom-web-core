@@ -3,9 +3,9 @@
 import { TextField } from "@shared";
 
 import {
-  MONTHLY_BLOCK,
+  MonthlyBlock,
   PolicyDetailType,
-  TIME_BLOCK,
+  TimeBlock,
 } from "@shared/types/policyType";
 
 import MonthlyBlockField from "./MonthlyBlockFeild";
@@ -18,19 +18,19 @@ interface Props {
 }
 
 const DefaultRuleField = ({ type, rules, onRuleChange }: Props) => {
-  if (type === "MANUAL_BLOCK") return null;
+  if (type === "ManualBlock") return null;
   return (
     <TextField label="기본값">
-      {type === "MONTHLY_BLOCK" && (
+      {type === "MonthlyBlock" && (
         <MonthlyBlockField
-          rules={rules as MONTHLY_BLOCK}
+          rules={rules as MonthlyBlock}
           onRuleChange={(newRules) => onRuleChange(newRules)}
         />
       )}
 
-      {type === "TIME_BLOCK" && (
+      {type === "TimeBlock" && (
         <TimeBlockFeild
-          rules={rules as TIME_BLOCK}
+          rules={rules as TimeBlock}
           onRuleChange={(newRules) => onRuleChange(newRules)}
         />
       )}

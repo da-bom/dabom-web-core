@@ -7,16 +7,16 @@ import { PolicyType } from "@shared/types/policyType";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const formatDefaultRule = (rules: any, type: PolicyType["type"]): string => {
   switch (type) {
-    case "MONTHLY_BLOCK":
+    case "MonthlyBlock":
       return formatSize(rules.monthlyLimitBytes).total;
 
-    case "TIME_BLOCK":
+    case "TimeBlock":
       return `${rules.start} ~ ${rules.end}`;
 
-    case "MANUAL_BLOCK":
+    case "ManualBlock":
       return "-";
 
-    case "APP_BLOCK":
+    case "AppBlock":
       return rules.apps.length > 0
         ? `${rules.apps[0]} 외 ${rules.apps.length - 1}개`
         : "차단 앱 없음";

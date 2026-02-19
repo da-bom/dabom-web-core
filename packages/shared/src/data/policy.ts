@@ -5,7 +5,7 @@ export const POLICY = {
     {
       policyId: 10,
       name: "데이터 사용량 한도 설정",
-      type: "MONTHLY_BLOCK",
+      type: "MonthlyBlock",
       default_rules: {
         monthlyLimitBytes: 5368709120,
       },
@@ -18,7 +18,7 @@ export const POLICY = {
     {
       policyId: 11,
       name: "데이터 사용 시간 제한",
-      type: "TIME_BLOCK",
+      type: "TimeBlock",
       default_rules: {
         start: "22:00",
         end: "07:00",
@@ -33,7 +33,7 @@ export const POLICY = {
     {
       policyId: 12,
       name: "데이터 사용 차단",
-      type: "MANUAL_BLOCK",
+      type: "ManualBlock",
       default_rules: {
         reason: "MANUAL",
       },
@@ -47,7 +47,7 @@ export const POLICY = {
       policyId: 13,
       name: "어플 차단",
       description: "어떻게 할까용?",
-      type: "APP_BLOCK",
+      type: "AppBlock",
       default_rules: {
         apps: ["youtube", "instagram"],
       },

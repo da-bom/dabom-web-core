@@ -2,14 +2,14 @@ import { useState } from "react";
 
 import { DropDown, formatSize, formatToBytes } from "@shared";
 
-import { MONTHLY_BLOCK } from "@shared/types/policyType";
+import { MonthlyBlock } from "@shared/types/policyType";
 
 const MonthlyBlockField = ({
   rules,
   onRuleChange,
 }: {
-  rules: MONTHLY_BLOCK;
-  onRuleChange: (newRules: MONTHLY_BLOCK) => void;
+  rules: MonthlyBlock;
+  onRuleChange: (newRules: MonthlyBlock) => void;
 }) => {
   const initial = formatSize(rules.monthlyLimitBytes);
   const [localValue, setLocalValue] = useState(initial.value);

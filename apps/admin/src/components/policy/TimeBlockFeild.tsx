@@ -2,25 +2,25 @@
 
 import { useState } from "react";
 
-import { TIME_BLOCK } from "@shared/types/policyType";
+import { TimeBlock } from "@shared/types/policyType";
 
 const TimeBlockField = ({
   rules,
   onRuleChange,
 }: {
-  rules: TIME_BLOCK;
-  onRuleChange: (newRules: TIME_BLOCK) => void;
+  rules: TimeBlock;
+  onRuleChange: (newRules: TimeBlock) => void;
 }) => {
   const [startTime, setStartTime] = useState(rules.start);
   const [endTime, setEndTime] = useState(rules.end);
 
   const formatTime = (value: string) => {
-    const digits = value.replace(/\D/g, "").slice(0, 4);
+    const digits = value.replaceAll(/\D/g, "").slice(0, 4);
     let hour = digits.slice(0, 2);
     let minute = digits.slice(2);
 
-    if (hour && parseInt(hour) > 23) hour = "23";
-    if (minute && parseInt(minute) > 59) minute = "59";
+    if (hour && Number(hour) > 23) hour = "23";
+    if (minute && Number(minute) > 59) minute = "59";
 
     return minute ? `${hour}:${minute}` : hour;
   };

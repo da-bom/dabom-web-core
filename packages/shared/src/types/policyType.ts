@@ -1,24 +1,24 @@
 export type RuleType =
-  | "MONTHLY_BLOCK"
-  | "MANUAL_BLOCK"
-  | "TIME_BLOCK"
-  | "APP_BLOCK";
+  | "MonthlyBlock"
+  | "ManualBlock"
+  | "TimeBlock"
+  | "AppBlock";
 
-export interface MONTHLY_BLOCK {
+export interface MonthlyBlock {
   monthlyLimitBytes: number;
 }
 
-export interface TIME_BLOCK {
+export interface TimeBlock {
   start: string;
   end: string;
   timezone: string;
 }
 
-export interface MANUAL_BLOCK {
+export interface ManualBlock {
   reason: "MANUAL";
 }
 
-export interface APP_BLOCK {
+export interface AppBlock {
   apps: string[];
 }
 
@@ -26,7 +26,7 @@ export interface PolicyType {
   policyId: number;
   name: string;
   type: RuleType;
-  default_rules: MONTHLY_BLOCK | TIME_BLOCK | MANUAL_BLOCK | APP_BLOCK;
+  default_rules: MonthlyBlock | TimeBlock | ManualBlock | AppBlock;
   requireRole: "ADMIN" | "OWNER" | "MEMBER";
   isActive: boolean;
   isSystem: boolean;
