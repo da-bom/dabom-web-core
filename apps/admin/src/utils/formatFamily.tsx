@@ -9,7 +9,7 @@ export const formatFamily = ({ customer }: { customer: CustomerDetail[] }) => {
       <Switch
         key={i.customerId}
         type={i.role === "OWNER" ? "primary" : "secondary"}
-        radius="full"
+        size="sm"
         onClick={() => {
           // TODO: OWNER <> MEMBER 값이 바뀌도록
         }}

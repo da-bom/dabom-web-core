@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 import { Button, DropDown, Icon, RadioGroup, Switch, TextField } from "@shared";
 
@@ -8,6 +8,10 @@ import POLICY_DETAIL from "@shared/data/policyDetail";
 
 const PolicyDetailModal = () => {
   const router = useRouter();
+  const params = useParams();
+  const policyId = Number(params.id);
+
+  const data = POLICY_DETAIL[policyId as keyof typeof POLICY_DETAIL];
 
   return (
     <div
@@ -29,11 +33,9 @@ const PolicyDetailModal = () => {
           </button>
 
           <header className="flex flex-col gap-3">
-            <Badge active={POLICY_DETAIL.isActive} />
-            <h1 className="text-h1-d">{POLICY_DETAIL.name}</h1>
-            <p className="text-body1-d text-gray-700">
-              {POLICY_DETAIL.description}
-            </p>
+            <Status active={data.isActive} />
+            <h1 className="text-h1-d">{data.name}</h1>
+            <p className="text-body1-d text-gray-700">{data.description}</p>
           </header>
 
           <hr className="border-gray-100" />
@@ -42,35 +44,36 @@ const PolicyDetailModal = () => {
             <TextField label="권한">
               <DropDown
                 options={["ADMIN", "OWNER", "MEMBER"]}
-                selectedOption={POLICY_DETAIL.requireRole}
+                selectedOption={data.requireRole}
                 setSelectedOption={() => {}}
               />
             </TextField>
 
-            <TextField label="기본값">
+            {/* TODO: 타입에 따라 렌더링 */}
+            {/* <TextField label="기본값">
               <DropDown
                 options={["추가 사용량 부과", "속도 제한", "사용 차단"]}
-                selectedOption={POLICY_DETAIL.default_rules.rule}
+                selectedOption={data.default_rules.rule}
                 setSelectedOption={() => {}}
               />
-            </TextField>
+            </TextField> */}
 
             <TextField
               label="상태"
-              description="정책 활성화 시 즉시 모든 유저에게 적용됩니다."
+              description="정책 활성화 즉시 모든 유저에게 적용됩니다."
             >
               <div className="flex items-center gap-4">
                 <Switch
-                  type={POLICY_DETAIL.isActive ? "primary" : "gray"}
-                  radius="half"
+                  type={data.isActive ? "primary" : "gray"}
+                  size="lg"
                   onClick={() => {}}
                 >
-                  {POLICY_DETAIL.isActive ? "활성화" : "비활성화"}
+                  {data.isActive ? "활성화" : "비활성화"}
                 </Switch>
               </div>
             </TextField>
 
-            {POLICY_DETAIL.isActive && (
+            {data.isActive && (
               <div className="ml-16">
                 <RadioGroup
                   options={[
@@ -106,7 +109,7 @@ const PolicyDetailModal = () => {
   );
 };
 
-const Badge = ({ active }: { active: boolean }) => (
+const Status = ({ active }: { active: boolean }) => (
   <div
     className={`text-body1-d flex items-center gap-1 ${active ? "text-primary" : "text-gray-600"}`}
   >

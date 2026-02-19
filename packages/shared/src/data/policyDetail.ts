@@ -1,17 +1,62 @@
 const POLICY_DETAIL = {
-  policyId: 10,
-  name: "데이터 소진 시 처리",
-  description:
-    "주어진 데이터를 모두 사용한 경우 초과된 사용량에 대해 처리한다.",
-  type: "MANUAL_BLOCK",
-  default_rules: {
-    rule: "느린 속도 무제한",
+  10: {
+    policyId: 10,
+    name: "데이터 사용량 한도 설정",
+    description: "owner는 member의 데이터 사용량 한도를 설정할 수 있다.",
+    type: "MONTHLY_BLOCK",
+    default_rules: {
+      monthlyLimitBytes: 5368709120,
+    },
+    requireRole: "OWNER",
+    isActive: true,
+    isSystem: true,
+    createdAt: "2024-01-01T00:00:00Z",
+    updatedAt: "2024-01-01T00:00:00Z",
   },
-  requireRole: "ADMIN",
-  isActive: false,
-  isSystem: false,
-  createdAt: "2024-01-01T00:00:00Z",
-  updatedAt: "2024-01-01T00:00:00Z",
+  11: {
+    policyId: 11,
+    name: "데이터 사용 시간 제한",
+    description: "owner는 member의 데이터 사용 시간을 제한할 수 있다.",
+    type: "TIME_BLOCK",
+    default_rules: {
+      start: "22:00",
+      end: "07:00",
+      timezone: "Asia/Seoul",
+    },
+    requireRole: "OWNER",
+    isActive: true,
+    isSystem: true,
+    createdAt: "2024-01-01T00:00:00Z",
+    updatedAt: "2024-01-01T00:00:00Z",
+  },
+  12: {
+    policyId: 12,
+    name: "데이터 사용 차단",
+    description: "owner는 member의 데이터 사용을 차단할 수 있다.",
+    type: "MANUAL_BLOCK",
+    default_rules: {
+      reason: "MANUAL",
+    },
+    requireRole: "OWNER",
+    isActive: true,
+    isSystem: true,
+    createdAt: "2024-01-01T00:00:00Z",
+    updatedAt: "2024-01-01T00:00:00Z",
+  },
+  13: {
+    policyId: 13,
+    name: "어플 차단",
+    description: "어떻게 할까용?",
+    type: "APP_BLOCK",
+    default_rules: {
+      apps: ["youtube", "instagram"],
+    },
+    requireRole: "ADMIN",
+    isActive: false,
+    isSystem: false,
+    createdAt: "2024-01-01T00:00:00Z",
+    updatedAt: "2024-01-01T00:00:00Z",
+  },
 } as const;
 
 export default POLICY_DETAIL;

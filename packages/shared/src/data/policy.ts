@@ -5,7 +5,6 @@ export const POLICY = {
     {
       policyId: 10,
       name: "데이터 사용량 한도 설정",
-      description: "owner는 member의 데이터 사용량 한도를 설정할 수 있다.",
       type: "MONTHLY_BLOCK",
       default_rules: {
         monthlyLimitBytes: 5368709120,
@@ -19,7 +18,6 @@ export const POLICY = {
     {
       policyId: 11,
       name: "데이터 사용 시간 제한",
-      description: "owner는 member의 데이터 사용 시간을 제한할 수 있다.",
       type: "TIME_BLOCK",
       default_rules: {
         start: "22:00",
@@ -35,7 +33,6 @@ export const POLICY = {
     {
       policyId: 12,
       name: "데이터 사용 차단",
-      description: "owner는 member의 데이터 사용을 차단할 수 있다.",
       type: "MANUAL_BLOCK",
       default_rules: {
         reason: "MANUAL",

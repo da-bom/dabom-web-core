@@ -4,11 +4,11 @@ import Icon from "./Icon";
 interface SwitchProps {
   children: React.ReactNode;
   type: "primary" | "secondary" | "gray";
-  radius: "full" | "half";
+  size: "sm" | "lg";
   onClick: () => void;
 }
 
-const Switch = ({ children, type, radius, onClick }: Readonly<SwitchProps>) => {
+const Switch = ({ children, type, size, onClick }: Readonly<SwitchProps>) => {
   return (
     <button
       type="button"
@@ -18,14 +18,16 @@ const Switch = ({ children, type, radius, onClick }: Readonly<SwitchProps>) => {
         type === "secondary" && "border-primary-800",
         type === "gray" && "border-gray-800 bg-gray-100",
 
-        radius === "full" ? "rounded-full" : "rounded-md",
+        size === "sm" ? "text-caption-d" : "text-body2-d",
       )}
       onClick={onClick}
     >
-      <div className="text-caption-d text-brand-dark">{children}</div>
+      <div className="text-brand-dark">{children}</div>
       <Icon
         name="Change"
         className={type === "gray" ? "text-gray-800" : "text-primary"}
+        {...(size === "sm" && { width: 11, height: 11 })}
+        {...(size === "lg" && { width: 13, height: 13 })}
       />
     </button>
   );
