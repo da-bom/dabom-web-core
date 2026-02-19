@@ -26,12 +26,23 @@ export interface PolicyType {
   policyId: number;
   name: string;
   type: string;
-  default_rules: MONTHLY_BLOCK | TIME_BLOCK | MANUAL_BLOCK;
+  default_rules: MONTHLY_BLOCK | TIME_BLOCK | MANUAL_BLOCK | APP_BLOCK;
   requireRole: "ADMIN" | "OWNER" | "MEMBER";
   isActive: boolean;
   isSystem: boolean;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface PolicyDetailType extends PolicyType {
+  description: string;
+}
+
+export interface EditablePolicyFields {
+  description: string;
+  default_rules: PolicyDetailType["default_rules"];
+  requireRole: PolicyDetailType["requireRole"];
+  isActive: boolean;
 }
 
 export interface PolicyResponse {

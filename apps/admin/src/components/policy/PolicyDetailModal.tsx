@@ -1,17 +1,31 @@
 "use client";
 
+import { useState } from "react";
+
 import { useParams, useRouter } from "next/navigation";
 
-import { Button, DropDown, Icon, RadioGroup, Switch, TextField } from "@shared";
+import { Button, DropDown, Icon, TextField } from "@shared";
 
 import POLICY_DETAIL from "@shared/data/policyDetail";
+import { PolicyDetailType } from "@shared/types/policyType";
+
+import StatusFeild from "./StatusFeild";
 
 const PolicyDetailModal = () => {
   const router = useRouter();
   const params = useParams();
   const policyId = Number(params.id);
 
-  const data = POLICY_DETAIL[policyId as keyof typeof POLICY_DETAIL];
+  const data = POLICY_DETAIL[
+    policyId as keyof typeof POLICY_DETAIL
+  ] as unknown as PolicyDetailType;
+
+  const [newData, setNewData] = useState({
+    description: data.description,
+    default_rules: data.default_rules,
+    requireRole: data.requireRole,
+    isActive: data.isActive,
+  });
 
   return (
     <div
@@ -35,6 +49,7 @@ const PolicyDetailModal = () => {
           <header className="flex flex-col gap-3">
             <Status active={data.isActive} />
             <h1 className="text-h1-d">{data.name}</h1>
+            {/* TODO: input으로 변경 */}
             <p className="text-body1-d text-gray-700">{data.description}</p>
           </header>
 
@@ -44,55 +59,16 @@ const PolicyDetailModal = () => {
             <TextField label="권한">
               <DropDown
                 options={["ADMIN", "OWNER", "MEMBER"]}
-                selectedOption={data.requireRole}
+                selectedOption={newData.requireRole}
                 setSelectedOption={() => {}}
               />
             </TextField>
 
-            {/* TODO: 타입에 따라 렌더링 */}
-            {/* <TextField label="기본값">
-              <DropDown
-                options={["추가 사용량 부과", "속도 제한", "사용 차단"]}
-                selectedOption={data.default_rules.rule}
-                setSelectedOption={() => {}}
-              />
-            </TextField> */}
-
-            <TextField
-              label="상태"
-              description="정책 활성화 즉시 모든 유저에게 적용됩니다."
-            >
-              <div className="flex items-center gap-4">
-                <Switch
-                  type={data.isActive ? "primary" : "gray"}
-                  size="lg"
-                  onClick={() => {}}
-                >
-                  {data.isActive ? "활성화" : "비활성화"}
-                </Switch>
-              </div>
-            </TextField>
-
-            {data.isActive && (
-              <div className="ml-16">
-                <RadioGroup
-                  options={[
-                    { label: "정책 수정 이후에만 적용하기", value: "after" },
-                    {
-                      label: "기존 값 덮어쓰기",
-                      value: "overwrite",
-                      subLabel: "유저가 설정했던 값이 모두 덮어씌워집니다.",
-                      isWarning: true,
-                    },
-                  ]}
-                  name="policy"
-                  selectedValue=""
-                  onChange={() => {
-                    // TODO: 변경하기 ...
-                  }}
-                />
-              </div>
-            )}
+            <StatusFeild
+              originData={data as PolicyDetailType}
+              data={newData}
+              setData={setNewData}
+            />
           </div>
         </div>
 
