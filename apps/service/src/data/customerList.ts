@@ -22,7 +22,7 @@ const CUSTOMER_LIST = {
     },
     {
       customerId: 12347,
-      name: "자녀1 (나)",
+      name: "자녀1",
       monthlyUsedBytes: 3221225472,
       monthlyLimitBytes: 5368709120,
       isBlocked: false,

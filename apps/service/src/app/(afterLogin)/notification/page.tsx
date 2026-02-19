@@ -39,8 +39,6 @@ export default function NotificationPage() {
       if (response.hasMore) {
         setPage((prev) => prev + 1);
       }
-      // TODO: API 연결 후 추가 구현 및 주석 제거 예정
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
     } finally {
       setIsLoading(false);
@@ -84,17 +82,21 @@ export default function NotificationPage() {
         {hasMore && (
           <div
             ref={observerTarget}
-            className="flex h-10 w-full items-center justify-center py-4"
+            className="flex w-full items-center justify-center py-4"
           >
             {isLoading && (
-              <div className="border-t-primary border-base h-6 w-6 animate-spin rounded-full border-2" />
+              <div className="flex items-center gap-2.5">
+                <div className="h-2 w-2 animate-bounce rounded-full bg-gray-600 [animation-delay:-0.3s]" />
+                <div className="h-2 w-2 animate-bounce rounded-full bg-gray-600 [animation-delay:-0.15s]" />
+                <div className="h-2 w-2 animate-bounce rounded-full bg-gray-600" />
+              </div>
             )}
           </div>
         )}
 
         {!hasMore && (
           // 알람 리스트의 개수가 많아 화면을 가득 채울 때 바텀의 도달점?을 일단 임의로 정했습니다. mt-8, mb-12
-          <p className="text-body2-m text-subtle mt-8 mb-12 text-center">
+          <p className="text-body2-m mt-8 mb-12 text-center text-gray-500">
             {NOTICE_MESSAGE}
           </p>
         )}

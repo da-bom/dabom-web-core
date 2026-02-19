@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import { Icon, cn } from "@shared";
 
@@ -16,6 +16,11 @@ const Header = ({
   onBackClick,
 }: HeaderProps) => {
   const router = useRouter();
+  const pathname = usePathname();
+
+  const HIDE_BACK_BTN_PATHS = ["/home", "/notification", "/policy"];
+  const shouldShowBack =
+    isBackVisible && !HIDE_BACK_BTN_PATHS.includes(pathname);
 
   const handleBack = () => {
     if (onBackClick) {
@@ -28,12 +33,12 @@ const Header = ({
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 flex h-[64px] w-full items-center justify-between bg-white shadow-sm transition-all",
+        "sticky top-0 z-50 flex h-16 w-full items-center justify-between bg-white shadow-sm transition-all",
         className,
       )}
     >
       <div className="flex w-10 items-center justify-start">
-        {isBackVisible && (
+        {shouldShowBack && (
           <button
             type="button"
             onClick={handleBack}
