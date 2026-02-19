@@ -2,16 +2,19 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import { cn } from "../utils/cn";
 import Icon from "./Icon";
 
 const DropDown = ({
   options,
   selectedOption,
   setSelectedOption,
+  size = "lg",
 }: {
   options: string[];
   selectedOption: string;
   setSelectedOption: (option: string) => void;
+  size?: "sm" | "lg";
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -30,18 +33,21 @@ const DropDown = ({
   }, []);
 
   return (
-    <div className="relative w-82" ref={containerRef}>
+    <div
+      className={cn("relative", size == "sm" ? "w-20" : "w-82")}
+      ref={containerRef}
+    >
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="bg-brand-white flex h-12 w-full cursor-pointer items-center justify-between rounded-xl border-[1px] border-gray-200 px-4 hover:border-gray-300 active:bg-gray-50"
+        className="flex h-12 w-full cursor-pointer items-center justify-between px-4"
         aria-label="dropdown"
       >
         <span className="text-body1-m text-gray-800">{selectedOption}</span>
         <div
           className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
         >
-          <Icon name="Chevron" className="-rotate-90"></Icon>
+          <Icon name="Chevron" className="-rotate-90 text-gray-800"></Icon>
         </div>
       </button>
 
@@ -55,7 +61,7 @@ const DropDown = ({
                 setSelectedOption(option);
                 setIsOpen(false);
               }}
-              className="text-body1-m flex h-12 cursor-pointer items-center px-4 text-gray-700 transition-colors hover:bg-gray-100"
+              className="text-body1-m flex h-12 w-full cursor-pointer items-center px-4 text-gray-700 transition-colors hover:bg-gray-100"
             >
               {option}
             </button>

@@ -22,6 +22,19 @@ export const formatSize = (bytes: number) => {
   };
 };
 
+export const formatToBytes = (value: number, unit: string): number => {
+  const unitMultipliers: Record<string, number> = {
+    Bytes: 1,
+    KB: 1024,
+    MB: 1024 ** 2,
+    GB: 1024 ** 3,
+    TB: 1024 ** 4,
+  };
+
+  const multiplier = unitMultipliers[unit] || 1;
+  return Math.floor(value * multiplier);
+};
+
 export const bytesToGB = (bytes: number) =>
   Number((bytes / BYTES_PER_GB).toFixed(1));
 

@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { useParams, useRouter } from "next/navigation";
 
-import { Button, DropDown, Icon, TextField } from "@shared";
+import { Button, DropDown, Icon, MainBox, TextField } from "@shared";
 
 import POLICY_DETAIL from "@shared/data/policyDetail";
 import { PolicyDetailType } from "@shared/types/policyType";
@@ -39,7 +39,7 @@ const PolicyDetailModal = () => {
         onClick={(e) => e.stopPropagation()}
         className="bg-brand-white flex h-full w-175 flex-col border-l border-gray-300 px-11 py-8 shadow-[-4px_0_10px_rgba(0,0,0,0.1)]"
       >
-        <div className="flex flex-col gap-10 overflow-y-auto">
+        <div className="flex h-full flex-col gap-10 overflow-y-auto">
           <button
             className="w-fit cursor-pointer text-gray-500"
             onClick={() => router.back()}
@@ -56,13 +56,15 @@ const PolicyDetailModal = () => {
 
           <hr className="border-gray-100" />
 
-          <div className="flex flex-col gap-8">
+          <div className="flex h-full flex-col gap-8">
             <TextField label="권한">
-              <DropDown
-                options={["ADMIN", "OWNER", "MEMBER"]}
-                selectedOption={newData.requireRole}
-                setSelectedOption={() => {}}
-              />
+              <MainBox className="rounded-xl border-[1px] border-gray-200 hover:border-gray-300 active:bg-gray-50">
+                <DropDown
+                  options={["ADMIN", "OWNER", "MEMBER"]}
+                  selectedOption={newData.requireRole}
+                  setSelectedOption={() => {}}
+                />
+              </MainBox>
             </TextField>
 
             <DefaultRuleFeild

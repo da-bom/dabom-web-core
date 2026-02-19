@@ -1,6 +1,10 @@
-import { PolicyDetailType } from "@shared/types/policyType";
+"use client";
 
-// 예시
+import { TextField } from "@shared";
+
+import { MONTHLY_BLOCK, PolicyDetailType } from "@shared/types/policyType";
+
+import MonthlyBlockField from "./MonthlyBlockFeild";
 
 interface Props {
   type: string;
@@ -9,17 +13,15 @@ interface Props {
 }
 
 const DefaultRuleField = ({ type, rules, onRuleChange }: Props) => {
-  if (type === "MONTHLY_BLOCK") {
-    // const r = rules as MONTHLY_BLOCK;
-    return <div>데이터 사용량 한도 설정</div>;
-  }
-
-  if (type === "TIME_BLOCK") {
-    // const r = rules as TIME_BLOCK;
-    return <div className="flex gap-2">시간 제한</div>;
-  }
-
-  return null;
+  return (
+    <TextField label="기본값">
+      {type === "MONTHLY_BLOCK" && (
+        <MonthlyBlockField
+          rules={rules as MONTHLY_BLOCK}
+          onRuleChange={(newRules) => onRuleChange(newRules)}
+        />
+      )}
+    </TextField>
+  );
 };
-
 export default DefaultRuleField;
