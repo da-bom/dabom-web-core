@@ -65,7 +65,7 @@ const PolicyDetailModal = () => {
             </TextField>
 
             <StatusFeild
-              originData={data as PolicyDetailType}
+              isSystem={data.isSystem}
               data={newData}
               setData={setNewData}
             />

@@ -1,18 +1,26 @@
-import { RadioGroup, Switch, TextField } from "@shared";
+import { Badge, RadioGroup, Switch, TextField } from "@shared";
 
-import {
-  EditablePolicyFields,
-  PolicyDetailType,
-} from "@shared/types/policyType";
+import { EditablePolicyFields } from "@shared/types/policyType";
 
 const StatusFeild = ({
+  isSystem,
   data,
   setData,
 }: {
-  originData: PolicyDetailType;
+  isSystem: boolean;
   data: EditablePolicyFields;
   setData: (data: EditablePolicyFields) => void;
 }) => {
+  console.log(isSystem);
+  if (isSystem) {
+    return (
+      <TextField label="상태" description="기본 정책은 비활성화할 수 없습니다.">
+        <Badge color="primary_light" size="lg">
+          활성화
+        </Badge>
+      </TextField>
+    );
+  }
   return (
     <div>
       {/* TODO: 타입에 따라 렌더링 */}
@@ -40,24 +48,22 @@ const StatusFeild = ({
         </div>
       </TextField>
       {data.isActive && (
-        <div className="ml-16">
-          <RadioGroup
-            options={[
-              { label: "정책 수정 이후에만 적용하기", value: "after" },
-              {
-                label: "기존 값 덮어쓰기",
-                value: "overwrite",
-                subLabel: "유저가 설정했던 값이 모두 덮어씌워집니다.",
-                isWarning: true,
-              },
-            ]}
-            name="policy"
-            selectedValue=""
-            onChange={() => {
-              // TODO: 변경하기 ...
-            }}
-          />
-        </div>
+        <RadioGroup
+          options={[
+            { label: "정책 수정 이후에만 적용하기", value: "after" },
+            {
+              label: "기존 값 덮어쓰기",
+              value: "overwrite",
+              subLabel: "유저가 설정했던 값이 모두 덮어씌워집니다.",
+              isWarning: true,
+            },
+          ]}
+          name="policy"
+          selectedValue=""
+          onChange={() => {
+            // TODO: 변경하기 ...
+          }}
+        />
       )}
     </div>
   );
