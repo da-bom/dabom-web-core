@@ -22,15 +22,7 @@ const StatusFeild = ({
     );
   }
   return (
-    <div>
-      {/* TODO: 타입에 따라 렌더링 */}
-      {/* <TextField label="기본값">
-        <DropDown
-          options={["추가 사용량 부과", "속도 제한", "사용 차단"]}
-          selectedOption={originData.default_rules.}
-          setSelectedOption={() => {}}
-        />
-      </TextField> */}
+    <>
       <TextField
         label="상태"
         description="정책 활성화 즉시 모든 유저에게 적용됩니다."
@@ -65,7 +57,7 @@ const StatusFeild = ({
           }}
         />
       )}
-    </div>
+    </>
   );
 };
 

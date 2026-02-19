@@ -9,6 +9,7 @@ import { Button, DropDown, Icon, TextField } from "@shared";
 import POLICY_DETAIL from "@shared/data/policyDetail";
 import { PolicyDetailType } from "@shared/types/policyType";
 
+import DefaultRuleFeild from "./DefaultRuleFeild";
 import StatusFeild from "./StatusFeild";
 
 const PolicyDetailModal = () => {
@@ -63,6 +64,14 @@ const PolicyDetailModal = () => {
                 setSelectedOption={() => {}}
               />
             </TextField>
+
+            <DefaultRuleFeild
+              type={data.type}
+              rules={newData.default_rules}
+              onRuleChange={(newRules) => {
+                setNewData((prev) => ({ ...prev, default_rules: newRules }));
+              }}
+            />
 
             <StatusFeild
               isSystem={data.isSystem}

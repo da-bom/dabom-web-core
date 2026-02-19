@@ -14,7 +14,7 @@ const formatDefaultRule = (rules: any, type: PolicyType["type"]): string => {
       return `${rules.start} ~ ${rules.end}`;
 
     case "MANUAL_BLOCK":
-      return "즉시 차단";
+      return "-";
 
     case "APP_BLOCK":
       return rules.apps.length > 0
