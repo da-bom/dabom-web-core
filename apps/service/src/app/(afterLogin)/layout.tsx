@@ -18,8 +18,8 @@ export default function MainLayout({
         {children}
 
         <Toaster
-          position="top-center"
-          containerStyle={{ bottom: 128 }}
+          position="bottom-center"
+          containerClassName="!bottom-32"
           reverseOrder={false}
         />
       </main>

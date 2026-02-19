@@ -26,7 +26,7 @@ export default function LoginPage() {
       <main className="mt-46.75 flex w-full justify-center">
         <form
           onSubmit={handleLogin}
-          className="flex w-[340px] flex-col items-center"
+          className="flex w-85 flex-col items-center"
         >
           <div className="flex w-full flex-col gap-10">
             <InputField
@@ -51,10 +51,7 @@ export default function LoginPage() {
 
               {isLoginFailed && (
                 <div className="mt-2 flex flex-row items-center justify-center gap-1">
-                  <Icon
-                    name="Warning"
-                    className="text-negative h-[14px] w-[14px]"
-                  />
+                  <Icon name="Warning" className="text-negative h-3.5 w-3.5" />
                   <span className="text-body2-m text-negative">
                     아이디 또는 비밀번호가 일치하지 않습니다.
                   </span>

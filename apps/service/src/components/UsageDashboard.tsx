@@ -73,7 +73,7 @@ const UsageDashboard = () => {
 
   return (
     <div className="flex w-full flex-col gap-2 px-5 pt-15">
-      <MainBox className="w-full p-5">
+      <MainBox className="w-full rounded-2xl p-5">
         <div className="flex flex-col gap-2">
           <span className="text-body1-m text-brand-dark">
             현재 데이터 사용량
@@ -104,7 +104,7 @@ const UsageDashboard = () => {
           <button
             onClick={() => handleModeChange("list")}
             className={cn(
-              "text-caption-m flex h-5 flex-1 items-center justify-center gap-1 rounded-full transition-colors",
+              "text-caption-m mx-2 flex h-5 flex-1 items-center justify-center gap-1 rounded-full transition-colors",
               viewMode === "list"
                 ? "bg-primary-50 text-primary"
                 : "bg-transparent text-gray-400",
@@ -117,7 +117,7 @@ const UsageDashboard = () => {
           <button
             onClick={() => handleModeChange("chart")}
             className={cn(
-              "text-caption-m flex h-5 flex-1 items-center justify-center gap-1 rounded-full transition-colors",
+              "text-caption-m mx-2 flex h-5 flex-1 items-center justify-center gap-1 rounded-full transition-colors",
               viewMode === "chart"
                 ? "bg-primary-50 text-primary"
                 : "bg-transparent text-gray-400",
@@ -129,7 +129,7 @@ const UsageDashboard = () => {
         </div>
       </div>
 
-      <MainBox className="m-auto w-full rounded-xl p-5">
+      <MainBox className="m-auto w-full rounded-2xl p-5">
         {CUSTOMER_LIST.customers.length === 0 ? (
           <div className="flex flex-1 items-center justify-center text-gray-400">
             <p>등록된 가족 구성원이 없어요.</p>

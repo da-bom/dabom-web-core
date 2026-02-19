@@ -1,9 +1,9 @@
 "use client";
 
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 
-import { Icon, cn, formatSize } from "@shared";
+import { Icon, bytesToGB, cn, formatSize } from "@shared";
 
 const MAX_LIMIT_GB = 70;
 
@@ -44,17 +44,12 @@ export default function MemberCard({
 }: MemberCardProps) {
   const idStr = customer.customerId.toString();
 
-  const currentLimitGBFromProp = Math.round(
-    state.limitBytes / (1024 * 1024 * 1024),
-  );
-
+  const currentLimitGBFromProp = Math.round(bytesToGB(state.limitBytes));
   const [localLimit, setLocalLimit] = useState(currentLimitGBFromProp);
-  const [prevLimitBytes, setPrevLimitBytes] = useState(state.limitBytes);
 
-  if (state.limitBytes !== prevLimitBytes) {
-    setPrevLimitBytes(state.limitBytes);
+  React.useEffect(() => {
     setLocalLimit(currentLimitGBFromProp);
-  }
+  }, [currentLimitGBFromProp]);
 
   const sliderPercentage = (localLimit / MAX_LIMIT_GB) * 100;
   const formattedUsed = formatSize(customer.monthlyUsedBytes).total;
@@ -110,7 +105,7 @@ export default function MemberCard({
     <li
       className={cn(
         "bg-brand-white flex w-full list-none flex-col overflow-hidden rounded-2xl border-2 transition-all duration-300 ease-in-out",
-        isSelected ? "shadow-default border-gray-700" : "border-gray-200",
+        isSelected ? "border-gray-700" : "border-gray-200",
       )}
     >
       <button
@@ -168,7 +163,7 @@ export default function MemberCard({
                   />
                   <span className="text-body1-m">데이터 사용 한도</span>
                 </div>
-                <span className="text-body1-m text-primary font-bold">
+                <span className="text-body1-m text-primary-500 font-bold">
                   {localLimit}GB
                 </span>
               </div>

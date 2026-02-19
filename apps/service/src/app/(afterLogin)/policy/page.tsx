@@ -69,14 +69,14 @@ export default function PolicyManagementPage() {
         clearTimeout(debounceTimer.current);
       }
 
-      debounceTimer.current = setTimeout(async () => {
-        try {
-          console.log(`[API 요청 - 한도] ID: ${id}, 값: ${newBytes} Bytes`);
-          // API 사용
-        } catch (error) {
-          console.error("API 요청 실패:", error);
-        }
-      }, 500);
+      // debounceTimer.current = setTimeout(async () => {
+      //   try {
+      //     console.log(`[API 요청 - 한도] ID: ${id}, 값: ${newBytes} Bytes`);
+      //     // API 사용
+      //   } catch (error) {
+      //     console.error("API 요청 실패:", error);
+      //   }
+      // }, 500);
     },
 
     onToggleTime: (id: string) => {
@@ -107,17 +107,17 @@ export default function PolicyManagementPage() {
       },
     }));
 
-    try {
-      const currentState = memberStates[targetId];
-      const updatedStart = type === "start" ? newTime : currentState.startTime;
-      const updatedEnd = type === "end" ? newTime : currentState.endTime;
+    // try {
+    //   const currentState = memberStates[targetId];
+    //   const updatedStart = type === "start" ? newTime : currentState.startTime;
+    //   const updatedEnd = type === "end" ? newTime : currentState.endTime;
 
-      console.log(
-        `[API 요청 - 시간] ID: ${targetId} | Start: ${updatedStart} - End: ${updatedEnd}`,
-      );
-    } catch (error) {
-      console.error("API 요청 실패", error);
-    }
+    //   console.log(
+    //     `[API 요청 - 시간] ID: ${targetId} | Start: ${updatedStart} - End: ${updatedEnd}`,
+    //   );
+    // } catch (error) {
+    //   console.error("API 요청 실패", error);
+    // }
   };
 
   const handleCLoseSheet = useCallback(() => {
@@ -154,7 +154,7 @@ export default function PolicyManagementPage() {
               }}
               state={memberStates[customer.customerId.toString()]}
               isSelected={selectedId === customer.customerId.toString()}
-              isEditingByOther={true} // true면 차단
+              isEditingByOther={false} // true면 차단
               handlers={handlers}
             />
           ))}
