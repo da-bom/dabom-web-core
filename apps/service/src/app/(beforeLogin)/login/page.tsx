@@ -8,7 +8,7 @@ import { useLogin } from "src/hooks/useLogin";
 export default function LoginPage() {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoginFailed, setIsLoginFailed] = useState(true);
+  const [isLoginFailed, setIsLoginFailed] = useState(false);
 
   const { mutate: login, isPending: isLoading } = useLogin();
 
@@ -18,7 +18,14 @@ export default function LoginPage() {
       alert("전화번호와 비밀번호를 입력해주세요.");
       return;
     }
-    login({ phone, password });
+    login(
+      { phone, password },
+      {
+        onError: () => {
+          setIsLoginFailed(true);
+        },
+      },
+    );
   };
 
   return (
