@@ -23,8 +23,8 @@ const PolicyDetailForm = ({ initialData, policyId }: Props) => {
   const router = useRouter();
   const [newData, setNewData] = useState({
     description: initialData.description,
-    default_rules: initialData.default_rules,
-    requireRole: initialData.requireRole,
+    default_rules: initialData.defaultRules,
+    requireRole: initialData.requiredRole,
     isActive: initialData.isActive,
   });
 
@@ -93,7 +93,7 @@ const PolicyDetailForm = ({ initialData, policyId }: Props) => {
             </TextField>
 
             <DefaultRuleFeild
-              type={initialData.type}
+              type={initialData.policyType}
               rules={newData.default_rules}
               onRuleChange={(newRules) => {
                 setNewData((prev) => ({ ...prev, default_rules: newRules }));

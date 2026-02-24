@@ -1,24 +1,24 @@
 export type RuleType =
-  | "MonthlyBlock"
-  | "ManualBlock"
-  | "TimeBlock"
-  | "AppBlock";
+  | "MONTHLY_LIMIT"
+  | "MANUAL_BLOCK"
+  | "TIME_BLOCK"
+  | "APP_BLOCK";
 
-export interface MonthlyBlock {
-  monthlyLimitBytes: number;
+export interface MONTHLY_LIMIT {
+  limitBytes: number;
 }
 
-export interface TimeBlock {
+export interface TIME_BLOCK {
   start: string;
   end: string;
   timezone: string;
 }
 
-export interface ManualBlock {
+export interface MANUAL_BLOCK {
   reason: "MANUAL";
 }
 
-export interface AppBlock {
+export interface APP_BLOCK {
   apps: string[];
 }
 
@@ -26,7 +26,7 @@ export interface PolicyType {
   policyId: number;
   name: string;
   type: RuleType;
-  default_rules: MonthlyBlock | TimeBlock | ManualBlock | AppBlock;
+  default_rules: MONTHLY_LIMIT | TIME_BLOCK | MANUAL_BLOCK | APP_BLOCK;
   requireRole: "ADMIN" | "OWNER" | "MEMBER";
   isActive: boolean;
   isSystem: boolean;
@@ -34,14 +34,27 @@ export interface PolicyType {
   updatedAt: string;
 }
 
-export interface PolicyDetailType extends PolicyType {
+// export interface PolicyDetailType extends PolicyType {
+//   description: string;
+// }
+
+export interface PolicyDetailType {
+  id: number;
   description: string;
+  name: string;
+  policyType: RuleType;
+  defaultRules: MONTHLY_LIMIT | TIME_BLOCK | MANUAL_BLOCK | APP_BLOCK;
+  requiredRole: "ADMIN" | "OWNER" | "MEMBER";
+  isActive: boolean;
+  isSystem: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface EditablePolicyFields {
   description: string;
-  default_rules: PolicyDetailType["default_rules"];
-  requireRole: PolicyDetailType["requireRole"];
+  default_rules: MONTHLY_LIMIT | TIME_BLOCK | MANUAL_BLOCK | APP_BLOCK;
+  requireRole: "ADMIN" | "OWNER" | "MEMBER";
   isActive: boolean;
 }
 

@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 
-import { TimeBlock } from "@shared/types/policyType";
+import { TIME_BLOCK } from "@shared/types/policyType";
 
 const TimeBlockField = ({
   rules,
   onRuleChange,
 }: {
-  rules: TimeBlock;
-  onRuleChange: (newRules: TimeBlock) => void;
+  rules: TIME_BLOCK;
+  onRuleChange: (newRules: TIME_BLOCK) => void;
 }) => {
   const [startTime, setStartTime] = useState(rules.start);
   const [endTime, setEndTime] = useState(rules.end);

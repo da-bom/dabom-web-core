@@ -1,9 +1,9 @@
 const POLICY_DETAIL = {
-  10: {
-    policyId: 10,
+  1: {
+    policyId: 1,
     name: "데이터 사용량 한도 설정",
     description: "owner는 member의 데이터 사용량 한도를 설정할 수 있다.",
-    type: "MonthlyBlock",
+    type: "MONTHLY_LIMIT",
     default_rules: {
       monthlyLimitBytes: 5368709120,
     },
@@ -13,11 +13,11 @@ const POLICY_DETAIL = {
     createdAt: "2024-01-01T00:00:00Z",
     updatedAt: "2024-01-01T00:00:00Z",
   },
-  11: {
-    policyId: 11,
+  2: {
+    policyId: 2,
     name: "데이터 사용 시간 제한",
     description: "owner는 member의 데이터 사용 시간을 제한할 수 있다.",
-    type: "TimeBlock",
+    type: "TIME_BLOCK",
     default_rules: {
       start: "22:00",
       end: "07:00",
@@ -29,11 +29,11 @@ const POLICY_DETAIL = {
     createdAt: "2024-01-01T00:00:00Z",
     updatedAt: "2024-01-01T00:00:00Z",
   },
-  12: {
-    policyId: 12,
+  3: {
+    policyId: 3,
     name: "데이터 사용 차단",
     description: "owner는 member의 데이터 사용을 차단할 수 있다.",
-    type: "ManualBlock",
+    type: "MANUAL_BLOCK",
     default_rules: {
       reason: "MANUAL",
     },
@@ -43,11 +43,11 @@ const POLICY_DETAIL = {
     createdAt: "2024-01-01T00:00:00Z",
     updatedAt: "2024-01-01T00:00:00Z",
   },
-  13: {
-    policyId: 13,
+  4: {
+    policyId: 4,
     name: "어플 차단",
     description: "어떻게 할까용?",
-    type: "AppBlock",
+    type: "APP_BLOCK",
     default_rules: {
       apps: ["youtube", "instagram"],
     },

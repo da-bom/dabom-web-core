@@ -3,16 +3,16 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { ApiErrorResponse } from "@shared/types/error";
 import {
-  AppBlock,
-  ManualBlock,
-  MonthlyBlock,
-  TimeBlock,
+  APP_BLOCK,
+  MANUAL_BLOCK,
+  MONTHLY_LIMIT,
+  TIME_BLOCK,
 } from "@shared/types/policyType";
 
 interface PolicyUpdateRequest {
   description: string;
   requireRole: "OWNER" | "ADMIN" | "MEMBER";
-  defaultRules: MonthlyBlock | TimeBlock | ManualBlock | AppBlock;
+  defaultRules: MONTHLY_LIMIT | TIME_BLOCK | MANUAL_BLOCK | APP_BLOCK;
   isActive: boolean;
   overWrite: boolean;
 }
