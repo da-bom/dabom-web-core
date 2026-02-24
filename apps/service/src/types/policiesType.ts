@@ -1,13 +1,13 @@
 import { CustomerDetail } from "@shared/type/familyType";
-import { PolicyType } from "@shared/type/policyType";
+import { RuleType } from "@shared/type/policyType";
 
-export type FamilyRole = PolicyType["requireRole"];
+export type FamilyRole = "OWNER" | "MEMBER";
 
 export interface ApiPolicy {
   assignmentId: number;
   policyId: number;
   policyName: string;
-  type: "MONTHLY_LIMIT" | "TIME_BLOCK" | "MANUAL_BLOCK";
+  type: RuleType[];
   isActive: boolean;
   rules: {
     limitBytes?: number;
@@ -49,7 +49,7 @@ export interface ServicePoliciesResponse {
 }
 
 export interface UpdatePolicyRequest {
-  update: {
+  updateInfo: {
     customerId: number;
     type: ApiPolicy["type"];
     value?: ApiPolicy["rules"];

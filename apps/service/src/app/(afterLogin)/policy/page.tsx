@@ -58,9 +58,28 @@ interface PolicyManagementListProps {
 }
 
 function PolicyManagementList({ customers }: PolicyManagementListProps) {
-  const currentUserRole = "OWNER";
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const { mutate: updatePolicy } = useUpdatePolicy();
+
+  const [currentUserRole] = useState<"OWNER" | "MEMBER">(() => {
+    if (typeof window === "undefined") return "MEMBER";
+
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        const tokenRole = payload.role;
+
+        if (tokenRole === "OWNER" || tokenRole === "MEMBER") {
+          return tokenRole;
+        }
+      } catch (error) {
+        console.error("토큰 해독 실패:", error);
+      }
+    }
+    return "MEMBER";
+  });
+
   const [memberStates, setMemberStates] = useState<
     Record<string, CustomerState>
   >(() => {
@@ -100,9 +119,9 @@ function PolicyManagementList({ customers }: PolicyManagementListProps) {
         [id]: { ...prev[id], limitBytes: newBytes },
       }));
       updatePolicy({
-        update: {
+        updateInfo: {
           customerId: Number(id),
-          type: "MONTHLY_LIMIT",
+          type: ["MONTHLY_LIMIT"],
           value: { limitBytes: newBytes },
           isActive: true,
         },
@@ -110,34 +129,29 @@ function PolicyManagementList({ customers }: PolicyManagementListProps) {
     },
 
     onToggleTime: (id: string) => {
-      setMemberStates((prev) => {
-        const currentTarget = prev[id];
-        const isCurrentlyOn = !!currentTarget.timeLimit;
+      const currentTarget = memberStates[id];
+      if (!currentTarget) return;
 
-        updatePolicy({
-          update: {
-            customerId: Number(id),
-            type: "TIME_BLOCK",
-            isActive: !isCurrentlyOn,
-            ...(!isCurrentlyOn
-              ? {
-                  value: {
-                    start: "00:00",
-                    end: "23:59",
-                    timezone: "Asia/Seoul",
-                  },
-                }
-              : {}),
-          },
-        });
+      const isCurrentlyOn = !!currentTarget.timeLimit;
 
-        return {
-          ...prev,
-          [id]: {
-            ...currentTarget,
-            timeLimit: isCurrentlyOn ? null : { start: "00:00", end: "23:59" },
-          },
-        };
+      setMemberStates((prev) => ({
+        ...prev,
+        [id]: {
+          ...prev[id],
+          timeLimit: isCurrentlyOn ? null : { start: "00:00", end: "23:59" },
+        },
+      }));
+
+      if (!isCurrentlyOn) {
+        return;
+      }
+
+      updatePolicy({
+        updateInfo: {
+          customerId: Number(id),
+          type: ["TIME_BLOCK"],
+          isActive: false,
+        },
       });
     },
 
@@ -171,9 +185,9 @@ function PolicyManagementList({ customers }: PolicyManagementListProps) {
     }));
 
     updatePolicy({
-      update: {
+      updateInfo: {
         customerId: Number(targetId),
-        type: "TIME_BLOCK",
+        type: ["TIME_BLOCK"],
         value: { start: updatedStart, end: updatedEnd, timezone: "Asia/Seoul" },
         isActive: true,
       },

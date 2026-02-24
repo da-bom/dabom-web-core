@@ -20,13 +20,15 @@ export const getFamilyPolicies = async (): Promise<FamilyDetail> => {
   console.log("백엔드 응답 데이터:", familyData);
 
   const mappedCustomers: CustomerDetail[] = familyData.customers.map((c) => {
-    const monthlyPolicy = c.policies?.find((p) => p.type === "MONTHLY_LIMIT");
+    const monthlyPolicy = c.policies?.find((p) =>
+      p.type.includes("MONTHLY_LIMIT"),
+    );
 
     return {
       customerId: c.customerId,
       name: c.name,
       phoneNumber: c.phoneNumber,
-      role: c.role === "ADMIN" ? "OWNER" : c.role,
+      role: c.role,
       monthlyUsedBytes: c.usedBytes ?? 0,
       monthlyLimitBytes: monthlyPolicy?.rules?.limitBytes ?? 0,
     };
