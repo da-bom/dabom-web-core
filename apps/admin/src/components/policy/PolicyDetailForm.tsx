@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import ChevronIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 import CheckIcon from "@mui/icons-material/CheckCircle";
 import { Button, DropDown, MainBox, TextField, UnpublishedIcon } from "@shared";
+import { useUpdatePolicy } from "src/hooks/useUpdatePolicy";
 
 import { PolicyDetailType } from "@shared/types/policyType";
 
@@ -27,8 +28,26 @@ const PolicyDetailForm = ({ initialData, policyId }: Props) => {
     isActive: initialData.isActive,
   });
 
+  const { mutate: updatePolicy, isPending } = useUpdatePolicy();
+
   const handleSave = () => {
-    console.log("저장 데이터:", { policyId, ...newData });
+    updatePolicy(
+      {
+        policyId,
+        data: {
+          description: newData.description,
+          requireRole: newData.requireRole,
+          isActive: newData.isActive,
+          defaultRules: newData.default_rules,
+          overWrite: true,
+        },
+      },
+      {
+        onSuccess: () => {
+          router.push("/policy");
+        },
+      },
+    );
   };
 
   return (
