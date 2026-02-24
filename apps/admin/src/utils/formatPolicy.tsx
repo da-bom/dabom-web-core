@@ -2,23 +2,31 @@ import Link from "next/link";
 
 import { Button, cn, formatSize } from "@shared";
 
-import { PolicyType } from "@shared/types/policyType";
+import {
+  APP_BLOCK,
+  MONTHLY_LIMIT,
+  PolicyType,
+  TIME_BLOCK,
+} from "@shared/types/policyType";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const formatDefaultRule = (rules: any, type: PolicyType["type"]): string => {
+const formatDefaultRule = (
+  rules: PolicyType["defaultRules"],
+  type: PolicyType["policyType"],
+): string => {
   switch (type) {
     case "MONTHLY_LIMIT":
-      return formatSize(rules.monthlyLimitBytes).total;
+      return formatSize((rules as MONTHLY_LIMIT).limitBytes).total;
 
     case "TIME_BLOCK":
-      return `${rules.start} ~ ${rules.end}`;
+      return `${(rules as TIME_BLOCK).start} ~ ${(rules as TIME_BLOCK).end}`;
 
     case "MANUAL_BLOCK":
       return "-";
 
     case "APP_BLOCK":
-      return rules.apps.length > 0
-        ? `${rules.apps[0]} 외 ${rules.apps.length - 1}개`
+      const apps = (rules as APP_BLOCK).apps;
+      return apps?.length > 0
+        ? `${apps[0]} 외 ${apps.length - 1}개`
         : "차단 앱 없음";
 
     default:
@@ -40,8 +48,8 @@ export const formatPolicy = ({ policies }: { policies: PolicyType[] }) => {
       id: p.policyId,
       cells: [
         cell(p.name),
-        cell(p.requireRole),
-        cell(formatDefaultRule(p.default_rules, p.type)),
+        cell(p.requiredRole),
+        cell(formatDefaultRule(p.defaultRules, p.policyType)),
         cell(
           p.isActive ? (
             <span className="text-primary">활성화</span>

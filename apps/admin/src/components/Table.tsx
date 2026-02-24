@@ -19,9 +19,9 @@ const Table = ({ headers, rows }: TableProps) => {
           </tr>
         </thead>
         <tbody className="bg-brand-white text-center">
-          {rows.map((row) => (
+          {rows.map((row, index) => (
             <tr
-              key={row.id}
+              key={index}
               className="text-body2-d h-11 border-t border-gray-100"
             >
               {row.cells.map((cell, cellIndex) => (

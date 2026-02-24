@@ -25,9 +25,9 @@ export interface APP_BLOCK {
 export interface PolicyType {
   policyId: number;
   name: string;
-  type: RuleType;
-  default_rules: MONTHLY_LIMIT | TIME_BLOCK | MANUAL_BLOCK | APP_BLOCK;
-  requireRole: "ADMIN" | "OWNER" | "MEMBER";
+  policyType: RuleType;
+  defaultRules: MONTHLY_LIMIT | TIME_BLOCK | MANUAL_BLOCK | APP_BLOCK;
+  requiredRole: "ADMIN" | "OWNER" | "MEMBER";
   isActive: boolean;
   isSystem: boolean;
   createdAt: string;
