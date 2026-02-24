@@ -1,8 +1,8 @@
 export type RuleType =
-  | "MONTHLY_LIMIT"
-  | "MANUAL_BLOCK"
-  | "TIME_BLOCK"
-  | "APP_BLOCK";
+  | "MonthlyBlock"
+  | "TimeBlock"
+  | "ManualBlock"
+  | "AppBlock";
 
 export interface MonthlyBlock {
   monthlyLimitBytes: number;
