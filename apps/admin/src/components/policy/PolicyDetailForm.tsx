@@ -27,6 +27,7 @@ const PolicyDetailForm = ({ initialData, policyId }: Props) => {
     requireRole: initialData.requiredRole,
     isActive: initialData.isActive,
   });
+  const [isOpen, setIsOpen] = useState(false);
 
   const { mutate: updatePolicy, isPending } = useUpdatePolicy();
 
@@ -80,6 +81,8 @@ const PolicyDetailForm = ({ initialData, policyId }: Props) => {
             <TextField label="권한">
               <MainBox className="rounded-xl border-[1px] border-gray-200 hover:border-gray-300 active:bg-gray-50">
                 <DropDown
+                  isOpen={isOpen}
+                  setIsOpen={setIsOpen}
                   options={["ADMIN", "OWNER", "MEMBER"]}
                   selectedOption={newData.requireRole}
                   setSelectedOption={(option) =>

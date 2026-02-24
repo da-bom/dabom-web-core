@@ -18,18 +18,15 @@ interface PolicyUpdateRequest {
 }
 
 interface PolicyUpdateResponse {
-  success: boolean;
-  data: {
-    policyId: number;
-    updatedAt: string;
-  };
+  policyId: number;
+  updatedAt: string;
 }
 
 export const updatePolicy = async (
   policyId: number,
   data: PolicyUpdateRequest,
 ) => {
-  const response = await http.post<PolicyUpdateResponse>(
+  const response = await http.put<PolicyUpdateResponse>(
     `/policies/${policyId}`,
     data,
   );

@@ -11,10 +11,10 @@ const MonthlyBlockField = ({
   rules: MONTHLY_LIMIT;
   onRuleChange: (newRules: MONTHLY_LIMIT) => void;
 }) => {
-  console.log("rules", rules);
   const initial = formatSize(rules.limitBytes);
   const [localValue, setLocalValue] = useState(initial.value);
   const [localUnit, setLocalUnit] = useState(initial.unit);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleUpdate = (val: number, unit: string) => {
     setLocalValue(val);
@@ -23,7 +23,7 @@ const MonthlyBlockField = ({
   };
 
   return (
-    <div className="flex h-12 w-fit overflow-hidden rounded-xl border border-gray-200 focus-within:border-gray-300">
+    <div className="flex h-12 w-fit rounded-xl border border-gray-200 focus-within:border-gray-300">
       <input
         type="number"
         value={localValue}
@@ -32,6 +32,8 @@ const MonthlyBlockField = ({
       />
       <div className="my-auto h-8 w-[1px] bg-gray-200" />
       <DropDown
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
         size="sm"
         options={["Bytes", "KB", "MB", "GB"]}
         selectedOption={localUnit}

@@ -18,7 +18,6 @@ interface Props {
 }
 
 const DefaultRuleField = ({ type, rules, onRuleChange }: Props) => {
-  console.log(type);
   if (type === "MANUAL_BLOCK") return null;
   return (
     <TextField label="기본값">
