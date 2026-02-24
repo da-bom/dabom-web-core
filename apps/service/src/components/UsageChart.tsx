@@ -80,7 +80,7 @@ const UsageChart = ({ customers, totalUsageGB }: Props) => {
 
   return (
     <div className="animate-in fade-in zoom-in-95 flex w-full flex-col items-center gap-5 duration-500">
-      <div className="w-full">
+      <div className="relative flex aspect-square w-full items-center justify-center">
         <Pie data={data} options={options} />
       </div>
 

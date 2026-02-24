@@ -24,7 +24,7 @@ const VIEW_OPTIONS = [
 
 export const ViewSegment = ({ viewMode, onModeChange }: ViewSegmentProps) => {
   return (
-    <div className="bg-brand-white flex h-8 w-full max-w-87.5 items-center rounded-full border border-gray-200">
+    <div className="bg-brand-white flex h-8 w-full items-center rounded-full border border-gray-200">
       {VIEW_OPTIONS.map(({ id, label, activeIcon, inactiveIcon }) => {
         const isActive = viewMode === id;
         return (

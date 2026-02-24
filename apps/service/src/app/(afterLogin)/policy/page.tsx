@@ -1,13 +1,23 @@
 "use client";
 
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useState, useSyncExternalStore } from "react";
 
 import { gbToBytes } from "@shared";
+import { useGetFamilyPolicies, useUpdatePolicy } from "src/hooks/usePolicies";
 
-import { FAMILY_DETAIL } from "@shared/data/familyDetail";
+import { CustomerDetail } from "@shared/type/familyType";
 
 import MemberCard from "@service/components/MemberCard";
 import TimeSettingBottomSheet from "@service/components/TimeSettingBottomSheet";
+
+const emptySubscribe = () => () => {};
+function useIsClient() {
+  return useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false,
+  );
+}
 
 export interface CustomerState {
   customerId: number;
@@ -19,14 +29,57 @@ export interface CustomerState {
 }
 
 export default function PolicyManagementPage() {
-  // 추후 실제 유저 권한 데이터로 교체
-  const currentUserRole = "OWNER";
+  const isClient = useIsClient();
+  const { data: familyDetail, isLoading, isError } = useGetFamilyPolicies();
 
-  const { customers } = FAMILY_DETAIL;
+  if (!isClient || isLoading) {
+    return (
+      <div className="flex min-h-screen w-full items-center justify-center">
+        <p className="text-body1-m">가족 데이터를 불러오는 중입니다...</p>
+      </div>
+    );
+  }
 
-  const debounceTimer = useRef<NodeJS.Timeout | null>(null);
+  if (isError || !familyDetail || !familyDetail.customers) {
+    return (
+      <div className="flex min-h-screen w-full items-center justify-center">
+        <p className="text-body1-m text-red-500">
+          데이터를 불러오는데 실패했습니다.
+        </p>
+      </div>
+    );
+  }
 
+  return <PolicyManagementList customers={familyDetail.customers} />;
+}
+
+interface PolicyManagementListProps {
+  customers: CustomerDetail[];
+}
+
+function PolicyManagementList({ customers }: PolicyManagementListProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const { mutate: updatePolicy } = useUpdatePolicy();
+
+  const [currentUserRole] = useState<"OWNER" | "MEMBER">(() => {
+    if (typeof window === "undefined") return "MEMBER";
+
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        const tokenRole = payload.role;
+
+        if (tokenRole === "OWNER" || tokenRole === "MEMBER") {
+          return tokenRole;
+        }
+      } catch (error) {
+        console.error("토큰 해독 실패:", error);
+      }
+    }
+    return "MEMBER";
+  });
+
   const [memberStates, setMemberStates] = useState<
     Record<string, CustomerState>
   >(() => {
@@ -65,34 +118,40 @@ export default function PolicyManagementPage() {
         ...prev,
         [id]: { ...prev[id], limitBytes: newBytes },
       }));
-
-      // API 호출 디바운싱
-      if (debounceTimer.current) {
-        clearTimeout(debounceTimer.current);
-      }
-
-      // debounceTimer.current = setTimeout(async () => {
-      //   try {
-      //     console.log(`[API 요청 - 한도] ID: ${id}, 값: ${newBytes} Bytes`);
-      //     // API 사용
-      //   } catch (error) {
-      //     console.error("API 요청 실패:", error);
-      //   }
-      // }, 500);
+      updatePolicy({
+        updateInfo: {
+          customerId: Number(id),
+          type: ["MONTHLY_LIMIT"],
+          value: { limitBytes: newBytes },
+          isActive: true,
+        },
+      });
     },
 
     onToggleTime: (id: string) => {
-      setMemberStates((prev) => {
-        const currentTarget = prev[id];
-        return {
-          ...prev,
-          [id]: {
-            ...currentTarget,
-            timeLimit: currentTarget.timeLimit
-              ? null
-              : { start: "00:00", end: "23:59" },
-          },
-        };
+      const currentTarget = memberStates[id];
+      if (!currentTarget) return;
+
+      const isCurrentlyOn = !!currentTarget.timeLimit;
+
+      setMemberStates((prev) => ({
+        ...prev,
+        [id]: {
+          ...prev[id],
+          timeLimit: isCurrentlyOn ? null : { start: "00:00", end: "23:59" },
+        },
+      }));
+
+      if (!isCurrentlyOn) {
+        return;
+      }
+
+      updatePolicy({
+        updateInfo: {
+          customerId: Number(id),
+          type: ["TIME_BLOCK"],
+          isActive: false,
+        },
       });
     },
 
@@ -100,7 +159,7 @@ export default function PolicyManagementPage() {
       setSheetConfig({
         isOpen: true,
         targetId: id,
-        type: type,
+        type,
       });
     },
   };
@@ -109,36 +168,30 @@ export default function PolicyManagementPage() {
     const { targetId, type } = sheetConfig;
     if (!targetId) return;
 
-    setMemberStates((prev) => {
-      const currentTarget = prev[targetId];
-      const currentLimit = currentTarget.timeLimit || {
-        start: "00:00",
-        end: "23:59",
-      };
+    const currentState = memberStates[targetId];
+    const currentLimit = currentState.timeLimit || {
+      start: "00:00",
+      end: "23:59",
+    };
+    const updatedStart = type === "start" ? newTime : currentLimit.start;
+    const updatedEnd = type === "end" ? newTime : currentLimit.end;
 
-      return {
-        ...prev,
-        [targetId]: {
-          ...currentTarget,
-          timeLimit: {
-            ...currentLimit,
-            [type]: newTime,
-          },
-        },
-      };
+    setMemberStates((prev) => ({
+      ...prev,
+      [targetId]: {
+        ...currentState,
+        timeLimit: { start: updatedStart, end: updatedEnd },
+      },
+    }));
+
+    updatePolicy({
+      updateInfo: {
+        customerId: Number(targetId),
+        type: ["TIME_BLOCK"],
+        value: { start: updatedStart, end: updatedEnd, timezone: "Asia/Seoul" },
+        isActive: true,
+      },
     });
-
-    // try {
-    //   const currentState = memberStates[targetId];
-    //   const updatedStart = type === "start" ? newTime : currentState.startTime;
-    //   const updatedEnd = type === "end" ? newTime : currentState.endTime;
-
-    //   console.log(
-    //     `[API 요청 - 시간] ID: ${targetId} | Start: ${updatedStart} - End: ${updatedEnd}`,
-    //   );
-    // } catch (error) {
-    //   console.error("API 요청 실패", error);
-    // }
   };
 
   const handleCLoseSheet = useCallback(() => {
@@ -171,7 +224,7 @@ export default function PolicyManagementPage() {
               key={customer.customerId}
               customer={{
                 ...customer,
-                phoneNumber: "010-****-1234", // Mock에 없어서 임시 주입
+                phoneNumber: String(customer.phoneNumber) || "정보 없음",
               }}
               state={memberStates[customer.customerId.toString()]}
               isSelected={selectedId === customer.customerId.toString()}

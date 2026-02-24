@@ -1,5 +1,5 @@
 export interface ServiceLoginRequest {
-  phone: string;
+  phoneNumber: string;
   password: string;
 }
 
