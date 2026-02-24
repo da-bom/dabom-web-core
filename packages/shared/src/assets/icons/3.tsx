@@ -1,4 +1,0 @@
-import * as React from "react";
-import type { SVGProps } from "react";
-const Svg3 = (props: SVGProps<SVGSVGElement>) => <svg xmlns="http://www.w3.org/2000/svg" width={146} height={149} fill="none" {...props}><path fill="#FFE0EF" d="M16.865 143.701c-.386 3.06 2.686 5.391 5.53 4.194l28.787-12.111c2.843-1.196 3.325-5.021.867-6.885l-24.882-18.875c-2.457-1.865-6.011-.369-6.397 2.691z" /><path fill="#FFE0EF" d="M146 73c0 40.317-32.683 73-73 73S0 113.317 0 73 32.683 0 73 0s73 32.683 73 73" /><ellipse cx={88.903} cy={61.738} fill="#2D2D2D" rx={7.409} ry={12.348} /><ellipse cx={121.007} cy={61.738} fill="#2D2D2D" rx={7.409} ry={12.348} /></svg>;
-export default Svg3;
