@@ -1,7 +1,12 @@
-import { ChevronIcon, MainBox } from "@shared";
-import { DaboIcon } from "@shared";
+"use client";
 
-import ProgressBar from "@service/components/ProgressBar";
+import dynamic from "next/dynamic";
+
+import { ChevronIcon, MainBox } from "@shared";
+
+const ProgressBar = dynamic(() => import("@service/components/ProgressBar"), {
+  ssr: false,
+});
 
 const data = {
   name: "김철수",
@@ -10,6 +15,7 @@ const data = {
 };
 
 const MyPage = () => {
+  console.log(MainBox);
   const usagePercent = Math.min(
     Math.round((data.usedGB / data.limitGB) * 100),
     100,
@@ -18,7 +24,6 @@ const MyPage = () => {
   return (
     <div className="mx-5 mt-14 flex flex-col gap-4">
       <MainBox className="flex w-full flex-col items-center gap-6 rounded-xl p-7">
-        <DaboIcon usage={usagePercent} />
         <span className="text-h1-m">{data.name}</span>
         <div className="flex w-full flex-col gap-2">
           <div className="text-body2-m flex justify-between">

@@ -1,4 +1,5 @@
-import { Badge, Button, PersonIcon, SubBox, formatSize } from "@shared";
+import PersonIcon from "@mui/icons-material/PeopleOutlined";
+import { Badge, Button, SubBox, formatSize } from "@shared";
 import dayjs from "dayjs";
 import { formatFamily } from "src/utils/formatFamily";
 

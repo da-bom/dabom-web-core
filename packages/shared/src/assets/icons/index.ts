@@ -7,10 +7,11 @@ import DocumentIcon from '@mui/icons-material/DescriptionOutlined';
 import TableChartIcon from '@mui/icons-material/TableChartOutlined';
 import ChevronIcon from '@mui/icons-material/ArrowForwardIosOutlined';
 import CheckIcon from '@mui/icons-material/CheckCircle';
-import WarningIcon from '@mui/icons-material/Error';
-import WarningOutlineIcon from '@mui/icons-material/ErrorOutline';
+import ErrorIcon from '@mui/icons-material/Error';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import DoNotIcon from '@mui/icons-material/DoNotDisturbAlt';
 import TimeIcon from '@mui/icons-material/AccessTime';
+import NotificationIcon from '@mui/icons-material/NotificationsNone';
 
 export {
   HomeIcon,
@@ -22,8 +23,9 @@ export {
   TableChartIcon,
   ChevronIcon,
   CheckIcon,
-  WarningIcon,
-  WarningOutlineIcon,
+  ErrorIcon,
+  ErrorOutlineIcon,
   DoNotIcon,
-  TimeIcon
+  TimeIcon,
+  NotificationIcon
 };

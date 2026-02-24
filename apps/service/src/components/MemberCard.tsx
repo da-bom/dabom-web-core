@@ -5,8 +5,8 @@ import { toast } from "react-hot-toast";
 
 import {
   DoNotIcon,
+  ErrorOutlineIcon,
   TimeIcon,
-  WarningOutlineIcon,
   bytesToGB,
   cn,
   formatSize,
@@ -164,7 +164,7 @@ export default function MemberCard({
             <div className="flex w-full flex-col gap-2">
               <div className="flex w-full items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <WarningOutlineIcon
+                  <ErrorOutlineIcon
                     width={13}
                     height={13}
                     className="text-primary"

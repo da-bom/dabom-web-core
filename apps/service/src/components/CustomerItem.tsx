@@ -1,5 +1,4 @@
-import { Icon } from "@mui/material";
-import { WarningOutlineIcon, bytesToGB } from "@shared";
+import { ErrorOutlineIcon, bytesToGB } from "@shared";
 import { CustomerListType } from "src/types/dataUsage";
 
 const WARNING_THRESHOLD = 0.6;
@@ -32,7 +31,7 @@ const CustomerItem = ({ customer }: { customer: CustomerListType }) => {
 
         {showWarning && (
           <div className="flex items-center gap-1">
-            <WarningOutlineIcon
+            <ErrorOutlineIcon
               width={12}
               height={12}
               className="text-negative"

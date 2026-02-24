@@ -21,7 +21,7 @@ const ProgressBar = ({ value, size = "md", className }: ProgressBarProps) => {
 
   return (
     <div className={cn("w-full", height, className)}>
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height={barSize}>
         <BarChart
           layout="vertical"
           data={data}

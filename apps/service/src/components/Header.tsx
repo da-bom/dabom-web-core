@@ -2,7 +2,6 @@
 
 import { usePathname, useRouter } from "next/navigation";
 
-import { Icon } from "@mui/material";
 import { ChevronIcon, cn } from "@shared";
 
 interface HeaderProps {

@@ -1,34 +1,13 @@
 import { NextConfig } from "next";
 
-interface NextConfigWithTurbopack extends NextConfig {
-  experimental?: NextConfig["experimental"] & {
-    turbopack?: {
-      rules: Record<
-        string,
-        {
-          loaders: string[];
-          as: string;
-        }
-      >;
-    };
-  };
-}
-
-const nextConfigBase: NextConfigWithTurbopack = {
+const nextConfigBase: NextConfig = {
   transpilePackages: ["@shared"],
-  experimental: {
-    turbopack: {
-      rules: {
-        "*.svg": {
-          loaders: ["@svgr/webpack"],
-          as: "*.js",
-        },
-      },
-    },
-  },
+  turbopack: {},
+
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/i,
+      issuer: /\.[jt]sx?$/,
       use: ["@svgr/webpack"],
     });
     return config;

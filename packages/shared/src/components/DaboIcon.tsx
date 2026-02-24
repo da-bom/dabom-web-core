@@ -1,31 +1,39 @@
-import { SvgIconProps } from "@mui/material";
+"use client";
 
-import DaboBlockedIcon from "../assets/svgs/DaboBlockedIcon.svg?react";
-import DaboBombIcon from "../assets/svgs/DaboBombIcon.svg?react";
-import DaboSmileIcon from "../assets/svgs/DaboDefaultIcon.svg?react";
-import DaboHurtIcon from "../assets/svgs/DaboHurtIcon.svg?react";
-import DaboLoveIcon from "../assets/svgs/DaboLovedIcon.svg?react";
-import DaboSadIcon from "../assets/svgs/DaboSadIcon.svg?react";
+import React, { useEffect, useState } from "react";
 
-interface DaboIconProps extends SvgIconProps {
+import DaboBlockedIcon from "../assets/svgs/DaboBlockedIcon.svg";
+import DaboBombIcon from "../assets/svgs/DaboBombIcon.svg";
+import DaboDefaultIcon from "../assets/svgs/DaboDefaultIcon.svg";
+import DaboHurtIcon from "../assets/svgs/DaboHurtIcon.svg";
+import DaboLovedIcon from "../assets/svgs/DaboLovedIcon.svg";
+import DaboSadIcon from "../assets/svgs/DaboSadIcon.svg";
+
+interface DaboIconProps extends React.SVGProps<SVGSVGElement> {
   usage?: number;
   isBlocked?: boolean;
 }
 
 const DaboIcon = ({ usage = 0, isBlocked, ...props }: DaboIconProps) => {
-  if (isBlocked) {
-    return <DaboBlockedIcon {...props} />;
-  }
+  const [mounted, setMounted] = useState(false);
 
-  const SelectedIcon = (() => {
-    if (usage >= 81) return DaboLoveIcon;
-    if (usage >= 51) return DaboSmileIcon;
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+  const SelectedComponent = (() => {
+    if (isBlocked) return DaboBlockedIcon;
+    if (usage >= 81) return DaboLovedIcon;
+    if (usage >= 51) return DaboDefaultIcon;
     if (usage >= 31) return DaboSadIcon;
     if (usage >= 1) return DaboHurtIcon;
     return DaboBombIcon;
   })();
 
-  return <SelectedIcon {...props} />;
+  const IconComponent = SelectedComponent as React.ElementType;
+  return <IconComponent {...props} />;
 };
 
 export default DaboIcon;

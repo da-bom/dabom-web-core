@@ -7,6 +7,7 @@
       "@shared": ["../../packages/shared/src/index.ts"],
       "@shared/type/*": ["../../packages/shared/src/types/*"],
       "@shared/data/*": ["../../packages/shared/src/data/*"],
+      "@icons": ["../../packages/shared/src/assets/icons/index.ts"],
       "@globalstyles": ["../../packages/shared/src/styles/globals.css"]
     },
     "plugins": [

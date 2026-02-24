@@ -1,6 +1,6 @@
 "use client";
 
-import { TableChartIcon } from "@shared";
+import TableChartIcon from "@mui/icons-material/TableChartOutlined";
 
 import { FAMILY } from "@shared/data/family";
 

@@ -2,12 +2,10 @@ import { Suspense } from "react";
 
 import UsageDashboard from "@service/components/UsageDashboard";
 
-const UsageDashboardPage = () => {
+export default function Page() {
   return (
     <Suspense>
       <UsageDashboard />
     </Suspense>
   );
-};
-
-export default UsageDashboardPage;
+}

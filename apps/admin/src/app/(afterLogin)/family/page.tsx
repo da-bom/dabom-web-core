@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 
-import { MainBox, RefreshIcon, SubBox } from "@shared";
+import RefreshIcon from "@mui/icons-material/CachedOutlined";
+import { MainBox, SubBox } from "@shared";
 
 import FamilyDetail from "@admin/components/family/FamilyDetail";
 import FamilyList from "@admin/components/family/FamilyList";

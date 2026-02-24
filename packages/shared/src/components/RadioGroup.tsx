@@ -1,6 +1,6 @@
 "use client";
 
-import { WarningIcon } from "../assets/icons";
+import { ErrorIcon } from "../assets/icons";
 
 interface RadioOption {
   label: string;
@@ -44,7 +44,7 @@ const RadioGroup = ({
             {option.subLabel && (
               <div className="flex items-center gap-1">
                 {option.isWarning && (
-                  <WarningIcon className="text-primary-700 h-3 w-3" />
+                  <ErrorIcon className="text-primary-700 h-3 w-3" />
                 )}
                 <span
                   className={`text-caption-d ${option.isWarning ? "text-primary-700 font-medium" : "text-gray-500"}`}

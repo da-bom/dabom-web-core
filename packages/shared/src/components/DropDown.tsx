@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-import { ChevronIcon } from "../assets/icons";
+import { ErrorIcon } from "../assets/icons";
 import { cn } from "../utils/cn";
 
 const DropDown = ({
@@ -47,7 +47,7 @@ const DropDown = ({
         <div
           className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
         >
-          <ChevronIcon />
+          <ErrorIcon />
         </div>
       </button>
 

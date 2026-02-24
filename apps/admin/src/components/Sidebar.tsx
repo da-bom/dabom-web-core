@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 
-import { LogoutIcon } from "@shared";
+import LogoutIcon from "@mui/icons-material/Logout";
 import { MENU } from "src/constants/MENU";
 
 import MenuItem from "./MenuItem";

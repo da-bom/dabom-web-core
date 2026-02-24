@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { Button, InputField, WarningIcon } from "@shared";
+import { Button, ErrorIcon, InputField } from "@shared";
 import { useLogin } from "src/hooks/useLogin";
 
 export default function LoginPage() {
@@ -47,7 +47,7 @@ export default function LoginPage() {
 
             {isLoginFailed && (
               <div className="flex flex-row items-center justify-center gap-1">
-                <WarningIcon className="text-negative h-3.5 w-3.5" />
+                <ErrorIcon className="text-negative h-3.5 w-3.5" />
                 <span className="text-body2-m text-negative">
                   아이디 또는 비밀번호가 일치하지 않습니다.
                 </span>

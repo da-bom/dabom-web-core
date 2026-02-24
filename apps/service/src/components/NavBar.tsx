@@ -5,14 +5,13 @@ import { useMemo } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { HomeIcon } from "@shared";
-
-import { IconName } from "@shared/type/icon";
+import { DocumentIcon, HomeIcon, NotificationIcon, PersonIcon } from "@icons";
+import { SvgIconProps } from "@mui/material";
 
 interface NavItem {
   label: string;
   href: string;
-  icon: IconName;
+  icon: React.ComponentType<SvgIconProps>;
 }
 
 const NavBar = () => {
@@ -20,10 +19,10 @@ const NavBar = () => {
 
   const navItems: NavItem[] = useMemo(
     () => [
-      { label: "홈", href: "/home", icon: "HomeIcon" },
-      { label: "정책", href: "/policy", icon: "Policy" },
-      { label: "알림", href: "/notification", icon: "Noti" },
-      { label: "MY", href: "/mypage", icon: "My" },
+      { label: "홈", href: "/home", icon: HomeIcon },
+      { label: "정책", href: "/policy", icon: DocumentIcon },
+      { label: "알림", href: "/notification", icon: NotificationIcon },
+      { label: "MY", href: "/mypage", icon: PersonIcon },
     ],
     [],
   );
@@ -37,6 +36,8 @@ const NavBar = () => {
               ? pathname === "/"
               : pathname.startsWith(item.href);
 
+          const Icon = item.icon;
+
           return (
             <li key={item.href} className="flex-1">
               <Link
@@ -46,12 +47,14 @@ const NavBar = () => {
                 }`}
                 aria-current={isActive ? "page" : undefined}
               >
-                <HomeIcon />
-                <span
-                  className={`text-caption-m ${
-                    isActive ? "text-primary-500" : "text-gray-700"
-                  }`}
-                >
+                <Icon
+                  sx={{
+                    fontSize: 24,
+                    color: "inherit",
+                  }}
+                />
+
+                <span className="text-caption-m text-gray-700">
                   {item.label}
                 </span>
               </Link>

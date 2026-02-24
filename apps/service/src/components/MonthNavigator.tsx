@@ -1,7 +1,6 @@
 "use client";
 
-import { Icon } from "@mui/material";
-import { ChevronIcon } from "@shared";
+import { ChevronIcon } from "@icons";
 
 interface MonthNavigatorProps {
   currentDateText: string;

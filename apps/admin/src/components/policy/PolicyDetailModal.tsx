@@ -4,14 +4,9 @@ import { useState } from "react";
 
 import { useParams, useRouter } from "next/navigation";
 
-import {
-  Button,
-  CheckIcon,
-  ChevronIcon,
-  DropDown,
-  MainBox,
-  TextField,
-} from "@shared";
+import ChevronIcon from "@mui/icons-material/ArrowForwardIosOutlined";
+import CheckIcon from "@mui/icons-material/CheckCircle";
+import { Button, DropDown, MainBox, TextField } from "@shared";
 
 import POLICY_DETAIL from "@shared/data/policyDetail";
 import { PolicyDetailType } from "@shared/types/policyType";
