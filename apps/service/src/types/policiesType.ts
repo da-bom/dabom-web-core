@@ -1,10 +1,30 @@
-export interface CustomerDetail {
+import { CustomerDetail } from "@shared/type/familyType";
+import { PolicyType } from "@shared/type/policyType";
+
+export type FamilyRole = PolicyType["requireRole"];
+
+export interface ApiPolicy {
+  assignmentId: number;
+  policyId: number;
+  policyName: string;
+  type: "MONTHLY_LIMIT" | "TIME_BLOCK" | "MANUAL_BLOCK";
+  isActive: boolean;
+  rules: {
+    limitBytes?: number;
+    start?: string;
+    end?: string;
+    timezone?: string;
+    reason?: string;
+  };
+}
+
+export interface ApiCustomer {
   customerId: number;
   name: string;
   phoneNumber: string;
-  role: "OWNER" | "MEMBER";
-  monthlyLimitBytes: number;
-  monthlyUsedBytes: number;
+  role: FamilyRole;
+  usedBytes: number;
+  policies: ApiPolicy[];
 }
 
 export interface FamilyDetail {
@@ -18,26 +38,7 @@ export interface FamilyDetail {
   updatedAt: string;
 }
 
-export interface ApiPolicy {
-  assignmentId: number;
-  policyId: number;
-  policyName: string;
-  type: string;
-  isActive: boolean;
-  rules: { limitBytes: number };
-}
-
-export interface ApiCustomer {
-  customerId: number;
-  name: string;
-  phoneNumber: string;
-  role: "OWNER" | "MEMBER";
-  monthlyUsedBytes: number;
-  monthlyLimitBytes?: number;
-  policies?: ApiPolicy[];
-}
-
-export interface ApiResponse {
+export interface ServicePoliciesResponse {
   success: boolean;
   data: {
     familyId: number;
@@ -45,4 +46,24 @@ export interface ApiResponse {
     customers: ApiCustomer[];
   };
   timestamp: string;
+}
+
+export interface UpdatePolicyRequest {
+  update: {
+    customerId: number;
+    type: ApiPolicy["type"];
+    value?: ApiPolicy["rules"];
+    isActive?: boolean;
+  };
+}
+
+export interface UpdatePolicyResponse {
+  success: boolean;
+  data: {
+    result: {
+      userId: number;
+      type: ApiPolicy["type"];
+      status: string;
+    };
+  };
 }

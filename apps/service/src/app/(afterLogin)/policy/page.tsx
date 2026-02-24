@@ -1,15 +1,11 @@
 "use client";
 
-import React, {
-  useCallback,
-  useRef,
-  useState,
-  useSyncExternalStore,
-} from "react";
+import React, { useCallback, useState, useSyncExternalStore } from "react";
 
 import { gbToBytes } from "@shared";
-import { useGetFamilyPolicies } from "src/hooks/useFamilyPolicies";
-import { CustomerDetail } from "src/types/policiesType";
+import { useGetFamilyPolicies, useUpdatePolicy } from "src/hooks/usePolicies";
+
+import { CustomerDetail } from "@shared/type/familyType";
 
 import MemberCard from "@service/components/MemberCard";
 import TimeSettingBottomSheet from "@service/components/TimeSettingBottomSheet";
@@ -63,8 +59,8 @@ interface PolicyManagementListProps {
 
 function PolicyManagementList({ customers }: PolicyManagementListProps) {
   const currentUserRole = "OWNER";
-  const debounceTimer = useRef<NodeJS.Timeout | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const { mutate: updatePolicy } = useUpdatePolicy();
   const [memberStates, setMemberStates] = useState<
     Record<string, CustomerState>
   >(() => {
@@ -103,31 +99,43 @@ function PolicyManagementList({ customers }: PolicyManagementListProps) {
         ...prev,
         [id]: { ...prev[id], limitBytes: newBytes },
       }));
-
-      if (debounceTimer.current) {
-        clearTimeout(debounceTimer.current);
-      }
-
-      // debounceTimer.current = setTimeout(async () => {
-      //   try {
-      //     console.log(`[API 요청 - 한도] ID: ${id}, 값: ${newBytes} Bytes`);
-      //     // API 사용
-      //   } catch (error) {
-      //     console.error("API 요청 실패:", error);
-      //   }
-      // }, 500);
+      updatePolicy({
+        update: {
+          customerId: Number(id),
+          type: "MONTHLY_LIMIT",
+          value: { limitBytes: newBytes },
+          isActive: true,
+        },
+      });
     },
 
     onToggleTime: (id: string) => {
       setMemberStates((prev) => {
         const currentTarget = prev[id];
+        const isCurrentlyOn = !!currentTarget.timeLimit;
+
+        updatePolicy({
+          update: {
+            customerId: Number(id),
+            type: "TIME_BLOCK",
+            isActive: !isCurrentlyOn,
+            ...(!isCurrentlyOn
+              ? {
+                  value: {
+                    start: "00:00",
+                    end: "23:59",
+                    timezone: "Asia/Seoul",
+                  },
+                }
+              : {}),
+          },
+        });
+
         return {
           ...prev,
           [id]: {
             ...currentTarget,
-            timeLimit: currentTarget.timeLimit
-              ? null
-              : { start: "00:00", end: "23:59" },
+            timeLimit: isCurrentlyOn ? null : { start: "00:00", end: "23:59" },
           },
         };
       });
@@ -146,36 +154,30 @@ function PolicyManagementList({ customers }: PolicyManagementListProps) {
     const { targetId, type } = sheetConfig;
     if (!targetId) return;
 
-    setMemberStates((prev) => {
-      const currentTarget = prev[targetId];
-      const currentLimit = currentTarget.timeLimit || {
-        start: "00:00",
-        end: "23:59",
-      };
+    const currentState = memberStates[targetId];
+    const currentLimit = currentState.timeLimit || {
+      start: "00:00",
+      end: "23:59",
+    };
+    const updatedStart = type === "start" ? newTime : currentLimit.start;
+    const updatedEnd = type === "end" ? newTime : currentLimit.end;
 
-      return {
-        ...prev,
-        [targetId]: {
-          ...currentTarget,
-          timeLimit: {
-            ...currentLimit,
-            [type]: newTime,
-          },
-        },
-      };
+    setMemberStates((prev) => ({
+      ...prev,
+      [targetId]: {
+        ...currentState,
+        timeLimit: { start: updatedStart, end: updatedEnd },
+      },
+    }));
+
+    updatePolicy({
+      update: {
+        customerId: Number(targetId),
+        type: "TIME_BLOCK",
+        value: { start: updatedStart, end: updatedEnd, timezone: "Asia/Seoul" },
+        isActive: true,
+      },
     });
-
-    // try {
-    //   const currentState = memberStates[targetId];
-    //   const updatedStart = type === "start" ? newTime : currentState.startTime;
-    //   const updatedEnd = type === "end" ? newTime : currentState.endTime;
-
-    //   console.log(
-    //     `[API 요청 - 시간] ID: ${targetId} | Start: ${updatedStart} - End: ${updatedEnd}`,
-    //   );
-    // } catch (error) {
-    //   console.error("API 요청 실패", error);
-    // }
   };
 
   const handleCLoseSheet = useCallback(() => {
