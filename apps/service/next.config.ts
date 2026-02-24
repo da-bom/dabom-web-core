@@ -1,12 +1,7 @@
+import nextConfigBase from "../../packages/shared/src/configs/next.config.base";
+
 const nextConfig = {
-  async rewrites() {
-    return [
-      {
-        source: "/:path*",
-        destination: "http://localhost:8080/:path*",
-      },
-    ];
-  },
+  ...nextConfigBase,
 };
 
 export default nextConfig;
