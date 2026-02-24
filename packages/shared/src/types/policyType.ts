@@ -1,7 +1,7 @@
 export type RuleType =
   | "MonthlyBlock"
-  | "ManualBlock"
   | "TimeBlock"
+  | "ManualBlock"
   | "AppBlock";
 
 export interface MonthlyBlock {

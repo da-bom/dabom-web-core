@@ -1,9 +1,11 @@
 "use client";
 
+import { useSyncExternalStore } from "react";
+
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { DaboIcon, MainBox, bytesToGB } from "@shared";
-import CUSTOMER_LIST from "src/data/customerList";
+import { useGetFamilyUsage } from "src/hooks/useUsage";
 
 import MonthNavigator from "@service/components/MonthNavigator";
 import ProgressBar from "@service/components/ProgressBar";
@@ -12,25 +14,62 @@ import CustomerList from "./CustomerList";
 import UsageChart from "./UsageChart";
 import { ViewSegment } from "./ViewSegment";
 
+const emptySubscribe = () => () => {};
+function useIsClient() {
+  return useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false,
+  );
+}
+
 const UsageDashboard = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const isClient = useIsClient();
 
   const year = Number(searchParams.get("year")) || new Date().getFullYear();
   const month = Number(searchParams.get("month")) || new Date().getMonth() + 1;
   const viewMode = (searchParams.get("view") as "list" | "chart") || "list";
 
-  const totalUsedBytes = CUSTOMER_LIST.customers.reduce(
+  const {
+    data: usageData,
+    isLoading,
+    isError,
+  } = useGetFamilyUsage(year, month);
+
+  if (!isClient || isLoading) {
+    return (
+      <div className="flex min-h-screen w-full items-center justify-center">
+        <p className="text-body1-m">사용량 데이터를 불러오는 중입니다...</p>
+      </div>
+    );
+  }
+
+  if (isError || !usageData) {
+    return (
+      <div className="flex min-h-screen w-full items-center justify-center">
+        <p className="text-body1-m text-red-500">
+          데이터를 불러오는데 실패했습니다.
+        </p>
+      </div>
+    );
+  }
+
+  const totalUsedBytes = usageData.customers.reduce(
     (acc, curr) => acc + curr.monthlyUsedBytes,
     0,
   );
   const totalUsageGB = bytesToGB(totalUsedBytes);
-  const totalLimitGB = bytesToGB(CUSTOMER_LIST.totalQuotaBytes);
-  const usagePercent = Math.min(
-    Math.round((totalUsedBytes / CUSTOMER_LIST.totalQuotaBytes) * 100),
-    100,
-  );
+  const totalLimitGB = bytesToGB(usageData.totalQuotaBytes);
+  const usagePercent =
+    usageData.totalQuotaBytes === 0
+      ? 0
+      : Math.min(
+          Math.round((totalUsedBytes / usageData.totalQuotaBytes) * 100),
+          100,
+        );
 
   const displayDate = `${year}년 ${month}월`;
 
@@ -101,24 +140,24 @@ const UsageDashboard = () => {
           onNext={handleNextMonth}
         />
 
-        <div className="bg-brand-white flex h-8 w-full max-w-87.5 items-center rounded-full border border-gray-200">
+        <div className="flex h-8 w-full items-center rounded-full">
           <ViewSegment viewMode={viewMode} onModeChange={handleModeChange} />
         </div>
       </div>
 
       <MainBox className="m-auto w-full rounded-2xl p-5">
-        {CUSTOMER_LIST.customers.length === 0 ? (
+        {usageData.customers.length === 0 ? (
           <div className="flex flex-1 items-center justify-center text-gray-400">
             <p>등록된 가족 구성원이 없어요.</p>
           </div>
         ) : (
           <>
             {viewMode === "list" ? (
-              <CustomerList customers={CUSTOMER_LIST.customers} />
+              <CustomerList customers={usageData.customers} />
             ) : (
               <div className="mx-auto aspect-square w-full max-w-70">
                 <UsageChart
-                  customers={CUSTOMER_LIST.customers}
+                  customers={usageData.customers}
                   totalUsageGB={totalUsageGB}
                 />
               </div>

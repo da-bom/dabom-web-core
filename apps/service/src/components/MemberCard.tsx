@@ -13,8 +13,6 @@ import {
   gbToBytes,
 } from "@shared";
 
-const MAX_LIMIT_GB = 70;
-
 export interface CustomerState {
   customerId: number;
   limitBytes: number;
@@ -52,7 +50,10 @@ export default function MemberCard({
   handlers,
 }: MemberCardProps) {
   const idStr = customer.customerId.toString();
-
+  const memberMaxLimitGB = Math.max(
+    Math.round(bytesToGB(customer.monthlyLimitBytes)),
+    1,
+  );
   const currentLimitGBFromProp = Math.round(bytesToGB(state.limitBytes));
   const [localLimit, setLocalLimit] = useState(currentLimitGBFromProp);
 
@@ -60,7 +61,7 @@ export default function MemberCard({
     setLocalLimit(currentLimitGBFromProp);
   }, [currentLimitGBFromProp]);
 
-  const sliderPercentage = (localLimit / MAX_LIMIT_GB) * 100;
+  const sliderPercentage = (localLimit / memberMaxLimitGB) * 100;
   const formattedUsed = formatSize(customer.monthlyUsedBytes).total;
   const displayedTotalBytes = gbToBytes(localLimit);
   const formattedTotal = formatSize(displayedTotalBytes).total;
@@ -200,7 +201,7 @@ export default function MemberCard({
                   <input
                     type="range"
                     min="0"
-                    max={MAX_LIMIT_GB}
+                    max={memberMaxLimitGB}
                     step="1"
                     value={localLimit}
                     onChange={handleLimitChange}
@@ -213,7 +214,7 @@ export default function MemberCard({
               {!isEditingByOther && (
                 <div className="text-caption-m flex w-full justify-between text-gray-800">
                   <span>0GB</span>
-                  <span>{MAX_LIMIT_GB}GB</span>
+                  <span>{memberMaxLimitGB}GB</span>
                 </div>
               )}
             </div>

@@ -6,19 +6,26 @@ import { Button, ErrorIcon, InputField } from "@shared";
 import { useLogin } from "src/hooks/useLogin";
 
 export default function LoginPage() {
-  const [phone, setPhone] = useState("");
+  const [phoneNumber, setPhone] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoginFailed, setIsLoginFailed] = useState(true);
+  const [isLoginFailed, setIsLoginFailed] = useState(false);
 
   const { mutate: login, isPending: isLoading } = useLogin();
 
   const handleLogin = (e?: React.FormEvent) => {
     e?.preventDefault();
-    if (!phone || !password) {
+    if (!phoneNumber || !password) {
       alert("전화번호와 비밀번호를 입력해주세요.");
       return;
     }
-    login({ phone, password });
+    login(
+      { phoneNumber, password },
+      {
+        onError: () => {
+          setIsLoginFailed(true);
+        },
+      },
+    );
   };
 
   return (
@@ -30,7 +37,7 @@ export default function LoginPage() {
               label="전화번호"
               type="tel"
               placeholder="전화번호를 입력해주세요"
-              value={phone}
+              value={phoneNumber}
               onChange={(value) => setPhone(value)}
             />
 
