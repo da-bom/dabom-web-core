@@ -5,7 +5,7 @@ import React, { useSyncExternalStore } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { Icon, MainBox, bytesToGB } from "@shared";
-import { useGetFamilyUsage } from "src/hooks/useFamilyUsage";
+import { useGetFamilyUsage } from "src/hooks/useUsage";
 
 import MonthNavigator from "@service/components/MonthNavigator";
 import ProgressBar from "@service/components/ProgressBar";

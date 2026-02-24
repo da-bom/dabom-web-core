@@ -1,4 +1,4 @@
-import { http } from "@shared";
+import { QUERY_STALE_TIME, http } from "@shared";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -10,8 +10,6 @@ import {
 
 import { ApiErrorResponse } from "@shared/type/error";
 import { CustomerDetail } from "@shared/type/familyType";
-
-import { QUERY_STALE_TIME } from "../../../../packages/shared/src/utils/time";
 
 export const getFamilyPolicies = async (): Promise<FamilyDetail> => {
   const response =

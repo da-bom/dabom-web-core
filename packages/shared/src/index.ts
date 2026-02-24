@@ -1,5 +1,7 @@
 export * from "./utils/cn";
 export * from "./utils/formatSize";
+export * from "./utils/sseClient";
+export * from "./utils/time";
 export * from "./utils/http";
 export * from "./assets/icons";
 export { default as Badge } from "./components/Badge";
