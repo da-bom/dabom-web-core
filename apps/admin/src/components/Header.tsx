@@ -20,7 +20,6 @@ const Header = () => {
         </span>
       </div>
       <div className="flex items-center gap-2">
-        {/* TODO: 아이콘 추가 */}
         <span className="text-body1-d">{name}</span>
       </div>
     </header>

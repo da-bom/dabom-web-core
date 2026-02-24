@@ -6,7 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 
 import ChevronIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 import CheckIcon from "@mui/icons-material/CheckCircle";
-import { Button, DropDown, MainBox, TextField } from "@shared";
+import { Button, DropDown, MainBox, TextField, UnpublishedIcon } from "@shared";
 
 import POLICY_DETAIL from "@shared/data/policyDetail";
 import { PolicyDetailType } from "@shared/types/policyType";
@@ -114,8 +114,7 @@ const Status = ({ active }: { active: boolean }) => (
       </>
     ) : (
       <>
-        {/* TODO: 비활성화 아이콘 추가 */}
-        {/* <Icon name="Deactive" /> */}
+        <UnpublishedIcon />
         <span>비활성화</span>
       </>
     )}

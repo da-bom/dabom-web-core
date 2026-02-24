@@ -14,6 +14,7 @@ import TimeIcon from '@mui/icons-material/AccessTime';
 import NotificationIcon from '@mui/icons-material/NotificationsNone';
 import GraphIcon from "@mui/icons-material/Equalizer";
 import ListIcon from "@mui/icons-material/List";
+import UnpublishedIcon from '@mui/icons-material/Unpublished';
 
 export {
   HomeIcon,
@@ -31,5 +32,6 @@ export {
   TimeIcon,
   NotificationIcon,
   GraphIcon,
-  ListIcon
+  ListIcon,
+  UnpublishedIcon
 };
