@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 import { Button, InputField, Logo } from "@shared";
 
-import { useLogin } from "../../hooks/useLogin";
+import { useLogin } from "../../services/auth/useLogin";
 
 const Login = () => {
   const [email, setEmail] = useState("");

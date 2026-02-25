@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 
-import { useGetPolicyDetail } from "src/hooks/useGetPolicyDetail";
+import { useGetPolicyDetail } from "src/services/policy/useGetPolicyDetail";
 
 import { RuleType } from "@shared/types/policyType";
 

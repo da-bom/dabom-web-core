@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import ChevronIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 import CheckIcon from "@mui/icons-material/CheckCircle";
 import { Button, DropDown, MainBox, TextField, UnpublishedIcon } from "@shared";
-import { useUpdatePolicy } from "src/hooks/useUpdatePolicy";
+import { useUpdatePolicy } from "src/services/policy/useUpdatePolicy";
 
 import { PolicyDetailType } from "@shared/types/policyType";
 

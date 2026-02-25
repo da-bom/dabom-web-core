@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { MainBox } from "@shared";
-import { useGetPolicy } from "src/hooks/useGetPolicy";
+import { useGetPolicy } from "src/services/policy/useGetPolicy";
 import { FilterType } from "src/types/FilterType";
 import { formatPolicy } from "src/utils/formatPolicy";
 

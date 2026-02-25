@@ -2,35 +2,20 @@ import { http } from "@shared";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { ApiErrorResponse } from "@shared/types/error";
+
 import {
-  APP_BLOCK,
-  MANUAL_BLOCK,
-  MONTHLY_LIMIT,
-  TIME_BLOCK,
-} from "@shared/types/policyType";
-
-interface PolicyUpdateRequest {
-  description: string;
-  requiredRole: "OWNER" | "ADMIN" | "MEMBER";
-  defaultRules: MONTHLY_LIMIT | TIME_BLOCK | MANUAL_BLOCK | APP_BLOCK;
-  isActive: boolean;
-  overWrite: boolean;
-}
-
-interface PolicyUpdateResponse {
-  policyId: number;
-  updatedAt: string;
-}
+  PolicyUpdateRequest,
+  PolicyUpdateResponse,
+  PolicyUpdateResponseSchema,
+} from "./schema";
 
 export const updatePolicy = async (
   policyId: number,
   data: PolicyUpdateRequest,
-) => {
-  const response = await http.put<PolicyUpdateResponse>(
-    `/policies/${policyId}`,
-    data,
-  );
-  return response as unknown as PolicyUpdateResponse;
+): Promise<PolicyUpdateResponse> => {
+  const response = await http.put(`/policies/${policyId}`, data);
+
+  return PolicyUpdateResponseSchema.parse(response);
 };
 
 export const useUpdatePolicy = () => {
