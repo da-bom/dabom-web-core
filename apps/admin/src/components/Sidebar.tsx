@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import router from "next/router";
+import { useRouter } from "next/navigation";
 
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Logo } from "@shared";
@@ -12,6 +12,7 @@ import MenuItem from "./MenuItem";
 
 const Sidebar = () => {
   const pathname = usePathname();
+  const router = useRouter();
 
   const handleLogout = async () => {
     try {

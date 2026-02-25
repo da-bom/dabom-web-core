@@ -23,7 +23,7 @@ export interface APP_BLOCK {
 }
 
 export interface PolicyType {
-  policyId: number;
+  id: number;
   name: string;
   policyType: RuleType;
   defaultRules: MONTHLY_LIMIT | TIME_BLOCK | MANUAL_BLOCK | APP_BLOCK;
@@ -53,7 +53,7 @@ export interface PolicyDetailType {
 
 export interface EditablePolicyFields {
   description: string;
-  default_rules: MONTHLY_LIMIT | TIME_BLOCK | MANUAL_BLOCK | APP_BLOCK;
+  defaultRules: MONTHLY_LIMIT | TIME_BLOCK | MANUAL_BLOCK | APP_BLOCK;
   requireRole: "ADMIN" | "OWNER" | "MEMBER";
   isActive: boolean;
 }

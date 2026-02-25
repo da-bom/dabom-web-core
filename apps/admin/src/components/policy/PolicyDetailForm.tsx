@@ -23,13 +23,13 @@ const PolicyDetailForm = ({ initialData, policyId }: Props) => {
   const router = useRouter();
   const [newData, setNewData] = useState({
     description: initialData.description,
-    default_rules: initialData.defaultRules,
-    requireRole: initialData.requiredRole,
+    defaultRules: initialData.defaultRules,
+    requiredRole: initialData.requiredRole,
     isActive: initialData.isActive,
   });
   const [isOpen, setIsOpen] = useState(false);
 
-  const { mutate: updatePolicy, isPending } = useUpdatePolicy();
+  const { mutate: updatePolicy } = useUpdatePolicy();
 
   const handleSave = () => {
     updatePolicy(
@@ -37,9 +37,9 @@ const PolicyDetailForm = ({ initialData, policyId }: Props) => {
         policyId,
         data: {
           description: newData.description,
-          requireRole: newData.requireRole,
+          requiredRole: newData.requiredRole,
           isActive: newData.isActive,
-          defaultRules: newData.default_rules,
+          defaultRules: newData.defaultRules,
           overWrite: true,
         },
       },
@@ -84,7 +84,7 @@ const PolicyDetailForm = ({ initialData, policyId }: Props) => {
                   isOpen={isOpen}
                   setIsOpen={setIsOpen}
                   options={["ADMIN", "OWNER", "MEMBER"]}
-                  selectedOption={newData.requireRole}
+                  selectedOption={newData.requiredRole}
                   setSelectedOption={(option) =>
                     setNewData((prev) => ({
                       ...prev,
@@ -97,7 +97,7 @@ const PolicyDetailForm = ({ initialData, policyId }: Props) => {
 
             <DefaultRuleFeild
               type={initialData.policyType}
-              rules={newData.default_rules}
+              rules={newData.defaultRules}
               onRuleChange={(newRules) => {
                 setNewData((prev) => ({ ...prev, default_rules: newRules }));
               }}
@@ -105,8 +105,10 @@ const PolicyDetailForm = ({ initialData, policyId }: Props) => {
 
             <StatusFeild
               isSystem={initialData.isSystem}
-              data={newData}
-              setData={setNewData}
+              isActive={initialData.isActive}
+              onActiveChange={(checked) => {
+                setNewData((prev) => ({ ...prev, isActive: checked }));
+              }}
             />
           </div>
         </div>

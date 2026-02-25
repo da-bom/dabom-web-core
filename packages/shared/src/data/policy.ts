@@ -3,7 +3,7 @@ import { PolicyType } from "../types/policyType";
 export const POLICY = {
   policies: [
     {
-      policyId: 1,
+      id: 1,
       name: "데이터 사용량 한도 설정",
       type: "MONTHLY_LIMIT",
       default_rules: {
@@ -16,7 +16,7 @@ export const POLICY = {
       updatedAt: "2024-01-01T00:00:00Z",
     },
     {
-      policyId: 2,
+      id: 2,
       name: "데이터 사용 시간 제한",
       type: "TIME_BLOCK",
       default_rules: {
@@ -31,7 +31,7 @@ export const POLICY = {
       updatedAt: "2024-01-01T00:00:00Z",
     },
     {
-      policyId: 3,
+      id: 3,
       name: "데이터 사용 차단",
       type: "MANUAL_BLOCK",
       default_rules: {
@@ -44,7 +44,7 @@ export const POLICY = {
       updatedAt: "2024-01-01T00:00:00Z",
     },
     {
-      policyId: 4,
+      id: 4,
       name: "어플 차단",
       type: "APP_BLOCK",
       default_rules: {

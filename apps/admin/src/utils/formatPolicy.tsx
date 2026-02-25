@@ -45,7 +45,7 @@ export const formatPolicy = ({ policies }: { policies: PolicyType[] }) => {
     );
 
     return {
-      id: p.policyId,
+      id: p.id,
       cells: [
         cell(p.name),
         cell(p.requiredRole),
@@ -59,7 +59,7 @@ export const formatPolicy = ({ policies }: { policies: PolicyType[] }) => {
         ),
         cell(
           p.isActive ? (
-            <Link href={`/policy/${p.policyId}`}>
+            <Link href={`/policy/${p.id}`}>
               <Button color="light" size="sm">
                 수정
               </Button>

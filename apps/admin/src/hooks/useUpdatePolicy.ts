@@ -11,7 +11,7 @@ import {
 
 interface PolicyUpdateRequest {
   description: string;
-  requireRole: "OWNER" | "ADMIN" | "MEMBER";
+  requiredRole: "OWNER" | "ADMIN" | "MEMBER";
   defaultRules: MONTHLY_LIMIT | TIME_BLOCK | MANUAL_BLOCK | APP_BLOCK;
   isActive: boolean;
   overWrite: boolean;

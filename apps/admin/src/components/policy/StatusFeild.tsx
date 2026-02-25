@@ -1,15 +1,13 @@
 import { Badge, RadioGroup, Switch, TextField } from "@shared";
 
-import { EditablePolicyFields } from "@shared/types/policyType";
-
 const StatusFeild = ({
   isSystem,
-  data,
-  setData,
+  isActive,
+  onActiveChange,
 }: {
   isSystem: boolean;
-  data: EditablePolicyFields;
-  setData: React.Dispatch<React.SetStateAction<EditablePolicyFields>>;
+  isActive: boolean;
+  onActiveChange: (checked: boolean) => void;
 }) => {
   if (isSystem) {
     return (
@@ -28,17 +26,15 @@ const StatusFeild = ({
       >
         <div className="flex items-center gap-4">
           <Switch
-            type={data.isActive ? "primary" : "gray"}
+            type={isActive ? "primary" : "gray"}
             size="lg"
-            onClick={() => {
-              setData((prev) => ({ ...prev, isActive: !prev.isActive }));
-            }}
+            onClick={() => onActiveChange(!isActive)}
           >
-            {data.isActive ? "활성화" : "비활성화"}
+            {isActive ? "활성화" : "비활성화"}
           </Switch>
         </div>
       </TextField>
-      {data.isActive && (
+      {isActive && (
         <RadioGroup
           options={[
             { label: "정책 수정 이후에만 적용하기", value: "after" },

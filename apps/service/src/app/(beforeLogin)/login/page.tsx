@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 
-import router from "next/router";
+import { useRouter } from "next/navigation";
 
 import { Button, ErrorIcon, InputField } from "@shared";
 import { useLogin } from "src/hooks/useLogin";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [phoneNumber, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [isLoginFailed, setIsLoginFailed] = useState(false);
@@ -26,6 +27,7 @@ export default function LoginPage() {
     } catch (error) {
       console.error("로그인 실패:", error);
       alert("로그인 정보가 올바르지 않습니다.");
+      setIsLoginFailed(true);
     }
   };
 

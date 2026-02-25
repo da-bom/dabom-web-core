@@ -31,8 +31,6 @@ const PolicyDetailModal = () => {
     updatedAt: data.updatedAt,
   };
 
-  console.log(formattedData);
-
   return <PolicyDetailForm initialData={formattedData} policyId={policyId} />;
 };
 
