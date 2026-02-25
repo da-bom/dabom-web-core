@@ -62,7 +62,7 @@ function PolicyManagementList({ customers }: PolicyManagementListProps) {
   const { mutate: updatePolicy } = useUpdatePolicy();
 
   const [currentUserRole] = useState<"OWNER" | "MEMBER">(() => {
-    if (typeof globalThis.window === "undefined") return "MEMBER";
+    if (globalThis.window === undefined) return "MEMBER";
 
     const token = globalThis.localStorage.getItem("access_token");
     if (token) {

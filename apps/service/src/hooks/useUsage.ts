@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 
 import { QUERY_STALE_TIME, http, sseClient } from "@shared";
 import {
@@ -32,7 +32,8 @@ export const useGetFamilyCurrentUsage = () => {
     queryFn: getFamilyCurrentUsage,
     staleTime: QUERY_STALE_TIME.fiveMinutes,
     enabled:
-      typeof window !== "undefined" && !!localStorage.getItem("access_token"),
+      globalThis.window !== undefined &&
+      !!globalThis.window.localStorage.getItem("access_token"),
   });
 };
 
@@ -50,7 +51,8 @@ export const useGetFamilyCustomersUsage = (year: number, month: number) => {
     queryFn: () => getFamilyCustomersUsage(year, month),
     staleTime: QUERY_STALE_TIME.fiveMinutes,
     enabled:
-      typeof window !== "undefined" && !!localStorage.getItem("access_token"),
+      globalThis.window !== undefined &&
+      !!globalThis.window.localStorage.getItem("access_token"),
     placeholderData: keepPreviousData,
   });
 };
@@ -72,54 +74,57 @@ export const useSSE = (
 ) => {
   const queryClient = useQueryClient();
 
+  const handleSSEMessage = useCallback(
+    (eventName: string, rawData: string) => {
+      const parsedData = JSON.parse(rawData);
+
+      if (eventName === "usage-updated") {
+        const data = parsedData as SSEUsageUpdatedResponse;
+
+        queryClient.setQueryData<FamilyCurrentUsageResponse>(
+          ["familyCurrentUsage"],
+          (oldData) => {
+            if (!oldData) return oldData;
+            return {
+              ...oldData,
+              totalQuotaBytes: data.totalLimitBytes,
+              remainingBytes: data.remainingBytes,
+            };
+          },
+        );
+      } else if (eventName === "usage-update-by-member") {
+        const data = parsedData as SSEFamilyUsageUpdateResponse;
+
+        queryClient.setQueryData<FamilyCustomersUsageResponse>(
+          ["familyCustomersUsage", year, month],
+          (oldData) => {
+            if (!oldData) return oldData;
+            return {
+              ...oldData,
+              customers: oldData.customers.map((customer) =>
+                customer.customerId === data.customerId
+                  ? { ...customer, monthlyUsedBytes: data.monthlyUsedBytes }
+                  : customer,
+              ),
+            };
+          },
+        );
+      }
+    },
+    [queryClient, year, month],
+  );
+
   useEffect(() => {
-    if (!enabled || typeof window === "undefined" || !customerId) return;
+    if (!enabled || globalThis.window === undefined || !customerId) return;
 
     const abortController = new AbortController();
 
-    connectUsageSSE(
-      customerId,
-      (eventName, rawData) => {
-        const parsedData = JSON.parse(rawData);
-
-        if (eventName === "usage-updated") {
-          const data = parsedData as SSEUsageUpdatedResponse;
-
-          queryClient.setQueryData<FamilyCurrentUsageResponse>(
-            ["familyCurrentUsage"],
-            (oldData) => {
-              if (!oldData) return oldData;
-              return {
-                ...oldData,
-                totalQuotaBytes: data.totalLimitBytes,
-                remainingBytes: data.remainingBytes,
-              };
-            },
-          );
-        } else if (eventName === "usage-update-by-member") {
-          const data = parsedData as SSEFamilyUsageUpdateResponse;
-
-          queryClient.setQueryData<FamilyCustomersUsageResponse>(
-            ["familyCustomersUsage", year, month],
-            (oldData) => {
-              if (!oldData) return oldData;
-              return {
-                ...oldData,
-                customers: oldData.customers.map((customer) =>
-                  customer.customerId === data.customerId
-                    ? { ...customer, monthlyUsedBytes: data.monthlyUsedBytes }
-                    : customer,
-                ),
-              };
-            },
-          );
-        }
-      },
-      abortController.signal,
-    ).catch((error) => console.error("SSE 연결 실패:", error));
+    connectUsageSSE(customerId, handleSSEMessage, abortController.signal).catch(
+      (error) => console.error("SSE 연결 실패:", error),
+    );
 
     return () => {
       abortController.abort();
     };
-  }, [enabled, customerId, year, month, queryClient]);
+  }, [enabled, customerId, handleSSEMessage]);
 };

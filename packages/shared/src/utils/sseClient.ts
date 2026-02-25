@@ -1,3 +1,50 @@
+const getFinalUrl = (url: string) => {
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+  const isProxyPath =
+    url.startsWith("/notification-proxy") || url.startsWith("/families");
+  return isProxyPath ? url : `${baseUrl}${url}`;
+};
+
+const processSSEStream = async (
+  reader: ReadableStreamDefaultReader<Uint8Array>,
+  onMessage: (eventName: string, data: string) => void,
+) => {
+  const decoder = new TextDecoder("utf-8");
+  let buffer = "";
+  let currentEvent = "message";
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) {
+      console.log("[SSE 엔진] 서버가 연결을 종료했습니다.");
+      break;
+    }
+
+    buffer += decoder.decode(value, { stream: true });
+    const lines = buffer.split("\n");
+    buffer = lines.pop() || "";
+
+    for (const line of lines) {
+      const trimmedLine = line.trim();
+      if (!trimmedLine) continue;
+
+      if (trimmedLine.startsWith("event:")) {
+        currentEvent = trimmedLine.substring(6).trim();
+        console.log("[SSE 이벤트 수신]:", currentEvent);
+        continue;
+      }
+
+      if (trimmedLine.startsWith("data:")) {
+        const rawData = trimmedLine.substring(5).trim();
+        if (!rawData) continue;
+
+        onMessage(currentEvent, rawData);
+        currentEvent = "message";
+      }
+    }
+  }
+};
+
 export const sseClient = {
   connect: async (
     url: string,
@@ -5,14 +52,11 @@ export const sseClient = {
     signal: AbortSignal,
   ) => {
     const token =
-      typeof window !== "undefined"
-        ? localStorage.getItem("access_token")
-        : null;
-    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+      globalThis.window === undefined
+        ? null
+        : globalThis.window.localStorage.getItem("access_token");
 
-    const isProxyPath =
-      url.startsWith("/notification-proxy") || url.startsWith("/families");
-    const finalUrl = isProxyPath ? url : `${baseUrl}${url}`;
+    const finalUrl = getFinalUrl(url);
 
     console.log("[SSE 엔진] 연결 시도 중... 최종 URL:", finalUrl);
 
@@ -32,43 +76,7 @@ export const sseClient = {
         throw new Error(`SSE 연결 실패: HTTP ${response.status}`);
       }
 
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder("utf-8");
-      let buffer = "";
-
-      let currentEvent = "message";
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) {
-          console.log("[SSE 엔진] 서버가 연결을 종료했습니다.");
-          break;
-        }
-
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split("\n");
-        buffer = lines.pop() || "";
-
-        for (const line of lines) {
-          const trimmedLine = line.trim();
-          if (!trimmedLine) continue;
-
-          if (trimmedLine.startsWith("event:")) {
-            currentEvent = trimmedLine.substring(6).trim();
-            console.log("[SSE 이벤트 수신]:", currentEvent);
-            continue;
-          }
-
-          if (trimmedLine.startsWith("data:")) {
-            const rawData = trimmedLine.substring(5).trim();
-            if (!rawData) continue;
-
-            onMessage(currentEvent, rawData);
-
-            currentEvent = "message";
-          }
-        }
-      }
+      await processSSEStream(response.body.getReader(), onMessage);
     } catch (error: unknown) {
       if (error instanceof Error && error.name !== "AbortError") {
         console.error("[SSE 엔진 에러]:", error.message);

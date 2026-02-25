@@ -1,6 +1,5 @@
 import { QUERY_STALE_TIME, http } from "@shared";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   FamilyDetail,
   ServicePoliciesResponse,
@@ -52,7 +51,8 @@ export const useGetFamilyPolicies = () => {
     queryFn: getFamilyPolicies,
     staleTime: QUERY_STALE_TIME.fiveMinutes,
     enabled:
-      typeof window !== "undefined" && !!localStorage.getItem("access_token"),
+      globalThis.window !== undefined &&
+      !!globalThis.window.localStorage.getItem("access_token"),
   });
 };
 

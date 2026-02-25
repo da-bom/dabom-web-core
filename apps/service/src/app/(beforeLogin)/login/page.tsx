@@ -9,7 +9,7 @@ import { useLogin } from "src/hooks/useLogin";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [phoneNumber, setPhone] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [isLoginFailed, setIsLoginFailed] = useState(false);
 
@@ -41,7 +41,7 @@ export default function LoginPage() {
               type="tel"
               placeholder="전화번호를 입력해주세요"
               value={phoneNumber}
-              onChange={(value) => setPhone(value)}
+              onChange={(value) => setPhoneNumber(value)}
             />
 
             <InputField
