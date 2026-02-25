@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 
-import { useGetPolicyDetail } from "src/services/policy/useGetPolicyDetail";
+import { useGetPolicyDetail } from "src/api/policy/useGetPolicyDetail";
 
 import PolicyDetailForm from "./PolicyDetailForm";
 

@@ -1,8 +1,8 @@
 "use client";
 
 import { TableChartIcon } from "@icons";
-import { FamilySearchRequest } from "src/services/family/schema";
-import { useGetFamilies } from "src/services/family/useGetFamilies";
+import { FamilySearchRequest } from "src/api/family/schema";
+import { useGetFamilies } from "src/api/family/useGetFamilies";
 
 import Error from "./Error";
 import FamilyItem from "./FamilyItem";

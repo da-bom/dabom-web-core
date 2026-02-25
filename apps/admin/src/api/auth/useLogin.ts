@@ -4,7 +4,7 @@ import {
   AdminLoginRequest,
   AdminLoginResponse,
   AdminLoginResponseSchema,
-} from "src/services/auth/schema";
+} from "src/api/auth/schema";
 
 import { ApiErrorResponse } from "@shared/types/error";
 

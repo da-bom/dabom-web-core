@@ -13,8 +13,8 @@ import {
   TextField,
   UnpublishedIcon,
 } from "@shared";
-import { PolicyDetail } from "src/services/policy/schema";
-import { useUpdatePolicy } from "src/services/policy/useUpdatePolicy";
+import { PolicyDetail } from "src/api/policy/schema";
+import { useUpdatePolicy } from "src/api/policy/useUpdatePolicy";
 
 import DefaultRuleFeild from "./DefaultRuleFeild";
 import StatusFeild from "./StatusFeild";

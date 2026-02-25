@@ -1,5 +1,5 @@
 import { Switch, formatSize } from "@shared";
-import { FamilyCustomer } from "src/services/family/schema";
+import { FamilyCustomer } from "src/api/family/schema";
 
 export const formatFamily = ({ customer }: { customer: FamilyCustomer[] }) => {
   return customer.map((i) => ({

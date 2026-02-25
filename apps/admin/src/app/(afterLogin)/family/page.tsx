@@ -3,9 +3,9 @@
 import { useState } from "react";
 
 import { MainBox, RefreshIcon, SubBox } from "@shared";
+import { FamilySearchRequest } from "src/api/family/schema";
 import FamilyDetail from "src/components/family/FamilyDetail";
 import FamilyList from "src/components/family/FamilyList";
-import { FamilySearchRequest } from "src/services/family/schema";
 
 const FamilyPage = () => {
   const [selectedFam, setSelectedFam] = useState<number | undefined>(undefined);

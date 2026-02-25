@@ -6,7 +6,7 @@ import {
   MonthlyLimit,
   PolicyType,
   TimeBlock,
-} from "src/services/policy/schema";
+} from "src/api/policy/schema";
 
 import MonthlyBlockField from "./MonthlyBlockFeild";
 import TimeBlockFeild from "./TimeBlockFeild";

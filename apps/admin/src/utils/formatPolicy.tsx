@@ -8,7 +8,7 @@ import {
   Policy,
   PolicyType,
   TimeBlock,
-} from "src/services/policy/schema";
+} from "src/api/policy/schema";
 
 const formatDefaultRule = (type: PolicyType, rules: DefaultRules): string => {
   switch (type) {

@@ -3,8 +3,8 @@
 import { usePathname, useRouter } from "next/navigation";
 
 import { Logo, LogoutIcon } from "@shared";
+import { logout } from "src/api/auth/useLogout";
 import { MENU } from "src/constants/MENU";
-import { logout } from "src/services/auth/useLogout";
 
 import MenuItem from "./MenuItem";
 

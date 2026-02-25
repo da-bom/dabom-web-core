@@ -2,7 +2,7 @@
 
 import { Badge, Button, PersonIcon, SubBox, Table, formatSize } from "@shared";
 import dayjs from "dayjs";
-import { useGetFamilyDetail } from "src/services/family/useGetFamilyDetail";
+import { useGetFamilyDetail } from "src/api/family/useGetFamilyDetail";
 import { formatFamily } from "src/utils/formatFamily";
 
 import Error from "./Error";
