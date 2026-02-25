@@ -23,7 +23,7 @@ const PolicyDetailForm = ({ initialData, policyId }: Props) => {
   const [newData, setNewData] = useState({
     description: initialData.description,
     defaultRules: initialData.defaultRules,
-    requiredRole: initialData.requiredRole,
+    requiredRole: initialData.requireRole,
     isActive: initialData.isActive,
   });
   const [isOpen, setIsOpen] = useState(false);
@@ -95,7 +95,7 @@ const PolicyDetailForm = ({ initialData, policyId }: Props) => {
             </TextField>
 
             <DefaultRuleFeild
-              type={initialData.policyType}
+              type={initialData.type}
               rules={newData.defaultRules}
               onRuleChange={(newRules) => {
                 setNewData((prev) => ({ ...prev, default_rules: newRules }));

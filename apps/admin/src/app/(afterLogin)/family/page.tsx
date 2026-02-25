@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 
-import RefreshIcon from "@mui/icons-material/CachedOutlined";
-import { MainBox, SubBox } from "@shared";
+import { MainBox, RefreshIcon, SubBox } from "@shared";
 import FamilyDetail from "src/components/family/FamilyDetail";
 import FamilyList from "src/components/family/FamilyList";
 import { FamilySearchRequest } from "src/services/family/schema";

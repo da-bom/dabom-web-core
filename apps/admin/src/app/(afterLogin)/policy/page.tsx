@@ -11,6 +11,7 @@ import { formatPolicy } from "src/utils/formatPolicy";
 
 const PolicyPage = () => {
   const [selectedFilter, setSelectedFilter] = useState<FilterType>("ALL");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [page, setPage] = useState(0);
 
   const { data, isLoading } = useGetPolicy(selectedFilter, page);
@@ -33,7 +34,6 @@ const PolicyPage = () => {
         selectedFilter={selectedFilter}
         setSelectedFilter={(filter) => {
           setSelectedFilter(filter);
-          setPage(1);
         }}
       />
       <MainBox className="relative h-full p-4">

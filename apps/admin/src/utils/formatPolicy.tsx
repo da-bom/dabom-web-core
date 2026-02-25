@@ -23,7 +23,7 @@ const formatDefaultRule = (type: PolicyType, rules: DefaultRules): string => {
       return "-";
 
     case "APP_BLOCK":
-      const apps = (rules as AppBlock).apps;
+      const apps = (rules as AppBlock).blockedApps;
       return apps?.length > 0
         ? `${apps[0]} 외 ${apps.length - 1}개`
         : "차단 앱 없음";
@@ -44,11 +44,11 @@ export const formatPolicy = ({ policies }: { policies: Policy[] }) => {
     );
 
     return {
-      id: p.id,
+      id: p.policyId,
       cells: [
         cell(p.name),
-        cell(p.requiredRole),
-        cell(formatDefaultRule(p.policyType, p.defaultRules)),
+        cell(p.requireRole),
+        cell(formatDefaultRule(p.type, p.defaultRules)),
         cell(
           p.isActive ? (
             <span className="text-primary">활성화</span>
@@ -58,7 +58,7 @@ export const formatPolicy = ({ policies }: { policies: Policy[] }) => {
         ),
         cell(
           p.isActive ? (
-            <Link href={`/policy/${p.id}`}>
+            <Link href={`/policy/${p.policyId}`}>
               <Button color="light" size="sm">
                 수정
               </Button>

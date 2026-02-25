@@ -2,7 +2,6 @@
 
 import { useParams } from "next/navigation";
 
-import { PolicyType } from "src/services/policy/schema";
 import { useGetPolicyDetail } from "src/services/policy/useGetPolicyDetail";
 
 import PolicyDetailForm from "./PolicyDetailForm";
@@ -17,20 +16,7 @@ const PolicyDetailModal = () => {
   if (isError) return <div>에러</div>;
   if (!data) return <div>데이터가 없습니다.</div>;
 
-  const formattedData = {
-    id: data.id,
-    name: data.name,
-    description: data.description,
-    policyType: data.policyType as PolicyType,
-    defaultRules: data.defaultRules,
-    requiredRole: data.requiredRole,
-    isActive: data.isActive,
-    isSystem: data.isSystem,
-    createdAt: data.createdAt,
-    updatedAt: data.updatedAt,
-  };
-
-  return <PolicyDetailForm initialData={formattedData} policyId={policyId} />;
+  return <PolicyDetailForm initialData={data} policyId={policyId} />;
 };
 
 export default PolicyDetailModal;
