@@ -17,7 +17,13 @@ export const login = async (
     password,
   });
 
-  return AdminLoginResponseSchema.parse(response);
+  try {
+    const parsed = AdminLoginResponseSchema.parse(response);
+    return parsed;
+  } catch (error) {
+    console.error("❌ Zod 파싱 실패:", error);
+    throw error;
+  }
 };
 
 export const useLogin = () => {

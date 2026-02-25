@@ -6,7 +6,14 @@ import { FamilyDetailDataSchema } from "./schema";
 export const getFamilyDetail = async (familyId: number) => {
   if (!familyId) return null;
   const response = await http.get(`/families/${familyId}`);
-  return FamilyDetailDataSchema.parse(response);
+
+  try {
+    const parsed = FamilyDetailDataSchema.parse(response);
+    return parsed;
+  } catch (error) {
+    console.error("❌ Zod 파싱 실패:", error);
+    throw error;
+  }
 };
 
 export const useGetFamilyDetail = (familyId: number | undefined) => {
