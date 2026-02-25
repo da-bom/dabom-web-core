@@ -5,6 +5,35 @@ const getFinalUrl = (url: string) => {
   return isProxyPath ? url : `${baseUrl}${url}`;
 };
 
+const processLines = (
+  lines: string[],
+  currentEvent: string,
+  onMessage: (eventName: string, data: string) => void,
+): string => {
+  let eventName = currentEvent;
+
+  for (const line of lines) {
+    const trimmedLine = line.trim();
+    if (!trimmedLine) continue;
+
+    if (trimmedLine.startsWith("event:")) {
+      eventName = trimmedLine.substring(6).trim();
+      console.log("[SSE 이벤트 수신]:", eventName);
+      continue;
+    }
+
+    if (trimmedLine.startsWith("data:")) {
+      const rawData = trimmedLine.substring(5).trim();
+      if (rawData) {
+        onMessage(eventName, rawData);
+        eventName = "message";
+      }
+    }
+  }
+
+  return eventName;
+};
+
 const processSSEStream = async (
   reader: ReadableStreamDefaultReader<Uint8Array>,
   onMessage: (eventName: string, data: string) => void,
@@ -24,24 +53,7 @@ const processSSEStream = async (
     const lines = buffer.split("\n");
     buffer = lines.pop() || "";
 
-    for (const line of lines) {
-      const trimmedLine = line.trim();
-      if (!trimmedLine) continue;
-
-      if (trimmedLine.startsWith("event:")) {
-        currentEvent = trimmedLine.substring(6).trim();
-        console.log("[SSE 이벤트 수신]:", currentEvent);
-        continue;
-      }
-
-      if (trimmedLine.startsWith("data:")) {
-        const rawData = trimmedLine.substring(5).trim();
-        if (!rawData) continue;
-
-        onMessage(currentEvent, rawData);
-        currentEvent = "message";
-      }
-    }
+    currentEvent = processLines(lines, currentEvent, onMessage);
   }
 };
 
