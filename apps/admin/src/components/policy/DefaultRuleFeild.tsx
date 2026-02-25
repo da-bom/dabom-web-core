@@ -1,40 +1,42 @@
 "use client";
 
 import { TextField } from "@shared";
-
 import {
-  MonthlyBlock,
-  PolicyDetailType,
+  DefaultRules,
+  MonthlyLimit,
+  PolicyType,
   TimeBlock,
-} from "@shared/types/policyType";
+} from "src/services/policy/schema";
 
 import MonthlyBlockField from "./MonthlyBlockFeild";
 import TimeBlockFeild from "./TimeBlockFeild";
 
 interface Props {
-  type: string;
-  rules: PolicyDetailType["default_rules"];
-  onRuleChange: (newRules: PolicyDetailType["default_rules"]) => void;
+  type: PolicyType;
+  rules: DefaultRules;
+  onRuleChange: (newRules: DefaultRules) => void;
 }
 
 const DefaultRuleField = ({ type, rules, onRuleChange }: Props) => {
-  if (type === "ManualBlock") return null;
+  if (type === "MANUAL_BLOCK") return null;
+
   return (
     <TextField label="기본값">
-      {type === "MonthlyBlock" && (
+      {type === "MONTHLY_LIMIT" && (
         <MonthlyBlockField
-          rules={rules as MonthlyBlock}
-          onRuleChange={(newRules) => onRuleChange(newRules)}
+          rules={rules as MonthlyLimit}
+          onRuleChange={(newRules: MonthlyLimit) => onRuleChange(newRules)}
         />
       )}
 
-      {type === "TimeBlock" && (
+      {type === "TIME_BLOCK" && (
         <TimeBlockFeild
           rules={rules as TimeBlock}
-          onRuleChange={(newRules) => onRuleChange(newRules)}
+          onRuleChange={(newRules: TimeBlock) => onRuleChange(newRules)}
         />
       )}
     </TextField>
   );
 };
+
 export default DefaultRuleField;

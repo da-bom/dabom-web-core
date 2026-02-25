@@ -1,28 +1,31 @@
 import { useState } from "react";
 
 import { DropDown, formatSize, formatToBytes } from "@shared";
-
-import { MonthlyBlock } from "@shared/types/policyType";
+import { MonthlyLimit } from "src/services/policy/schema";
 
 const MonthlyBlockField = ({
   rules,
   onRuleChange,
 }: {
-  rules: MonthlyBlock;
-  onRuleChange: (newRules: MonthlyBlock) => void;
+  rules: MonthlyLimit;
+  onRuleChange: (newRules: MonthlyLimit) => void;
 }) => {
-  const initial = formatSize(rules.monthlyLimitBytes);
+  const initial = formatSize(rules.limitBytes);
   const [localValue, setLocalValue] = useState(initial.value);
   const [localUnit, setLocalUnit] = useState(initial.unit);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleUpdate = (val: number, unit: string) => {
     setLocalValue(val);
     setLocalUnit(unit);
-    onRuleChange({ ...rules, monthlyLimitBytes: formatToBytes(val, unit) });
+    onRuleChange({
+      ...rules,
+      limitBytes: formatToBytes(val, unit),
+    });
   };
 
   return (
-    <div className="flex h-12 w-fit overflow-hidden rounded-xl border border-gray-200 focus-within:border-gray-300">
+    <div className="flex h-12 w-fit rounded-xl border border-gray-200 focus-within:border-gray-300">
       <input
         type="number"
         value={localValue}
@@ -31,6 +34,8 @@ const MonthlyBlockField = ({
       />
       <div className="my-auto h-8 w-[1px] bg-gray-200" />
       <DropDown
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
         size="sm"
         options={["Bytes", "KB", "MB", "GB"]}
         selectedOption={localUnit}

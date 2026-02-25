@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { TimeBlock } from "@shared/types/policyType";
+import { TimeBlock } from "src/services/policy/schema";
 
 const TimeBlockField = ({
   rules,

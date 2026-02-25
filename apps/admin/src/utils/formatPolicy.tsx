@@ -1,24 +1,31 @@
 import Link from "next/link";
 
 import { Button, cn, formatSize } from "@shared";
+import {
+  AppBlock,
+  DefaultRules,
+  MonthlyLimit,
+  Policy,
+  PolicyType,
+  TimeBlock,
+} from "src/services/policy/schema";
 
-import { PolicyType } from "@shared/types/policyType";
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const formatDefaultRule = (rules: any, type: PolicyType["type"]): string => {
+const formatDefaultRule = (type: PolicyType, rules: DefaultRules): string => {
   switch (type) {
-    case "MonthlyBlock":
-      return formatSize(rules.monthlyLimitBytes).total;
+    case "MONTHLY_LIMIT":
+      return formatSize((rules as MonthlyLimit).limitBytes).total;
 
-    case "TimeBlock":
-      return `${rules.start} ~ ${rules.end}`;
+    case "TIME_BLOCK":
+      const t = rules as TimeBlock;
+      return `${t.start} ~ ${t.end}`;
 
-    case "ManualBlock":
+    case "MANUAL_BLOCK":
       return "-";
 
-    case "AppBlock":
-      return rules.apps.length > 0
-        ? `${rules.apps[0]} 외 ${rules.apps.length - 1}개`
+    case "APP_BLOCK":
+      const apps = (rules as AppBlock).apps;
+      return apps?.length > 0
+        ? `${apps[0]} 외 ${apps.length - 1}개`
         : "차단 앱 없음";
 
     default:
@@ -26,7 +33,7 @@ const formatDefaultRule = (rules: any, type: PolicyType["type"]): string => {
   }
 };
 
-export const formatPolicy = ({ policies }: { policies: PolicyType[] }) => {
+export const formatPolicy = ({ policies }: { policies: Policy[] }) => {
   return policies.map((p) => {
     const isDeactive = !p.isActive;
 
@@ -37,11 +44,11 @@ export const formatPolicy = ({ policies }: { policies: PolicyType[] }) => {
     );
 
     return {
-      id: p.policyId,
+      id: p.id,
       cells: [
         cell(p.name),
-        cell(p.requireRole),
-        cell(formatDefaultRule(p.default_rules, p.type)),
+        cell(p.requiredRole),
+        cell(formatDefaultRule(p.policyType, p.defaultRules)),
         cell(
           p.isActive ? (
             <span className="text-primary">활성화</span>
@@ -51,7 +58,7 @@ export const formatPolicy = ({ policies }: { policies: PolicyType[] }) => {
         ),
         cell(
           p.isActive ? (
-            <Link href={`/policy/${p.policyId}`}>
+            <Link href={`/policy/${p.id}`}>
               <Button color="light" size="sm">
                 수정
               </Button>

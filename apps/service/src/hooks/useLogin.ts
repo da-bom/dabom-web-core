@@ -1,5 +1,3 @@
-import { useRouter } from "next/navigation";
-
 import { http } from "@shared";
 import { useMutation } from "@tanstack/react-query";
 import { ServiceLoginRequest, ServiceLoginResponse } from "src/types/LoginType";
@@ -15,8 +13,6 @@ export const login = async (phoneNumber: string, password: string) => {
 };
 
 export const useLogin = () => {
-  const router = useRouter();
-
   return useMutation({
     mutationFn: ({ phoneNumber, password }: ServiceLoginRequest) =>
       login(phoneNumber, password),
@@ -24,8 +20,6 @@ export const useLogin = () => {
     onSuccess: (data: ServiceLoginResponse) => {
       localStorage.setItem("access_token", data.accessToken);
       localStorage.setItem("refresh_token", data.refreshToken);
-
-      router.push("/home");
     },
 
     onError: (error: ApiErrorResponse) => {
