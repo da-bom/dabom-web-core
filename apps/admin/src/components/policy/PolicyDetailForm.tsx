@@ -4,9 +4,15 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-import ChevronIcon from "@mui/icons-material/ArrowForwardIosOutlined";
-import CheckIcon from "@mui/icons-material/CheckCircle";
-import { Button, DropDown, MainBox, TextField, UnpublishedIcon } from "@shared";
+import {
+  Button,
+  CheckIcon,
+  ChevronIcon,
+  DropDown,
+  MainBox,
+  TextField,
+  UnpublishedIcon,
+} from "@shared";
 import { PolicyDetail } from "src/services/policy/schema";
 import { useUpdatePolicy } from "src/services/policy/useUpdatePolicy";
 
@@ -53,13 +59,14 @@ const PolicyDetailForm = ({ initialData, policyId }: Props) => {
   return (
     <div
       role="presentation"
-      onClick={() => router.back()}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          router.back();
+        }
+      }}
       className="fixed inset-0 z-50 flex h-screen justify-end bg-black/20"
     >
-      <aside
-        onClick={(e) => e.stopPropagation()}
-        className="bg-brand-white flex h-full w-175 flex-col border-l border-gray-300 px-11 py-8 shadow-[-4px_0_10px_rgba(0,0,0,0.1)]"
-      >
+      <aside className="bg-brand-white flex h-full w-175 flex-col border-l border-gray-300 px-11 py-8 shadow-[-4px_0_10px_rgba(0,0,0,0.1)]">
         <div className="flex h-full flex-col gap-10 overflow-y-auto">
           <button
             className="w-fit cursor-pointer text-gray-500"
