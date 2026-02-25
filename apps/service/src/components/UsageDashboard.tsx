@@ -5,7 +5,11 @@ import React, { useSyncExternalStore } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { Icon, MainBox, bytesToGB } from "@shared";
-import { useGetFamilyUsage } from "src/hooks/useUsage";
+import {
+  useGetFamilyCurrentUsage,
+  useGetFamilyCustomersUsage,
+  useSSE,
+} from "src/hooks/useUsage";
 
 import MonthNavigator from "@service/components/MonthNavigator";
 import ProgressBar from "@service/components/ProgressBar";
@@ -35,9 +39,23 @@ const UsageDashboard = () => {
 
   const {
     data: usageData,
-    isLoading,
-    isError,
-  } = useGetFamilyUsage(year, month);
+    isLoading: isCurrentLoading,
+    isError: isCurrentError,
+  } = useGetFamilyCurrentUsage();
+
+  const {
+    data: customersData,
+    isLoading: isCustomersLoading,
+    isError: isCustomersError,
+  } = useGetFamilyCustomersUsage(year, month);
+
+  const myCustomerId =
+    customersData?.customers.find((c) => c.isMe)?.customerId || 0;
+
+  useSSE(!!myCustomerId, myCustomerId, year, month);
+
+  const isLoading = isCurrentLoading || isCustomersLoading;
+  const isError = isCurrentError || isCustomersError;
 
   if (!isClient || isLoading) {
     return (
@@ -47,7 +65,7 @@ const UsageDashboard = () => {
     );
   }
 
-  if (isError || !usageData) {
+  if (isError || !usageData || !customersData) {
     return (
       <div className="flex min-h-screen w-full items-center justify-center">
         <p className="text-body1-m text-red-500">
@@ -57,10 +75,11 @@ const UsageDashboard = () => {
     );
   }
 
-  const totalUsedBytes = usageData.customers.reduce(
+  const totalUsedBytes = customersData.customers.reduce(
     (acc, curr) => acc + curr.monthlyUsedBytes,
     0,
   );
+
   const totalUsageGB = bytesToGB(totalUsedBytes);
   const totalLimitGB = bytesToGB(usageData.totalQuotaBytes);
   const usagePercent =
@@ -146,18 +165,18 @@ const UsageDashboard = () => {
       </div>
 
       <MainBox className="m-auto w-full rounded-2xl p-5">
-        {usageData.customers.length === 0 ? (
+        {customersData.customers.length === 0 ? (
           <div className="flex flex-1 items-center justify-center text-gray-400">
             <p>등록된 가족 구성원이 없어요.</p>
           </div>
         ) : (
           <>
             {viewMode === "list" ? (
-              <CustomerList customers={usageData.customers} />
+              <CustomerList customers={customersData.customers} />
             ) : (
               <div className="mx-auto aspect-square w-full max-w-70">
                 <UsageChart
-                  customers={usageData.customers}
+                  customers={customersData.customers}
                   totalUsageGB={totalUsageGB}
                 />
               </div>

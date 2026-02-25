@@ -7,29 +7,37 @@ export interface UsageCustomer extends Pick<
   "customerId" | "name" | "monthlyUsedBytes" | "monthlyLimitBytes"
 > {
   isBlocked: boolean;
-  blockReason: string;
   isMe: boolean;
 }
 
-export interface FamilyUsageData extends Pick<
+export interface FamilyCurrentUsageResponse extends Pick<
   FamilyDetail,
   "familyId" | "familyName" | "totalQuotaBytes"
 > {
+  remainingBytes: number;
+}
+
+export interface FamilyCustomersUsageResponse {
+  familyId: number;
   year: number;
   month: number;
-  remainingBytes: number;
   customers: UsageCustomer[];
 }
 
 export interface ServiceUsageResponse<T> {
   success: boolean;
   data: T;
-  timestamp: string;
 }
 
-export interface UsageSSEData {
+export interface SSEUsageUpdatedResponse {
   familyId: number;
-  totalUsageLimitBytes: number;
+  totalUsedBytes: number;
   totalLimitBytes: number;
   remainingBytes: number;
+}
+
+export interface SSEFamilyUsageUpdateResponse {
+  familyId: number;
+  customerId: number;
+  monthlyUsedBytes: number;
 }
