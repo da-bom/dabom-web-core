@@ -7,11 +7,18 @@ import { useGetFamilyDetail } from "src/services/family/useGetFamilyDetail";
 import { formatFamily } from "src/utils/formatFamily";
 
 import Table from "../Table";
+import Error from "./Error";
 
 const FamilyDetail = ({ selectedFam }: { selectedFam: number | undefined }) => {
   const { data: familyDetail, isLoading } = useGetFamilyDetail(selectedFam);
 
-  if (!selectedFam) return <div>선택된 가족 없음</div>;
+  if (!selectedFam)
+    return (
+      <Error
+        title="가족이 선택되지 않았습니다."
+        description="좌측 리스트에서 가족을 선택해 주세요."
+      />
+    );
 
   if (isLoading) return <div>로딩</div>;
 
