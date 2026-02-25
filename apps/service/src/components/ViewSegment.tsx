@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { GraphIcon, ListIcon, cn } from "@shared";
+import { GraphIcon, ListIcon, cn } from '@shared';
 
-export type ViewMode = "list" | "chart";
+export type ViewMode = 'list' | 'chart';
 
 interface ViewSegmentProps {
   viewMode: ViewMode;
@@ -11,13 +11,13 @@ interface ViewSegmentProps {
 
 const VIEW_OPTIONS = [
   {
-    id: "list" as const,
-    label: "리스트",
+    id: 'list' as const,
+    label: '리스트',
     Icon: ListIcon,
   },
   {
-    id: "chart" as const,
-    label: "차트",
+    id: 'chart' as const,
+    label: '차트',
     Icon: GraphIcon,
   },
 ] as const;
@@ -32,10 +32,8 @@ export const ViewSegment = ({ viewMode, onModeChange }: ViewSegmentProps) => {
             key={id}
             onClick={() => onModeChange(id)}
             className={cn(
-              "text-caption-m mx-2 flex h-5 flex-1 items-center justify-center gap-1 rounded-full transition-colors",
-              isActive
-                ? "bg-primary-50 text-primary"
-                : "bg-transparent text-gray-400",
+              'text-caption-m mx-2 flex h-5 flex-1 items-center justify-center gap-1 rounded-full transition-colors',
+              isActive ? 'bg-primary-50 text-primary' : 'bg-transparent text-gray-400',
             )}
           >
             <Icon sx={{ fontSize: 18 }} />

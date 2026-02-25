@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { TableChartIcon } from "@icons";
-import { FamilySearchRequest } from "src/api/family/schema";
-import { useGetFamilies } from "src/api/family/useGetFamilies";
+import { TableChartIcon } from '@icons';
+import { FamilySearchRequest } from 'src/api/family/schema';
+import { useGetFamilies } from 'src/api/family/useGetFamilies';
 
-import Error from "./Error";
-import FamilyItem from "./FamilyItem";
+import Error from './Error';
+import FamilyItem from './FamilyItem';
 
 const FamilyList = ({
   params,

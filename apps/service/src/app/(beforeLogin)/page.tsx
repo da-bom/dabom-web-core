@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
-import { Button, DaboIcon, Logo } from "@shared";
+import { Button, DaboIcon, Logo } from '@shared';
 
 const data = {
-  name: "김철수",
+  name: '김철수',
   usedGB: 100,
   limitGB: 100,
 };
@@ -16,12 +16,9 @@ export default function SignupPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    router.push("/");
+    router.push('/');
   };
-  const usagePercent = Math.min(
-    Math.round((data.usedGB / data.limitGB) * 100),
-    100,
-  );
+  const usagePercent = Math.min(Math.round((data.usedGB / data.limitGB) * 100), 100);
   return (
     <div className="flex min-h-screen flex-col items-center justify-center">
       <main className="flex w-82 flex-col items-center">
@@ -30,10 +27,7 @@ export default function SignupPage() {
           <Logo type="default" className="w-46" />
         </div>
 
-        <form
-          onSubmit={handleLogin}
-          className="mt-30 flex w-full flex-col gap-2"
-        >
+        <form onSubmit={handleLogin} className="mt-30 flex w-full flex-col gap-2">
           <Button type="submit" size="lg" color="dark">
             회원가입
           </Button>

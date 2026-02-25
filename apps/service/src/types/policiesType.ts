@@ -1,12 +1,12 @@
-import { CustomerDetail } from "@shared/type/familyType";
+import { CustomerDetail } from '@shared/type/familyType';
 
-export type FamilyRole = "OWNER" | "MEMBER";
+export type FamilyRole = 'OWNER' | 'MEMBER';
 
 export interface ApiPolicy {
   assignmentId: number;
   policyId: number;
   policyName: string;
-  type: ["MONTHLY_LIMIT" | "TIME_BLOCK" | "MANUAL_BLOCK"];
+  type: ['MONTHLY_LIMIT' | 'TIME_BLOCK' | 'MANUAL_BLOCK'];
   isActive: boolean;
   rules: {
     limitBytes?: number;
@@ -50,8 +50,8 @@ export interface ServicePoliciesResponse {
 export interface UpdatePolicyRequest {
   updateInfo: {
     customerId: number;
-    type: ApiPolicy["type"];
-    value?: ApiPolicy["rules"];
+    type: ApiPolicy['type'];
+    value?: ApiPolicy['rules'];
     isActive?: boolean;
   };
 }
@@ -61,7 +61,7 @@ export interface UpdatePolicyResponse {
   data: {
     result: {
       userId: number;
-      type: ApiPolicy["type"];
+      type: ApiPolicy['type'];
       status: string;
     };
   };

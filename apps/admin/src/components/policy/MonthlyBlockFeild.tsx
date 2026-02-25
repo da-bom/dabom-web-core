@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import { DropDown, formatSize, formatToBytes } from "@shared";
-import { MonthlyLimit } from "src/api/policy/schema";
+import { DropDown, formatSize, formatToBytes } from '@shared';
+import { MonthlyLimit } from 'src/api/policy/schema';
 
 const MonthlyBlockField = ({
   rules,
@@ -37,7 +37,7 @@ const MonthlyBlockField = ({
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         size="sm"
-        options={["Bytes", "KB", "MB", "GB"]}
+        options={['Bytes', 'KB', 'MB', 'GB']}
         selectedOption={localUnit}
         setSelectedOption={(nextUnit) => handleUpdate(localValue, nextUnit)}
       />

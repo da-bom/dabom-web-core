@@ -1,10 +1,10 @@
-import { CustomerDetail } from "@shared/type/familyType";
+import { CustomerDetail } from '@shared/type/familyType';
 
-import { FamilyDetail } from "./policiesType";
+import { FamilyDetail } from './policiesType';
 
 export interface UsageCustomer extends Pick<
   CustomerDetail,
-  "customerId" | "name" | "monthlyUsedBytes" | "monthlyLimitBytes"
+  'customerId' | 'name' | 'monthlyUsedBytes' | 'monthlyLimitBytes'
 > {
   isBlocked: boolean;
   blockReason: string;
@@ -13,7 +13,7 @@ export interface UsageCustomer extends Pick<
 
 export interface FamilyUsageData extends Pick<
   FamilyDetail,
-  "familyId" | "familyName" | "totalQuotaBytes"
+  'familyId' | 'familyName' | 'totalQuotaBytes'
 > {
   year: number;
   month: number;

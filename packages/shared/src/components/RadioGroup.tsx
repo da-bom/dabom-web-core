@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { ErrorIcon } from "../assets/icons";
+import { ErrorIcon } from '../assets/icons';
 
 interface RadioOption {
   label: string;
@@ -16,19 +16,11 @@ interface RadioGroupProps {
   name: string; // 라디오 그룹을 식별하는 고유 이름
 }
 
-const RadioGroup = ({
-  options,
-  selectedValue,
-  onChange,
-  name,
-}: RadioGroupProps) => {
+const RadioGroup = ({ options, selectedValue, onChange, name }: RadioGroupProps) => {
   return (
     <div className="flex flex-col gap-3">
       {options.map((option) => (
-        <label
-          key={option.value}
-          className="flex cursor-pointer items-start gap-2"
-        >
+        <label key={option.value} className="flex cursor-pointer items-start gap-2">
           {/* 실제 라디오 인풋 (숨기거나 스타일링) */}
           <input
             type="radio"
@@ -43,11 +35,9 @@ const RadioGroup = ({
             <span className="text-body2-d">{option.label}</span>
             {option.subLabel && (
               <div className="flex items-center gap-1">
-                {option.isWarning && (
-                  <ErrorIcon className="text-primary-700 h-3 w-3" />
-                )}
+                {option.isWarning && <ErrorIcon className="text-primary-700 h-3 w-3" />}
                 <span
-                  className={`text-caption-d ${option.isWarning ? "text-primary-700 font-medium" : "text-gray-500"}`}
+                  className={`text-caption-d ${option.isWarning ? 'text-primary-700 font-medium' : 'text-gray-500'}`}
                 >
                   {option.subLabel}
                 </span>

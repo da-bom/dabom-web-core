@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
-import DaboBlockedIcon from "../assets/icons/DaboBlockedIcon.svg";
-import DaboBombIcon from "../assets/icons/DaboBombIcon.svg";
-import DaboDefaultIcon from "../assets/icons/DaboDefaultIcon.svg";
-import DaboHurtIcon from "../assets/icons/DaboHurtIcon.svg";
-import DaboLovedIcon from "../assets/icons/DaboLovedIcon.svg";
-import DaboSadIcon from "../assets/icons/DaboSadIcon.svg";
+import DaboBlockedIcon from '../assets/icons/DaboBlockedIcon.svg';
+import DaboBombIcon from '../assets/icons/DaboBombIcon.svg';
+import DaboDefaultIcon from '../assets/icons/DaboDefaultIcon.svg';
+import DaboHurtIcon from '../assets/icons/DaboHurtIcon.svg';
+import DaboLovedIcon from '../assets/icons/DaboLovedIcon.svg';
+import DaboSadIcon from '../assets/icons/DaboSadIcon.svg';
 
 interface DaboIconProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   usage?: number;

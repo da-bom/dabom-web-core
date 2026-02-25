@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 
-import { TimeBlock } from "src/api/policy/schema";
+import { TimeBlock } from 'src/api/policy/schema';
 
 const TimeBlockField = ({
   rules,
@@ -15,19 +15,19 @@ const TimeBlockField = ({
   const [endTime, setEndTime] = useState(rules.end);
 
   const formatTime = (value: string) => {
-    const digits = value.replaceAll(/\D/g, "").slice(0, 4);
+    const digits = value.replaceAll(/\D/g, '').slice(0, 4);
     let hour = digits.slice(0, 2);
     let minute = digits.slice(2);
 
-    if (hour && Number(hour) > 23) hour = "23";
-    if (minute && Number(minute) > 59) minute = "59";
+    if (hour && Number(hour) > 23) hour = '23';
+    if (minute && Number(minute) > 59) minute = '59';
 
     return minute ? `${hour}:${minute}` : hour;
   };
 
-  const handleChange = (val: string, type: "start" | "end") => {
+  const handleChange = (val: string, type: 'start' | 'end') => {
     const formatted = formatTime(val);
-    if (type === "start") {
+    if (type === 'start') {
       setStartTime(formatted);
       if (formatted.length === 5) onRuleChange({ ...rules, start: formatted });
     } else {
@@ -43,7 +43,7 @@ const TimeBlockField = ({
           type="text"
           placeholder="00:00"
           value={startTime}
-          onChange={(e) => handleChange(e.target.value, "start")}
+          onChange={(e) => handleChange(e.target.value, 'start')}
           className="text-body1-m w-full px-4 text-center text-gray-800 outline-none"
         />
       </div>
@@ -53,7 +53,7 @@ const TimeBlockField = ({
           type="text"
           placeholder="00:00"
           value={endTime}
-          onChange={(e) => handleChange(e.target.value, "end")}
+          onChange={(e) => handleChange(e.target.value, 'end')}
           className="text-body1-m w-full px-4 text-center text-gray-800 outline-none"
         />
       </div>

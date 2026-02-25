@@ -1,6 +1,6 @@
-import { Suspense } from "react";
+import { Suspense } from 'react';
 
-import UsageDashboard from "@service/components/UsageDashboard";
+import UsageDashboard from '@service/components/UsageDashboard';
 
 export default function Page() {
   return (

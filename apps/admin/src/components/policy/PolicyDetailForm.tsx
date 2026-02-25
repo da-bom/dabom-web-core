@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 
 import {
   Button,
@@ -12,12 +12,12 @@ import {
   MainBox,
   TextField,
   UnpublishedIcon,
-} from "@shared";
-import { PolicyDetail } from "src/api/policy/schema";
-import { useUpdatePolicy } from "src/api/policy/useUpdatePolicy";
+} from '@shared';
+import { PolicyDetail } from 'src/api/policy/schema';
+import { useUpdatePolicy } from 'src/api/policy/useUpdatePolicy';
 
-import DefaultRuleFeild from "./DefaultRuleFeild";
-import StatusFeild from "./StatusFeild";
+import DefaultRuleFeild from './DefaultRuleFeild';
+import StatusFeild from './StatusFeild';
 
 interface Props {
   initialData: PolicyDetail;
@@ -50,7 +50,7 @@ const PolicyDetailForm = ({ initialData, policyId }: Props) => {
       },
       {
         onSuccess: () => {
-          router.push("/policy");
+          router.push('/policy');
         },
       },
     );
@@ -67,10 +67,7 @@ const PolicyDetailForm = ({ initialData, policyId }: Props) => {
         className="bg-brand-white flex h-full w-175 flex-col border-l border-gray-300 px-11 py-8 shadow-[-4px_0_10px_rgba(0,0,0,0.1)]"
       >
         <div className="flex h-full flex-col gap-10 overflow-y-auto">
-          <button
-            className="w-fit cursor-pointer text-gray-500"
-            onClick={() => router.back()}
-          >
+          <button className="w-fit cursor-pointer text-gray-500" onClick={() => router.back()}>
             <ChevronIcon />
           </button>
 
@@ -88,12 +85,12 @@ const PolicyDetailForm = ({ initialData, policyId }: Props) => {
                 <DropDown
                   isOpen={isOpen}
                   setIsOpen={setIsOpen}
-                  options={["ADMIN", "OWNER", "MEMBER"]}
+                  options={['ADMIN', 'OWNER', 'MEMBER']}
                   selectedOption={newData.requiredRole}
                   setSelectedOption={(option) =>
                     setNewData((prev) => ({
                       ...prev,
-                      requireRole: option as "ADMIN" | "OWNER" | "MEMBER",
+                      requireRole: option as 'ADMIN' | 'OWNER' | 'MEMBER',
                     }))
                   }
                 />
@@ -133,7 +130,7 @@ const PolicyDetailForm = ({ initialData, policyId }: Props) => {
 
 const Status = ({ active }: { active: boolean }) => (
   <div
-    className={`text-body1-d flex items-center gap-1 ${active ? "text-primary" : "text-gray-600"}`}
+    className={`text-body1-d flex items-center gap-1 ${active ? 'text-primary' : 'text-gray-600'}`}
   >
     {active ? (
       <>

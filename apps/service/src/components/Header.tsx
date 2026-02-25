@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter } from 'next/navigation';
 
-import { ChevronIcon, Logo, cn } from "@shared";
+import { ChevronIcon, Logo, cn } from '@shared';
 
 interface HeaderProps {
   isBackVisible?: boolean;
@@ -10,17 +10,12 @@ interface HeaderProps {
   className?: string;
 }
 
-const Header = ({
-  isBackVisible = true,
-  className,
-  onBackClick,
-}: HeaderProps) => {
+const Header = ({ isBackVisible = true, className, onBackClick }: HeaderProps) => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const HIDE_BACK_BTN_PATHS = ["/home", "/notification", "/policy"];
-  const shouldShowBack =
-    isBackVisible && !HIDE_BACK_BTN_PATHS.includes(pathname);
+  const HIDE_BACK_BTN_PATHS = ['/home', '/notification', '/policy'];
+  const shouldShowBack = isBackVisible && !HIDE_BACK_BTN_PATHS.includes(pathname);
 
   const handleBack = () => {
     if (onBackClick) {
@@ -33,7 +28,7 @@ const Header = ({
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 flex h-16 w-full items-center justify-between bg-white shadow-sm transition-all",
+        'sticky top-0 z-50 flex h-16 w-full items-center justify-between bg-white shadow-sm transition-all',
         className,
       )}
     >

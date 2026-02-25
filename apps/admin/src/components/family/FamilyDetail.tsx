@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { Badge, Button, PersonIcon, SubBox, Table, formatSize } from "@shared";
-import dayjs from "dayjs";
-import { useGetFamilyDetail } from "src/api/family/useGetFamilyDetail";
-import { formatFamily } from "src/utils/formatFamily";
+import { Badge, Button, PersonIcon, SubBox, Table, formatSize } from '@shared';
+import dayjs from 'dayjs';
+import { useGetFamilyDetail } from 'src/api/family/useGetFamilyDetail';
+import { formatFamily } from 'src/utils/formatFamily';
 
-import Error from "./Error";
+import Error from './Error';
 
 const FamilyDetail = ({ selectedFam }: { selectedFam: number | undefined }) => {
   const { data: familyDetail, isLoading } = useGetFamilyDetail(selectedFam);
@@ -45,12 +45,9 @@ const FamilyDetail = ({ selectedFam }: { selectedFam: number | undefined }) => {
         </div>
         <p className="flex justify-between">
           <span className="text-body2-d text-gray-800">
-            업데이트 일시:{" "}
-            {dayjs(familyDetail.updatedAt).format("YYYY. MM. DD. HH:mm")}
+            업데이트 일시: {dayjs(familyDetail.updatedAt).format('YYYY. MM. DD. HH:mm')}
           </span>
-          <span className="text-h2-d text-primary">
-            {familyDetail.usedPercent.toFixed(1)}%
-          </span>
+          <span className="text-h2-d text-primary">{familyDetail.usedPercent.toFixed(1)}%</span>
         </p>
       </SubBox>
 
@@ -60,7 +57,7 @@ const FamilyDetail = ({ selectedFam }: { selectedFam: number | undefined }) => {
           <span className="text-body1-d">구성원 권한 및 한도 설정</span>
         </div>
         <Table
-          headers={["권한", "이름", "사용량/한도"]}
+          headers={['권한', '이름', '사용량/한도']}
           rows={formatFamily({
             customer: familyDetail.customers,
           })}

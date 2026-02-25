@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { ChevronIcon } from "@icons";
+import { ChevronIcon } from '@icons';
 
 interface MonthNavigatorProps {
   currentDateText: string;
@@ -8,11 +8,7 @@ interface MonthNavigatorProps {
   onNext: () => void;
 }
 
-const MonthNavigator = ({
-  currentDateText,
-  onPrev,
-  onNext,
-}: MonthNavigatorProps) => {
+const MonthNavigator = ({ currentDateText, onPrev, onNext }: MonthNavigatorProps) => {
   const handlePrev = () => {
     onPrev();
   };
@@ -31,9 +27,7 @@ const MonthNavigator = ({
         <ChevronIcon className="rotate-180" />
       </button>
 
-      <span className="text-body1-m w-28 text-center tabular-nums">
-        {currentDateText}
-      </span>
+      <span className="text-body1-m w-28 text-center tabular-nums">{currentDateText}</span>
 
       <button
         onClick={handleNext}

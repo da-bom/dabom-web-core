@@ -1,24 +1,21 @@
-"use client";
+'use client';
 
-import dynamic from "next/dynamic";
+import dynamic from 'next/dynamic';
 
-import { ChevronIcon, DaboIcon, MainBox } from "@shared";
+import { ChevronIcon, DaboIcon, MainBox } from '@shared';
 
-const ProgressBar = dynamic(() => import("@service/components/ProgressBar"), {
+const ProgressBar = dynamic(() => import('@service/components/ProgressBar'), {
   ssr: false,
 });
 
 const data = {
-  name: "김철수",
+  name: '김철수',
   usedGB: 100,
   limitGB: 100,
 };
 
 const MyPage = () => {
-  const usagePercent = Math.min(
-    Math.round((data.usedGB / data.limitGB) * 100),
-    100,
-  );
+  const usagePercent = Math.min(Math.round((data.usedGB / data.limitGB) * 100), 100);
 
   return (
     <div className="mx-5 mt-14 flex flex-col gap-4">

@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const FamilySearchRequestSchema = z.object({
   page: z.number().optional().default(0),
@@ -7,16 +7,14 @@ export const FamilySearchRequestSchema = z.object({
     .object({
       name: z.object({ operator: z.string(), value: z.string() }).optional(),
       phone: z.object({ operator: z.string(), value: z.string() }).optional(),
-      usageRate: z
-        .object({ operator: z.string(), min: z.number(), max: z.number() })
-        .optional(),
+      usageRate: z.object({ operator: z.string(), min: z.number(), max: z.number() }).optional(),
     })
     .optional(),
   sort: z
     .array(
       z.object({
         field: z.string(),
-        direction: z.enum(["asc", "desc"]),
+        direction: z.enum(['asc', 'desc']),
       }),
     )
     .optional(),

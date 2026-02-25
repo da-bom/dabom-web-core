@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface TableProps {
   headers: string[];
@@ -20,10 +20,7 @@ const Table = ({ headers, rows }: TableProps) => {
         </thead>
         <tbody className="bg-brand-white text-center">
           {rows.map((row, index) => (
-            <tr
-              key={index}
-              className="text-body2-d h-11 border-t border-gray-100"
-            >
+            <tr key={index} className="text-body2-d h-11 border-t border-gray-100">
               {row.cells.map((cell, cellIndex) => (
                 <td key={cellIndex} className="px-4 py-2">
                   {cell}

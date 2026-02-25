@@ -1,18 +1,15 @@
-import { http } from "@shared";
-import { useMutation } from "@tanstack/react-query";
+import { http } from '@shared';
+import { useMutation } from '@tanstack/react-query';
 import {
   AdminLoginRequest,
   AdminLoginResponse,
   AdminLoginResponseSchema,
-} from "src/api/auth/schema";
+} from 'src/api/auth/schema';
 
-import { ApiErrorResponse } from "@shared/types/error";
+import { ApiErrorResponse } from '@shared/types/error';
 
-export const login = async (
-  email: string,
-  password: string,
-): Promise<AdminLoginResponse> => {
-  const response = await http.post("/admin/login", {
+export const login = async (email: string, password: string): Promise<AdminLoginResponse> => {
+  const response = await http.post('/admin/login', {
     email,
     password,
   });
@@ -21,19 +18,18 @@ export const login = async (
     const parsed = AdminLoginResponseSchema.parse(response);
     return parsed;
   } catch (error) {
-    console.error("❌ Zod 파싱 실패:", error);
+    console.error('❌ Zod 파싱 실패:', error);
     throw error;
   }
 };
 
 export const useLogin = () => {
   return useMutation({
-    mutationFn: ({ email, password }: AdminLoginRequest) =>
-      login(email, password),
+    mutationFn: ({ email, password }: AdminLoginRequest) => login(email, password),
 
     onSuccess: (data) => {
-      localStorage.setItem("access_token", data.accessToken);
-      localStorage.setItem("refresh_token", data.refreshToken);
+      localStorage.setItem('access_token', data.accessToken);
+      localStorage.setItem('refresh_token', data.refreshToken);
     },
 
     onError: (error: ApiErrorResponse) => {

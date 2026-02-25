@@ -1,7 +1,7 @@
-import { http } from "@shared";
-import { useQuery } from "@tanstack/react-query";
+import { http } from '@shared';
+import { useQuery } from '@tanstack/react-query';
 
-import { FamilyDetailDataSchema } from "./schema";
+import { FamilyDetailDataSchema } from './schema';
 
 export const getFamilyDetail = async (familyId: number) => {
   if (!familyId) return null;
@@ -11,14 +11,14 @@ export const getFamilyDetail = async (familyId: number) => {
     const parsed = FamilyDetailDataSchema.parse(response);
     return parsed;
   } catch (error) {
-    console.error("❌ Zod 파싱 실패:", error);
+    console.error('❌ Zod 파싱 실패:', error);
     throw error;
   }
 };
 
 export const useGetFamilyDetail = (familyId: number | undefined) => {
   return useQuery({
-    queryKey: ["familyDetail", familyId],
+    queryKey: ['familyDetail', familyId],
     queryFn: () => getFamilyDetail(familyId as number),
     enabled: !!familyId,
   });

@@ -1,13 +1,9 @@
-import { http } from "@shared";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { http } from '@shared';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { ApiErrorResponse } from "@shared/types/error";
+import { ApiErrorResponse } from '@shared/types/error';
 
-import {
-  PolicyUpdateRequest,
-  PolicyUpdateResponse,
-  PolicyUpdateResponseSchema,
-} from "./schema";
+import { PolicyUpdateRequest, PolicyUpdateResponse, PolicyUpdateResponseSchema } from './schema';
 
 export const updatePolicy = async (
   policyId: number,
@@ -22,23 +18,18 @@ export const useUpdatePolicy = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({
-      policyId,
-      data,
-    }: {
-      policyId: number;
-      data: PolicyUpdateRequest;
-    }) => updatePolicy(policyId, data),
+    mutationFn: ({ policyId, data }: { policyId: number; data: PolicyUpdateRequest }) =>
+      updatePolicy(policyId, data),
 
     onSuccess: (response, variables) => {
       queryClient.invalidateQueries({
-        queryKey: ["policyDetail", variables.policyId],
+        queryKey: ['policyDetail', variables.policyId],
       });
-      alert("정책이 성공적으로 수정되었습니다.");
+      alert('정책이 성공적으로 수정되었습니다.');
     },
 
     onError: (error: ApiErrorResponse) => {
-      alert(error.errorMessage || "수정 중 오류가 발생했습니다.");
+      alert(error.errorMessage || '수정 중 오류가 발생했습니다.');
     },
   });
 };

@@ -1,3 +1,3 @@
-import { MENU } from "src/constants/MENU";
+import { MENU } from 'src/constants/MENU';
 
-export type MenuType = (typeof MENU)[number]["id"];
+export type MenuType = (typeof MENU)[number]['id'];

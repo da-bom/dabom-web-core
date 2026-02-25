@@ -1,11 +1,11 @@
-import { http } from "@shared";
-import { useMutation } from "@tanstack/react-query";
-import { ServiceLoginRequest, ServiceLoginResponse } from "src/types/LoginType";
+import { http } from '@shared';
+import { useMutation } from '@tanstack/react-query';
+import { ServiceLoginRequest, ServiceLoginResponse } from 'src/types/LoginType';
 
-import { ApiErrorResponse } from "@shared/type/error";
+import { ApiErrorResponse } from '@shared/type/error';
 
 export const login = async (phoneNumber: string, password: string) => {
-  const response = await http.post<ServiceLoginResponse>("/customers/login", {
+  const response = await http.post<ServiceLoginResponse>('/customers/login', {
     phoneNumber,
     password,
   });
@@ -14,12 +14,11 @@ export const login = async (phoneNumber: string, password: string) => {
 
 export const useLogin = () => {
   return useMutation({
-    mutationFn: ({ phoneNumber, password }: ServiceLoginRequest) =>
-      login(phoneNumber, password),
+    mutationFn: ({ phoneNumber, password }: ServiceLoginRequest) => login(phoneNumber, password),
 
     onSuccess: (data: ServiceLoginResponse) => {
-      localStorage.setItem("access_token", data.accessToken);
-      localStorage.setItem("refresh_token", data.refreshToken);
+      localStorage.setItem('access_token', data.accessToken);
+      localStorage.setItem('refresh_token', data.refreshToken);
     },
 
     onError: (error: ApiErrorResponse) => {

@@ -1,5 +1,5 @@
-import { MainBox, cn } from "@shared";
-import { FilterType } from "src/types/FilterType";
+import { MainBox, cn } from '@shared';
+import { FilterType } from 'src/types/FilterType';
 
 const FilterButton = ({
   children,
@@ -13,8 +13,8 @@ const FilterButton = ({
   return (
     <button
       className={cn(
-        "h-10 w-30 cursor-pointer rounded-lg",
-        isSelected ? "text-primary bg-background-sub" : "text-gray-600",
+        'h-10 w-30 cursor-pointer rounded-lg',
+        isSelected ? 'text-primary bg-background-sub' : 'text-gray-600',
       )}
       onClick={onClick}
     >
@@ -32,21 +32,18 @@ const FilterSegment = ({
 }) => {
   return (
     <MainBox className="text-body1-d w-fit rounded-2xl p-4">
-      <FilterButton
-        isSelected={selectedFilter === "ALL"}
-        onClick={() => setSelectedFilter("ALL")}
-      >
+      <FilterButton isSelected={selectedFilter === 'ALL'} onClick={() => setSelectedFilter('ALL')}>
         전체
       </FilterButton>
       <FilterButton
-        isSelected={selectedFilter === "ACTIVE"}
-        onClick={() => setSelectedFilter("ACTIVE")}
+        isSelected={selectedFilter === 'ACTIVE'}
+        onClick={() => setSelectedFilter('ACTIVE')}
       >
         활성화
       </FilterButton>
       <FilterButton
-        isSelected={selectedFilter === "DEACTIVE"}
-        onClick={() => setSelectedFilter("DEACTIVE")}
+        isSelected={selectedFilter === 'DEACTIVE'}
+        onClick={() => setSelectedFilter('DEACTIVE')}
       >
         비활성화
       </FilterButton>

@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 
-import { MainBox, Table } from "@shared";
-import { useGetPolicy } from "src/api/policy/useGetPolicy";
-import FilterSegment from "src/components/policy/FilterSegment";
-import { FilterType } from "src/types/FilterType";
-import { formatPolicy } from "src/utils/formatPolicy";
+import { MainBox, Table } from '@shared';
+import { useGetPolicy } from 'src/api/policy/useGetPolicy';
+import FilterSegment from 'src/components/policy/FilterSegment';
+import { FilterType } from 'src/types/FilterType';
+import { formatPolicy } from 'src/utils/formatPolicy';
 
 const PolicyPage = () => {
-  const [selectedFilter, setSelectedFilter] = useState<FilterType>("ALL");
+  const [selectedFilter, setSelectedFilter] = useState<FilterType>('ALL');
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [page, setPage] = useState(0);
 
@@ -20,9 +20,7 @@ const PolicyPage = () => {
   }
 
   if (!data) {
-    return (
-      <div className="p-10 text-center">표시할 정책 데이터가 없습니다.</div>
-    );
+    return <div className="p-10 text-center">표시할 정책 데이터가 없습니다.</div>;
   }
 
   const policyRows = formatPolicy({ policies: data });
@@ -36,10 +34,7 @@ const PolicyPage = () => {
         }}
       />
       <MainBox className="relative h-full p-4">
-        <Table
-          headers={["정책", "권한", "기본값", "상태", "관리"]}
-          rows={policyRows}
-        />
+        <Table headers={['정책', '권한', '기본값', '상태', '관리']} rows={policyRows} />
       </MainBox>
     </div>
   );
