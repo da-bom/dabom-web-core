@@ -117,7 +117,7 @@ function PolicyManagementList({ customers }: PolicyManagementListProps) {
       updatePolicy({
         updateInfo: {
           customerId: Number(id),
-          type: ['MONTHLY_LIMIT'],
+          type: 'MONTHLY_LIMIT',
           value: { limitBytes: newBytes },
           isActive: true,
         },
@@ -145,7 +145,7 @@ function PolicyManagementList({ customers }: PolicyManagementListProps) {
       updatePolicy({
         updateInfo: {
           customerId: Number(id),
-          type: ['TIME_BLOCK'],
+          type: 'TIME_BLOCK',
           isActive: false,
         },
       });
@@ -183,7 +183,7 @@ function PolicyManagementList({ customers }: PolicyManagementListProps) {
     updatePolicy({
       updateInfo: {
         customerId: Number(targetId),
-        type: ['TIME_BLOCK'],
+        type: 'TIME_BLOCK',
         value: { start: updatedStart, end: updatedEnd, timezone: 'Asia/Seoul' },
         isActive: true,
       },
