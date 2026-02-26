@@ -1,4 +1,4 @@
-import { QUERY_STALE_TIME, http } from '@shared';
+import { QUERY_TIME, http } from '@shared';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 import {
@@ -47,7 +47,7 @@ export const useGetFamilyPolicies = () => {
   return useQuery<FamilyDetail, ApiErrorResponse>({
     queryKey: ['familyPolicies'],
     queryFn: getFamilyPolicies,
-    staleTime: QUERY_STALE_TIME.fiveMinutes,
+    staleTime: QUERY_TIME.fiveMinutes,
     enabled: typeof window !== 'undefined' && !!localStorage.getItem('access_token'),
   });
 };

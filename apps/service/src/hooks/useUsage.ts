@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { QUERY_STALE_TIME, http, sseClient } from '@shared';
+import { QUERY_TIME, http, sseClient } from '@shared';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { FamilyUsageData, ServiceUsageResponse, UsageSSEData } from 'src/types/usageType';
 
@@ -26,7 +26,7 @@ export const useGetFamilyUsage = (year: number, month: number) => {
   return useQuery<FamilyUsageData, ApiErrorResponse>({
     queryKey: ['familyUsage', year, month],
     queryFn: () => getFamilyUsage(year, month),
-    staleTime: QUERY_STALE_TIME.fiveMinutes,
+    staleTime: QUERY_TIME.fiveMinutes,
     enabled: typeof window !== 'undefined' && !!localStorage.getItem('access_token'),
 
     placeholderData: keepPreviousData,
