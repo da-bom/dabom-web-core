@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import { useGetFamilyDetail } from 'src/api/family/useGetFamilyDetail';
 import { formatFamily } from 'src/utils/formatFamily';
 
-import Error from './Error';
+import Error from '../common/Error';
 
 const FamilyDetail = ({ selectedFam }: { selectedFam: number | undefined }) => {
   const { data: familyDetail, isLoading } = useGetFamilyDetail(selectedFam);

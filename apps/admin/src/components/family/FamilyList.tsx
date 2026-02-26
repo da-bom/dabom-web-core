@@ -4,8 +4,8 @@ import { TableChartIcon } from '@icons';
 import { FamilySearchRequest } from 'src/api/family/schema';
 import { useGetFamilies } from 'src/api/family/useGetFamilies';
 
-import Error from './Error';
-import FamilyItem from './FamilyItem';
+import Error from '../common/Error';
+import FamilyItem from './ui/FamilyItem';
 
 const FamilyList = ({
   params,

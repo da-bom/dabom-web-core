@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { MainBox, Table } from '@shared';
 import { useGetPolicy } from 'src/api/policy/useGetPolicy';
-import FilterSegment from 'src/components/policy/FilterSegment';
+import FilterSegment from 'src/components/policy/ui/FilterSegment';
 import { FilterType } from 'src/types/FilterType';
 import { formatPolicy } from 'src/utils/formatPolicy';
 
