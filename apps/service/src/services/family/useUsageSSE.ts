@@ -6,10 +6,13 @@ import { sseClient } from '@shared';
 
 import { UsageSSEData, UsageSSEDataSchema } from './scheme';
 
-export const connectUsageSSE = (onMessage: (data: UsageSSEData) => void, signal: AbortSignal) => {
+export const connectUsageSSE = (
+  onMessage: (eventName: string, rawData: string) => void,
+  signal: AbortSignal,
+) => {
   const ENDPOINT = '/families/usage/sse';
 
-  return sseClient.connect<UsageSSEData>(ENDPOINT, onMessage, signal);
+  return sseClient.connect(ENDPOINT, onMessage, signal);
 };
 
 export const useSSE = (enabled: boolean) => {
@@ -20,12 +23,13 @@ export const useSSE = (enabled: boolean) => {
 
     const abortController = new AbortController();
 
-    connectUsageSSE((data) => {
+    connectUsageSSE((eventName, rawData) => {
       try {
-        const validatedData = UsageSSEDataSchema.parse(data);
+        const parsedData = JSON.parse(rawData);
+        const validatedData = UsageSSEDataSchema.parse(parsedData);
         setRealtimeData(validatedData);
       } catch (error) {
-        console.error(error);
+        console.error('SSE 파싱 에러:', error);
       }
     }, abortController.signal).catch((error) => console.error(error));
 
