@@ -53,7 +53,7 @@ export default function PolicyManagementPage() {
 }
 
 interface PolicyManagementListProps {
-  customers: CustomerDetail[];
+  readonly customers: CustomerDetail[];
 }
 
 function PolicyManagementList({ customers }: PolicyManagementListProps) {
@@ -61,9 +61,9 @@ function PolicyManagementList({ customers }: PolicyManagementListProps) {
   const { mutate: updatePolicy } = useUpdatePolicy();
 
   const [currentUserRole] = useState<'OWNER' | 'MEMBER'>(() => {
-    if (typeof window === 'undefined') return 'MEMBER';
+    if (globalThis.window === undefined) return 'MEMBER';
 
-    const token = localStorage.getItem('access_token');
+    const token = globalThis.localStorage.getItem('access_token');
     if (token) {
       try {
         const payload = JSON.parse(atob(token.split('.')[1]));
