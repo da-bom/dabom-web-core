@@ -1,7 +1,7 @@
-import { http } from "@shared";
-import { useQuery } from "@tanstack/react-query";
+import { http } from '@shared';
+import { useQuery } from '@tanstack/react-query';
 
-import { FamilyDetailDataSchema } from "./schema";
+import { FamilyDetailDataSchema } from './schema';
 
 export const getFamilyDetail = async (familyId: number) => {
   if (!familyId) return null;
@@ -11,7 +11,7 @@ export const getFamilyDetail = async (familyId: number) => {
 
 export const useGetFamilyDetail = (familyId: number | undefined) => {
   return useQuery({
-    queryKey: ["familyDetail", familyId],
+    queryKey: ['familyDetail', familyId],
     queryFn: () => getFamilyDetail(familyId as number),
     enabled: !!familyId,
   });

@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { Pie } from "react-chartjs-2";
+import { Pie } from 'react-chartjs-2';
 
-import { bytesToGB } from "@shared";
-import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
-import { CHART_COLOR } from "src/app/(afterLogin)/home/contents";
-import { CustomerListType } from "src/types/dataUsage";
+import { bytesToGB } from '@shared';
+import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';
+import { CHART_COLOR } from 'src/app/(afterLogin)/home/contents';
+import { CustomerListType } from 'src/types/dataUsage';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -58,24 +58,24 @@ const UsageChart = ({ customers, totalUsageGB }: Props) => {
       tooltip: {
         enabled: !isEmpty,
         callbacks: {
-          label: function (context: import("chart.js").TooltipItem<"pie">) {
+          label: function (context: import('chart.js').TooltipItem<'pie'>) {
             return `${context.parsed.toFixed(1)}GB`;
           },
         },
-        backgroundColor: "rgba(255, 255, 255, 0.95)",
-        titleColor: "#000",
-        bodyColor: "#000",
-        borderColor: "#e5e7eb",
+        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+        titleColor: '#000',
+        bodyColor: '#000',
+        borderColor: '#e5e7eb',
         borderWidth: 1,
         padding: 12,
         displayColors: false,
         bodyFont: {
           size: 12,
-          weight: "bold" as const,
+          weight: 'bold' as const,
         },
       },
     },
-    cutout: "35%",
+    cutout: '35%',
   };
 
   return (
@@ -87,10 +87,7 @@ const UsageChart = ({ customers, totalUsageGB }: Props) => {
       <div className="flex flex-wrap justify-center gap-x-6 gap-y-3">
         {chartData.map((c) => (
           <div key={c.id} className="flex items-center gap-2">
-            <div
-              className="h-3 w-3 rounded-full"
-              style={{ backgroundColor: c.color }}
-            />
+            <div className="h-3 w-3 rounded-full" style={{ backgroundColor: c.color }} />
             <span className="text-caption-m">{c.name}</span>
           </div>
         ))}

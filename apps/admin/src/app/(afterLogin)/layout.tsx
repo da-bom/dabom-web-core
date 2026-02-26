@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 
-import "@globalstyles";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import '@globalstyles';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import Header from "@admin/components/Header";
-import Sidebar from "@admin/components/Sidebar";
+import Header from '@admin/components/Header';
+import Sidebar from '@admin/components/Sidebar';
 
 export default function AfterLoginLayout({
   children,

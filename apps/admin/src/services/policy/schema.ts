@@ -1,9 +1,9 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 // [정책 수정] request
 export const PolicyUpdateRequestSchema = z.object({
-  description: z.string().min(1, "설명을 입력해주세요."),
-  requiredRole: z.enum(["OWNER", "ADMIN", "MEMBER"]),
+  description: z.string().min(1, '설명을 입력해주세요.'),
+  requiredRole: z.enum(['OWNER', 'ADMIN', 'MEMBER']),
   defaultRules: z.any(),
   isActive: z.boolean(),
   overWrite: z.boolean(),
@@ -20,12 +20,7 @@ export const PolicyUpdateResponseSchema = z.object({
 export type PolicyUpdateResponse = z.infer<typeof PolicyUpdateResponseSchema>;
 
 // 정책 종류
-const PolicyTypeSchema = z.enum([
-  "MONTHLY_LIMIT",
-  "TIME_BLOCK",
-  "MANUAL_BLOCK",
-  "APP_BLOCK",
-]);
+const PolicyTypeSchema = z.enum(['MONTHLY_LIMIT', 'TIME_BLOCK', 'MANUAL_BLOCK', 'APP_BLOCK']);
 
 export const MonthlyLimitSchema = z.object({
   limitBytes: z.number(),
@@ -38,7 +33,7 @@ export const TimeBlockSchema = z.object({
 });
 
 export const ManualBlockSchema = z.object({
-  reason: z.literal("MANUAL"),
+  reason: z.literal('MANUAL'),
 });
 
 export const AppBlockSchema = z.object({
@@ -64,7 +59,7 @@ export const PolicySchema = z.object({
   name: z.string(),
   policyType: PolicyTypeSchema,
   defaultRules: DefaultRulesSchema,
-  requiredRole: z.enum(["ADMIN", "OWNER", "MEMBER"]),
+  requiredRole: z.enum(['ADMIN', 'OWNER', 'MEMBER']),
   isActive: z.boolean(),
   isSystem: z.boolean(),
   createdAt: z.string(),

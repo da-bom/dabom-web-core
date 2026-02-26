@@ -1,14 +1,14 @@
 /* 폰트 불러오기 */
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
 
-@import "tailwindcss";
+@import 'tailwindcss';
 
-@source "../../../**/*.{ts,tsx,html}";
+@source '../../../**/*.{ts,tsx,html}';
 
 /* 테마 설정 */
 @theme {
   /* 폰트 */
-  --font-sans: "Pretendard", sans-serif;
+  --font-sans: 'Pretendard', sans-serif;
 
   /* 색상 */
   --color-primary-50: #fff5fa;
@@ -148,7 +148,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type="number"] {
+input[type='number'] {
   -moz-appearance: textfield;
   appearance: textfield;
 }

@@ -1,7 +1,7 @@
-import Link from "next/link";
+import Link from 'next/link';
 
-import { SvgIconProps } from "@mui/material";
-import { cn } from "@shared";
+import { SvgIconProps } from '@mui/material';
+import { cn } from '@shared';
 
 const MenuItem = ({
   name,
@@ -18,8 +18,8 @@ const MenuItem = ({
     <Link
       href={href}
       className={cn(
-        "flex w-full items-center gap-2 rounded-md px-2 py-1",
-        isSelected ? "bg-primary-50 text-primary" : "text-gray-700",
+        'flex w-full items-center gap-2 rounded-md px-2 py-1',
+        isSelected ? 'bg-primary-50 text-primary' : 'text-gray-700',
       )}
     >
       <Icon className="text-5" />

@@ -1,13 +1,9 @@
-import { z } from "zod";
+import { z } from 'zod';
 
-import { CustomerDetail } from "@shared/type/familyType";
+import { CustomerDetail } from '@shared/type/familyType';
 
-export const FamilyRoleSchema = z.enum(["OWNER", "MEMBER"]);
-export const PolicyTypeEnum = z.enum([
-  "MONTHLY_LIMIT",
-  "TIME_BLOCK",
-  "MANUAL_BLOCK",
-]);
+export const FamilyRoleSchema = z.enum(['OWNER', 'MEMBER']);
+export const PolicyTypeEnum = z.enum(['MONTHLY_LIMIT', 'TIME_BLOCK', 'MANUAL_BLOCK']);
 
 export const ApiPolicyRulesSchema = z.object({
   limitBytes: z.number().optional(),

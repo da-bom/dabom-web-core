@@ -1,32 +1,32 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 
-import { Button, ErrorIcon, InputField } from "@shared";
-import { useLogin } from "src/services/auth/useLogin";
+import { Button, ErrorIcon, InputField } from '@shared';
+import { useLogin } from 'src/services/auth/useLogin';
 
 export default function LoginPage() {
   const router = useRouter();
-  const [phoneNumber, setPhone] = useState("");
-  const [password, setPassword] = useState("");
+  const [phoneNumber, setPhone] = useState('');
+  const [password, setPassword] = useState('');
   const [isLoginFailed, setIsLoginFailed] = useState(false);
 
   const { mutate: login, isPending: isLoading } = useLogin();
 
   const handleLogin = async () => {
     if (!phoneNumber || !password) {
-      alert("전화번호와 비밀번호를 입력해주세요.");
+      alert('전화번호와 비밀번호를 입력해주세요.');
       return;
     }
 
     try {
       await login({ phoneNumber, password });
-      router.push("/");
+      router.push('/');
     } catch (error) {
-      console.error("로그인 실패:", error);
-      alert("로그인 정보가 올바르지 않습니다.");
+      console.error('로그인 실패:', error);
+      alert('로그인 정보가 올바르지 않습니다.');
       setIsLoginFailed(true);
     }
   };

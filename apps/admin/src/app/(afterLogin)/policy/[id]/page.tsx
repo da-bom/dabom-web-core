@@ -1,4 +1,4 @@
-import PolicyDetailModal from "@admin/components/policy/PolicyDetailModal";
+import PolicyDetailModal from '@admin/components/policy/PolicyDetailModal';
 
 export default function PolicyDetailPage() {
   return (

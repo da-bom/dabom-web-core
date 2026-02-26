@@ -1,16 +1,13 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { sseClient } from "@shared";
+import { sseClient } from '@shared';
 
-import { UsageSSEData, UsageSSEDataSchema } from "./scheme";
+import { UsageSSEData, UsageSSEDataSchema } from './scheme';
 
-export const connectUsageSSE = (
-  onMessage: (data: UsageSSEData) => void,
-  signal: AbortSignal,
-) => {
-  const ENDPOINT = "/families/usage/sse";
+export const connectUsageSSE = (onMessage: (data: UsageSSEData) => void, signal: AbortSignal) => {
+  const ENDPOINT = '/families/usage/sse';
 
   return sseClient.connect<UsageSSEData>(ENDPOINT, onMessage, signal);
 };

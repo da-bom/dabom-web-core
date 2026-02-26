@@ -1,17 +1,17 @@
-import { QUERY_STALE_TIME, http } from "@shared";
-import { useQuery } from "@tanstack/react-query";
+import { QUERY_STALE_TIME, http } from '@shared';
+import { useQuery } from '@tanstack/react-query';
 
-import { ApiErrorResponse } from "@shared/type/error";
-import { CustomerDetail } from "@shared/type/familyType";
+import { ApiErrorResponse } from '@shared/type/error';
+import { CustomerDetail } from '@shared/type/familyType';
 
-import { FamilyDetail, FamilyPoliciesDataSchema } from "./scheme";
+import { FamilyDetail, FamilyPoliciesDataSchema } from './scheme';
 
 export const getFamilyPolicies = async (): Promise<FamilyDetail> => {
-  const response = await http.get("/families/policies");
+  const response = await http.get('/families/policies');
   const familyData = FamilyPoliciesDataSchema.parse(response);
 
   const mappedCustomers: CustomerDetail[] = familyData.customers.map((c) => {
-    const monthlyPolicy = c.policies.find((p) => p.type === "MONTHLY_LIMIT");
+    const monthlyPolicy = c.policies.find((p) => p.type === 'MONTHLY_LIMIT');
 
     return {
       customerId: c.customerId,
@@ -25,23 +25,22 @@ export const getFamilyPolicies = async (): Promise<FamilyDetail> => {
 
   return {
     familyId: familyData.familyId,
-    familyName: "다봄 가족스",
+    familyName: '다봄 가족스',
     createdById: 0,
     customers: mappedCustomers,
     totalQuotaBytes: familyData.totalQuotaBytes,
-    currentMonth: "",
-    createdAt: "",
-    updatedAt: "",
+    currentMonth: '',
+    createdAt: '',
+    updatedAt: '',
   };
 };
 
 export const useGetFamilyPolicies = () => {
   return useQuery<FamilyDetail, ApiErrorResponse>({
-    queryKey: ["familyPolicies"],
+    queryKey: ['familyPolicies'],
     queryFn: getFamilyPolicies,
     staleTime: QUERY_STALE_TIME.fiveMinutes,
     enabled:
-      globalThis.window !== undefined &&
-      !!globalThis.window.localStorage.getItem("access_token"),
+      globalThis.window !== undefined && !!globalThis.window.localStorage.getItem('access_token'),
   });
 };

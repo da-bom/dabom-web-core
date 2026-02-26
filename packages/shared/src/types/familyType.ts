@@ -14,7 +14,7 @@ export interface Family {
 export interface CustomerDetail {
   customerId: number;
   name: string;
-  role: "OWNER" | "MEMBER";
+  role: 'OWNER' | 'MEMBER';
   phoneNumber: string;
   monthlyLimitBytes: number;
   monthlyUsedBytes: number;

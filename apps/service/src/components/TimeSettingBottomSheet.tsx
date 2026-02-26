@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from 'react';
 
-import { Button, cn } from "@shared";
+import { Button, cn } from '@shared';
 
-import { HOURS, MINUTES } from "@shared/data/times";
+import { HOURS, MINUTES } from '@shared/data/times';
 
 interface TimeSettingSheetProps {
   isOpen: boolean;
@@ -24,10 +24,10 @@ export default function TimeSettingSheet({
   onSave,
 }: Readonly<TimeSettingSheetProps>) {
   const [selectedHour, setSelectedHour] = useState(() =>
-    initialTime ? initialTime.split(":")[0] : "07",
+    initialTime ? initialTime.split(':')[0] : '07',
   );
   const [selectedMinute, setSelectedMinute] = useState(() =>
-    initialTime ? initialTime.split(":")[1] : "00",
+    initialTime ? initialTime.split(':')[1] : '00',
   );
 
   const [isClosing, setIsClosing] = useState(false);
@@ -59,7 +59,7 @@ export default function TimeSettingSheet({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" || e.key === " " || e.key === "Escape") {
+    if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') {
       e.preventDefault();
       startClosing();
     }
@@ -73,8 +73,8 @@ export default function TimeSettingSheet({
         type="button"
         aria-label="닫기"
         className={cn(
-          "fixed inset-0 cursor-default bg-black/30 backdrop-blur-[2px]",
-          isClosing ? "animate-fade-out" : "animate-fade-in",
+          'fixed inset-0 cursor-default bg-black/30 backdrop-blur-[2px]',
+          isClosing ? 'animate-fade-out' : 'animate-fade-in',
         )}
         onClick={handleBackdropClick}
         onKeyDown={handleKeyDown}
@@ -84,8 +84,8 @@ export default function TimeSettingSheet({
         aria-modal="true"
         aria-labelledby="sheet-title"
         className={cn(
-          "bg-brand-white flex h-131 w-full flex-col rounded-xl px-8 pt-6 pb-8 shadow-2xl",
-          isClosing ? "animate-slide-down" : "animate-slide-up",
+          'bg-brand-white flex h-131 w-full flex-col rounded-xl px-8 pt-6 pb-8 shadow-2xl',
+          isClosing ? 'animate-slide-down' : 'animate-slide-up',
         )}
         onAnimationEnd={handleAnimationEnd}
       >
@@ -96,11 +96,7 @@ export default function TimeSettingSheet({
         <div className="grid h-71 w-full grid-cols-1 grid-rows-1 place-items-center">
           <div className="bg-primary-50 pointer-events-none z-0 col-start-1 row-start-1 h-11 w-full rounded-lg" />
           <div className="z-10 col-start-1 row-start-1 flex h-full w-full items-center justify-center gap-4">
-            <TimeColumn
-              items={HOURS}
-              selectedItem={selectedHour}
-              onSelect={setSelectedHour}
-            />
+            <TimeColumn items={HOURS} selectedItem={selectedHour} onSelect={setSelectedHour} />
             <span className="text-gray-500" aria-hidden="true">
               :
             </span>
@@ -128,11 +124,7 @@ interface TimeColumnProps {
   onSelect: (val: string) => void;
 }
 
-function TimeColumn({
-  items,
-  selectedItem,
-  onSelect,
-}: Readonly<TimeColumnProps>) {
+function TimeColumn({ items, selectedItem, onSelect }: Readonly<TimeColumnProps>) {
   const listRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
@@ -164,10 +156,10 @@ function TimeColumn({
         return (
           <li
             key={item}
-            aria-current={isSelected ? "true" : undefined}
+            aria-current={isSelected ? 'true' : undefined}
             className={cn(
-              "flex h-11 shrink-0 snap-center items-center justify-center",
-              isSelected ? "text-h1-m text-primary" : "text-h2-m text-gray-500",
+              'flex h-11 shrink-0 snap-center items-center justify-center',
+              isSelected ? 'text-h1-m text-primary' : 'text-h2-m text-gray-500',
             )}
           >
             {item}

@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
-import { ChevronIcon } from "../assets/icons";
-import { cn } from "../utils/cn";
+import { ChevronIcon } from '../assets/icons';
+import { cn } from '../utils/cn';
 
 const DropDown = ({
   isOpen,
@@ -11,35 +11,29 @@ const DropDown = ({
   options,
   selectedOption,
   setSelectedOption,
-  size = "lg",
+  size = 'lg',
 }: {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   options: string[];
   selectedOption: string;
   setSelectedOption: (option: string) => void;
-  size?: "sm" | "lg";
+  size?: 'sm' | 'lg';
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(e.target as Node)
-      ) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
         setIsOpen(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   });
 
   return (
-    <div
-      className={cn("relative", size == "sm" ? "w-22" : "w-82")}
-      ref={containerRef}
-    >
+    <div className={cn('relative', size == 'sm' ? 'w-22' : 'w-82')} ref={containerRef}>
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
@@ -47,9 +41,7 @@ const DropDown = ({
         aria-label="dropdown"
       >
         <span className="text-body1-m text-gray-800">{selectedOption}</span>
-        <div
-          className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
-        >
+        <div className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>
           <ChevronIcon className="rotate-90 text-gray-800" />
         </div>
       </button>

@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const UsageCustomerSchema = z.object({
   customerId: z.number(),
@@ -14,7 +14,7 @@ export const UsageCustomerSchema = z.object({
     .string()
     .nullable()
     .optional()
-    .transform((val) => val ?? ""),
+    .transform((val) => val ?? ''),
   isMe: z.boolean(),
 });
 
@@ -24,7 +24,7 @@ export const FamilyUsageDataSchema = z.object({
     .string()
     .nullable()
     .optional()
-    .transform((val) => val ?? "다봄 가족"),
+    .transform((val) => val ?? '다봄 가족'),
   totalQuotaBytes: z
     .number()
     .nullable()

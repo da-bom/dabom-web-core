@@ -1,13 +1,11 @@
-import { ErrorOutlineIcon, bytesToGB } from "@shared";
-import { CustomerListType } from "src/types/dataUsage";
+import { ErrorOutlineIcon, bytesToGB } from '@shared';
+import { CustomerListType } from 'src/types/dataUsage';
 
 const WARNING_THRESHOLD = 0.6;
 
 const CustomerItem = ({ customer }: { customer: CustomerListType }) => {
   const usageRatio =
-    customer.monthlyLimitBytes > 0
-      ? customer.monthlyUsedBytes / customer.monthlyLimitBytes
-      : 0;
+    customer.monthlyLimitBytes > 0 ? customer.monthlyUsedBytes / customer.monthlyLimitBytes : 0;
   const showWarning = usageRatio >= WARNING_THRESHOLD;
 
   return (
@@ -31,14 +29,8 @@ const CustomerItem = ({ customer }: { customer: CustomerListType }) => {
 
         {showWarning && (
           <div className="flex items-center gap-1">
-            <ErrorOutlineIcon
-              width={12}
-              height={12}
-              className="text-negative"
-            />
-            <span className="text-caption-m text-negative">
-              데이터 사용량 조절이 필요해요
-            </span>
+            <ErrorOutlineIcon width={12} height={12} className="text-negative" />
+            <span className="text-caption-m text-negative">데이터 사용량 조절이 필요해요</span>
           </div>
         )}
       </div>

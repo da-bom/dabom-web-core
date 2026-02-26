@@ -13,9 +13,7 @@ const TextField = ({
         <span className="text-body1-d w-12 text-right">{label}</span>
         {children}
       </div>
-      {description && (
-        <span className="text-body2-d ml-16 text-gray-700">{description}</span>
-      )}
+      {description && <span className="text-body2-d ml-16 text-gray-700">{description}</span>}
     </div>
   );
 };
