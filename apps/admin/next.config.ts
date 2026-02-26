@@ -1,4 +1,4 @@
-import nextConfigBase from "../../packages/shared/src/configs/next.config.base";
+import nextConfigBase from '../../packages/shared/src/configs/next.config.base';
 
 const nextConfig = {
   ...nextConfigBase,
