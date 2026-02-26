@@ -41,7 +41,7 @@ export default function PolicyManagementPage() {
     );
   }
 
-  if (isError || !familyDetail || !familyDetail?.customers) {
+  if (isError || !familyDetail?.customers) {
     return (
       <div className="flex min-h-screen w-full items-center justify-center">
         <p className="text-body1-m text-red-500">데이터를 불러오는데 실패했습니다.</p>
