@@ -1,6 +1,6 @@
 import { Badge, RadioGroup, Switch, TextField } from '@shared';
 
-const StatusFeild = ({
+const StatusField = ({
   isSystem,
   isActive,
   onActiveChange,
@@ -53,4 +53,4 @@ const StatusFeild = ({
   );
 };
 
-export default StatusFeild;
+export default StatusField;

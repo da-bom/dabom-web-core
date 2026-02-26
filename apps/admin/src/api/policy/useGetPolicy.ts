@@ -8,7 +8,13 @@ export const getPolicy = async (type: string, page: number): Promise<PolicyRespo
     params: { type, page, size: 10 },
   });
 
-  return PolicyResponseSchema.parse(response);
+  try {
+    const parsed = PolicyResponseSchema.parse(response);
+    return parsed;
+  } catch (error) {
+    console.error('❌ Zod 파싱 실패:', error);
+    throw error;
+  }
 };
 
 export const useGetPolicy = (type: string, page: number) => {

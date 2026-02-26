@@ -4,7 +4,7 @@ import {
   AdminLoginRequest,
   AdminLoginResponse,
   AdminLoginResponseSchema,
-} from 'src/services/auth/schema';
+} from 'src/api/auth/schema';
 
 import { ApiErrorResponse } from '@shared/types/error';
 
@@ -14,7 +14,13 @@ export const login = async (email: string, password: string): Promise<AdminLogin
     password,
   });
 
-  return AdminLoginResponseSchema.parse(response);
+  try {
+    const parsed = AdminLoginResponseSchema.parse(response);
+    return parsed;
+  } catch (error) {
+    console.error('❌ Zod 파싱 실패:', error);
+    throw error;
+  }
 };
 
 export const useLogin = () => {

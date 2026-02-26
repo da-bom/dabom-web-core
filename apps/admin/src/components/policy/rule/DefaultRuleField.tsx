@@ -1,14 +1,14 @@
 'use client';
 
 import { TextField } from '@shared';
-import { DefaultRules, MonthlyLimit, PolicyType, TimeBlock } from 'src/services/policy/schema';
+import { DefaultRules, MonthlyLimit, PolicyType, TimeBlock } from 'src/api/policy/schema';
 
-import MonthlyBlockField from './MonthlyBlockFeild';
-import TimeBlockFeild from './TimeBlockFeild';
+import MonthlyBlockField from './MonthlyBlockField';
+import TimeBlockField from './TimeBlockField';
 
 interface Props {
   type: PolicyType;
-  rules: DefaultRules;
+  rules: DefaultRules | object;
   onRuleChange: (newRules: DefaultRules) => void;
 }
 
@@ -25,7 +25,7 @@ const DefaultRuleField = ({ type, rules, onRuleChange }: Props) => {
       )}
 
       {type === 'TIME_BLOCK' && (
-        <TimeBlockFeild
+        <TimeBlockField
           rules={rules as TimeBlock}
           onRuleChange={(newRules: TimeBlock) => onRuleChange(newRules)}
         />

@@ -11,7 +11,12 @@ export const updatePolicy = async (
 ): Promise<PolicyUpdateResponse> => {
   const response = await http.put(`/policies/${policyId}`, data);
 
-  return PolicyUpdateResponseSchema.parse(response);
+  try {
+    return PolicyUpdateResponseSchema.parse(response);
+  } catch (error) {
+    console.error('❌ Zod 파싱 실패:', error);
+    throw error;
+  }
 };
 
 export const useUpdatePolicy = () => {

@@ -1,24 +1,5 @@
 import { z } from 'zod';
 
-// [정책 수정] request
-export const PolicyUpdateRequestSchema = z.object({
-  description: z.string().min(1, '설명을 입력해주세요.'),
-  requiredRole: z.enum(['OWNER', 'ADMIN', 'MEMBER']),
-  defaultRules: z.any(),
-  isActive: z.boolean(),
-  overWrite: z.boolean(),
-});
-
-export type PolicyUpdateRequest = z.infer<typeof PolicyUpdateRequestSchema>;
-
-// [정책 수정] response
-export const PolicyUpdateResponseSchema = z.object({
-  policyId: z.number(),
-  updatedAt: z.string(),
-});
-
-export type PolicyUpdateResponse = z.infer<typeof PolicyUpdateResponseSchema>;
-
 // 정책 종류
 const PolicyTypeSchema = z.enum(['MONTHLY_LIMIT', 'TIME_BLOCK', 'MANUAL_BLOCK', 'APP_BLOCK']);
 
@@ -37,7 +18,7 @@ export const ManualBlockSchema = z.object({
 });
 
 export const AppBlockSchema = z.object({
-  apps: z.array(z.string()),
+  blockedApps: z.array(z.string()),
 });
 
 export type PolicyType = z.infer<typeof PolicyTypeSchema>;
@@ -54,16 +35,40 @@ export const DefaultRulesSchema = z.union([
   AppBlockSchema,
 ]);
 
-export const PolicySchema = z.object({
-  id: z.number(),
-  name: z.string(),
-  policyType: PolicyTypeSchema,
+// [정책 수정] request
+export const PolicyUpdateRequestSchema = z.object({
+  description: z.string().min(1, '설명을 입력해주세요.'),
+  requireRole: z.enum(['OWNER', 'ADMIN', 'MEMBER']),
+  type: z.any(),
   defaultRules: DefaultRulesSchema,
-  requiredRole: z.enum(['ADMIN', 'OWNER', 'MEMBER']),
+  isActive: z.boolean(),
+  overWrite: z.boolean(),
+});
+
+export type PolicyUpdateRequest = z.infer<typeof PolicyUpdateRequestSchema>;
+
+// [정책 수정] response
+export const PolicyUpdateResponseSchema = z.object({
+  policyId: z.number(),
+  updatedAt: z.string(),
+});
+
+export type PolicyUpdateResponse = z.infer<typeof PolicyUpdateResponseSchema>;
+
+export const PolicySchema = z.object({
+  policyId: z.number(),
+  name: z.string(),
+  type: PolicyTypeSchema,
+  defaultRules: DefaultRulesSchema,
+  requireRole: z.enum(['ADMIN', 'OWNER', 'MEMBER']),
   isActive: z.boolean(),
   isSystem: z.boolean(),
   createdAt: z.string(),
   updatedAt: z.string(),
+});
+
+export const PolicyDetailSchema = PolicySchema.extend({
+  description: z.string().min(1, '설명은 필수입니다.'),
 });
 
 // [정책 조회] response
@@ -77,10 +82,5 @@ export const PolicyResponseSchema = z.object({
 
 export type Policy = z.infer<typeof PolicySchema>;
 export type PolicyResponse = z.infer<typeof PolicyResponseSchema>;
-
-// [정책 상세 조회] response
-export const PolicyDetailSchema = PolicySchema.extend({
-  description: z.string(),
-});
 
 export type PolicyDetail = z.infer<typeof PolicyDetailSchema>;

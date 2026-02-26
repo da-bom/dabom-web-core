@@ -1,10 +1,11 @@
 'use client';
 
-import TableChartIcon from '@mui/icons-material/TableChartOutlined';
-import { FamilySearchRequest } from 'src/services/family/schema';
-import { useGetFamilies } from 'src/services/family/useGetFamilies';
+import { TableChartIcon } from '@icons';
+import { FamilySearchRequest } from 'src/api/family/schema';
+import { useGetFamilies } from 'src/api/family/useGetFamilies';
 
-import FamilyItem from './FamilyItem';
+import Error from '../common/Error';
+import FamilyItem from './ui/FamilyItem';
 
 const FamilyList = ({
   params,
@@ -28,7 +29,7 @@ const FamilyList = ({
     <div className="flex flex-col gap-2">
       <div className="flex items-center gap-2 py-2">
         <TableChartIcon />
-        <span className="text-h2-d">검색된 가족 ({totalElements})</span>
+        <span className="text-h2-d">검색된 가족 ({data?.totalElements})</span>
       </div>
       <div className="border-[1px] border-gray-100" />
       <div className="flex flex-col gap-2 py-2">
@@ -43,7 +44,7 @@ const FamilyList = ({
             />
           ))
         ) : (
-          <div className="py-10 text-center text-gray-400">검색 결과가 없습니다.</div>
+          <Error title="검색된 가족이 없습니다." />
         )}
       </div>
     </div>

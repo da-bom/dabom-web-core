@@ -1,24 +1,29 @@
 'use client';
 
-import PersonIcon from '@mui/icons-material/PeopleOutlined';
-import { Badge, Button, SubBox, formatSize } from '@shared';
+import { Badge, Button, PersonIcon, SubBox, Table, formatSize } from '@shared';
 import dayjs from 'dayjs';
-import { useGetFamilyDetail } from 'src/services/family/useGetFamilyDetail';
+import { useGetFamilyDetail } from 'src/api/family/useGetFamilyDetail';
 import { formatFamily } from 'src/utils/formatFamily';
 
-import Table from '../Table';
+import Error from '../common/Error';
 
 const FamilyDetail = ({ selectedFam }: { selectedFam: number | undefined }) => {
   const { data: familyDetail, isLoading } = useGetFamilyDetail(selectedFam);
 
-  if (!selectedFam) return <div>선택된 가족 없음</div>;
+  if (!selectedFam)
+    return (
+      <Error
+        title="가족이 선택되지 않았습니다."
+        description="좌측 리스트에서 가족을 선택해 주세요."
+      />
+    );
 
   if (isLoading) return <div>로딩</div>;
 
   if (!familyDetail) return <div>가족 정보 없음</div>;
 
   return (
-    <div className="flex h-full flex-col justify-between p-4">
+    <div className="flex h-full flex-col gap-4 p-4">
       <div className="flex items-center gap-2">
         <Badge size="lg" color="outline">
           FAM-{familyDetail.familyId}

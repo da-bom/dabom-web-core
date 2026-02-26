@@ -2,22 +2,20 @@
 
 import { useState } from 'react';
 
-import RefreshIcon from '@mui/icons-material/CachedOutlined';
-import { MainBox, SubBox } from '@shared';
-import { FamilySearchRequest } from 'src/services/family/schema';
+import { MainBox, RefreshIcon, SubBox } from '@shared';
+import { FamilySearchRequest } from 'src/api/family/schema';
+import FamilyDetail from 'src/components/family/FamilyDetail';
+import FamilyList from 'src/components/family/FamilyList';
 
-import FamilyDetail from '@admin/components/family/FamilyDetail';
-import FamilyList from '@admin/components/family/FamilyList';
+const INITIAL_FAMILY_SEARCH_PARAMS: FamilySearchRequest = {
+  page: 0,
+  size: 10,
+  filters: {},
+  sort: [{ field: 'createdAt', direction: 'desc' }],
+};
 
 const FamilyPage = () => {
   const [selectedFam, setSelectedFam] = useState<number | undefined>(undefined);
-
-  const INITIAL_FAMILY_SEARCH_PARAMS: FamilySearchRequest = {
-    page: 0,
-    size: 10,
-    filters: {},
-    sort: [{ field: 'createdAt', direction: 'desc' }],
-  };
 
   const [params, setParams] = useState<FamilySearchRequest>(INITIAL_FAMILY_SEARCH_PARAMS);
 

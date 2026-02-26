@@ -5,8 +5,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { Button, InputField, Logo } from '@shared';
-
-import { useLogin } from '../../services/auth/useLogin';
+import { useLogin } from 'src/api/auth/useLogin';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -23,7 +22,7 @@ const Login = () => {
 
     try {
       await login({ email, password });
-      router.push('/');
+      router.push('/policy');
     } catch (error) {
       console.error('로그인 실패:', error);
       alert('로그인 정보가 올바르지 않습니다.');
@@ -40,14 +39,14 @@ const Login = () => {
             type="email"
             value={email}
             placeholder="admin@dabom.com"
-            onChange={(value) => setEmail(value)}
+            onChange={setEmail}
           />
           <InputField
             label="비밀번호"
             type="password"
             value={password}
             placeholder="비밀번호를 입력하세요"
-            onChange={(value) => setPassword(value)}
+            onChange={setPassword}
           />
         </div>
         <Button size="lg" color="dark" onClick={handleLogin} disabled={isLoading}>

@@ -2,9 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Button, cn } from '@shared';
-
-import { HOURS, MINUTES } from '@shared/data/times';
+import { Button, HOURS, MINUTES, cn } from '@shared';
 
 interface TimeSettingSheetProps {
   isOpen: boolean;
@@ -132,7 +130,7 @@ function TimeColumn({ items, selectedItem, onSelect }: Readonly<TimeColumnProps>
       const targetScroll = items.indexOf(selectedItem) * ITEM_HEIGHT;
       listRef.current.scrollTop = targetScroll;
     }
-  }, []);
+  }, [items, selectedItem]);
 
   const handleScroll = (e: React.UIEvent<HTMLUListElement>) => {
     const scrollTop = e.currentTarget.scrollTop;

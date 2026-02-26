@@ -3,7 +3,6 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@admin/components/*": ["./src/components/*"],
       "@shared": ["../../packages/shared/src/index.ts"],
       "@shared/types/*": ["../../packages/shared/src/types/*"],
       "@shared/data/*": ["../../packages/shared/src/data/*"],

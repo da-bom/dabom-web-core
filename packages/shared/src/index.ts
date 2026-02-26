@@ -1,7 +1,7 @@
 export * from './utils/cn';
 export * from './utils/formatSize';
 export * from './utils/sseClient';
-export * from './utils/time';
+export * from './constants/time';
 export * from './utils/http';
 export * from './utils/sseClient';
 export * from './assets/icons';
@@ -15,4 +15,5 @@ export { default as MainBox } from './components/MainBox';
 export { default as RadioGroup } from './components/RadioGroup';
 export { default as SubBox } from './components/SubBox';
 export { default as Switch } from './components/Switch';
+export { default as Table } from './components/Table';
 export { default as TextField } from './components/TextField';

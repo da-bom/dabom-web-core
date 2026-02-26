@@ -2,13 +2,11 @@
 
 import { useState } from 'react';
 
-import { MainBox } from '@shared';
-import { useGetPolicy } from 'src/services/policy/useGetPolicy';
+import { MainBox, Table } from '@shared';
+import { useGetPolicy } from 'src/api/policy/useGetPolicy';
+import FilterSegment from 'src/components/policy/ui/FilterSegment';
 import { FilterType } from 'src/types/FilterType';
 import { formatPolicy } from 'src/utils/formatPolicy';
-
-import Table from '@admin/components/Table';
-import FilterSegment from '@admin/components/policy/FilterSegment';
 
 const PolicyPage = () => {
   const [selectedFilter, setSelectedFilter] = useState<FilterType>('ALL');
@@ -32,7 +30,7 @@ const PolicyPage = () => {
         selectedFilter={selectedFilter}
         setSelectedFilter={(filter) => {
           setSelectedFilter(filter);
-          setPage(1);
+          setPage(0);
         }}
       />
       <MainBox className="relative h-full p-4">
