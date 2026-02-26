@@ -5,11 +5,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { Button, ErrorIcon, InputField } from "@shared";
-import { useLogin } from "src/hooks/useLogin";
+import { useLogin } from "src/services/auth/useLogin";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [phoneNumber, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [isLoginFailed, setIsLoginFailed] = useState(false);
 
@@ -41,7 +41,7 @@ export default function LoginPage() {
               type="tel"
               placeholder="전화번호를 입력해주세요"
               value={phoneNumber}
-              onChange={(value) => setPhoneNumber(value)}
+              onChange={(value) => setPhone(value)}
             />
 
             <InputField
