@@ -21,7 +21,6 @@ directories.forEach((dir) => {
   );
 
   if (dir === 'utils') {
-    // 1. utils는 내부 index 없이 메인에서 파일별로 export * 처리
     files.forEach((file) => {
       const name = file.replace(/\.(tsx|ts)$/, '');
       mainIndexContent += `export * from "./${dir}/${name}";\n`;

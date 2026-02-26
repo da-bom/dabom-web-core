@@ -11,8 +11,8 @@ const Table = ({ headers, rows }: TableProps) => {
       <table className="w-full border-collapse">
         <thead className="bg-brand-dark text-brand-white text-body2-d h-11">
           <tr>
-            {headers.map((header, index) => (
-              <th key={index} className="px-4 font-medium">
+            {headers.map((header) => (
+              <th key={header} className="px-4 font-medium">
                 {header}
               </th>
             ))}
@@ -22,7 +22,7 @@ const Table = ({ headers, rows }: TableProps) => {
           {rows.map((row, index) => (
             <tr key={index} className="text-body2-d h-11 border-t border-gray-100">
               {row.cells.map((cell, cellIndex) => (
-                <td key={cellIndex} className="px-4 py-2">
+                <td key={`${row.id}-${cellIndex}`} className="px-4 py-2">
                   {cell}
                 </td>
               ))}

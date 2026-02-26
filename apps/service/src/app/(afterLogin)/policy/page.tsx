@@ -3,7 +3,8 @@
 import React, { useCallback, useState, useSyncExternalStore } from 'react';
 
 import { gbToBytes } from '@shared';
-import { useGetFamilyPolicies, useUpdatePolicy } from 'src/hooks/usePolicies';
+import { useGetFamilyPolicies } from 'src/api/policy/useGetFamilyPolicies';
+import { useUpdatePolicy } from 'src/api/policy/useUpdatePolicy';
 
 import { CustomerDetail } from '@shared/type/familyType';
 
@@ -40,7 +41,7 @@ export default function PolicyManagementPage() {
     );
   }
 
-  if (isError || !familyDetail || !familyDetail.customers) {
+  if (isError || !familyDetail?.customers) {
     return (
       <div className="flex min-h-screen w-full items-center justify-center">
         <p className="text-body1-m text-red-500">데이터를 불러오는데 실패했습니다.</p>
@@ -52,7 +53,7 @@ export default function PolicyManagementPage() {
 }
 
 interface PolicyManagementListProps {
-  customers: CustomerDetail[];
+  readonly customers: CustomerDetail[];
 }
 
 function PolicyManagementList({ customers }: PolicyManagementListProps) {
@@ -60,9 +61,9 @@ function PolicyManagementList({ customers }: PolicyManagementListProps) {
   const { mutate: updatePolicy } = useUpdatePolicy();
 
   const [currentUserRole] = useState<'OWNER' | 'MEMBER'>(() => {
-    if (typeof window === 'undefined') return 'MEMBER';
+    if (globalThis.window === undefined) return 'MEMBER';
 
-    const token = localStorage.getItem('access_token');
+    const token = globalThis.localStorage.getItem('access_token');
     if (token) {
       try {
         const payload = JSON.parse(atob(token.split('.')[1]));

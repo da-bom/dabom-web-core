@@ -12,8 +12,8 @@ export const http = axios.create({
 });
 
 http.interceptors.request.use((config) => {
-  if (typeof window !== 'undefined') {
-    const token = localStorage.getItem('access_token');
+  if (globalThis.window !== undefined) {
+    const token = globalThis.localStorage.getItem('access_token');
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
