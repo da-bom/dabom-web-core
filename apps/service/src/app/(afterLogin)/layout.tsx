@@ -1,8 +1,8 @@
 import React from 'react';
 import { Toaster } from 'react-hot-toast';
 
-import Header from '@service/components/Header';
-import NavBar from '@service/components/NavBar';
+import Header from '@service/components/common/Header';
+import NavBar from '@service/components/common/NavBar';
 
 export default function MainLayout({
   children,

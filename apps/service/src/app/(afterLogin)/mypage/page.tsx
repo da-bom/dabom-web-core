@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 
 import { ChevronIcon, DaboIcon, MainBox } from '@shared';
 
-const ProgressBar = dynamic(() => import('@service/components/ProgressBar'), {
+const ProgressBar = dynamic(() => import('@service/components/common/ProgressBar'), {
   ssr: false,
 });
 

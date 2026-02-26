@@ -5,12 +5,11 @@ import { useSyncExternalStore } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { DaboIcon, MainBox, bytesToGB } from '@shared';
-import { useGetFamilyUsage } from 'src/services/family/useGetFamilyUsage';
+import { useGetFamilyUsage, useGetFamilyUsageCurrent } from 'src/services/family/useGetFamilyUsage';
 import { useSSE } from 'src/services/family/useUsageSSE';
 
-import MonthNavigator from '@service/components/MonthNavigator';
-import ProgressBar from '@service/components/ProgressBar';
-
+import MonthNavigator from '../common/MonthNavigator';
+import ProgressBar from '../common/ProgressBar';
 import CustomerList from './CustomerList';
 import UsageChart from './UsageChart';
 import { ViewSegment } from './ViewSegment';
@@ -35,15 +34,16 @@ const UsageDashboard = () => {
   const month = Number(searchParams.get('month')) || now.getMonth() + 1;
   const viewMode = (searchParams.get('view') as 'list' | 'chart') || 'list';
 
-  const { data: usageData, isLoading, isError } = useGetFamilyUsage(year, month);
+  const { data: usageData, isLoading: isMonthlyLoading, isError } = useGetFamilyUsage(year, month);
+  const { data: currentData, isLoading: isCurrentLoading } = useGetFamilyUsageCurrent();
 
   const isCurrentMonth = year === now.getFullYear() && month === now.getMonth() + 1;
   const { totalRealtime, memberRealtime } = useSSE(isCurrentMonth && isClient);
 
-  if (!isClient || isLoading) {
+  if (!isClient || isMonthlyLoading || (isCurrentMonth && isCurrentLoading)) {
     return (
       <div className="flex min-h-screen w-full items-center justify-center">
-        <p className="text-body1-m">사용량 데이터를 불러오는 중입니다...</p>
+        <p className="text-body1-m">가족 데이터를 불러오는 중입니다...</p>
       </div>
     );
   }
@@ -65,8 +65,13 @@ const UsageDashboard = () => {
 
   const displayTotalUsedBytes =
     totalRealtime?.totalUsedBytes ??
+    (isCurrentMonth ? currentData?.totalUsedBytes : null) ??
     processedCustomers.reduce((acc, curr) => acc + curr.monthlyUsedBytes, 0);
-  const displayTotalLimitBytes = totalRealtime?.totalLimitBytes ?? usageData.totalQuotaBytes;
+
+  const displayTotalLimitBytes =
+    totalRealtime?.totalQuotaBytes ??
+    (isCurrentMonth ? currentData?.totalQuotaBytes : null) ??
+    usageData.totalQuotaBytes;
 
   const totalUsageGB = bytesToGB(displayTotalUsedBytes);
   const totalLimitGB = bytesToGB(displayTotalLimitBytes);
@@ -133,7 +138,6 @@ const UsageDashboard = () => {
           onPrev={handlePrevMonth}
           onNext={handleNextMonth}
         />
-
         <div className="flex h-8 w-full items-center rounded-full">
           <ViewSegment viewMode={viewMode} onModeChange={handleModeChange} />
         </div>

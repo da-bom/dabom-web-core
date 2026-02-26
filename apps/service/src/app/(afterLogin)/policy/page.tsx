@@ -8,8 +8,8 @@ import { useUpdatePolicy } from 'src/services/policy/useUpdatePolicy';
 
 import { CustomerDetail } from '@shared/type/familyType';
 
-import MemberCard from '@service/components/MemberCard';
-import TimeSettingBottomSheet from '@service/components/TimeSettingBottomSheet';
+import MemberCard from '@service/components/policy/MemberCard';
+import TimeSettingBottomSheet from '@service/components/policy/TimeSettingBottomSheet';
 
 const emptySubscribe = () => () => {};
 function useIsClient() {
