@@ -6,6 +6,7 @@ import { useParams, useRouter } from 'next/navigation';
 
 import { CheckIcon, ChevronIcon, UnpublishedIcon } from '@icons';
 import { Button, DropDown, MainBox, TextField } from '@shared';
+import { PolicyDetail } from 'src/api/policy/schema';
 import { useGetPolicyDetail } from 'src/api/policy/useGetPolicyDetail';
 import { useUpdatePolicy } from 'src/api/policy/useUpdatePolicy';
 
@@ -14,25 +15,30 @@ import StatusField from './ui/StatusField';
 
 const PolicyDetailModal = () => {
   const params = useParams();
-  const router = useRouter();
   const policyId = Number(params.id);
 
   const { data, isLoading, isError } = useGetPolicyDetail(policyId);
 
-  const [newData, setNewData] = useState({
-    description: data?.description ?? '',
-    defaultRules: data?.defaultRules ?? {},
-    requiredRole: data?.requireRole ?? 'MEMBER',
-    isActive: data?.isActive ?? false,
-  });
-
-  const [isOpen, setIsOpen] = useState(false);
-
-  const { mutate: updatePolicy } = useUpdatePolicy();
-
   if (isLoading) return <div>로딩</div>;
   if (isError) return <div>에러</div>;
   if (!data) return <div>데이터가 없습니다.</div>;
+
+  return <PolicyDetailContent data={data} policyId={policyId} />;
+};
+
+export default PolicyDetailModal;
+
+const PolicyDetailContent = ({ data, policyId }: { data: PolicyDetail; policyId: number }) => {
+  const router = useRouter();
+  const { mutate: updatePolicy } = useUpdatePolicy();
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [newData, setNewData] = useState({
+    description: data.description,
+    defaultRules: data.defaultRules,
+    requiredRole: data.requireRole ?? 'MEMBER',
+    isActive: data.isActive,
+  });
 
   const handleSave = () => {
     updatePolicy(
@@ -88,7 +94,7 @@ const PolicyDetailModal = () => {
                   setSelectedOption={(option) =>
                     setNewData((prev) => ({
                       ...prev,
-                      requireRole: option as 'ADMIN' | 'OWNER' | 'MEMBER',
+                      requiredRole: option as 'ADMIN' | 'OWNER' | 'MEMBER',
                     }))
                   }
                 />
@@ -99,7 +105,7 @@ const PolicyDetailModal = () => {
               type={data.type}
               rules={newData.defaultRules}
               onRuleChange={(newRules) => {
-                setNewData((prev) => ({ ...prev, default_rules: newRules }));
+                setNewData((prev) => ({ ...prev, defaultRules: newRules }));
               }}
             />
 
@@ -125,8 +131,6 @@ const PolicyDetailModal = () => {
     </div>
   );
 };
-
-export default PolicyDetailModal;
 
 const Status = ({ active }: { active: boolean }) => (
   <div

@@ -130,7 +130,7 @@ function TimeColumn({ items, selectedItem, onSelect }: Readonly<TimeColumnProps>
       const targetScroll = items.indexOf(selectedItem) * ITEM_HEIGHT;
       listRef.current.scrollTop = targetScroll;
     }
-  }, []);
+  }, [items, selectedItem]);
 
   const handleScroll = (e: React.UIEvent<HTMLUListElement>) => {
     const scrollTop = e.currentTarget.scrollTop;

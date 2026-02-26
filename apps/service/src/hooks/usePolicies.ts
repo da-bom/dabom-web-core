@@ -48,6 +48,7 @@ export const useGetFamilyPolicies = () => {
     queryKey: ['familyPolicies'],
     queryFn: getFamilyPolicies,
     staleTime: QUERY_TIME.fiveMinutes,
+    // TODO: useSyncExternalStore 활용한 custom Hook 사용하도록 수정
     enabled: typeof window !== 'undefined' && !!localStorage.getItem('access_token'),
   });
 };

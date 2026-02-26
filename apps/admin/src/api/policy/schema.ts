@@ -1,24 +1,5 @@
 import { z } from 'zod';
 
-// [정책 수정] request
-export const PolicyUpdateRequestSchema = z.object({
-  description: z.string().min(1, '설명을 입력해주세요.'),
-  requiredRole: z.enum(['OWNER', 'ADMIN', 'MEMBER']),
-  defaultRules: z.any(),
-  isActive: z.boolean(),
-  overWrite: z.boolean(),
-});
-
-export type PolicyUpdateRequest = z.infer<typeof PolicyUpdateRequestSchema>;
-
-// [정책 수정] response
-export const PolicyUpdateResponseSchema = z.object({
-  policyId: z.number(),
-  updatedAt: z.string(),
-});
-
-export type PolicyUpdateResponse = z.infer<typeof PolicyUpdateResponseSchema>;
-
 // 정책 종류
 const PolicyTypeSchema = z.enum(['MONTHLY_LIMIT', 'TIME_BLOCK', 'MANUAL_BLOCK', 'APP_BLOCK']);
 
@@ -53,6 +34,25 @@ export const DefaultRulesSchema = z.union([
   ManualBlockSchema,
   AppBlockSchema,
 ]);
+
+// [정책 수정] request
+export const PolicyUpdateRequestSchema = z.object({
+  description: z.string().min(1, '설명을 입력해주세요.'),
+  requiredRole: z.enum(['OWNER', 'ADMIN', 'MEMBER']),
+  defaultRules: DefaultRulesSchema,
+  isActive: z.boolean(),
+  overWrite: z.boolean(),
+});
+
+export type PolicyUpdateRequest = z.infer<typeof PolicyUpdateRequestSchema>;
+
+// [정책 수정] response
+export const PolicyUpdateResponseSchema = z.object({
+  policyId: z.number(),
+  updatedAt: z.string(),
+});
+
+export type PolicyUpdateResponse = z.infer<typeof PolicyUpdateResponseSchema>;
 
 export const PolicySchema = z.object({
   policyId: z.number(),
