@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useParams } from "next/navigation";
+import { useParams } from 'next/navigation';
 
-import { PolicyType } from "src/services/policy/schema";
-import { useGetPolicyDetail } from "src/services/policy/useGetPolicyDetail";
+import { PolicyType } from 'src/services/policy/schema';
+import { useGetPolicyDetail } from 'src/services/policy/useGetPolicyDetail';
 
-import PolicyDetailForm from "./PolicyDetailForm";
+import PolicyDetailForm from './PolicyDetailForm';
 
 const PolicyDetailModal = () => {
   const params = useParams();

@@ -1,14 +1,15 @@
-"use client";
+'use client';
 
-import React, { useCallback, useState, useSyncExternalStore } from "react";
+import React, { useCallback, useState, useSyncExternalStore } from 'react';
 
-import { gbToBytes } from "@shared";
-import { useGetFamilyPolicies, useUpdatePolicy } from "src/hooks/usePolicies";
+import { gbToBytes } from '@shared';
+import { useGetFamilyPolicies } from 'src/services/policy/useGetFamilyPolicies';
+import { useUpdatePolicy } from 'src/services/policy/useUpdatePolicy';
 
-import { CustomerDetail } from "@shared/type/familyType";
+import { CustomerDetail } from '@shared/type/familyType';
 
-import MemberCard from "@service/components/MemberCard";
-import TimeSettingBottomSheet from "@service/components/TimeSettingBottomSheet";
+import MemberCard from '@service/components/MemberCard';
+import TimeSettingBottomSheet from '@service/components/TimeSettingBottomSheet';
 
 const emptySubscribe = () => () => {};
 function useIsClient() {
@@ -40,12 +41,10 @@ export default function PolicyManagementPage() {
     );
   }
 
-  if (isError || !familyDetail || !familyDetail.customers) {
+  if (isError || !familyDetail?.customers) {
     return (
       <div className="flex min-h-screen w-full items-center justify-center">
-        <p className="text-body1-m text-red-500">
-          데이터를 불러오는데 실패했습니다.
-        </p>
+        <p className="text-body1-m text-red-500">데이터를 불러오는데 실패했습니다.</p>
       </div>
     );
   }
@@ -54,43 +53,41 @@ export default function PolicyManagementPage() {
 }
 
 interface PolicyManagementListProps {
-  customers: CustomerDetail[];
+  readonly customers: CustomerDetail[];
 }
 
 function PolicyManagementList({ customers }: PolicyManagementListProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const { mutate: updatePolicy } = useUpdatePolicy();
 
-  const [currentUserRole] = useState<"OWNER" | "MEMBER">(() => {
-    if (typeof window === "undefined") return "MEMBER";
+  const [currentUserRole] = useState<'OWNER' | 'MEMBER'>(() => {
+    if (globalThis.window === undefined) return 'MEMBER';
 
-    const token = localStorage.getItem("access_token");
+    const token = globalThis.localStorage.getItem('access_token');
     if (token) {
       try {
-        const payload = JSON.parse(atob(token.split(".")[1]));
+        const payload = JSON.parse(atob(token.split('.')[1]));
         const tokenRole = payload.role;
 
-        if (tokenRole === "OWNER" || tokenRole === "MEMBER") {
+        if (tokenRole === 'OWNER' || tokenRole === 'MEMBER') {
           return tokenRole;
         }
       } catch (error) {
-        console.error("토큰 해독 실패:", error);
+        console.error('토큰 해독 실패:', error);
       }
     }
-    return "MEMBER";
+    return 'MEMBER';
   });
 
-  const [memberStates, setMemberStates] = useState<
-    Record<string, CustomerState>
-  >(() => {
+  const [memberStates, setMemberStates] = useState<Record<string, CustomerState>>(() => {
     const initial: Record<string, CustomerState> = {};
     customers.forEach((c) => {
       initial[c.customerId.toString()] = {
         customerId: c.customerId,
         limitBytes: c.monthlyLimitBytes,
         timeLimit: {
-          start: "23:00",
-          end: "07:00",
+          start: '23:00',
+          end: '07:00',
         },
       };
     });
@@ -100,16 +97,15 @@ function PolicyManagementList({ customers }: PolicyManagementListProps) {
   const [sheetConfig, setSheetConfig] = useState<{
     isOpen: boolean;
     targetId: string | null;
-    type: "start" | "end";
+    type: 'start' | 'end';
   }>({
     isOpen: false,
     targetId: null,
-    type: "start",
+    type: 'start',
   });
 
   const handlers = {
-    onSelect: (id: string) =>
-      setSelectedId((prev) => (prev === id ? null : id)),
+    onSelect: (id: string) => setSelectedId((prev) => (prev === id ? null : id)),
 
     onLimitChange: (id: string, newGB: number) => {
       const newBytes = gbToBytes(newGB);
@@ -121,7 +117,7 @@ function PolicyManagementList({ customers }: PolicyManagementListProps) {
       updatePolicy({
         updateInfo: {
           customerId: Number(id),
-          type: ["MONTHLY_LIMIT"],
+          type: 'MONTHLY_LIMIT',
           value: { limitBytes: newBytes },
           isActive: true,
         },
@@ -138,7 +134,7 @@ function PolicyManagementList({ customers }: PolicyManagementListProps) {
         ...prev,
         [id]: {
           ...prev[id],
-          timeLimit: isCurrentlyOn ? null : { start: "00:00", end: "23:59" },
+          timeLimit: isCurrentlyOn ? null : { start: '00:00', end: '23:59' },
         },
       }));
 
@@ -149,13 +145,13 @@ function PolicyManagementList({ customers }: PolicyManagementListProps) {
       updatePolicy({
         updateInfo: {
           customerId: Number(id),
-          type: ["TIME_BLOCK"],
+          type: 'TIME_BLOCK',
           isActive: false,
         },
       });
     },
 
-    onTimeClick: (id: string, type: "start" | "end") => {
+    onTimeClick: (id: string, type: 'start' | 'end') => {
       setSheetConfig({
         isOpen: true,
         targetId: id,
@@ -170,11 +166,11 @@ function PolicyManagementList({ customers }: PolicyManagementListProps) {
 
     const currentState = memberStates[targetId];
     const currentLimit = currentState.timeLimit || {
-      start: "00:00",
-      end: "23:59",
+      start: '00:00',
+      end: '23:59',
     };
-    const updatedStart = type === "start" ? newTime : currentLimit.start;
-    const updatedEnd = type === "end" ? newTime : currentLimit.end;
+    const updatedStart = type === 'start' ? newTime : currentLimit.start;
+    const updatedEnd = type === 'end' ? newTime : currentLimit.end;
 
     setMemberStates((prev) => ({
       ...prev,
@@ -187,8 +183,8 @@ function PolicyManagementList({ customers }: PolicyManagementListProps) {
     updatePolicy({
       updateInfo: {
         customerId: Number(targetId),
-        type: ["TIME_BLOCK"],
-        value: { start: updatedStart, end: updatedEnd, timezone: "Asia/Seoul" },
+        type: 'TIME_BLOCK',
+        value: { start: updatedStart, end: updatedEnd, timezone: 'Asia/Seoul' },
         isActive: true,
       },
     });
@@ -198,24 +194,20 @@ function PolicyManagementList({ customers }: PolicyManagementListProps) {
     setSheetConfig((prev) => ({ ...prev, isOpen: false }));
   }, []);
 
-  const activeCustomerState = sheetConfig.targetId
-    ? memberStates[sheetConfig.targetId]
-    : null;
+  const activeCustomerState = sheetConfig.targetId ? memberStates[sheetConfig.targetId] : null;
 
   const targetTime =
-    sheetConfig.type === "start"
+    sheetConfig.type === 'start'
       ? activeCustomerState?.timeLimit?.start
       : activeCustomerState?.timeLimit?.end;
 
-  const initialTimeForSheet = targetTime ?? "00:00";
+  const initialTimeForSheet = targetTime ?? '00:00';
 
   return (
     <section className="flex min-h-screen w-full justify-center">
       <div className="mt-4 w-full px-4 pb-20">
-        {currentUserRole === "OWNER" && (
-          <div className="text-body1-m mb-4">
-            변경을 원하는 구성원을 선택하세요.
-          </div>
+        {currentUserRole === 'OWNER' && (
+          <div className="text-body1-m mb-4">변경을 원하는 구성원을 선택하세요.</div>
         )}
 
         <ul className="flex flex-col gap-4">
@@ -224,7 +216,7 @@ function PolicyManagementList({ customers }: PolicyManagementListProps) {
               key={customer.customerId}
               customer={{
                 ...customer,
-                phoneNumber: String(customer.phoneNumber) || "정보 없음",
+                phoneNumber: String(customer.phoneNumber) || '정보 없음',
               }}
               state={memberStates[customer.customerId.toString()]}
               isSelected={selectedId === customer.customerId.toString()}
@@ -238,10 +230,8 @@ function PolicyManagementList({ customers }: PolicyManagementListProps) {
           key={`${sheetConfig.targetId}-${sheetConfig.type}-${initialTimeForSheet}`}
           isOpen={sheetConfig.isOpen}
           onClose={handleCLoseSheet}
-          title={
-            sheetConfig.type === "start" ? "시작 시간 설정" : "종료 시간 설정"
-          }
-          initialTime={initialTimeForSheet || "00:00"}
+          title={sheetConfig.type === 'start' ? '시작 시간 설정' : '종료 시간 설정'}
+          initialTime={initialTimeForSheet || '00:00'}
           onSave={handleSaveTime}
         />
       </div>

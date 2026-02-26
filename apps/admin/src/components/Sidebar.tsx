@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter } from 'next/navigation';
 
-import LogoutIcon from "@mui/icons-material/Logout";
-import { Logo } from "@shared";
-import { MENU } from "src/constants/MENU";
-import { logout } from "src/services/auth/useLogout";
+import LogoutIcon from '@mui/icons-material/Logout';
+import { Logo } from '@shared';
+import { MENU } from 'src/constants/MENU';
+import { logout } from 'src/services/auth/useLogout';
 
-import MenuItem from "./MenuItem";
+import MenuItem from './MenuItem';
 
 const Sidebar = () => {
   const pathname = usePathname();
@@ -16,9 +16,9 @@ const Sidebar = () => {
   const handleLogout = async () => {
     try {
       await logout();
-      router.push("/");
+      router.push('/');
     } catch (error) {
-      console.error("로그아웃 실패:", error);
+      console.error('로그아웃 실패:', error);
     }
   };
 
@@ -42,10 +42,7 @@ const Sidebar = () => {
           })}
         </div>
       </div>
-      <button
-        className="flex cursor-pointer px-5 text-gray-400"
-        onClick={handleLogout}
-      >
+      <button className="flex cursor-pointer px-5 text-gray-400" onClick={handleLogout}>
         <LogoutIcon />
         <span>로그아웃</span>
       </button>

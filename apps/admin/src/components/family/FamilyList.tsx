@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import TableChartIcon from "@mui/icons-material/TableChartOutlined";
-import { FamilySearchRequest } from "src/services/family/schema";
-import { useGetFamilies } from "src/services/family/useGetFamilies";
+import TableChartIcon from '@mui/icons-material/TableChartOutlined';
+import { FamilySearchRequest } from 'src/services/family/schema';
+import { useGetFamilies } from 'src/services/family/useGetFamilies';
 
-import FamilyItem from "./FamilyItem";
+import FamilyItem from './FamilyItem';
 
 const FamilyList = ({
   params,
@@ -43,9 +43,7 @@ const FamilyList = ({
             />
           ))
         ) : (
-          <div className="py-10 text-center text-gray-400">
-            검색 결과가 없습니다.
-          </div>
+          <div className="py-10 text-center text-gray-400">검색 결과가 없습니다.</div>
         )}
       </div>
     </div>

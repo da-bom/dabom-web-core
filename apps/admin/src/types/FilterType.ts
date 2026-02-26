@@ -1,1 +1,1 @@
-export type FilterType = "ALL" | "ACTIVE" | "DEACTIVE";
+export type FilterType = 'ALL' | 'ACTIVE' | 'DEACTIVE';

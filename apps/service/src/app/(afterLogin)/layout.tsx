@@ -1,8 +1,8 @@
-import React from "react";
-import { Toaster } from "react-hot-toast";
+import React from 'react';
+import { Toaster } from 'react-hot-toast';
 
-import Header from "@service/components/Header";
-import NavBar from "@service/components/NavBar";
+import Header from '@service/components/Header';
+import NavBar from '@service/components/NavBar';
 
 export default function MainLayout({
   children,
@@ -17,11 +17,7 @@ export default function MainLayout({
       <main className="scrollbar-hide relative w-full flex-1 overflow-y-auto">
         {children}
 
-        <Toaster
-          position="bottom-center"
-          containerClassName="!bottom-32"
-          reverseOrder={false}
-        />
+        <Toaster position="bottom-center" containerClassName="!bottom-32" reverseOrder={false} />
       </main>
       <div className="z-50 w-full flex-none">
         <NavBar />

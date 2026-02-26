@@ -1,6 +1,6 @@
-import { CustomerListType } from "src/types/dataUsage";
+import { CustomerListType } from 'src/types/dataUsage';
 
-import CustomerItem from "./CustomerItem";
+import CustomerItem from './CustomerItem';
 
 const CustomerList = ({ customers }: { customers: CustomerListType[] }) => {
   return (

@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 
-import { MainBox } from "@shared";
-import { useGetPolicy } from "src/services/policy/useGetPolicy";
-import { FilterType } from "src/types/FilterType";
-import { formatPolicy } from "src/utils/formatPolicy";
+import { MainBox } from '@shared';
+import { useGetPolicy } from 'src/services/policy/useGetPolicy';
+import { FilterType } from 'src/types/FilterType';
+import { formatPolicy } from 'src/utils/formatPolicy';
 
-import Table from "@admin/components/Table";
-import FilterSegment from "@admin/components/policy/FilterSegment";
+import Table from '@admin/components/Table';
+import FilterSegment from '@admin/components/policy/FilterSegment';
 
 const PolicyPage = () => {
-  const [selectedFilter, setSelectedFilter] = useState<FilterType>("ALL");
+  const [selectedFilter, setSelectedFilter] = useState<FilterType>('ALL');
   const [page, setPage] = useState(0);
 
   const { data, isLoading } = useGetPolicy(selectedFilter, page);
@@ -21,9 +21,7 @@ const PolicyPage = () => {
   }
 
   if (!data) {
-    return (
-      <div className="p-10 text-center">표시할 정책 데이터가 없습니다.</div>
-    );
+    return <div className="p-10 text-center">표시할 정책 데이터가 없습니다.</div>;
   }
 
   const policyRows = formatPolicy({ policies: data });
@@ -38,10 +36,7 @@ const PolicyPage = () => {
         }}
       />
       <MainBox className="relative h-full p-4">
-        <Table
-          headers={["정책", "권한", "기본값", "상태", "관리"]}
-          rows={policyRows}
-        />
+        <Table headers={['정책', '권한', '기본값', '상태', '관리']} rows={policyRows} />
       </MainBox>
     </div>
   );

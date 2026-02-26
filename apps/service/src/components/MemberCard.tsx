@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import React, { useRef, useState } from "react";
-import { toast } from "react-hot-toast";
+import React, { useRef, useState } from 'react';
+import { toast } from 'react-hot-toast';
 
 import {
   DoNotIcon,
@@ -11,7 +11,7 @@ import {
   cn,
   formatSize,
   gbToBytes,
-} from "@shared";
+} from '@shared';
 
 export interface CustomerState {
   customerId: number;
@@ -38,7 +38,7 @@ interface MemberCardProps {
     onSelect: (id: string) => void;
     onLimitChange: (id: string, newGB: number) => void | Promise<void>;
     onToggleTime: (id: string) => void;
-    onTimeClick: (id: string, type: "start" | "end") => void;
+    onTimeClick: (id: string, type: 'start' | 'end') => void;
   };
 }
 
@@ -50,10 +50,7 @@ export default function MemberCard({
   handlers,
 }: MemberCardProps) {
   const idStr = customer.customerId.toString();
-  const memberMaxLimitGB = Math.max(
-    Math.round(bytesToGB(customer.monthlyLimitBytes)),
-    1,
-  );
+  const memberMaxLimitGB = Math.max(Math.round(bytesToGB(customer.monthlyLimitBytes)), 1);
   const currentLimitGBFromProp = Math.round(bytesToGB(state.limitBytes));
   const [localLimit, setLocalLimit] = useState(currentLimitGBFromProp);
 
@@ -93,7 +90,7 @@ export default function MemberCard({
           (t) => (
             <div
               className={`${
-                t.visible ? "animate-enter" : "animate-leave"
+                t.visible ? 'animate-enter' : 'animate-leave'
               } bg-primary-600 flex h-8 w-85 flex-col items-center justify-center rounded-full`}
             >
               <span className="text-body2-m text-3.5 text-white">
@@ -103,7 +100,7 @@ export default function MemberCard({
           ),
           {
             duration: 2000,
-            position: "bottom-center",
+            position: 'bottom-center',
           },
         );
         setLocalLimit(currentLimitGBFromProp);
@@ -114,8 +111,8 @@ export default function MemberCard({
   return (
     <li
       className={cn(
-        "bg-brand-white flex w-full list-none flex-col overflow-hidden rounded-2xl border-2 transition-all duration-300 ease-in-out",
-        isSelected ? "border-gray-700" : "border-gray-200",
+        'bg-brand-white flex w-full list-none flex-col overflow-hidden rounded-2xl border-2 transition-all duration-300 ease-in-out',
+        isSelected ? 'border-gray-700' : 'border-gray-200',
       )}
     >
       <button
@@ -129,14 +126,14 @@ export default function MemberCard({
           <div className="flex flex-col">
             <span className="text-body1-m">{customer.name}</span>
             <span className="text-caption-m text-gray-800">
-              {customer.phoneNumber || "010-****-1234"}
+              {customer.phoneNumber || '010-****-1234'}
             </span>
           </div>
 
           <div className="flex flex-col items-end gap-1">
             <div className="text-caption-m">
-              <span className={isDanger ? "text-negative" : "text-brand-black"}>
-                {formattedUsed}{" "}
+              <span className={isDanger ? 'text-negative' : 'text-brand-black'}>
+                {formattedUsed}{' '}
               </span>
               <span className="text-gray-800">/ {formattedTotal}</span>
             </div>
@@ -154,8 +151,8 @@ export default function MemberCard({
       <div
         id={`detail-${idStr}`}
         className={cn(
-          "grid transition-[grid-template-rows] duration-300 ease-in-out",
-          isSelected ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
+          'grid transition-[grid-template-rows] duration-300 ease-in-out',
+          isSelected ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
         )}
       >
         <div className="overflow-hidden">
@@ -165,24 +162,16 @@ export default function MemberCard({
             <div className="flex w-full flex-col gap-2">
               <div className="flex w-full items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <ErrorOutlineIcon
-                    width={13}
-                    height={13}
-                    className="text-primary"
-                  />
+                  <ErrorOutlineIcon width={13} height={13} className="text-primary" />
                   <span className="text-body1-m">데이터 사용 한도</span>
                 </div>
-                <span className="text-body1-m text-primary-500 font-bold">
-                  {localLimit}GB
-                </span>
+                <span className="text-body1-m text-primary-500 font-bold">{localLimit}GB</span>
               </div>
 
               {isEditingByOther ? (
                 <div className="bg-background-sub flex h-12.5 w-full items-center justify-center gap-2 rounded-lg">
                   <DoNotIcon />
-                  <span className="text-caption-m text-gray-800">
-                    다른 가족이 수정 중이에요.
-                  </span>
+                  <span className="text-caption-m text-gray-800">다른 가족이 수정 중이에요.</span>
                 </div>
               ) : (
                 <div className="grid h-8 w-full items-center">
@@ -228,21 +217,19 @@ export default function MemberCard({
 
                 <button
                   type="button"
-                  onClick={() =>
-                    !isEditingByOther && handlers.onToggleTime(idStr)
-                  }
+                  onClick={() => !isEditingByOther && handlers.onToggleTime(idStr)}
                   role="switch"
                   disabled={isEditingByOther}
                   aria-checked={!state.timeLimit}
                   className={cn(
-                    "flex h-4 w-7 items-center rounded-full p-[1px] transition-colors duration-200 ease-in-out",
-                    state.timeLimit ? "bg-primary-500" : "bg-gray-500",
+                    'flex h-4 w-7 items-center rounded-full p-[1px] transition-colors duration-200 ease-in-out',
+                    state.timeLimit ? 'bg-primary-500' : 'bg-gray-500',
                   )}
                 >
                   <div
                     className={cn(
-                      "bg-brand-white shadow-default h-3.5 w-3.5 rounded-full transition-transform duration-200 ease-in-out",
-                      state.timeLimit ? "translate-x-3" : "translate-x-0",
+                      'bg-brand-white shadow-default h-3.5 w-3.5 rounded-full transition-transform duration-200 ease-in-out',
+                      state.timeLimit ? 'translate-x-3' : 'translate-x-0',
                     )}
                   />
                 </button>
@@ -251,9 +238,7 @@ export default function MemberCard({
               {isEditingByOther ? (
                 <div className="bg-background-sub flex h-12.25 w-full items-center justify-center gap-2 rounded-lg">
                   <DoNotIcon />
-                  <span className="text-caption-m text-gray-800">
-                    다른 가족이 수정 중이에요.
-                  </span>
+                  <span className="text-caption-m text-gray-800">다른 가족이 수정 중이에요.</span>
                 </div>
               ) : (
                 state.timeLimit && (
@@ -261,23 +246,19 @@ export default function MemberCard({
                     <div className="flex items-center justify-center">
                       <button
                         type="button"
-                        onClick={() => handlers.onTimeClick(idStr, "start")}
+                        onClick={() => handlers.onTimeClick(idStr, 'start')}
                         className="border-primary-200 bg-primary-50 flex h-6 w-15 items-center justify-center rounded border"
                       >
-                        <span className="text-body1-m">
-                          {state.timeLimit.start}
-                        </span>
+                        <span className="text-body1-m">{state.timeLimit.start}</span>
                       </button>
                       <span className="text-body1-m mx-2">부터</span>
 
                       <button
                         type="button"
-                        onClick={() => handlers.onTimeClick(idStr, "end")}
+                        onClick={() => handlers.onTimeClick(idStr, 'end')}
                         className="border-primary-200 bg-primary-50 flex h-6 w-15 items-center justify-center rounded border"
                       >
-                        <span className="text-body1-m">
-                          {state.timeLimit.end}
-                        </span>
+                        <span className="text-body1-m">{state.timeLimit.end}</span>
                       </button>
                       <span className="text-body1-m ml-2">까지</span>
                     </div>
