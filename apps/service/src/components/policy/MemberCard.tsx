@@ -20,6 +20,7 @@ export interface CustomerState {
     start: string;
     end: string;
   } | null;
+  isBlocked?: boolean;
 }
 
 interface MemberCardProps {
@@ -39,6 +40,7 @@ interface MemberCardProps {
     onLimitChange: (id: string, newGB: number) => void | Promise<void>;
     onToggleTime: (id: string) => void;
     onTimeClick: (id: string, type: 'start' | 'end') => void;
+    onToggleBlock?: (id: string) => void;
   };
 }
 
@@ -50,7 +52,7 @@ export default function MemberCard({
   handlers,
 }: MemberCardProps) {
   const idStr = customer.customerId.toString();
-  const memberMaxLimitGB = Math.max(Math.round(bytesToGB(customer.monthlyLimitBytes)), 1);
+  const memberMaxLimitGB = 70;
   const currentLimitGBFromProp = Math.round(bytesToGB(state.limitBytes));
   const [localLimit, setLocalLimit] = useState(currentLimitGBFromProp);
 
@@ -158,14 +160,27 @@ export default function MemberCard({
         <div className="overflow-hidden">
           <div className="mx-4 h-px bg-gray-100" />
 
-          <div className="flex flex-col gap-6 p-4 pt-6">
-            <div className="flex w-full flex-col gap-2">
+          <div className="flex flex-col gap-4 p-4">
+            {/* 데이터 사용 차단 */}
+            <div className="flex w-full items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="text-body1-m">데이터 사용 차단</span>
+              </div>
+              {/* 입력 추가 */}
+            </div>
+
+            <div className="mx-0 border-t border-gray-100" />
+
+            {/* 데이터 사용 한도 입력 토글*/}
+            <div className="flex w-full flex-col gap-4">
               <div className="flex w-full items-center justify-between">
                 <div className="flex items-center gap-2">
                   <ErrorOutlineIcon width={13} height={13} className="text-primary" />
                   <span className="text-body1-m">데이터 사용 한도</span>
                 </div>
-                <span className="text-body1-m text-primary-500 font-bold">{localLimit}GB</span>
+                <div className="flex items-center gap-1">
+                  <span className="text-body1-m">GB</span>
+                </div>
               </div>
 
               {isEditingByOther ? (
@@ -174,40 +189,40 @@ export default function MemberCard({
                   <span className="text-caption-m text-gray-800">다른 가족이 수정 중이에요.</span>
                 </div>
               ) : (
-                <div className="grid h-8 w-full items-center">
-                  <div className="col-start-1 row-start-1 h-2 w-full rounded-full bg-gray-100" />
-                  <div
-                    className="bg-primary-500 col-start-1 row-start-1 h-2 justify-self-start rounded-full"
-                    style={{ width: `${sliderPercentage}%` }}
-                  />
+                <div className="flex w-full flex-col">
+                  <div className="grid h-4 w-full items-center">
+                    <div className="col-start-1 row-start-1 h-2 w-full rounded-full bg-gray-100" />
+                    <div
+                      className="bg-primary col-start-1 row-start-1 h-2 justify-self-start rounded-full"
+                      style={{ width: `${sliderPercentage}%` }}
+                    />
 
-                  <div
-                    className="pointer-events-none col-start-1 row-start-1 flex w-full items-center"
-                    style={{ marginLeft: `${sliderPercentage}%` }}
-                  >
-                    <div className="border-primary-500 bg-brand-white h-4 w-4 -translate-x-1/2 rounded-full border-2 shadow-sm" />
+                    <div
+                      className="pointer-events-none col-start-1 row-start-1 flex w-full items-center"
+                      style={{ marginLeft: `${sliderPercentage}%` }}
+                    >
+                      <div className="border-primary bg-brand-white h-4 w-4 -translate-x-1/2 rounded-full border-2 shadow-sm" />
+                    </div>
+                    <input
+                      type="range"
+                      min="0"
+                      max={memberMaxLimitGB}
+                      step="1"
+                      value={localLimit}
+                      onChange={handleLimitChange}
+                      className="col-start-1 row-start-1 h-full w-full cursor-pointer touch-none opacity-0"
+                      aria-label="데이터 한도 설정"
+                    />
                   </div>
-                  <input
-                    type="range"
-                    min="0"
-                    max={memberMaxLimitGB}
-                    step="1"
-                    value={localLimit}
-                    onChange={handleLimitChange}
-                    className="col-start-1 row-start-1 h-full w-full cursor-pointer touch-none opacity-0"
-                    aria-label="데이터 한도 설정"
-                  />
-                </div>
-              )}
-
-              {!isEditingByOther && (
-                <div className="text-caption-m flex w-full justify-between text-gray-800">
-                  <span>0GB</span>
-                  <span>{memberMaxLimitGB}GB</span>
+                  <div className="text-caption-m flex w-full justify-between text-gray-800">
+                    <span>0GB</span>
+                    <span>{memberMaxLimitGB}GB</span>
+                  </div>
                 </div>
               )}
             </div>
 
+            <div className="border-t border-gray-100" />
             <div className="flex w-full flex-col gap-4">
               <div className="flex w-full items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -262,9 +277,6 @@ export default function MemberCard({
                       </button>
                       <span className="text-body1-m ml-2">까지</span>
                     </div>
-                    <span className="text-caption-m text-gray-800">
-                      터치하여 시간을 설정하세요.
-                    </span>
                   </div>
                 )
               )}
@@ -276,6 +288,16 @@ export default function MemberCard({
                 </div>
               )}
             </div>
+            <div className="flex items-center justify-center text-gray-800">
+              터치하여 시간을 설정하세요.
+            </div>
+
+            <div className="border-t border-gray-400" />
+
+            <button type="button" className="flex w-full justify-end gap-1" onClick={() => {}}>
+              <span className="text-body2-m">더보기</span>
+              <div className="rotate h-3 w-1.75">{/* 여기에 아이콘 */}</div>
+            </button>
           </div>
         </div>
       </div>

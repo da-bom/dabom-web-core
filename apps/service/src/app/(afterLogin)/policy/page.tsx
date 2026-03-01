@@ -26,6 +26,7 @@ export interface CustomerState {
     start: string;
     end: string;
   } | null;
+  // isBlocked: boolean;
 }
 
 export default function PolicyManagementPage() {
@@ -156,6 +157,26 @@ function PolicyManagementList({ customers }: PolicyManagementListProps) {
         type,
       });
     },
+
+    // onToggleBlock: (id: string) => {
+    //   const currentState = memberStates[id];
+    //   if (!currentState) return;
+
+    //   const newIsBlocked = !currentState.isBlocked;
+
+    //   setMemberStates((prev) => ({
+    //     ...prev,
+    //     [id]: { ...prev[id], isBlocked: newIsBlocked },
+    //   }));
+
+    //   updatePolicy({
+    //     updateInfo: {
+    //       customerId: Number(id),
+    //       type: 'MANUAL_BLOCK',
+    //       isActive: newIsBlocked,
+    //     },
+    //   });
+    // },
   };
 
   const handleSaveTime = async (newTime: string) => {
@@ -165,7 +186,7 @@ function PolicyManagementList({ customers }: PolicyManagementListProps) {
     const currentState = memberStates[targetId];
     const currentLimit = currentState.timeLimit || {
       start: '00:00',
-      end: '23:59',
+      end: '23:00',
     };
     const updatedStart = type === 'start' ? newTime : currentLimit.start;
     const updatedEnd = type === 'end' ? newTime : currentLimit.end;
@@ -204,9 +225,10 @@ function PolicyManagementList({ customers }: PolicyManagementListProps) {
   return (
     <section className="flex min-h-screen w-full justify-center">
       <div className="mt-4 w-full px-4 pb-20">
-        {currentUserRole === 'OWNER' && (
-          <div className="text-body1-m mb-4">변경을 원하는 구성원을 선택하세요.</div>
-        )}
+        <div className="mb-5.5 flex flex-col gap-1">
+          <div className="text-body1-d">가족 관리</div>
+          <div className="text-body2-m">데이터 사용 정책을 변경할 구성원을 선택하세요.</div>
+        </div>
 
         <ul className="flex flex-col gap-4">
           {customers.map((customer) => (
