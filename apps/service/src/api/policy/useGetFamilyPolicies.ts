@@ -12,6 +12,7 @@ export const getFamilyPolicies = async (): Promise<FamilyDetail> => {
   const mappedCustomers: ServiceCustomerDetail[] = familyData.customers.map((c) => {
     const monthlyPolicy = c.policies.find((p) => p.type === 'MONTHLY_LIMIT');
     const timeBlockPolicy = c.policies.find((p) => p.type === 'TIME_BLOCK');
+    const manualBlockPolicy = c.policies.find((p) => p.type === 'MANUAL_BLOCK');
 
     return {
       customerId: c.customerId,
@@ -20,6 +21,7 @@ export const getFamilyPolicies = async (): Promise<FamilyDetail> => {
       role: c.role,
       monthlyUsedBytes: c.usedBytes,
       monthlyLimitBytes: monthlyPolicy?.rules?.limitBytes ?? 0,
+      isBlocked: manualBlockPolicy?.isActive ?? false,
       timeLimit: timeBlockPolicy?.isActive
         ? {
             start: timeBlockPolicy.rules?.start ?? '00:00',
