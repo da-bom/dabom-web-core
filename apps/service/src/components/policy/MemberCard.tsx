@@ -15,6 +15,8 @@ import {
   gbToBytes,
 } from '@shared';
 
+import LimitInput from './LimitInput';
+
 export interface CustomerState {
   customerId: number;
   limitBytes: number;
@@ -54,15 +56,21 @@ export default function MemberCard({
   handlers,
 }: MemberCardProps) {
   const idStr = customer.customerId.toString();
-  const memberMaxLimitGB = 70;
+
+  const LIMIT = {
+    MIN: 1,
+    MAX: 70,
+  } as const;
+
   const currentLimitGBFromProp = Math.round(bytesToGB(state.limitBytes));
-  const [localLimit, setLocalLimit] = useState(currentLimitGBFromProp);
+  const [localLimit, setLocalLimit] = useState(Math.max(LIMIT.MIN, currentLimitGBFromProp));
 
   React.useEffect(() => {
-    setLocalLimit(currentLimitGBFromProp);
+    setLocalLimit(Math.max(LIMIT.MIN, currentLimitGBFromProp));
   }, [currentLimitGBFromProp]);
 
-  const sliderPercentage = (localLimit / memberMaxLimitGB) * 100;
+  const sliderPercentage = ((localLimit - LIMIT.MIN) / (LIMIT.MAX - LIMIT.MIN)) * 100;
+
   const formattedUsed = formatSize(customer.monthlyUsedBytes).total;
   const displayedTotalBytes = gbToBytes(localLimit);
   const formattedTotal = formatSize(displayedTotalBytes).total;
@@ -76,11 +84,9 @@ export default function MemberCard({
 
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
-  const handleLimitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (isEditingByOther) return;
-
-    const newGB = Number(e.target.value);
-    setLocalLimit(newGB);
+  const updateLimit = (newGB: number) => {
+    const clampedGB = Math.max(LIMIT.MIN, Math.min(newGB, LIMIT.MAX));
+    setLocalLimit(clampedGB);
 
     if (debounceTimer.current) {
       clearTimeout(debounceTimer.current);
@@ -88,7 +94,7 @@ export default function MemberCard({
 
     debounceTimer.current = setTimeout(async () => {
       try {
-        await handlers.onLimitChange(idStr, newGB);
+        await handlers.onLimitChange(idStr, clampedGB);
       } catch {
         toast.custom(
           (t) => (
@@ -107,9 +113,21 @@ export default function MemberCard({
             position: 'bottom-center',
           },
         );
-        setLocalLimit(currentLimitGBFromProp);
+        setLocalLimit(Math.max(LIMIT.MIN, currentLimitGBFromProp));
       }
     }, 500);
+  };
+
+  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (isEditingByOther) return;
+    updateLimit(Number(e.target.value));
+  };
+
+  const handleInputChange = (value: string) => {
+    if (isEditingByOther) return;
+    const numericValue = value.replace(/\D/g, '');
+    const newGB = numericValue === '' ? LIMIT.MIN : Number(numericValue);
+    updateLimit(newGB);
   };
 
   return (
@@ -160,7 +178,7 @@ export default function MemberCard({
         )}
       >
         <div className="overflow-hidden">
-          <div className="mx-4 h-px bg-gray-100" />
+          <div className="mx-4 h-px bg-gray-400" />
 
           <div className="flex flex-col gap-4 p-4">
             {/* 데이터 사용 차단 */}
@@ -194,7 +212,7 @@ export default function MemberCard({
 
             <div className="mx-0 border-t border-gray-100" />
 
-            {/* 데이터 사용 한도 입력 토글*/}
+            {/* 데이터 사용 한도 입력 */}
             <div className="flex w-full flex-col gap-4">
               <div className="flex w-full items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -202,6 +220,11 @@ export default function MemberCard({
                   <span className="text-body1-m">데이터 사용 한도</span>
                 </div>
                 <div className="flex items-center gap-1">
+                  <LimitInput
+                    value={localLimit}
+                    onChange={handleInputChange}
+                    disabled={isEditingByOther}
+                  />
                   <span className="text-body1-m">GB</span>
                 </div>
               </div>
@@ -228,18 +251,18 @@ export default function MemberCard({
                     </div>
                     <input
                       type="range"
-                      min="0"
-                      max={memberMaxLimitGB}
+                      min={LIMIT.MIN}
+                      max={LIMIT.MAX}
                       step="1"
                       value={localLimit}
-                      onChange={handleLimitChange}
+                      onChange={handleSliderChange}
                       className="col-start-1 row-start-1 h-full w-full cursor-pointer touch-none opacity-0"
                       aria-label="데이터 한도 설정"
                     />
                   </div>
                   <div className="text-caption-m flex w-full justify-between text-gray-800">
-                    <span>0GB</span>
-                    <span>{memberMaxLimitGB}GB</span>
+                    <span>{LIMIT.MIN}GB</span>
+                    <span>{LIMIT.MAX}GB</span>
                   </div>
                 </div>
               )}
