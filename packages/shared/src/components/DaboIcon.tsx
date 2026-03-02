@@ -25,10 +25,10 @@ const DaboIcon = ({ usage = 0, isBlocked, ...props }: DaboIconProps) => {
   if (!mounted) return null;
   const SelectedComponent = (() => {
     if (isBlocked) return DaboBlockedIcon;
-    if (usage >= 81) return DaboLovedIcon;
-    if (usage >= 51) return DaboDefaultIcon;
-    if (usage >= 31) return DaboSadIcon;
-    if (usage >= 1) return DaboHurtIcon;
+    if (usage <= 81) return DaboLovedIcon;
+    if (usage <= 51) return DaboDefaultIcon;
+    if (usage <= 31) return DaboSadIcon;
+    if (usage <= 1) return DaboHurtIcon;
     return DaboBombIcon;
   })();
 
