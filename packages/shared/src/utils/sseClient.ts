@@ -1,7 +1,24 @@
 const getFinalUrl = (url: string) => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || '';
-  const isProxyPath = url.startsWith('/notification-proxy') || url.startsWith('/families');
-  return isProxyPath ? url : `${baseUrl}${url}`;
+  if (url.startsWith('http')) return url;
+
+  const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const notiBaseUrl = process.env.NEXT_PUBLIC_NOTIFICATION_API_BASE_URL;
+
+  const cleanUrl = url.startsWith('/') ? url : `/${url}`;
+
+  const isNotiPath =
+    url.includes('notification') ||
+    url.includes('usage/sse') ||
+    url.startsWith('/notification-proxy');
+
+  const baseUrl = isNotiPath ? notiBaseUrl : apiBaseUrl;
+  if (!baseUrl) return cleanUrl;
+
+  const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+
+  const finalPath = cleanUrl.replace('/notification-proxy', '');
+
+  return `${cleanBaseUrl}${finalPath}`;
 };
 
 const processLines = (
@@ -23,6 +40,7 @@ const processLines = (
 
     if (trimmedLine.startsWith('data:')) {
       const rawData = trimmedLine.substring(5).trim();
+      console.log('[SSE 데이터]:', rawData);
       if (rawData) {
         onMessage(eventName, rawData);
         eventName = 'message';
@@ -48,7 +66,8 @@ const processSSEStream = async (
       break;
     }
 
-    buffer += decoder.decode(value, { stream: true });
+    const decodedValue = decoder.decode(value, { stream: true });
+    buffer += decodedValue;
     const lines = buffer.split('\n');
     buffer = lines.pop() || '';
 
@@ -78,12 +97,17 @@ export const sseClient = {
           Accept: 'text/event-stream',
           'Cache-Control': 'no-cache',
           Connection: 'keep-alive',
+          'Accept-Version': '1.0',
           ...(token && { Authorization: `Bearer ${token}` }),
         },
         signal,
       });
 
+      console.log('[SSE 엔진] 응답 수신. Status:', response.status);
+
       if (!response.ok || !response.body) {
+        const errorBody = await response.text().catch(() => 'no body');
+        console.error('[SSE 엔진] 연결 실패 디테일:', errorBody);
         throw new Error(`SSE 연결 실패: HTTP ${response.status}`);
       }
 
