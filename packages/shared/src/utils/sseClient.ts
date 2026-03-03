@@ -1,7 +1,6 @@
 const getFinalUrl = (url: string) => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || '';
-  const isProxyPath = url.startsWith('/notification-proxy') || url.startsWith('/families');
-  return isProxyPath ? url : `${baseUrl}${url}`;
+  const baseUrl = process.env.NEXT_PUBLIC_NOTIFICATION_API_BASE_URL;
+  return `${baseUrl}${url}`;
 };
 
 const processLines = (

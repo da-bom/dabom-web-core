@@ -15,7 +15,7 @@ export const connectUsageSSE = (
   onMessage: (eventName: string, rawData: string) => void,
   signal: AbortSignal,
 ) => {
-  const ENDPOINT = '/notification-proxy/families/usage/sse';
+  const ENDPOINT = '/families/usage/sse';
   return sseClient.connect(ENDPOINT, onMessage, signal);
 };
 
