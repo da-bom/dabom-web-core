@@ -12,7 +12,7 @@ export default function LimitInput({ value, onChange, disabled = false }: LimitI
   return (
     <div className="flex h-6 w-9 items-center justify-center rounded border border-gray-400 px-2">
       <input
-        type="tel"
+        type="number"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         disabled={disabled}
