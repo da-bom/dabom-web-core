@@ -1,62 +1,72 @@
 'use client';
 
-import { useMemo } from 'react';
-
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { DocumentIcon, HomeIcon, NotificationIcon, PersonIcon } from '@icons';
-import { SvgIconProps } from '@mui/material';
+import {
+  ExtensionOutlined as ExtensionIcon,
+  Face as FaceIcon,
+  Home as HomeIcon,
+  PersonOutlined as PersonIcon,
+  Send as SendMoneyIcon,
+} from '@mui/icons-material';
+import { cn } from '@shared';
 
-interface NavItem {
-  label: string;
-  href: string;
-  icon: React.ComponentType<SvgIconProps>;
-}
+const navItems = [
+  { label: '미션', href: '/mission', icon: ExtensionIcon },
+  { label: '가족', href: '/family', icon: FaceIcon },
+  { label: '홈', href: '/home', isHome: true },
+  { label: '조르기', href: '/appeal', icon: SendMoneyIcon },
+  { label: 'MY', href: '/mypage', icon: PersonIcon },
+];
 
 const NavBar = () => {
   const pathname = usePathname();
 
-  const navItems: NavItem[] = useMemo(
-    () => [
-      { label: '홈', href: '/home', icon: HomeIcon },
-      { label: '정책', href: '/policy', icon: DocumentIcon },
-      { label: '알림', href: '/notification', icon: NotificationIcon },
-      { label: 'MY', href: '/mypage', icon: PersonIcon },
-    ],
-    [],
-  );
-
   return (
-    <nav className="fixed bottom-0 z-50 w-full bg-white shadow-[0_-1px_3px_rgba(0,0,0,0.1)] transition-all">
-      <ul className="flex h-15 w-full items-center justify-around pb-[env(safe-area-inset-bottom)]">
-        {navItems.map((item) => {
-          const isActive = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href);
+    <nav className="fixed right-0 bottom-0 left-0 z-50 flex justify-center">
+      <div className="relative h-19 w-full">
+        <div className="absolute bottom-0 flex h-16 w-full items-center justify-between border-t border-gray-200 px-10 pb-[env(safe-area-inset-bottom)]">
+          {navItems.map((item) => {
+            if (item.isHome) {
+              return <div key="home-placeholder" className="w-8" />;
+            }
 
-          const Icon = item.icon;
+            const isActive = pathname === item.href;
+            const Icon = item.icon;
 
-          return (
-            <li key={item.href} className="flex-1">
+            return (
               <Link
+                key={item.href}
                 href={item.href}
-                className={`flex h-full flex-col items-center justify-center space-y-1 transition-opacity duration-200 hover:opacity-80 ${
-                  isActive ? 'text-primary-500' : 'text-gray-400'
-                }`}
+                className="flex flex-col items-center justify-center gap-2"
                 aria-current={isActive ? 'page' : undefined}
               >
-                <Icon
-                  sx={{
-                    fontSize: 24,
-                    color: 'inherit',
-                  }}
-                />
-
-                <span className="text-caption-m text-gray-700">{item.label}</span>
+                <div className="flex h-4 w-4 items-center justify-center">
+                  {Icon && (
+                    <Icon
+                      sx={{
+                        fontSize: 16,
+                        color: isActive ? 'var(--color-primary)' : 'var(--color-gray-700)',
+                      }}
+                    />
+                  )}
+                </div>
+                <span className={cn('text-caption-m', isActive ? 'text-primary' : 'text-gray-700')}>
+                  {item.label}
+                </span>
               </Link>
-            </li>
-          );
-        })}
-      </ul>
+            );
+          })}
+        </div>
+
+        <Link
+          href="/home"
+          className="bg-brand-dark absolute top-0 left-1/2 flex h-13 w-13 -translate-x-1/2 items-center justify-center rounded-full"
+        >
+          <HomeIcon width={17} height={19} className="text-white" />
+        </Link>
+      </div>
     </nav>
   );
 };
