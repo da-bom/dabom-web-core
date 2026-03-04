@@ -138,7 +138,7 @@ export default function MemberCard({
     <li
       className={cn(
         'bg-brand-white flex w-full list-none flex-col overflow-hidden rounded-2xl border-2 transition-all duration-300 ease-in-out',
-        isSelected ? 'border-gray-700' : 'border-gray-200',
+        isSelected || state.isBlocked ? 'border-gray-700' : 'border-gray-200',
       )}
     >
       <button
@@ -175,7 +175,7 @@ export default function MemberCard({
               <div
                 className={cn(
                   'h-full transition-all duration-300',
-                  state.isBlocked ? 'bg-gray-800' : 'bg-primary',
+                  state.isBlocked ? 'bg-gray-700' : 'bg-primary',
                 )}
                 style={{ width: `${usagePercent}%` }}
               />
@@ -212,7 +212,7 @@ export default function MemberCard({
                 aria-checked={state.isBlocked}
                 className={cn(
                   'flex h-4 w-7 items-center rounded-full p-[1px] transition-colors duration-200 ease-in-out',
-                  state.isBlocked ? 'bg-primary' : 'bg-gray-500',
+                  state.isBlocked ? 'bg-primary-500' : 'bg-gray-500',
                 )}
               >
                 <div
@@ -230,8 +230,14 @@ export default function MemberCard({
             <div className="flex w-full flex-col gap-4">
               <div className="flex w-full items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <ErrorOutlineIcon width={13} height={13} className="text-primary" />
-                  <span className="text-body1-m">데이터 사용 한도</span>
+                  <ErrorOutlineIcon
+                    width={13}
+                    height={13}
+                    className={cn(isDisabled ? 'text-gray-700' : 'text-primary')}
+                  />
+                  <span className={cn('text-body1-m', isDisabled && 'text-gray-500')}>
+                    데이터 사용 한도
+                  </span>
                 </div>
                 <div className="flex items-center gap-1">
                   <LimitInput
@@ -239,56 +245,64 @@ export default function MemberCard({
                     onChange={handleInputChange}
                     disabled={isDisabled}
                   />
-                  <span className="text-body1-m">GB</span>
+                  <span className={cn('text-body1-m', isDisabled && 'text-gray-500')}>GB</span>
                 </div>
               </div>
 
-              {isDisabled ? (
-                <div className="bg-background-sub flex h-12.5 w-full items-center justify-center gap-2 rounded-lg">
-                  <DoNotIcon />
-                  <span className="text-caption-m text-gray-800">{disabledMessage}</span>
-                </div>
-              ) : (
-                <div className="flex w-full flex-col">
-                  <div className="grid h-4 w-full items-center">
-                    <div className="col-start-1 row-start-1 h-2 w-full rounded-full bg-gray-100" />
-                    <div
-                      className="bg-primary col-start-1 row-start-1 h-2 justify-self-start rounded-full"
-                      style={{ width: `${sliderPercentage}%` }}
-                    />
+              <div className="flex w-full flex-col">
+                <div className="grid h-4 w-full items-center">
+                  <div className="col-start-1 row-start-1 h-2 w-full rounded-full bg-gray-100" />
+                  <div
+                    className={cn(
+                      'col-start-1 row-start-1 h-2 justify-self-start rounded-full transition-all duration-300',
+                      isDisabled ? 'bg-gray-700' : 'bg-primary',
+                    )}
+                    style={{ width: `${sliderPercentage}%` }}
+                  />
 
+                  <div
+                    className="pointer-events-none col-start-1 row-start-1 flex w-full items-center"
+                    style={{ marginLeft: `${sliderPercentage}%` }}
+                  >
                     <div
-                      className="pointer-events-none col-start-1 row-start-1 flex w-full items-center"
-                      style={{ marginLeft: `${sliderPercentage}%` }}
-                    >
-                      <div className="border-primary bg-brand-white h-4 w-4 -translate-x-1/2 rounded-full border-2 shadow-sm" />
-                    </div>
-                    <input
-                      type="range"
-                      min={LIMIT.MIN}
-                      max={LIMIT.MAX}
-                      step="1"
-                      value={localLimit}
-                      onChange={handleSliderChange}
-                      disabled={isDisabled}
-                      className="col-start-1 row-start-1 h-full w-full cursor-pointer touch-none opacity-0"
-                      aria-label="데이터 한도 설정"
+                      className={cn(
+                        'bg-brand-white h-4 w-4 -translate-x-1/2 rounded-full border-2 shadow-sm transition-all duration-300',
+                        isDisabled ? 'border-gray-700' : 'border-primary',
+                      )}
                     />
                   </div>
-                  <div className="text-caption-m flex w-full justify-between text-gray-800">
-                    <span>{LIMIT.MIN}GB</span>
-                    <span>{LIMIT.MAX}GB</span>
-                  </div>
+                  <input
+                    type="range"
+                    min={LIMIT.MIN}
+                    max={LIMIT.MAX}
+                    step="1"
+                    value={localLimit}
+                    onChange={handleSliderChange}
+                    disabled={isDisabled}
+                    className="col-start-1 row-start-1 h-full w-full cursor-pointer touch-none opacity-0"
+                    aria-label="데이터 한도 설정"
+                  />
                 </div>
-              )}
+                <div
+                  className={cn(
+                    'text-caption-m flex w-full justify-between',
+                    isDisabled ? 'text-gray-700' : 'text-gray-800',
+                  )}
+                >
+                  <span>{LIMIT.MIN}GB</span>
+                  <span>{LIMIT.MAX}GB</span>
+                </div>
+              </div>
             </div>
 
             <div className="border-t border-gray-100" />
             <div className="flex w-full flex-col gap-4">
               <div className="flex w-full items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <TimeIcon className="text-primary" />
-                  <span className="text-body1-m">시간 제한</span>
+                  <TimeIcon className={cn(isDisabled ? 'text-gray-700' : 'text-primary')} />
+                  <span className={cn('text-body1-m', isDisabled && 'text-gray-500')}>
+                    시간 제한
+                  </span>
                 </div>
 
                 <button
@@ -299,7 +313,11 @@ export default function MemberCard({
                   aria-checked={!state.timeLimit}
                   className={cn(
                     'flex h-4 w-7 items-center rounded-full p-[1px] transition-colors duration-200 ease-in-out',
-                    state.timeLimit ? 'bg-primary-500' : 'bg-gray-500',
+                    state.timeLimit
+                      ? isDisabled
+                        ? 'bg-gray-700'
+                        : 'bg-primary-500'
+                      : 'bg-gray-500',
                   )}
                 >
                   <div
@@ -311,42 +329,60 @@ export default function MemberCard({
                 </button>
               </div>
 
-              {isDisabled ? (
-                <div className="bg-background-sub flex h-12.25 w-full items-center justify-center gap-2 rounded-lg">
-                  <DoNotIcon />
-                  <span className="text-caption-m text-gray-800">{disabledMessage}</span>
-                </div>
-              ) : state.timeLimit ? (
-                <div className="bg-background-sub flex h-16 w-full flex-col items-center justify-center gap-2 rounded-lg">
+              <div className="bg-background-sub flex h-14 w-full flex-col items-center justify-center gap-2 rounded-lg py-4">
+                {!state.timeLimit && !isDisabled ? (
+                  <span className="text-caption-m text-gray-800">
+                    시간 제한이 설정되지 않았습니다.
+                  </span>
+                ) : (
                   <div className="flex items-center justify-center">
                     <button
                       type="button"
                       onClick={() => handlers.onTimeClick(idStr, 'start')}
-                      className="border-primary-200 bg-primary-50 flex h-6 w-15 items-center justify-center rounded border"
+                      disabled={isDisabled}
+                      className={cn(
+                        'flex h-6 w-15 items-center justify-center rounded border',
+                        isDisabled ? 'border-none bg-gray-100' : 'border-primary-200 bg-primary-50',
+                      )}
                     >
-                      <span className="text-body1-m">{state.timeLimit.start}</span>
+                      <span
+                        className={cn('text-body1-m', isDisabled ? 'text-gray-500' : 'text-black')}
+                      >
+                        {state.timeLimit?.start || '23:00'}
+                      </span>
                     </button>
-                    <span className="text-body1-m mx-2">부터</span>
+                    <span className={cn('text-body1-m mx-2', isDisabled && 'text-gray-500')}>
+                      부터
+                    </span>
 
                     <button
                       type="button"
                       onClick={() => handlers.onTimeClick(idStr, 'end')}
-                      className="border-primary-200 bg-primary-50 flex h-6 w-15 items-center justify-center rounded border"
+                      disabled={isDisabled}
+                      className={cn(
+                        'flex h-6 w-15 items-center justify-center rounded border',
+                        isDisabled ? 'border-none bg-gray-100' : 'border-primary-200 bg-primary-50',
+                      )}
                     >
-                      <span className="text-body1-m">{state.timeLimit.end}</span>
+                      <span
+                        className={cn('text-body1-m', isDisabled ? 'text-gray-500' : 'text-black')}
+                      >
+                        {state.timeLimit?.end || '07:00'}
+                      </span>
                     </button>
-                    <span className="text-body1-m ml-2">까지</span>
+                    <span className={cn('text-body1-m ml-2', isDisabled && 'text-gray-500')}>
+                      까지
+                    </span>
                   </div>
-                </div>
-              ) : (
-                <div className="bg-background-sub flex h-12 w-full items-center justify-center rounded-lg">
-                  <span className="text-caption-m text-gray-800">
-                    시간 제한이 설정되지 않았습니다.
-                  </span>
-                </div>
-              )}
+                )}
+              </div>
             </div>
-            <div className="flex items-center justify-center text-gray-800">
+            <div
+              className={cn(
+                'flex items-center justify-center',
+                isDisabled ? 'text-gray-700' : 'text-gray-800',
+              )}
+            >
               터치하여 시간을 설정하세요.
             </div>
 
