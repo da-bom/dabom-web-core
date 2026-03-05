@@ -1,6 +1,25 @@
 const CACHE_NAME = 'dabom-v1';
 
+const APP_SHELL_RESOURCES = [
+  '/',
+  '/manifest.webmanifest',
+  '/favicon.ico',
+  '/icons/icon-192x192.png',
+  '/icons/icon-512x512.png',
+];
+
 globalThis.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      return Promise.all(
+        APP_SHELL_RESOURCES.map((url) =>
+          cache.add(url)
+            .then(() => console.log(`SW: 캐싱 성공 - ${url}`))
+            .catch((error) => console.error(`SW: 캐싱 실패 - ${url}`, error)),
+        ),
+      );
+    }),
+  );
   globalThis.skipWaiting();
 });
 
@@ -32,10 +51,17 @@ globalThis.addEventListener('fetch', (event) => {
           const clone = response.clone();
           caches.open(CACHE_NAME)
             .then((cache) => cache.put(event.request, clone))
-            .catch(error => console.error('SW: Caching failed', error));
+            .catch((error) => console.error('SW: Caching failed', error));
         }
         return response;
       })
-      .catch(() => caches.match(event.request)),
+      .catch(async () => {
+        const cachedResponse = await caches.match(event.request);
+        if (cachedResponse) return cachedResponse;
+
+        if (event.request.mode === 'navigate') {
+          return caches.match('/');
+        }
+      }),
   );
 });
