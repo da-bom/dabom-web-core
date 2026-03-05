@@ -12,15 +12,20 @@ export default function manifest(): MetadataRoute.Manifest {
     background_color: COLORS.BRAND_WHITE,
     theme_color: COLORS.PRIMARY_300,
     icons: [
-      { src: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png' },
-      { src: '/icons/icon-512x512.png', sizes: '512x512', type: 'image/png' },
-    ],
-    screenshots: [
+      {
+        src: '/icons/icon-192x192.png',
+        sizes: '192x192',
+        type: 'image/png',
+      },
       {
         src: '/icons/icon-512x512.png',
         sizes: '512x512',
         type: 'image/png',
-        label: 'Mobile App Screenshot',
+      },
+      {
+        src: '/icons/icon.svg',
+        sizes: 'any',
+        type: 'image/svg+xml',
       },
     ],
   };
