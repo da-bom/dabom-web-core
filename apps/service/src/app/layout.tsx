@@ -1,13 +1,14 @@
 import type { Metadata, Viewport } from 'next';
 
 import '@globalstyles';
+import { COLORS } from '@shared';
 
 import ServiceWorkerRegistration from '@service/components/ServiceWorkerRegistration';
 
 import { Providers } from './providers';
 
 export const viewport: Viewport = {
-  themeColor: '#febedf',
+  themeColor: COLORS.PRIMARY_300,
 };
 
 export const metadata: Metadata = {

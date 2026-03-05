@@ -3,6 +3,7 @@ export * from './utils/formatSize';
 export * from './utils/formatPhoneNumber';
 export * from './utils/sseClient';
 export * from './constants/time';
+export * from './constants/colors';
 export * from './utils/http';
 export * from './utils/sseClient';
 export * from './assets/icons';
