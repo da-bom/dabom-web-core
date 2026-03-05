@@ -388,7 +388,14 @@ export default function MemberCard({
 
             <div className="border-t border-gray-400" />
 
-            <button type="button" className="flex w-full justify-end gap-1" onClick={() => {}}>
+            <button
+              type="button"
+              className="flex w-full justify-end gap-1"
+              onClick={(e) => {
+                e.stopPropagation();
+                window.location.href = `/policy/detail?customerId=${idStr}`;
+              }}
+            >
               <span className="text-body2-m">더보기</span>
               {/* 아이콘 추후 조절 */}
               <ChevronIcon />
