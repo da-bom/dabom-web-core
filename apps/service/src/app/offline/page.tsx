@@ -8,17 +8,17 @@ export default function OfflinePage() {
   };
 
   return (
-    <main className="flex h-screen w-full flex-col items-center justify-center px-7.75">
-      <div className="mb-6">
+    <main className="flex h-dvh w-full flex-col items-center justify-center px-7.75">
+      <div className="flex flex-col items-center">
         <DaboIcon type="hurt" />
-      </div>
 
-      <p className="text-body2-d mb-29.5 text-center">네트워크를 다시 확인해 주세요.</p>
+        <p className="text-body2-d mt-6 text-center">네트워크를 다시 확인해 주세요.</p>
 
-      <div>
-        <Button type="submit" size="lg" color="dark" onClick={handleReload}>
-          새로고침 하기
-        </Button>
+        <div className="mt-29.5">
+          <Button type="submit" size="lg" color="dark" onClick={handleReload}>
+            새로고침 하기
+          </Button>
+        </div>
       </div>
     </main>
   );
