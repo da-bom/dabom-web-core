@@ -2,6 +2,7 @@ const CACHE_NAME = 'dabom-v1';
 
 const APP_SHELL_RESOURCES = [
   '/',
+  '/offline',
   '/manifest.webmanifest',
   '/favicon.ico',
   '/icons/icon-192x192.png',
@@ -40,6 +41,11 @@ globalThis.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
   if (url.pathname.startsWith('/api/')) return;
 
+  if (url.pathname === '/offline') {
+    event.respondWith(caches.match('/offline'));
+    return;
+  }
+
   event.respondWith(
     fetch(event.request)
       .then((response) => {
@@ -56,12 +62,13 @@ globalThis.addEventListener('fetch', (event) => {
         return response;
       })
       .catch(async () => {
+        if (event.request.mode === 'navigate') {
+          const offlinePage = await caches.match('/offline');
+          if (offlinePage) return offlinePage;
+        }
+        
         const cachedResponse = await caches.match(event.request);
         if (cachedResponse) return cachedResponse;
-
-        if (event.request.mode === 'navigate') {
-          return caches.match('/');
-        }
       }),
   );
 });
