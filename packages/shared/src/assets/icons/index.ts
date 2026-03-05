@@ -4,7 +4,6 @@ import PeopleIcon from '@mui/icons-material/PeopleOutlined';
 import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
 import DocumentIcon from '@mui/icons-material/DescriptionOutlined';
-import TableChartIcon from '@mui/icons-material/TableChartOutlined';
 import ChevronIcon from '@mui/icons-material/ArrowForwardIosOutlined';
 import CheckIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
@@ -28,7 +27,6 @@ export {
   PersonIcon,
   LogoutIcon,
   DocumentIcon,
-  TableChartIcon,
   ChevronIcon,
   CheckIcon,
   ErrorIcon,

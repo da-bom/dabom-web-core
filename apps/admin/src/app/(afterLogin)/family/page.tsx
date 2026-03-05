@@ -10,7 +10,7 @@ import SearchBox from 'src/components/family/SearchBox';
 
 const INITIAL_FAMILY_SEARCH_PARAMS: FamilySearchRequest = {
   page: 0,
-  size: 10,
+  size: 15,
   filters: {},
   sort: [{ field: 'createdAt', direction: 'desc' }],
 };

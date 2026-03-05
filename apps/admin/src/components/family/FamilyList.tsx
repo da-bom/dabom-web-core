@@ -1,6 +1,5 @@
 'use client';
 
-import { TableChartIcon } from '@icons';
 import { FamilySearchRequest } from 'src/api/family/schema';
 import { useGetFamilies } from 'src/api/family/useGetFamilies';
 
@@ -26,13 +25,10 @@ const FamilyList = ({
   }
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex items-center gap-2 py-2">
-        <TableChartIcon />
-        <span className="text-h2-d">검색된 가족 ({data?.totalElements})</span>
-      </div>
-      <div className="border-[1px] border-gray-100" />
-      <div className="flex flex-col gap-2 py-2">
+    <div className="flex h-[calc(100vh-250px)] flex-col gap-2">
+      <span className="text-body1-d">검색 결과 (총 {data?.totalElements}건)</span>
+      <div className="border border-gray-100" />
+      <div className="flex flex-col gap-2 overflow-auto py-2">
         {totalElements > 0 ? (
           familyList.map((f) => (
             <FamilyItem
