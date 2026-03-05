@@ -19,8 +19,8 @@ interface RadioGroupProps {
 const RadioGroup = ({ options, selectedValue, onChange, name }: RadioGroupProps) => {
   return (
     <>
-      {options.map((option) => (
-        <label key={option.value} className="flex cursor-pointer items-center gap-2">
+      {options.map((option, idx) => (
+        <label key={`option.value-${idx}`} className="flex cursor-pointer items-center gap-2">
           <input
             type="radio"
             name={name}

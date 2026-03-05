@@ -12,6 +12,7 @@ const DropDown = ({
   selectedOption,
   setSelectedOption,
   size = 'lg',
+  className,
 }: {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
@@ -19,6 +20,7 @@ const DropDown = ({
   selectedOption: string;
   setSelectedOption: (option: string) => void;
   size?: 'xs' | 'sm' | 'lg';
+  className?: string;
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -38,6 +40,7 @@ const DropDown = ({
         'relative w-fit',
         size == 'lg' ? 'min-w-82' : 'min-w-22',
         size == 'xs' ? 'h-9' : 'h-12',
+        className,
       )}
       ref={containerRef}
     >
