@@ -17,6 +17,9 @@ import ListIcon from "@mui/icons-material/List";
 import UnpublishedIcon from '@mui/icons-material/Unpublished';
 import VisibilityIcon from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOffOutlined';
+import ResetIcon from '@mui/icons-material/Replay'
+import SearchIcon from '@mui/icons-material/Search'
+import CancelIcon from '@mui/icons-material/Cancel';
 
 export {
   HomeIcon,
@@ -37,5 +40,8 @@ export {
   ListIcon,
   UnpublishedIcon,
   VisibilityIcon,
-  VisibilityOffIcon
+  VisibilityOffIcon,
+  ResetIcon,
+  SearchIcon,
+  CancelIcon,
 };

@@ -18,7 +18,7 @@ const DropDown = ({
   options: string[];
   selectedOption: string;
   setSelectedOption: (option: string) => void;
-  size?: 'sm' | 'lg';
+  size?: 'xs' | 'sm' | 'lg';
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -33,16 +33,23 @@ const DropDown = ({
   });
 
   return (
-    <div className={cn('relative', size == 'sm' ? 'w-22' : 'w-82')} ref={containerRef}>
+    <div
+      className={cn(
+        'relative w-fit',
+        size == 'lg' ? 'min-w-82' : 'min-w-22',
+        size == 'xs' ? 'h-9' : 'h-12',
+      )}
+      ref={containerRef}
+    >
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex h-12 w-full cursor-pointer items-center justify-between px-4"
+        className="flex h-full w-full cursor-pointer items-center justify-between gap-3 px-4 outline-none"
         aria-label="dropdown"
       >
         <span className="text-body1-m text-gray-800">{selectedOption}</span>
         <div className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>
-          <ChevronIcon className="rotate-90 text-gray-800" />
+          <ChevronIcon className="rotate-90 text-gray-800" sx={{ width: 16 }} />
         </div>
       </button>
 
