@@ -5,7 +5,6 @@ export * from './utils/sseClient';
 export * from './constants/time';
 export * from './constants/colors';
 export * from './utils/http';
-export * from './utils/sseClient';
 export * from './assets/icons';
 export { default as Badge } from './components/Badge';
 export { default as Button } from './components/Button';

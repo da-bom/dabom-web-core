@@ -12,9 +12,10 @@ import DaboSadIcon from '../assets/icons/DaboSadIcon.svg';
 interface DaboIconProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   usage?: number;
   isBlocked?: boolean;
+  type?: 'blocked' | 'bomb' | 'default' | 'hurt' | 'loved' | 'sad';
 }
 
-const DaboIcon = ({ usage = 0, isBlocked, ...props }: DaboIconProps) => {
+const DaboIcon = ({ usage = 0, isBlocked, type, ...props }: DaboIconProps) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -23,8 +24,15 @@ const DaboIcon = ({ usage = 0, isBlocked, ...props }: DaboIconProps) => {
   }, []);
 
   if (!mounted) return null;
+
   const SelectedComponent = (() => {
-    if (isBlocked) return DaboBlockedIcon;
+    if (isBlocked || type === 'blocked') return DaboBlockedIcon;
+    if (type === 'bomb') return DaboBombIcon;
+    if (type === 'hurt') return DaboHurtIcon;
+    if (type === 'sad') return DaboSadIcon;
+    if (type === 'default') return DaboDefaultIcon;
+    if (type === 'loved') return DaboLovedIcon;
+
     if (usage <= 81) return DaboLovedIcon;
     if (usage <= 51) return DaboDefaultIcon;
     if (usage <= 31) return DaboSadIcon;
