@@ -17,6 +17,7 @@ import {
 } from '@shared';
 
 import LimitInput from './LimitInput';
+import { PolicyBlock, PolicyLimit, PolicyTime } from './PolicySimple';
 
 export interface CustomerState {
   customerId: number;
@@ -38,6 +39,7 @@ interface MemberCardProps {
   };
   state: CustomerState;
   isSelected: boolean;
+  isOwner?: boolean;
   isEditingByOther?: boolean;
 
   handlers: {
@@ -53,6 +55,7 @@ export default function MemberCard({
   customer,
   state,
   isSelected,
+  isOwner = true,
   isEditingByOther = false,
   handlers,
 }: MemberCardProps) {
@@ -137,8 +140,8 @@ export default function MemberCard({
   return (
     <li
       className={cn(
-        'bg-brand-white flex w-full list-none flex-col overflow-hidden rounded-2xl border-2 transition-all duration-300 ease-in-out',
-        isSelected || state.isBlocked ? 'border-gray-700' : 'border-gray-200',
+        'bg-brand-white flex w-full list-none flex-col overflow-hidden rounded-2xl border transition-all duration-300 ease-in-out',
+        isSelected ? 'border-gray-700' : 'border-gray-200',
       )}
     >
       <button
@@ -149,7 +152,7 @@ export default function MemberCard({
         aria-controls={`detail-${idStr}`}
       >
         <div className="flex w-full items-center justify-between">
-          <div className="flex flex-col items-start">
+          <div className="flex flex-col items-start gap-0.75">
             <div className="flex items-center gap-1">
               <span className="text-body1-m">{customer.name}</span>
               {state.isBlocked && (
@@ -194,212 +197,238 @@ export default function MemberCard({
         <div className="overflow-hidden">
           <div className="mx-4 h-px bg-gray-400" />
 
-          <div className="flex flex-col gap-4 p-4">
-            {/* 데이터 사용 차단 */}
-            <div className="flex w-full items-center justify-between">
-              <div className="flex items-center gap-2">
-                <DoNotIcon className="text-primary" />
-                <span className="text-body1-m">데이터 사용 차단</span>
-              </div>
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (!isEditingByOther) handlers.onToggleBlock?.(idStr);
-                }}
-                role="switch"
-                disabled={isEditingByOther}
-                aria-checked={state.isBlocked}
-                className={cn(
-                  'flex h-4 w-7 items-center rounded-full p-[1px] transition-colors duration-200 ease-in-out',
-                  state.isBlocked ? 'bg-primary-500' : 'bg-gray-500',
-                )}
-              >
-                <div
-                  className={cn(
-                    'bg-brand-white h-3.5 w-3.5 rounded-full transition-transform duration-200 ease-in-out',
-                    state.isBlocked ? 'translate-x-3' : 'translate-x-0',
-                  )}
+          <div className="flex flex-col gap-2 p-4">
+            {!isOwner ? (
+              <div className="flex flex-col gap-2">
+                <PolicyBlock isBlocked={!!state.isBlocked} />
+                <PolicyLimit text={`${localLimit}GB`} disabled={state.isBlocked} />
+                <PolicyTime
+                  isOn={!!state.timeLimit}
+                  text={`${state.timeLimit?.start || '00:00'} ~ ${state.timeLimit?.end || '00:00'}`}
+                  disabled={state.isBlocked}
                 />
-              </button>
-            </div>
-
-            <div className="mx-0 border-t border-gray-100" />
-
-            {/* 데이터 사용 한도 입력 */}
-            <div className="flex w-full flex-col gap-4">
-              <div className="flex w-full items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <ErrorOutlineIcon
-                    width={13}
-                    height={13}
-                    className={cn(isDisabled ? 'text-gray-700' : 'text-primary')}
-                  />
-                  <span className={cn('text-body1-m', isDisabled && 'text-gray-500')}>
-                    데이터 사용 한도
-                  </span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <LimitInput
-                    value={localLimit}
-                    onChange={handleInputChange}
-                    disabled={isDisabled}
-                  />
-                  <span className={cn('text-body1-m', isDisabled && 'text-gray-500')}>GB</span>
-                </div>
               </div>
-
-              <div className="flex w-full flex-col">
-                <div className="grid h-4 w-full items-center">
-                  <div className="col-start-1 row-start-1 h-2 w-full rounded-full bg-gray-100" />
-                  <div
+            ) : (
+              <>
+                {/* 데이터 사용 차단 */}
+                <div className="flex w-full items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <DoNotIcon className="text-primary" />
+                    <span className="text-body1-m">데이터 사용 차단</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (!isEditingByOther) handlers.onToggleBlock?.(idStr);
+                    }}
+                    role="switch"
+                    disabled={isEditingByOther}
+                    aria-checked={state.isBlocked}
                     className={cn(
-                      'col-start-1 row-start-1 h-2 justify-self-start rounded-full transition-all duration-300',
-                      isDisabled ? 'bg-gray-700' : 'bg-primary',
+                      'flex h-4 w-7 items-center rounded-full p-[1px] transition-colors duration-200 ease-in-out',
+                      state.isBlocked ? 'bg-primary-500' : 'bg-gray-500',
                     )}
-                    style={{ width: `${sliderPercentage}%` }}
-                  />
-
-                  <div
-                    className="pointer-events-none col-start-1 row-start-1 flex w-full items-center"
-                    style={{ marginLeft: `${sliderPercentage}%` }}
                   >
                     <div
                       className={cn(
-                        'bg-brand-white h-4 w-4 -translate-x-1/2 rounded-full border-2 shadow-sm transition-all duration-300',
-                        isDisabled ? 'border-gray-700' : 'border-primary',
+                        'bg-brand-white h-3.5 w-3.5 rounded-full transition-transform duration-200 ease-in-out',
+                        state.isBlocked ? 'translate-x-3' : 'translate-x-0',
                       )}
                     />
+                  </button>
+                </div>
+
+                <div className="mx-0 border-t border-gray-100" />
+
+                {/* 데이터 사용 한도 입력 */}
+                <div className="flex w-full flex-col gap-4">
+                  <div className="flex w-full items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <ErrorOutlineIcon
+                        width={13}
+                        height={13}
+                        className={cn(isDisabled ? 'text-gray-700' : 'text-primary')}
+                      />
+                      <span className={cn('text-body1-m', isDisabled && 'text-gray-500')}>
+                        데이터 사용 한도
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <LimitInput
+                        value={localLimit}
+                        onChange={handleInputChange}
+                        disabled={isDisabled}
+                      />
+                      <span className={cn('text-body1-m', isDisabled && 'text-gray-500')}>GB</span>
+                    </div>
                   </div>
-                  <input
-                    type="range"
-                    min={LIMIT.MIN}
-                    max={LIMIT.MAX}
-                    step="1"
-                    value={localLimit}
-                    onChange={handleSliderChange}
-                    disabled={isDisabled}
-                    className="col-start-1 row-start-1 h-full w-full cursor-pointer touch-none opacity-0"
-                    aria-label="데이터 한도 설정"
-                  />
+
+                  <div className="flex w-full flex-col">
+                    <div className="grid h-4 w-full items-center">
+                      <div className="col-start-1 row-start-1 h-2 w-full rounded-full bg-gray-100" />
+                      <div
+                        className={cn(
+                          'col-start-1 row-start-1 h-2 justify-self-start rounded-full transition-all duration-300',
+                          isDisabled ? 'bg-gray-700' : 'bg-primary',
+                        )}
+                        style={{ width: `${sliderPercentage}%` }}
+                      />
+
+                      <div
+                        className="pointer-events-none col-start-1 row-start-1 flex w-full items-center"
+                        style={{ marginLeft: `${sliderPercentage}%` }}
+                      >
+                        <div
+                          className={cn(
+                            'bg-brand-white h-4 w-4 -translate-x-1/2 rounded-full border-2 shadow-sm transition-all duration-300',
+                            isDisabled ? 'border-gray-700' : 'border-primary',
+                          )}
+                        />
+                      </div>
+                      <input
+                        type="range"
+                        min={LIMIT.MIN}
+                        max={LIMIT.MAX}
+                        step="1"
+                        value={localLimit}
+                        onChange={handleSliderChange}
+                        disabled={isDisabled}
+                        className="col-start-1 row-start-1 h-full w-full cursor-pointer touch-none opacity-0"
+                        aria-label="데이터 한도 설정"
+                      />
+                    </div>
+                    <div
+                      className={cn(
+                        'text-caption-m flex w-full justify-between',
+                        isDisabled ? 'text-gray-700' : 'text-gray-800',
+                      )}
+                    >
+                      <span>{LIMIT.MIN}GB</span>
+                      <span>{LIMIT.MAX}GB</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="border-t border-gray-100" />
+                <div className="flex w-full flex-col gap-4">
+                  <div className="flex w-full items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <TimeIcon className={cn(isDisabled ? 'text-gray-700' : 'text-primary')} />
+                      <span className={cn('text-body1-m', isDisabled && 'text-gray-500')}>
+                        시간 제한
+                      </span>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => !isEditingByOther && handlers.onToggleTime(idStr)}
+                      role="switch"
+                      disabled={isDisabled}
+                      aria-checked={!state.timeLimit}
+                      className={cn(
+                        'flex h-4 w-7 items-center rounded-full p-[1px] transition-colors duration-200 ease-in-out',
+                        state.timeLimit
+                          ? isDisabled
+                            ? 'bg-gray-700'
+                            : 'bg-primary-500'
+                          : 'bg-gray-500',
+                      )}
+                    >
+                      <div
+                        className={cn(
+                          'bg-brand-white shadow-default h-3.5 w-3.5 rounded-full transition-transform duration-200 ease-in-out',
+                          state.timeLimit ? 'translate-x-3' : 'translate-x-0',
+                        )}
+                      />
+                    </button>
+                  </div>
+
+                  <div className="bg-background-sub flex h-14 w-full flex-col items-center justify-center gap-2 rounded-lg py-4">
+                    {!state.timeLimit && !isDisabled ? (
+                      <span className="text-caption-m text-gray-800">
+                        시간 제한이 설정되지 않았습니다.
+                      </span>
+                    ) : (
+                      <div className="flex items-center justify-center">
+                        <button
+                          type="button"
+                          onClick={() => handlers.onTimeClick(idStr, 'start')}
+                          disabled={isDisabled}
+                          className={cn(
+                            'flex h-6 w-15 items-center justify-center rounded border',
+                            isDisabled
+                              ? 'border-none bg-gray-100'
+                              : 'border-primary-200 bg-primary-50',
+                          )}
+                        >
+                          <span
+                            className={cn(
+                              'text-body1-m',
+                              isDisabled ? 'text-gray-500' : 'text-black',
+                            )}
+                          >
+                            {state.timeLimit?.start || '23:00'}
+                          </span>
+                        </button>
+                        <span className={cn('text-body1-m mx-2', isDisabled && 'text-gray-500')}>
+                          부터
+                        </span>
+
+                        <button
+                          type="button"
+                          onClick={() => handlers.onTimeClick(idStr, 'end')}
+                          disabled={isDisabled}
+                          className={cn(
+                            'flex h-6 w-15 items-center justify-center rounded border',
+                            isDisabled
+                              ? 'border-none bg-gray-100'
+                              : 'border-primary-200 bg-primary-50',
+                          )}
+                        >
+                          <span
+                            className={cn(
+                              'text-body1-m',
+                              isDisabled ? 'text-gray-500' : 'text-black',
+                            )}
+                          >
+                            {state.timeLimit?.end || '07:00'}
+                          </span>
+                        </button>
+                        <span className={cn('text-body1-m ml-2', isDisabled && 'text-gray-500')}>
+                          까지
+                        </span>
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div
                   className={cn(
-                    'text-caption-m flex w-full justify-between',
+                    'flex items-center justify-center',
                     isDisabled ? 'text-gray-700' : 'text-gray-800',
                   )}
                 >
-                  <span>{LIMIT.MIN}GB</span>
-                  <span>{LIMIT.MAX}GB</span>
+                  터치하여 시간을 설정하세요.
                 </div>
-              </div>
-            </div>
+              </>
+            )}
 
-            <div className="border-t border-gray-100" />
-            <div className="flex w-full flex-col gap-4">
-              <div className="flex w-full items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <TimeIcon className={cn(isDisabled ? 'text-gray-700' : 'text-primary')} />
-                  <span className={cn('text-body1-m', isDisabled && 'text-gray-500')}>
-                    시간 제한
-                  </span>
-                </div>
-
+            {isOwner && (
+              <>
+                <div className="border-t border-gray-400" />
                 <button
                   type="button"
-                  onClick={() => !isEditingByOther && handlers.onToggleTime(idStr)}
-                  role="switch"
-                  disabled={isDisabled}
-                  aria-checked={!state.timeLimit}
-                  className={cn(
-                    'flex h-4 w-7 items-center rounded-full p-[1px] transition-colors duration-200 ease-in-out',
-                    state.timeLimit
-                      ? isDisabled
-                        ? 'bg-gray-700'
-                        : 'bg-primary-500'
-                      : 'bg-gray-500',
-                  )}
+                  className="flex w-full justify-end gap-1"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    window.location.href = `/policy/detail?customerId=${idStr}`;
+                  }}
                 >
-                  <div
-                    className={cn(
-                      'bg-brand-white shadow-default h-3.5 w-3.5 rounded-full transition-transform duration-200 ease-in-out',
-                      state.timeLimit ? 'translate-x-3' : 'translate-x-0',
-                    )}
-                  />
+                  <span className="text-body2-m">더보기</span>
+                  <ChevronIcon />
                 </button>
-              </div>
-
-              <div className="bg-background-sub flex h-14 w-full flex-col items-center justify-center gap-2 rounded-lg py-4">
-                {!state.timeLimit && !isDisabled ? (
-                  <span className="text-caption-m text-gray-800">
-                    시간 제한이 설정되지 않았습니다.
-                  </span>
-                ) : (
-                  <div className="flex items-center justify-center">
-                    <button
-                      type="button"
-                      onClick={() => handlers.onTimeClick(idStr, 'start')}
-                      disabled={isDisabled}
-                      className={cn(
-                        'flex h-6 w-15 items-center justify-center rounded border',
-                        isDisabled ? 'border-none bg-gray-100' : 'border-primary-200 bg-primary-50',
-                      )}
-                    >
-                      <span
-                        className={cn('text-body1-m', isDisabled ? 'text-gray-500' : 'text-black')}
-                      >
-                        {state.timeLimit?.start || '23:00'}
-                      </span>
-                    </button>
-                    <span className={cn('text-body1-m mx-2', isDisabled && 'text-gray-500')}>
-                      부터
-                    </span>
-
-                    <button
-                      type="button"
-                      onClick={() => handlers.onTimeClick(idStr, 'end')}
-                      disabled={isDisabled}
-                      className={cn(
-                        'flex h-6 w-15 items-center justify-center rounded border',
-                        isDisabled ? 'border-none bg-gray-100' : 'border-primary-200 bg-primary-50',
-                      )}
-                    >
-                      <span
-                        className={cn('text-body1-m', isDisabled ? 'text-gray-500' : 'text-black')}
-                      >
-                        {state.timeLimit?.end || '07:00'}
-                      </span>
-                    </button>
-                    <span className={cn('text-body1-m ml-2', isDisabled && 'text-gray-500')}>
-                      까지
-                    </span>
-                  </div>
-                )}
-              </div>
-            </div>
-            <div
-              className={cn(
-                'flex items-center justify-center',
-                isDisabled ? 'text-gray-700' : 'text-gray-800',
-              )}
-            >
-              터치하여 시간을 설정하세요.
-            </div>
-
-            <div className="border-t border-gray-400" />
-
-            <button
-              type="button"
-              className="flex w-full justify-end gap-1"
-              onClick={(e) => {
-                e.stopPropagation();
-                window.location.href = `/policy/detail?customerId=${idStr}`;
-              }}
-            >
-              <span className="text-body2-m">더보기</span>
-              {/* 아이콘 추후 조절 */}
-              <ChevronIcon />
-            </button>
+              </>
+            )}
           </div>
         </div>
       </div>

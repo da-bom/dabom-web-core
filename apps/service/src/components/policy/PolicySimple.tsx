@@ -11,7 +11,7 @@ interface PolicyItemProps {
   disabled?: boolean;
 }
 
-const PolicyItem = ({ icon, label, value, disabled }: PolicyItemProps) => (
+export const PolicyItem = ({ icon, label, value, disabled }: PolicyItemProps) => (
   <div className="flex h-6 w-full items-center justify-between">
     <div className="flex items-center gap-2">
       <div className="text-primary flex h-4 w-4 items-center justify-center">{icon}</div>
@@ -28,34 +28,35 @@ interface BlockProps {
   onToggle?: () => void;
 }
 
-const Block = ({ isBlocked, onToggle }: BlockProps) => (
+export const PolicyBlock = ({ isBlocked, onToggle }: BlockProps) => (
   <PolicyItem
     icon={<DoNotIcon />}
     label="데이터 사용 차단"
     value={
-      <button
-        type="button"
-        role="switch"
-        aria-checked={isBlocked}
-        onClick={onToggle}
-        disabled={!onToggle}
+      <div
         className={cn(
-          'flex h-4 w-7 items-center rounded-full p-[1px] transition-colors duration-200 ease-in-out',
+          'relative flex h-4 w-7 items-center rounded-full p-[1px] transition-colors duration-200 ease-in-out',
           isBlocked ? 'bg-primary-500' : 'bg-gray-500',
         )}
       >
-        <div
+        <button
+          type="button"
+          role="switch"
+          aria-checked={isBlocked}
+          onClick={onToggle}
+          disabled={!onToggle}
           className={cn(
             'bg-brand-white h-3.5 w-3.5 rounded-full transition-transform duration-200 ease-in-out',
             isBlocked ? 'translate-x-3' : 'translate-x-0',
+            !onToggle && 'cursor-default',
           )}
         />
-      </button>
+      </div>
     }
   />
 );
 
-const Limit = ({ text, disabled }: { text: string; disabled?: boolean }) => (
+export const PolicyLimit = ({ text, disabled }: { text: string; disabled?: boolean }) => (
   <PolicyItem
     icon={<ErrorOutlineIcon />}
     label="데이터 사용 한도"
@@ -68,7 +69,15 @@ const Limit = ({ text, disabled }: { text: string; disabled?: boolean }) => (
   />
 );
 
-const Time = ({ text, isOn, disabled }: { text: string; isOn?: boolean; disabled?: boolean }) => (
+export const PolicyTime = ({
+  text,
+  isOn,
+  disabled,
+}: {
+  text: string;
+  isOn?: boolean;
+  disabled?: boolean;
+}) => (
   <PolicyItem
     icon={<TimeIcon />}
     label="시간 제한"
@@ -89,12 +98,12 @@ interface PolicySimpleProps {
 
 export default function PolicySimple({ children }: PolicySimpleProps) {
   return (
-    <MainBox className="flex h-36 w-full flex-col items-start gap-5 rounded-2xl p-4">
+    <MainBox className="flex w-full flex-col items-start gap-4 rounded-2xl border-none p-0">
       {children}
     </MainBox>
   );
 }
 
-PolicySimple.Block = Block;
-PolicySimple.Limit = Limit;
-PolicySimple.Time = Time;
+PolicySimple.Block = PolicyBlock;
+PolicySimple.Limit = PolicyLimit;
+PolicySimple.Time = PolicyTime;
