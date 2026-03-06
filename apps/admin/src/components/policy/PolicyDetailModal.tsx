@@ -10,8 +10,8 @@ import { PolicyDetail } from 'src/api/policy/schema';
 import { useGetPolicyDetail } from 'src/api/policy/useGetPolicyDetail';
 import { useUpdatePolicy } from 'src/api/policy/useUpdatePolicy';
 
+import StatusField from './StatusField';
 import DefaultRuleField from './rule/DefaultRuleField';
-import StatusField from './ui/StatusField';
 
 const PolicyDetailModal = () => {
   const params = useParams();

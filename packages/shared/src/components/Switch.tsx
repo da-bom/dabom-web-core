@@ -13,8 +13,8 @@ const Switch = ({ children, type, size, onClick }: Readonly<SwitchProps>) => {
     <button
       type="button"
       className={cn(
-        'flex w-fit cursor-pointer items-center gap-1 rounded-full border-[1px] px-4 py-1',
-        type === 'primary' && 'border-primary bg-primary-50',
+        'flex w-fit cursor-pointer items-center gap-1 rounded-full border px-4 py-0.5',
+        type === 'primary' && 'border-primary-600 bg-primary-50',
         type === 'secondary' && 'border-primary-800',
         type === 'gray' && 'border-gray-800 bg-gray-100',
 
@@ -22,11 +22,10 @@ const Switch = ({ children, type, size, onClick }: Readonly<SwitchProps>) => {
       )}
       onClick={onClick}
     >
-      <div className="text-brand-dark">{children}</div>
+      <div className="text-brand-dark text-body3-d">{children}</div>
       <RefreshIcon
-        className={type === 'gray' ? 'text-gray-800' : 'text-primary'}
-        {...(size === 'sm' && { width: 11, height: 11 })}
-        {...(size === 'lg' && { width: 13, height: 13 })}
+        className={type === 'primary' ? 'text-primary-600' : 'text-gray-800'}
+        sx={{ width: 16 }}
       />
     </button>
   );

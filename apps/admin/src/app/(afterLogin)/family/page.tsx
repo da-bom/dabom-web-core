@@ -2,14 +2,15 @@
 
 import { useState } from 'react';
 
-import { MainBox, RefreshIcon, SubBox } from '@shared';
+import { MainBox, ResetIcon } from '@shared';
 import { FamilySearchRequest } from 'src/api/family/schema';
 import FamilyDetail from 'src/components/family/FamilyDetail';
 import FamilyList from 'src/components/family/FamilyList';
+import SearchBox from 'src/components/family/SearchBox';
 
 const INITIAL_FAMILY_SEARCH_PARAMS: FamilySearchRequest = {
   page: 0,
-  size: 10,
+  size: 15,
   filters: {},
   sort: [{ field: 'createdAt', direction: 'desc' }],
 };
@@ -25,17 +26,15 @@ const FamilyPage = () => {
   };
 
   return (
-    <div className="flex h-screen w-full flex-col gap-5 overflow-hidden">
-      <MainBox className="flex w-full justify-between gap-5 p-5">
-        <SubBox className="h-11 w-38">type</SubBox>
-        {/* TODO: 여기서 setParams({ ...params, filters: { ... } }) 호출 */}
-        <SubBox className="w-full">search</SubBox>
-        <button className="flex w-22 cursor-pointer items-center gap-1" onClick={handleReset}>
-          <RefreshIcon />
-          <span>초기화</span>
+    <div className="flex h-screen w-full flex-col gap-4 overflow-hidden">
+      <div className="flex flex-col items-end gap-1">
+        <button className="flex cursor-pointer items-center gap-1 px-1" onClick={handleReset}>
+          <ResetIcon sx={{ width: 13 }} />
+          <span className="text-body3-d">초기화</span>
         </button>
-      </MainBox>
-      <div className="flex h-full gap-5">
+        <SearchBox />
+      </div>
+      <div className="flex gap-5">
         <MainBox className="w-86 p-4">
           <FamilyList params={params} selectedFam={selectedFam} setSelectedFam={setSelectedFam} />
         </MainBox>

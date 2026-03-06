@@ -15,25 +15,20 @@ const FamilyItem = ({ id, customers, isSelected, setSelectedFam }: Readonly<Fami
       type="button"
       className={cn(
         'flex w-full flex-col justify-between transition-colors',
-        'cursor-pointer rounded-md border-[1px] p-2',
-        isSelected ? 'bg-primary-50 border-primary-300' : 'bg-brand-white border-gray-300',
+        'cursor-pointer rounded-md border border-gray-300 p-2',
+        isSelected ? 'bg-gray-100' : 'bg-brand-white',
       )}
       onClick={() => setSelectedFam(id)}
     >
       <div className="flex w-full items-center justify-between">
         <div className="flex items-center gap-2">
-          <Badge color={isSelected ? 'white' : 'gray'} size="sm">
+          <Badge className="min-w-24" color={isSelected ? 'white' : 'gray'} size="sm">
             FAM-{id}
           </Badge>
-          <span className="text-body1-d">{customers[0]?.name}</span>
+          <span className="text-body3-d">
+            {customers[0]?.name} 외 {customers.length - 1}명
+          </span>
         </div>
-        <span className="text-caption-d text-gray-500">{customers.length}명</span>
-      </div>
-
-      <div className="flex w-full flex-wrap">
-        <span className="text-caption-d text-gray-500">
-          {customers.map((c) => c.name).join(', ')}
-        </span>
       </div>
     </button>
   );

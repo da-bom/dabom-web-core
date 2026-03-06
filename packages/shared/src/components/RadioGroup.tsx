@@ -18,21 +18,20 @@ interface RadioGroupProps {
 
 const RadioGroup = ({ options, selectedValue, onChange, name }: RadioGroupProps) => {
   return (
-    <div className="flex flex-col gap-3">
-      {options.map((option) => (
-        <label key={option.value} className="flex cursor-pointer items-start gap-2">
-          {/* 실제 라디오 인풋 (숨기거나 스타일링) */}
+    <>
+      {options.map((option, idx) => (
+        <label key={`option.value-${idx}`} className="flex cursor-pointer items-center gap-2">
           <input
             type="radio"
             name={name}
             value={option.value}
             checked={selectedValue === option.value}
             onChange={() => onChange(option.value)}
-            className="accent-primary mt-1 h-4 w-4 cursor-pointer"
+            className="checked:border-primary-600 h-4 w-4 cursor-pointer appearance-none rounded-full border-1 border-gray-300 transition-all duration-150 ease-in-out checked:border-[4.5px] checked:bg-white"
           />
 
-          <div className="flex flex-col gap-0.5">
-            <span className="text-body2-d">{option.label}</span>
+          <div className="flex flex-1 flex-col gap-0.5">
+            <span className="text-body2-d shrink-0">{option.label}</span>
             {option.subLabel && (
               <div className="flex items-center gap-1">
                 {option.isWarning && <ErrorIcon className="text-primary-700 h-3 w-3" />}
@@ -46,7 +45,7 @@ const RadioGroup = ({ options, selectedValue, onChange, name }: RadioGroupProps)
           </div>
         </label>
       ))}
-    </div>
+    </>
   );
 };
 

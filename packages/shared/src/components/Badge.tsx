@@ -13,7 +13,7 @@ interface BadgeProps {
 const Badge = ({ children, className, color = 'primary', size = 'sm' }: BadgeProps) => {
   const colors: Record<BadgeColor, string> = {
     primary: 'bg-primary text-brand-white',
-    white: 'bg-brand-white text-primary',
+    white: 'bg-brand-white ',
     gray: 'bg-gray-200',
     outline: 'bg-brand-white text-brand-dark border-2 border-primary text-primary',
     primary_light: 'bg-primary-100',
@@ -22,7 +22,7 @@ const Badge = ({ children, className, color = 'primary', size = 'sm' }: BadgePro
 
   const sizes: Record<BadgeSize, string> = {
     sm: 'px-3 text-caption-d rounded-full',
-    lg: 'px-4 py-1 text-body2-d rounded-full',
+    lg: 'px-4  text-body2-d rounded-full',
   };
   return (
     <span

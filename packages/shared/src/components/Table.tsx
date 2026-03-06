@@ -7,9 +7,9 @@ interface TableProps {
 
 const Table = ({ headers, rows }: TableProps) => {
   return (
-    <div className="w-full overflow-hidden rounded-lg border-[1px] border-gray-100">
+    <div className="max-h-90 w-full overflow-auto rounded-lg border-[1px] border-gray-100">
       <table className="w-full border-collapse">
-        <thead className="bg-brand-dark text-brand-white text-body2-d h-11">
+        <thead className="bg-brand-dark text-brand-white text-body2-d sticky top-0 h-11">
           <tr>
             {headers.map((header) => (
               <th key={header} className="px-4 font-medium">
