@@ -53,7 +53,7 @@ function PolicyDetailContent() {
 
   const limitText =
     customer.monthlyLimitBytes === null
-      ? '무제한'
+      ? '-'
       : `${Math.round(bytesToGB(customer.monthlyLimitBytes))}GB`;
 
   const timeLimitText = customer.timeLimit

@@ -62,9 +62,14 @@ export const PolicyLimit = ({ text, disabled }: { text: string; disabled?: boole
   <PolicyItem
     icon={<ErrorOutlineIcon />}
     label="데이터 사용 한도"
-    disabled={disabled}
+    disabled={disabled || text === '-'}
     value={
-      <span className={cn('text-body1-m', disabled ? 'text-gray-500' : 'text-brand-black')}>
+      <span
+        className={cn(
+          'text-body1-m',
+          disabled || text === '-' ? 'text-gray-500' : 'text-brand-black',
+        )}
+      >
         {disabled ? '-' : text}
       </span>
     }
