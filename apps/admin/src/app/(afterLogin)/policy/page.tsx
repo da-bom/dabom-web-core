@@ -1,33 +1,43 @@
 'use client';
 
-import { useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { Table } from '@shared';
 import { useGetPolicy } from 'src/api/policy/useGetPolicy';
+import Pagination from 'src/components/common/Pagination';
 import { formatPolicy } from 'src/utils/formatPolicy';
 
 const PolicyPage = () => {
-  const [page, setPage] = useState(0);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-  const { data, isLoading } = useGetPolicy(page);
+  const currentPage = Number(searchParams.get('page')) || 0;
 
-  if (isLoading) {
-    return <div className="p-10 text-center">데이터 로드 중...</div>;
-  }
+  const { data, isLoading } = useGetPolicy(currentPage);
 
-  if (!data) {
-    return <div className="p-10 text-center">표시할 정책 데이터가 없습니다.</div>;
-  }
+  const handlePageChange = (newPage: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('page', newPage.toString());
+
+    router.push(`${pathname}?${params.toString()}`);
+  };
+
+  if (isLoading) return <div>로딩</div>;
+  if (!data) return <div>표시할 정책 데이터가 없습니다.</div>;
 
   const policyRows = formatPolicy({ policies: data });
 
   return (
     <div className="mt-6 flex h-screen flex-col">
-      <Table
-        headers={['정책', '권한', '기본값', '상태', '관리']}
-        rows={policyRows}
-        className="rounded-md"
-      />
+      <div className="flex-1 overflow-hidden">
+        <Table
+          headers={['정책', '권한', '기본값', '상태', '관리']}
+          rows={policyRows}
+          className="rounded-md"
+        />
+      </div>
+      <Pagination currentPage={currentPage} totalPages={5} onPageChange={handlePageChange} />
     </div>
   );
 };
