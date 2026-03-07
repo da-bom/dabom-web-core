@@ -98,7 +98,7 @@ interface PolicySimpleProps {
 
 export default function PolicySimple({ children }: PolicySimpleProps) {
   return (
-    <MainBox className="flex w-full flex-col items-start gap-4 rounded-2xl border-none p-0">
+    <MainBox className="flex w-full flex-col items-start gap-5 rounded-2xl border-none p-0">
       {children}
     </MainBox>
   );

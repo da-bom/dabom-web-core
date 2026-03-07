@@ -34,7 +34,7 @@ interface MemberCardProps {
     name: string;
     phoneNumber: string;
     monthlyUsedBytes: number;
-    monthlyLimitBytes: number;
+    monthlyLimitBytes: number | null;
   };
   state: CustomerState;
   isSelected: boolean;
