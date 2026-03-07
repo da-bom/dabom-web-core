@@ -53,7 +53,11 @@ function PolicyDetailContent() {
     );
   }
 
-  const limitGB = Math.round(bytesToGB(customer.monthlyLimitBytes ?? 0));
+  const limitText =
+    customer.monthlyLimitBytes === null
+      ? '무제한'
+      : `${Math.round(bytesToGB(customer.monthlyLimitBytes))}GB`;
+
   const timeLimitText = customer.timeLimit
     ? `${customer.timeLimit.start} ~ ${customer.timeLimit.end}`
     : '설정되지 않음';
@@ -73,7 +77,7 @@ function PolicyDetailContent() {
       <MainBox className="w-full rounded-2xl p-4">
         <PolicySimple>
           <PolicySimple.Block isBlocked={customer.isBlocked} />
-          <PolicySimple.Limit text={`${limitGB}GB`} disabled={customer.isBlocked} />
+          <PolicySimple.Limit text={limitText} disabled={customer.isBlocked} />
           <PolicySimple.Time
             text={timeLimitText}
             isOn={!!customer.timeLimit}
