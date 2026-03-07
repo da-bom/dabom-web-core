@@ -22,10 +22,10 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="bg-brand-white flex h-screen w-62 flex-col justify-between border-r-[1px] border-gray-100 py-5">
+    <div className="bg-brand-white flex h-screen w-62 flex-col justify-between border-r border-gray-100 py-5">
       <div className="flex w-full flex-col items-center gap-7">
-        <Logo type="admin" />
-        <div className="w-38 border-[1px] border-gray-100" />
+        <Logo type="admin" width={152} />
+        <div className="w-38 border border-gray-100" />
 
         <div className="flex w-full flex-col gap-5 px-2">
           {MENU.map((item) => {
@@ -41,9 +41,13 @@ const Sidebar = () => {
           })}
         </div>
       </div>
-      <button className="flex cursor-pointer px-5 text-gray-400" onClick={handleLogout}>
-        <LogoutIcon />
-        <span>로그아웃</span>
+      <button className="flex cursor-pointer gap-2 px-5 text-gray-400" onClick={handleLogout}>
+        <LogoutIcon
+          sx={{
+            width: 16,
+          }}
+        />
+        <span className="text-body3-d">로그아웃</span>
       </button>
     </div>
   );

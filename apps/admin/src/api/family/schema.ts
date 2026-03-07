@@ -72,3 +72,4 @@ export const FamilyDetailDataSchema = z.object({
 export type Family = z.infer<typeof FamilySchema>;
 export type FamilyResponse = z.infer<typeof FamilyResponseSchema>;
 export type FamilyCustomer = z.infer<typeof FamilyCustomerSchema>;
+export type FamilyDetail = z.infer<typeof FamilyDetailDataSchema>;

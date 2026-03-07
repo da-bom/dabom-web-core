@@ -5,7 +5,7 @@ import { FamilyResponseSchema, FamilySearchRequest, FamilySearchRequestSchema } 
 
 export const getFamilies = async (params: FamilySearchRequest) => {
   const validatedParams = FamilySearchRequestSchema.parse(params);
-  const response = await http.post('/families', validatedParams);
+  const response = await http.post('/admin/families', validatedParams);
 
   try {
     const parsed = FamilyResponseSchema.parse(response);

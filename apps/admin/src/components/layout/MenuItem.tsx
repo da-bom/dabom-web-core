@@ -19,7 +19,7 @@ const MenuItem = ({
       href={href}
       className={cn(
         'flex w-full items-center gap-2 rounded-md px-2 py-1',
-        isSelected ? 'bg-primary-50 text-primary' : 'text-gray-700',
+        isSelected ? 'bg-primary-50 text-primary-600' : 'text-gray-700',
       )}
     >
       <Icon className="text-5" />

@@ -17,7 +17,7 @@ export default function AfterLoginLayout({
     <QueryClientProvider client={queryClient}>
       <div className="flex h-screen w-full overflow-hidden">
         <Sidebar />
-        <div className="flex w-full flex-col gap-5 p-5">
+        <div className="flex w-full flex-col gap-4 p-5">
           <Header />
           {children}
         </div>

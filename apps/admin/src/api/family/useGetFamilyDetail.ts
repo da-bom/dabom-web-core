@@ -5,7 +5,7 @@ import { FamilyDetailDataSchema } from './schema';
 
 export const getFamilyDetail = async (familyId: number) => {
   if (!familyId) return null;
-  const response = await http.get(`/families/${familyId}`);
+  const response = await http.get(`/admin/families/${familyId}`);
 
   try {
     const parsed = FamilyDetailDataSchema.parse(response);
