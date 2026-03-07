@@ -42,6 +42,7 @@ interface MemberCardProps {
   isSelected: boolean;
   isOwner?: boolean;
   isEditingByOther?: boolean;
+  totalQuotaBytes?: number;
 
   handlers: {
     onSelect: (id: string) => void;
@@ -58,14 +59,17 @@ export default function MemberCard({
   isSelected,
   isOwner = true,
   isEditingByOther = false,
+  totalQuotaBytes,
   handlers,
 }: MemberCardProps) {
   const router = useRouter();
   const idStr = customer.customerId.toString();
 
+  const dynamicMaxGB = totalQuotaBytes ? Math.round(bytesToGB(totalQuotaBytes)) : 70;
+
   const LIMIT = {
     MIN: 1,
-    MAX: 70,
+    MAX: dynamicMaxGB,
   } as const;
 
   const isUnlimited = state.limitBytes === null;
