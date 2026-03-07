@@ -3,9 +3,9 @@ import { useQuery } from '@tanstack/react-query';
 
 import { Policy, PolicyResponse, PolicyResponseSchema } from './schema';
 
-export const getPolicy = async (type: string, page: number): Promise<PolicyResponse> => {
+export const getPolicy = async (page: number): Promise<PolicyResponse> => {
   const response = await http.get('/policies', {
-    params: { type, page, size: 10 },
+    params: { page, size: 10 },
   });
 
   try {
@@ -17,11 +17,10 @@ export const getPolicy = async (type: string, page: number): Promise<PolicyRespo
   }
 };
 
-export const useGetPolicy = (type: string, page: number) => {
+export const useGetPolicy = (page: number) => {
   return useQuery<PolicyResponse, Error, Policy[]>({
-    queryKey: ['policies', type, page],
-    queryFn: () => getPolicy(type, page),
-    enabled: !!type,
+    queryKey: ['policies', page],
+    queryFn: () => getPolicy(page),
     select: (res) => res.policies,
   });
 };
