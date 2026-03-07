@@ -6,7 +6,7 @@ export const FamilyRoleSchema = z.enum(['OWNER', 'MEMBER']);
 export const PolicyTypeEnum = z.enum(['MONTHLY_LIMIT', 'TIME_BLOCK', 'MANUAL_BLOCK']);
 
 export const ApiPolicyRulesSchema = z.object({
-  limitBytes: z.number().optional(),
+  limitBytes: z.number().nullable().optional(),
   start: z.string().optional(),
   end: z.string().optional(),
   timezone: z.string().optional(),
