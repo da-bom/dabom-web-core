@@ -14,7 +14,9 @@ interface PolicyItemProps {
 export const PolicyItem = ({ icon, label, value, disabled }: PolicyItemProps) => (
   <div className="flex h-6 w-full items-center justify-between">
     <div className="flex items-center gap-2">
-      <div className="text-primary flex h-4 w-4 items-center justify-center">{icon}</div>
+      <div className="text-primary flex h-4 w-4 items-center justify-center">
+        <div className="text-primary flex h-4 w-4 items-center justify-center">{icon}</div>
+      </div>
       <span className={cn('text-body1-m', disabled ? 'text-gray-500' : 'text-brand-black')}>
         {label}
       </span>

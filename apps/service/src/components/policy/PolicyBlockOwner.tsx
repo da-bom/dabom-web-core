@@ -16,7 +16,7 @@ export function PolicyBlockOwner({
   return (
     <div className="flex w-full items-center justify-between">
       <div className="flex items-center gap-2">
-        <DoNotIcon className="text-primary" />
+        <DoNotIcon sx={{ fontSize: 16 }} className="text-primary" />
         <span className="text-body1-m">데이터 사용 차단</span>
       </div>
       <button

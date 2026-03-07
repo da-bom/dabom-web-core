@@ -26,7 +26,7 @@ const NavBar = () => {
   return (
     <nav className="fixed right-0 bottom-0 left-0 z-50 flex justify-center">
       <div className="relative h-19 w-full">
-        <div className="absolute bottom-0 flex h-16 w-full items-center justify-between border-t border-gray-200 px-10 pb-[env(safe-area-inset-bottom)]">
+        <div className="bg-background-sub absolute bottom-0 flex h-16 w-full items-center justify-between border-t border-gray-200 px-10 pb-[env(safe-area-inset-bottom)]">
           {navItems.map((item) => {
             if (item.isHome) {
               return <div key="home-placeholder" className="w-8" />;

@@ -83,7 +83,9 @@ export default function MemberCard({
     }
   }, [currentLimitGBFromProp]);
 
-  const sliderPercentage = ((localLimit - LIMIT.MIN) / (LIMIT.MAX - LIMIT.MIN)) * 100;
+  const sliderPercentage = isUnlimited
+    ? 100
+    : ((localLimit - LIMIT.MIN) / (LIMIT.MAX - LIMIT.MIN)) * 100;
 
   const formattedUsed = formatSize(customer.monthlyUsedBytes).total;
   const displayedTotalBytes = isUnlimited ? null : gbToBytes(localLimit);
@@ -258,14 +260,14 @@ export default function MemberCard({
                 <div className="border-t border-gray-400" />
                 <button
                   type="button"
-                  className="flex w-full items-center justify-end gap-1"
+                  className="flex h-5.25 w-full items-center justify-end gap-1"
                   onClick={(e) => {
                     e.stopPropagation();
                     router.push(`/family/detail?customerId=${idStr}`);
                   }}
                 >
                   <span className="text-body2-m">더보기</span>
-                  <ChevronIcon />
+                  <ChevronIcon sx={{ width: 16, height: 12 }} />
                 </button>
               </>
             )}

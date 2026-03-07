@@ -60,7 +60,7 @@ const Header = ({
             aria-label="뒤로 가기"
             className="flex cursor-pointer items-center justify-center"
           >
-            <ChevronIcon width={7} height={12} className="rotate-180" />
+            <ChevronIcon sx={{ width: 16, height: 12 }} className="rotate-180" />
           </button>
         )}
       </div>

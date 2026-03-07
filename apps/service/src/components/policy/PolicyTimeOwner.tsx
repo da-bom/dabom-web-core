@@ -23,7 +23,10 @@ export function PolicyTimeOwner({
       <div className="flex w-full flex-col gap-4">
         <div className="flex w-full items-center justify-between">
           <div className="flex items-center gap-2">
-            <TimeIcon className={cn(isDisabled ? 'text-gray-700' : 'text-primary')} />
+            <TimeIcon
+              sx={{ fontSize: 16 }}
+              className={cn(isDisabled ? 'text-gray-700' : 'text-primary')}
+            />
             <span className={cn('text-body1-m', isDisabled && 'text-gray-500')}>시간 제한</span>
           </div>
 
