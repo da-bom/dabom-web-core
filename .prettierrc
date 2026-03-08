@@ -16,7 +16,7 @@
     "<THIRD_PARTY_MODULES>",
     "^@shared/(.*)$",
     "^@admin/(.*)$",
-    "^src/(.*)$",
+    "^@service/(.*)$",
     "^[./]"
   ],
   "importOrderSeparation": true,

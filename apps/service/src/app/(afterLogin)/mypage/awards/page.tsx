@@ -3,9 +3,9 @@
 import { useState } from 'react';
 
 import { Card } from '@shared';
-
-import GifticonModal from 'src/components/mypage/GiftModal';
 import { AWARD_DATA, GIFTICON } from 'src/data/awards';
+
+import GifticonModal from '@service/components/mypage/GiftModal';
 
 const AwardPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

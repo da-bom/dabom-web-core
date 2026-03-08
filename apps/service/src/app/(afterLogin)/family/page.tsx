@@ -3,7 +3,8 @@
 import React, { useSyncExternalStore } from 'react';
 
 import { useGetFamilyPolicies } from 'src/api/policy/useGetFamilyPolicies';
-import PolicyManagementList from 'src/components/policy/PolicyManagementList';
+
+import PolicyManagementList from '@service/components/policy/PolicyManagementList';
 
 const emptySubscribe = () => () => {};
 function useIsClient() {

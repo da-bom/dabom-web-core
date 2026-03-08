@@ -3,7 +3,7 @@ import type { Metadata, Viewport } from 'next';
 import '@globalstyles';
 import { COLORS } from '@shared';
 
-import ServiceWorkerRegistration from 'src/components/ServiceWorkerRegistration';
+import ServiceWorkerRegistration from '@service/components/ServiceWorkerRegistration';
 
 import { Providers } from './providers';
 

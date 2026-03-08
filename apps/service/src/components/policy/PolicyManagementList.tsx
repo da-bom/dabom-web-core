@@ -3,13 +3,13 @@
 import React, { useCallback, useState } from 'react';
 
 import { gbToBytes } from '@shared';
-
 import { useGetFamilyUsageCurrent } from 'src/api/family/useGetFamilyUsage';
 import { ServiceCustomerDetail } from 'src/api/policy/scheme';
 import { useUpdatePolicy } from 'src/api/policy/useUpdatePolicy';
-import MemberCard from 'src/components/policy/MemberCard';
-import TimeSettingBottomSheet from 'src/components/policy/TimeSettingBottomSheet';
 import { UserRole, getCurrentUserRole } from 'src/utils/auth';
+
+import MemberCard from '@service/components/policy/MemberCard';
+import TimeSettingBottomSheet from '@service/components/policy/TimeSettingBottomSheet';
 
 export interface CustomerState {
   customerId: number;

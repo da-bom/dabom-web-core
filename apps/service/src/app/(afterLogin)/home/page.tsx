@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 
-import UsageDashboard from 'src/components/home/UsageDashboard';
+import UsageDashboard from '@service/components/home/UsageDashboard';
 
 export default function Page() {
   return (
