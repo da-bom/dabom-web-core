@@ -1,13 +1,16 @@
 import React from 'react';
 
+import { cn } from '../utils/cn';
+
 interface TableProps {
   headers: string[];
   rows: { id: React.Key; cells: React.ReactNode[] }[];
+  className?: string;
 }
 
-const Table = ({ headers, rows }: TableProps) => {
+const Table = ({ headers, rows, className }: TableProps) => {
   return (
-    <div className="max-h-90 w-full overflow-auto rounded-lg border-[1px] border-gray-100">
+    <div className={cn('max-h-90 w-full overflow-auto border border-gray-100', className)}>
       <table className="w-full border-collapse">
         <thead className="bg-brand-dark text-brand-white text-body2-d sticky top-0 h-11">
           <tr>

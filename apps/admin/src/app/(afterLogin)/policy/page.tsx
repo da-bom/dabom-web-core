@@ -1,43 +1,55 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense } from 'react';
 
-import { MainBox, Table } from '@shared';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+
+import { Table } from '@shared';
 import { useGetPolicy } from 'src/api/policy/useGetPolicy';
-import FilterSegment from 'src/components/policy/FilterSegment';
-import { FilterType } from 'src/types/FilterType';
+import Pagination from 'src/components/common/Pagination';
 import { formatPolicy } from 'src/utils/formatPolicy';
 
-const PolicyPage = () => {
-  const [selectedFilter, setSelectedFilter] = useState<FilterType>('ALL');
-  const [page, setPage] = useState(0);
+const PolicyContent = () => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-  const { data, isLoading } = useGetPolicy(selectedFilter, page);
+  const currentPage = Number(searchParams.get('page')) || 1;
+  const { data } = useGetPolicy(currentPage - 1);
+  const policyRows = formatPolicy({ policies: data?.policies ?? [] });
 
-  if (isLoading) {
-    return <div className="p-10 text-center">데이터 로드 중...</div>;
-  }
+  const handlePageChange = (newPage: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('page', newPage.toString());
+    router.push(`${pathname}?${params.toString()}`);
+  };
 
-  if (!data) {
-    return <div className="p-10 text-center">표시할 정책 데이터가 없습니다.</div>;
-  }
-
-  const policyRows = formatPolicy({ policies: data });
+  if (!data) return <div>표시할 정책 데이터가 없습니다.</div>;
 
   return (
-    <div className="flex h-screen flex-col gap-5">
-      <FilterSegment
-        selectedFilter={selectedFilter}
-        setSelectedFilter={(filter) => {
-          setSelectedFilter(filter);
-          setPage(0);
-        }}
+    <div className="mt-6 flex h-screen flex-col">
+      <div className="flex-1 overflow-hidden">
+        <Table
+          headers={['정책', '권한', '기본값', '상태', '관리']}
+          rows={policyRows}
+          className="rounded-md"
+        />
+      </div>
+      <Pagination
+        currentPage={currentPage}
+        // TODO: 백엔드 수정 후 반영
+        // totalPages={data.totalPages}
+        totalPages={5}
+        onPageChange={handlePageChange}
       />
-      <MainBox className="relative h-full p-4">
-        <Table headers={['정책', '권한', '기본값', '상태', '관리']} rows={policyRows} />
-      </MainBox>
     </div>
   );
 };
 
-export default PolicyPage;
+export default function PolicyPage() {
+  return (
+    <Suspense fallback={<div className="p-10 text-center">페이지 로드 중...</div>}>
+      <PolicyContent />
+    </Suspense>
+  );
+}

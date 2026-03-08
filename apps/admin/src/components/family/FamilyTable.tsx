@@ -15,6 +15,7 @@ const FamilyTable = ({ familyDetail }: { familyDetail: FamilyDetail }) => {
         rows={formatFamily({
           customer: familyDetail.customers,
         })}
+        className="rounded-lg"
       />
     </SubBox>
   );
