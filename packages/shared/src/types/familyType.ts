@@ -16,6 +16,6 @@ export interface CustomerDetail {
   name: string;
   role: 'OWNER' | 'MEMBER';
   phoneNumber: string;
-  monthlyLimitBytes: number;
+  monthlyLimitBytes: number | null;
   monthlyUsedBytes: number;
 }

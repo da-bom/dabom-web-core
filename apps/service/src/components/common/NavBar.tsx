@@ -8,7 +8,7 @@ import {
   Face as FaceIcon,
   Home as HomeIcon,
   PersonOutlined as PersonIcon,
-  Send as SendMoneyIcon,
+  StarBorder as StarIcon,
 } from '@mui/icons-material';
 import { cn } from '@shared';
 
@@ -16,7 +16,7 @@ const navItems = [
   { label: '미션', href: '/mission', icon: ExtensionIcon },
   { label: '가족', href: '/family', icon: FaceIcon },
   { label: '홈', href: '/home', isHome: true },
-  { label: '조르기', href: '/appeal', icon: SendMoneyIcon },
+  { label: '어필', href: '/appeal', icon: StarIcon },
   { label: 'MY', href: '/mypage', icon: PersonIcon },
 ];
 
@@ -26,7 +26,7 @@ const NavBar = () => {
   return (
     <nav className="fixed right-0 bottom-0 left-0 z-50 flex justify-center">
       <div className="relative h-19 w-full">
-        <div className="absolute bottom-0 flex h-16 w-full items-center justify-between border-t border-gray-200 px-10 pb-[env(safe-area-inset-bottom)]">
+        <div className="bg-background-sub absolute bottom-0 flex h-16 w-full items-center justify-between border-t border-gray-200 px-10 pb-[env(safe-area-inset-bottom)]">
           {navItems.map((item) => {
             if (item.isHome) {
               return <div key="home-placeholder" className="w-8" />;

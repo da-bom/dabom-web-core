@@ -15,7 +15,7 @@ export const formatFamilyPolicies = (familyData: FamilyPoliciesData): FamilyDeta
       console.warn(`Monthly policy exists for customer ${c.customerId} but limitBytes is missing.`);
     }
 
-    const monthlyLimitBytes = monthlyPolicy?.rules?.limitBytes ?? 0;
+    const monthlyLimitBytes = monthlyPolicy ? (monthlyPolicy.rules?.limitBytes ?? null) : null;
     const isBlocked = manualBlockPolicy?.isActive ?? false;
 
     let timeLimit: { start: string; end: string } | null = null;

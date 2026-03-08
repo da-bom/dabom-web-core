@@ -3,6 +3,7 @@
 import React, { useCallback, useState } from 'react';
 
 import { gbToBytes } from '@shared';
+import { useGetFamilyUsageCurrent } from 'src/api/family/useGetFamilyUsage';
 import { ServiceCustomerDetail } from 'src/api/policy/scheme';
 import { useUpdatePolicy } from 'src/api/policy/useUpdatePolicy';
 import { UserRole, getCurrentUserRole } from 'src/utils/auth';
@@ -12,7 +13,7 @@ import TimeSettingBottomSheet from '@service/components/policy/TimeSettingBottom
 
 export interface CustomerState {
   customerId: number;
-  limitBytes: number;
+  limitBytes: number | null;
   timeLimit: {
     start: string;
     end: string;
@@ -29,8 +30,10 @@ const DEFAULT_TIME_LIMIT = { start: '00:00', end: '23:00' };
 export default function PolicyManagementList({ customers }: PolicyManagementListProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const { mutate: updatePolicy } = useUpdatePolicy();
+  const { data: familyUsage } = useGetFamilyUsageCurrent();
 
   const [currentUserRole] = useState<UserRole>(getCurrentUserRole);
+  const isOwner = currentUserRole === 'OWNER';
 
   const [memberStates, setMemberStates] = useState<Record<string, CustomerState>>(() => {
     const initial: Record<string, CustomerState> = {};
@@ -58,8 +61,9 @@ export default function PolicyManagementList({ customers }: PolicyManagementList
   const handlers = {
     onSelect: (id: string) => setSelectedId((prev) => (prev === id ? null : id)),
 
-    onLimitChange: (id: string, newGB: number) => {
-      const newBytes = gbToBytes(newGB);
+    onLimitChange: (id: string, newGB: number | null) => {
+      if (!isOwner) return;
+      const newBytes = newGB === null ? null : gbToBytes(newGB);
 
       setMemberStates((prev) => ({
         ...prev,
@@ -76,6 +80,7 @@ export default function PolicyManagementList({ customers }: PolicyManagementList
     },
 
     onToggleTime: (id: string) => {
+      if (!isOwner) return;
       const currentTarget = memberStates[id];
       if (!currentTarget) return;
 
@@ -110,6 +115,7 @@ export default function PolicyManagementList({ customers }: PolicyManagementList
     },
 
     onTimeClick: (id: string, type: 'start' | 'end') => {
+      if (!isOwner) return;
       setSheetConfig({
         isOpen: true,
         targetId: id,
@@ -118,6 +124,7 @@ export default function PolicyManagementList({ customers }: PolicyManagementList
     },
 
     onToggleBlock: (id: string) => {
+      if (!isOwner) return;
       const currentState = memberStates[id];
       if (!currentState) return;
 
@@ -140,6 +147,7 @@ export default function PolicyManagementList({ customers }: PolicyManagementList
   };
 
   const handleSaveTime = async (newTime: string) => {
+    if (!isOwner) return;
     const { targetId, type } = sheetConfig;
     if (!targetId) return;
 
@@ -176,15 +184,19 @@ export default function PolicyManagementList({ customers }: PolicyManagementList
       ? activeCustomerState?.timeLimit?.start
       : activeCustomerState?.timeLimit?.end) ?? '00:00';
 
+  const familyName = familyUsage?.familyName ?? '가족 관리';
+
   return (
     <section className="flex min-h-screen w-full justify-center">
-      <div className="mt-4 w-full px-4 pb-20">
-        <div className="mb-5.5 flex flex-col gap-1">
-          <div className="text-body1-d">가족 관리</div>
-          <div className="text-body2-m">데이터 사용 정책을 변경할 구성원을 선택하세요.</div>
+      <div className="mt-4 w-full px-5 pb-20">
+        <div className="mb-5 flex flex-col gap-1">
+          <div className="text-body1-d">{familyName}</div>
+          {isOwner && (
+            <div className="text-body2-m">데이터 사용 정책을 변경할 구성원을 선택하세요.</div>
+          )}
         </div>
 
-        <ul className="flex flex-col gap-4">
+        <ul className="flex flex-col gap-2">
           {customers.map((customer) => {
             const customerIdStr = customer.customerId.toString();
             return (
@@ -196,7 +208,9 @@ export default function PolicyManagementList({ customers }: PolicyManagementList
                 }}
                 state={memberStates[customerIdStr]}
                 isSelected={selectedId === customerIdStr}
+                isOwner={isOwner}
                 isEditingByOther={false}
+                totalQuotaBytes={familyUsage?.totalQuotaBytes}
                 handlers={handlers}
               />
             );
