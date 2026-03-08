@@ -21,16 +21,6 @@ const Card = ({ title, subtitle, description, className, children }: CardProps) 
         <span className="text-body1-m">{title}</span>
       </div>
       <span className="text-caption-m text-gray-500">{description}</span>
-
-      {/* <Button
-        size="sm"
-        color={disabled ? 'gray' : 'light'}
-        isFullWidth
-        onClick={onClick}
-        disabled={disabled}
-      >
-        {disabled ? '사용 완료' : buttonText}
-      </Button> */}
       {children}
     </MainBox>
   );
