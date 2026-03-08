@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 import { Button, cn, formatSize } from '@shared';
+
 import {
   AppBlock,
   DefaultRules,

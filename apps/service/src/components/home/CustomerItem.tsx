@@ -1,4 +1,5 @@
 import { ErrorOutlineIcon, bytesToGB } from '@shared';
+
 import { CustomerListType } from 'src/types/dataUsage';
 
 const WARNING_THRESHOLD = 0.6;

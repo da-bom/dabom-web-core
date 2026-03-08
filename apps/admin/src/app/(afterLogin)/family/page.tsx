@@ -3,6 +3,7 @@
 import { useState } from 'react';
 
 import { MainBox, ResetIcon } from '@shared';
+
 import { FamilySearchRequest } from 'src/api/family/schema';
 import FamilyDetail from 'src/components/family/FamilyDetail';
 import FamilyList from 'src/components/family/FamilyList';

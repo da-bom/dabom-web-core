@@ -1,12 +1,13 @@
 import { http } from '@shared';
 import { useMutation } from '@tanstack/react-query';
+
+import { ApiErrorResponse } from '@shared/types/error';
+
 import {
   AdminLoginRequest,
   AdminLoginResponse,
   AdminLoginResponseSchema,
 } from 'src/api/auth/schema';
-
-import { ApiErrorResponse } from '@shared/types/error';
 
 export const login = async (email: string, password: string): Promise<AdminLoginResponse> => {
   const response = await http.post('/admin/login', {

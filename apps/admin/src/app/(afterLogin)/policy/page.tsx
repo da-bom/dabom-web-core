@@ -5,6 +5,7 @@ import { Suspense } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { Table } from '@shared';
+
 import { useGetPolicy } from 'src/api/policy/useGetPolicy';
 import Pagination from 'src/components/common/Pagination';
 import { formatPolicy } from 'src/utils/formatPolicy';
