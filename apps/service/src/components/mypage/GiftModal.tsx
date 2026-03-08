@@ -27,8 +27,8 @@ const GifticonModal = ({ isOpen, onClose, data }: GifticonModalProps) => {
       {!data ? (
         renderErrorView()
       ) : (
-        <div className="flex flex-col items-center px-4 py-2">
-          <div className="relative mb-6 h-40 w-40">
+        <div className="flex flex-col items-center gap-4 px-4 py-2">
+          <div className="relative h-40 w-40">
             {/* TODO: API 연결 시 Image로 수정 */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={data.imgUrl} alt={data.name} className="h-full w-full object-contain" />{' '}
@@ -38,6 +38,8 @@ const GifticonModal = ({ isOpen, onClose, data }: GifticonModalProps) => {
             <h3 className="text-h2-m">{data.brand}</h3>
             <p className="text-body2-m">{data.name}</p>
           </div>
+
+          <span className="text-barcode">{data.barcodeNumber}</span>
         </div>
       )}
     </ModalLayout>
