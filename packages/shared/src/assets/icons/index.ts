@@ -21,6 +21,7 @@ import SearchIcon from '@mui/icons-material/Search'
 import CancelIcon from '@mui/icons-material/Cancel';
 import EditIcon from '@mui/icons-material/ModeEdit';
 import EmergencyIcon from '@mui/icons-material/Emergency';
+import CloseIcon from "@mui/icons-material/Close";
 
 export {
   HomeIcon,
@@ -46,4 +47,5 @@ export {
   CancelIcon,
   EditIcon,
   EmergencyIcon,
+  CloseIcon
 };
