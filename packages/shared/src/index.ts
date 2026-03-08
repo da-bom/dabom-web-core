@@ -5,6 +5,7 @@ export * from './utils/http';
 export * from './utils/sseClient';
 export { default as Badge } from './components/Badge';
 export { default as Button } from './components/Button';
+export { default as Card } from './components/Card';
 export { default as DaboIcon } from './components/DaboIcon';
 export { default as DropDown } from './components/DropDown';
 export { default as Grade } from './components/Grade';
