@@ -1,11 +1,13 @@
 'use client';
 
+import React from 'react';
+
 import { Block as BlockIcon, CheckCircleOutline as CheckCircleIcon } from '@mui/icons-material';
 import { MainBox } from '@shared';
 
 interface PolicySummaryCardProps {
   policyText: string;
-  reasonText: string;
+  reasonText: React.ReactNode;
   isOwner?: boolean;
   onApprove?: () => void;
   onReject?: () => void;

@@ -12,7 +12,7 @@ import { Badge, BadgeColor } from '@shared';
 export type AppealStatus = 'pending' | 'approved' | 'rejected' | 'emergency';
 
 interface AppealRequestCardProps {
-  id: string;
+  policyType: string;
   dataLimit: string;
   reason: string;
   status: AppealStatus;
@@ -20,7 +20,7 @@ interface AppealRequestCardProps {
 }
 
 export function AppealRequestCard({
-  id,
+  policyType,
   dataLimit,
   reason,
   status,
@@ -54,21 +54,23 @@ export function AppealRequestCard({
     }
   };
 
+  const isEmergency = status === 'emergency' || policyType === '긴급 요청';
+
   return (
     <div
       onClick={onClick}
       className="bg-brand-white flex h-21.25 w-full cursor-pointer flex-col justify-center gap-2 rounded-2xl border border-gray-200 p-4"
     >
-      <div className="flex h-6 w-full items-center gap-2">
-        {/* 뱃지 영역 */}
-        <Badge color={getBadgeColor()} className="px-4">
-          <span className="text-body2-d">{id}</span>
-        </Badge>
-
-        {/* 데이터 한도 및 아이콘 영역 */}
+      <div className="flex h-6 w-full items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-body1-m">{dataLimit}</span>
-          <div className="flex h-4 w-4 items-center justify-center">{getStatusIcon()}</div>
+          <Badge color={getBadgeColor()} className="px-4">
+            <span className="text-body2-d">{policyType}</span>
+          </Badge>
+
+          <div className="flex items-center gap-2">
+            {!isEmergency && <span className="text-body1-m">{dataLimit}</span>}
+            <div className="flex h-4 w-4 items-center justify-center">{getStatusIcon()}</div>
+          </div>
         </div>
       </div>
 

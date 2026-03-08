@@ -2,74 +2,98 @@
 
 import React, { useState } from 'react';
 
-import { Button, DropDown, MainBox } from '@shared';
+import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 
-const AppealPage = () => {
-  const [amount, setAmount] = useState('0');
-  const [owner, setOwner] = useState('OWNER');
-  const [isDropDownOpen, setIsDropDownOpen] = useState(false);
+import { Button } from '@shared';
 
-  const quickAmounts = ['+1GB', '+2GB', '+5GB'];
-  const owners = ['OWNER', 'MOM', 'DAD'];
+import { AppealRequestCard, AppealStatus, FilterSegment } from '@service/components/appeal';
+import { getCurrentUserRole } from '@service/utils/auth';
 
-  const handleQuickAmount = (val: string) => {
-    const numericVal = parseInt(val.replace(/[^0-9]/g, ''), 10);
-    const currentAmount = parseInt(amount, 10) || 0;
-    setAmount((currentAmount + numericVal).toString());
-  };
+interface AppealItem {
+  policyType: string;
+  dataLimit: string;
+  reason: string;
+  status: AppealStatus;
+}
+
+const progressItems: AppealItem[] = [
+  {
+    policyType: '데이터 한도',
+    dataLimit: '10GB',
+    reason: '인강 들어야 하는데 데이터가 부족해요.',
+    status: 'pending',
+  },
+  {
+    policyType: '긴급 요청',
+    dataLimit: '',
+    reason: '지금 당장 중요한 서류를 보내야 해요.',
+    status: 'pending',
+  },
+];
+
+const completedItems: AppealItem[] = [
+  {
+    policyType: '데이터 한도 제한',
+    dataLimit: '10GB',
+    reason: '인강 들어야 하는데 데이터가 부족해요.',
+    status: 'rejected',
+  },
+  {
+    policyType: '데이터 한도 제한',
+    dataLimit: '5GB',
+    reason: '인강 들어야 하는데 데이터가 부족해요. 인강 들어야 하...',
+    status: 'approved',
+  },
+  {
+    policyType: '긴급 요청',
+    dataLimit: '',
+    reason: '과제 제출해야하는데 데이터가 부족해요.',
+    status: 'emergency',
+  },
+];
+
+const AppealPageContent = () => {
+  const router = useRouter();
+  const [activeTab, setActiveTab] = useState<'progress' | 'completed'>('progress');
+
+  const userRole = getCurrentUserRole();
+  const isOwner = userRole === 'OWNER';
+  const items = activeTab === 'progress' ? progressItems : completedItems;
 
   return (
-    <div className="mx-8 mt-20 flex flex-col items-center">
-      <div className="flex w-full flex-col items-center gap-20">
-        <div className="flex h-10 w-full flex-row items-center justify-center gap-1">
-          <div className="flex flex-row items-center gap-2">
-            <MainBox className="flex h-10 w-30 items-center justify-center rounded-2xl border-gray-200">
-              <DropDown
-                isOpen={isDropDownOpen}
-                setIsOpen={setIsDropDownOpen}
-                options={owners}
-                selectedOption={owner}
-                setSelectedOption={setOwner}
-              />
-            </MainBox>
-            <span className="text-body1-m flex items-center justify-center text-center">
-              님에게 얼마를 요청할까요?
-            </span>
-          </div>
-        </div>
+    <div className="flex h-full min-h-[calc(100vh-140px)] flex-col bg-[#F0F1F3] px-5 py-5">
+      <div className="flex flex-col gap-5">
+        <FilterSegment activeTab={activeTab} onTabChange={setActiveTab} />
 
-        <div className="flex h-10.75 w-auto flex-row items-end gap-2.5">
-          <div className="flex w-30 flex-col items-start gap-1 pb-2">
-            <input
-              type="number"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              className="w-full text-center outline-none"
+        <div className="flex flex-col gap-2 pb-24">
+          {items.map((item, index) => (
+            <AppealRequestCard
+              key={`${item.policyType}-${index}`}
+              policyType={item.policyType}
+              dataLimit={item.dataLimit}
+              reason={item.reason}
+              status={item.status}
+              onClick={() => {
+                router.push(`/appeal/chat?policy=${encodeURIComponent(item.policyType)}`);
+              }}
             />
-            <div className="self-stretch border-b" />
-          </div>
-
-          <span className="flex items-center justify-center text-center text-[28px] font-medium">
-            GB
-          </span>
-        </div>
-
-        <div className="flex gap-4">
-          {quickAmounts.map((val) => (
-            <Button key={val} size="sm" color="light" onClick={() => handleQuickAmount(val)}>
-              {val}
-            </Button>
           ))}
         </div>
       </div>
 
-      <div className="mt-18">
-        <Button type="submit" size="lg" color="dark">
-          요청하기
-        </Button>
-      </div>
+      {isOwner && (
+        <div className="fixed bottom-24 left-0 flex w-full justify-center px-5">
+          <Button size="lg" color="dark" onClick={() => router.push('/appeal/objection')}>
+            이의 제기하기
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
 
-export default AppealPage;
+export default dynamic(() => Promise.resolve(AppealPageContent), {
+  ssr: false,
+  loading: () => <div className="h-full min-h-screen" />,
+});
