@@ -4,8 +4,7 @@ import React, { Suspense, useSyncExternalStore } from 'react';
 
 import { useSearchParams } from 'next/navigation';
 
-import { Face as FaceIcon } from '@mui/icons-material';
-import { MainBox, bytesToGB, formatPhoneNumber } from '@shared';
+import { FaceIcon, MainBox, bytesToGB, formatPhoneNumber } from '@shared';
 import { useGetFamilyPolicies } from 'src/api/policy/useGetFamilyPolicies';
 
 import PolicySimple from '@service/components/policy/PolicySimple';

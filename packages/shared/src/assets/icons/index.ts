@@ -19,6 +19,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOffOutlined';
 import ResetIcon from '@mui/icons-material/Replay'
 import SearchIcon from '@mui/icons-material/Search'
 import CancelIcon from '@mui/icons-material/Cancel';
+import FaceIcon from '@mui/icons-material/Face';
 
 export {
   HomeIcon,
@@ -42,4 +43,5 @@ export {
   ResetIcon,
   SearchIcon,
   CancelIcon,
+  FaceIcon,
 };
