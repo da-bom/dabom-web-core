@@ -14,7 +14,8 @@ globalThis.addEventListener('install', (event) => {
     caches.open(CACHE_NAME).then((cache) => {
       return Promise.all(
         APP_SHELL_RESOURCES.map((url) =>
-          cache.add(url)
+          cache
+            .add(url)
             .then(() => console.log(`SW: 캐싱 성공 - ${url}`))
             .catch((error) => console.error(`SW: 캐싱 실패 - ${url}`, error)),
         ),
@@ -26,11 +27,11 @@ globalThis.addEventListener('install', (event) => {
 
 globalThis.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((names) =>
-      Promise.all(
-        names.filter((name) => name !== CACHE_NAME).map((name) => caches.delete(name)),
+    caches
+      .keys()
+      .then((names) =>
+        Promise.all(names.filter((name) => name !== CACHE_NAME).map((name) => caches.delete(name))),
       ),
-    ),
   );
   globalThis.clients.claim();
 });
@@ -55,7 +56,8 @@ globalThis.addEventListener('fetch', (event) => {
           response.headers.get('Cache-Control') !== 'no-store'
         ) {
           const clone = response.clone();
-          caches.open(CACHE_NAME)
+          caches
+            .open(CACHE_NAME)
             .then((cache) => cache.put(event.request, clone))
             .catch((error) => console.error('SW: Caching failed', error));
         }
@@ -66,7 +68,7 @@ globalThis.addEventListener('fetch', (event) => {
           const offlinePage = await caches.match('/offline');
           if (offlinePage) return offlinePage;
         }
-        
+
         const cachedResponse = await caches.match(event.request);
         if (cachedResponse) return cachedResponse;
       }),

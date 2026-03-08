@@ -9,3 +9,8 @@ packages/shared/src/assets/icons/
 node_modules/
 dist/
 coverage/
+
+# Lock files
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
