@@ -2,7 +2,8 @@
 
 import React from 'react';
 
-import { DoNotIcon, ErrorOutlineIcon, MainBox, TimeIcon, cn } from '@shared';
+import { DoNotIcon, ErrorOutlineIcon, TimeIcon } from '@icons';
+import { MainBox, cn } from '@shared';
 
 import { Toggle } from '../common/Toggle';
 
