@@ -11,20 +11,17 @@ export default function ObjectionPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState('데이터 한도');
 
-  // 예시 옵션 데이터
   const options = ['데이터 한도', '긴급 요청'];
 
   return (
-    <main className="mx-auto mt-39.5 flex w-full flex-col items-center px-5">
+    <main className="mx-auto mt-27.5 flex w-full flex-col items-center px-5">
       <section className="flex w-full flex-col items-start gap-7">
         <div className="flex w-full flex-col items-start gap-2">
           <h1 className="text-h2-m">어떤 정책에 대한 이의제기인가요?</h1>
           <p className="text-body2-m text-gray-700">description</p>
         </div>
 
-        {/* 입력 및 선택 영역 */}
         <div className="flex w-full flex-row items-center">
-          {/* 공유 컴포넌트인 DropDown 사용 */}
           <DropDown
             isOpen={isOpen}
             setIsOpen={setIsOpen}
@@ -37,7 +34,6 @@ export default function ObjectionPage() {
         </div>
       </section>
 
-      {/* 하단 고정 버튼 */}
       <div className="fixed bottom-24 left-0 flex w-full justify-center px-5">
         <Button
           size="lg"
