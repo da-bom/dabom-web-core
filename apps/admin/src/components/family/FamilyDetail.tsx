@@ -1,6 +1,7 @@
 'use client';
 
 import { Badge, Button } from '@shared';
+
 import { useGetFamilyDetail } from 'src/api/family/useGetFamilyDetail';
 
 import Error from '../common/Error';

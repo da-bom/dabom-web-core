@@ -1,4 +1,5 @@
 import { MainBox, cn } from '@shared';
+
 import { FilterType } from 'src/types/FilterType';
 
 const FilterButton = ({

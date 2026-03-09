@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { ChevronIcon } from '@icons';
 import { MainBox } from '@shared';
 
-import MyInfo from '@service/components/mypage/MyInfo';
+import MyInfo from 'src/components/mypage/MyInfo';
 
 const data = {
   name: '김철수',
