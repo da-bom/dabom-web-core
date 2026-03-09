@@ -9,7 +9,7 @@ import { DaboIcon, Grade, cn } from '@shared';
 
 import PolicySimple from '../policy/PolicySimple';
 
-const ProgressBar = dynamic(() => import('@service/components/common/ProgressBar'), {
+const ProgressBar = dynamic(() => import('src/components/common/ProgressBar'), {
   ssr: false,
 });
 

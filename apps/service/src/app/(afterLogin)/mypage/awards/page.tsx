@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 
-import { Card } from '@shared';
-import { AWARD_DATA, GIFTICON } from 'src/data/awards';
+import { Button, Card } from '@shared';
 
-import GifticonModal from '@service/components/mypage/GiftModal';
+import GifticonModal from 'src/components/mypage/GiftModal';
+import { AWARD_DATA, GIFTICON } from 'src/data/awards';
 
 const AwardPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,10 +26,23 @@ const AwardPage = () => {
             subtitle={item.subtitle}
             title={item.title}
             description={item.description}
-            buttonText={item.buttonText}
-            disabled={item.isUsed}
-            onClick={() => handleCardClick(index)}
-          />
+          >
+            {item.isUsed ? (
+              <Button
+                size="sm"
+                color="gray"
+                disabled
+                isFullWidth
+                onClick={() => handleCardClick(index)}
+              >
+                사용 완료
+              </Button>
+            ) : (
+              <Button size="sm" color="light" isFullWidth onClick={() => handleCardClick(index)}>
+                {item.type === 'data' ? '데이터 사용하기' : '기프티콘 보기'}
+              </Button>
+            )}
+          </Card>
         ))}
       </div>
 

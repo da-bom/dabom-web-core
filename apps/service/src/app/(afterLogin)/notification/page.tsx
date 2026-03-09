@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { NotificationItem, fetchNotifications } from '@shared/data/notification';
 
-import NotiBox from '@service/components/notification/NotiBox';
+import NotiBox from 'src/components/notification/NotiBox';
 
 const NOTICE_MESSAGE = '30일이 지난 메세지는 자동 삭제됩니다.';
 

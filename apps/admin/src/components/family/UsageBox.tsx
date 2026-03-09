@@ -1,5 +1,6 @@
 import { SubBox, formatSize } from '@shared';
 import dayjs from 'dayjs';
+
 import { FamilyDetail } from 'src/api/family/schema';
 
 const UsageBox = ({ familyDetail }: { familyDetail: FamilyDetail }) => {

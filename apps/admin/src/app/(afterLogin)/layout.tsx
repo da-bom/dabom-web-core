@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import '@globalstyles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
 import Header from 'src/components/layout/Header';
 import Sidebar from 'src/components/layout/Sidebar';
 

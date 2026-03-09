@@ -1,5 +1,6 @@
 import { PersonIcon } from '@icons';
 import { SubBox, Table } from '@shared';
+
 import { FamilyDetail } from 'src/api/family/schema';
 import { formatFamily } from 'src/utils/formatFamily';
 

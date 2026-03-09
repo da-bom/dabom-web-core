@@ -6,6 +6,7 @@ import { useParams, useRouter } from 'next/navigation';
 
 import { CheckIcon, ChevronIcon, UnpublishedIcon } from '@icons';
 import { Button, DropDown, MainBox, TextField } from '@shared';
+
 import { PolicyDetail } from 'src/api/policy/schema';
 import { useGetPolicyDetail } from 'src/api/policy/useGetPolicyDetail';
 import { useUpdatePolicy } from 'src/api/policy/useUpdatePolicy';
