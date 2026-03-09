@@ -9,7 +9,7 @@ const HistoryItem = ({
   mission: { status: string; title: string; completedAt: string };
 }) => (
   <MainBox className="flex flex-col gap-1 rounded-2xl p-4">
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1">
       <StatusIcon status={mission.status} />
       <span className="text-body1-m">{mission.title}</span>
     </div>
