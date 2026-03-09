@@ -5,6 +5,7 @@ import { MissionForm } from 'src/api/mission/schema';
 import Step1Ttile from 'src/components/mission/Step1Title';
 import Step2Target from 'src/components/mission/Step2Target';
 import Step3Reward from 'src/components/mission/Step3Reward';
+import Step4Check from 'src/components/mission/Step4Check';
 
 export default function MissionCreatePage() {
   const [step, setStep] = useState(1);
@@ -24,6 +25,7 @@ export default function MissionCreatePage() {
         {step === 1 && <Step1Ttile nextStep={nextStep} />}
         {step === 2 && <Step2Target prevStep={prevStep} nextStep={nextStep} />}
         {step === 3 && <Step3Reward prevStep={prevStep} nextStep={nextStep} />}
+        {step === 4 && <Step4Check prevStep={prevStep} />}
       </div>
     </div>
   );
