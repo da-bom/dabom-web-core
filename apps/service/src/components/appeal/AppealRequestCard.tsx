@@ -4,7 +4,7 @@ import React from 'react';
 
 import Image from 'next/image';
 
-import { E911EmergencyIconFile } from '@icons';
+import E911EmergencyIconFile from '@icons/E911Emergency.svg';
 import {
   Block as BlockIcon,
   CheckCircleOutline as CheckCircleOutlineIcon,

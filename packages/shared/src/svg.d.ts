@@ -1,7 +1,15 @@
 declare module '*.svg' {
   import React from 'react';
-  const ReactComponent: React.FC<React.SVGProps<SVGSVGElement>>;
-  export default ReactComponent;
+
+  interface StaticImageData {
+    src: string;
+    height: number;
+    width: number;
+    blurDataURL?: string;
+  }
+
+  const content: React.FC<React.SVGProps<SVGSVGElement>> & StaticImageData;
+  export default content;
 }
 
 declare module '*.svg?react' {
