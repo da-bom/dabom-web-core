@@ -84,7 +84,7 @@ const Step3Reward = ({ prevStep, nextStep }: { prevStep: () => void; nextStep: (
         </div>
       </main>
 
-      <footer className="fixed right-0 bottom-30 left-0 mx-5 flex gap-2">
+      <footer className="fixed right-0 bottom-25 left-0 mx-5 flex gap-2">
         <Button size="lg" color="light" isFullWidth onClick={prevStep}>
           이전
         </Button>

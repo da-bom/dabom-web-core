@@ -33,7 +33,7 @@ const Step1Ttile = ({ nextStep }: { nextStep: () => void }) => {
         {errors.title && <span className="text-sm text-red-500">{errors.title.message}</span>}
       </div>
 
-      <footer className="fixed right-0 bottom-30 left-0 mx-5">
+      <footer className="fixed right-0 bottom-25 left-0 mx-5">
         <div className="mx-auto">
           <Button
             size="lg"
