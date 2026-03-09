@@ -33,10 +33,10 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen justify-center">
-      <main className="flex flex-col justify-center">
-        <form onSubmit={(e) => handleLogin(e)} className="flex flex-col items-center">
-          <div className="flex flex-col gap-10">
+    <div className="flex min-h-screen items-center justify-center">
+      <main className="flex w-full flex-col items-center px-5">
+        <form onSubmit={(e) => handleLogin(e)} className="flex h-full flex-col items-center gap-30">
+          <div className="flex h-75 w-full flex-col gap-10">
             <InputField
               label="전화번호"
               type="tel"
@@ -66,7 +66,7 @@ export default function LoginPage() {
             )}
           </div>
 
-          <div className="mt-57 flex w-full justify-center">
+          <div className="flex w-full justify-center">
             <Button type="submit" size="lg" color="dark" disabled={isLoading}>
               로그인
             </Button>
