@@ -18,7 +18,7 @@ const Input = ({ type, value, onChange, ...props }: InputProps) => {
   const inputType = type === 'password' && isVisible ? 'text' : type;
 
   return (
-    <div className="bg-brand-white flex h-12 w-82 items-center rounded-2xl border-[1px] border-gray-200 px-4">
+    <div className="bg-brand-white flex h-12 items-center rounded-2xl border border-gray-200 px-4">
       <input
         {...props}
         type={inputType}

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Button } from '@shared';
+import { Button, cn } from '@shared';
 
 const MEMBER = [
   { id: 1, name: '김민지' },
@@ -12,8 +12,8 @@ const Step2Target = ({ prevStep, nextStep }: { prevStep: () => void; nextStep: (
   const [selectedId, setSelectedId] = useState<number | null>(null);
 
   return (
-    <div className="flex h-screen flex-col justify-between">
-      <div className="mt-30 flex flex-col gap-7">
+    <div className="mt-10 flex flex-col justify-between">
+      <div className="flex flex-col gap-7">
         <p className="flex flex-col gap-2">
           <span className="text-h2-m">누구의 미션을 만들어볼까요?</span>
           <span className="text-body2-m text-gray-700">미션의 대상을 선택해 주세요.</span>
@@ -26,11 +26,12 @@ const Step2Target = ({ prevStep, nextStep }: { prevStep: () => void; nextStep: (
               <button
                 key={member.id}
                 onClick={() => setSelectedId(member.id)}
-                className={`h-14 rounded-2xl border transition-all ${
+                className={cn(
+                  'h-14 rounded-2xl border transition-all',
                   isSelected
-                    ? 'bg-primary-100 border-gray-500 text-gray-800'
-                    : 'border-gray-200 bg-white text-gray-700'
-                }`}
+                    ? 'bg-primary-100 border-gray-500'
+                    : 'border-gray-200 bg-white text-gray-700',
+                )}
               >
                 {member.name}
               </button>
@@ -39,8 +40,8 @@ const Step2Target = ({ prevStep, nextStep }: { prevStep: () => void; nextStep: (
         </div>
       </div>
 
-      <footer className="w-fill flex gap-2">
-        <Button size="lg" color="light" onClick={prevStep}>
+      <footer className="fixed right-0 bottom-30 left-0 mx-5 flex gap-2">
+        <Button size="lg" color="light" isFullWidth onClick={prevStep}>
           이전
         </Button>
         <Button size="lg" color="dark" isFullWidth onClick={nextStep} disabled={!selectedId}>

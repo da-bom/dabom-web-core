@@ -18,14 +18,16 @@ const GifticonReward = ({
       {/* TODO: API 응답값으로 수정 */}
       <span className="text-body2-m text-gray-700">이번달 잔여 기프티콘: 2</span>
     </p>
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-[repeat(auto-fill,minmax(200px,1fr))]">
+    <div className="mb-40 grid grid-cols-2 gap-4 sm:grid-cols-[repeat(auto-fill,minmax(200px,1fr))]">
       {REWARD.map((reward) => (
         <button
           key={reward.id}
           onClick={() => onSelect(reward.id)}
           className={cn(
             'flex h-45 flex-col items-center justify-between rounded-2xl border p-4 transition-all',
-            value === reward.id ? 'bg-primary-100 border-gray-500' : 'border-gray-100 bg-white',
+            value === reward.id
+              ? 'bg-primary-100 border-gray-500'
+              : 'border-gray-200 bg-white text-gray-700',
           )}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}

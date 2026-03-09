@@ -19,9 +19,9 @@ export default function MissionCreatePage() {
   // };
 
   return (
-    <div className="flex min-h-screen flex-col pb-24">
+    <div className="flex flex-col pb-24">
       <div className="flex-1 px-5 pt-10">
-        {step === 1 && <Step1Ttile prevStep={prevStep} nextStep={nextStep} />}
+        {step === 1 && <Step1Ttile nextStep={nextStep} />}
         {step === 2 && <Step2Target prevStep={prevStep} nextStep={nextStep} />}
         {step === 3 && <Step3Reward prevStep={prevStep} nextStep={nextStep} />}
       </div>
