@@ -1,6 +1,9 @@
 'use client';
-import { useState } from 'react';
+
+import { Suspense } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -10,27 +13,42 @@ import Step2Target from 'src/components/mission/Step2Target';
 import Step3Reward from 'src/components/mission/Step3Reward';
 import Step4Check from 'src/components/mission/Step4Check';
 
-export default function MissionCreatePage() {
-  const [step, setStep] = useState(1);
+function MissionCreateForm() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const currentStep = Number(searchParams.get('step')) || 1;
 
   const methods = useForm<MissionForm>({
     resolver: zodResolver(missionSchema),
     mode: 'onChange',
   });
 
-  const prevStep = () => setStep((prev) => prev - 1);
-  const nextStep = () => setStep((prev) => prev + 1);
+  const setStep = (step: number) => {
+    router.push(`?step=${step}`);
+  };
+
+  const prevStep = () => setStep(currentStep - 1);
+  const nextStep = () => setStep(currentStep + 1);
 
   return (
     <FormProvider {...methods}>
       <div className="flex flex-col pb-24">
         <div className="flex-1 px-5 pt-10">
-          {step === 1 && <Step1Ttile nextStep={nextStep} />}
-          {step === 2 && <Step2Target prevStep={prevStep} nextStep={nextStep} />}
-          {step === 3 && <Step3Reward prevStep={prevStep} nextStep={nextStep} />}
-          {step === 4 && <Step4Check prevStep={prevStep} />}
+          {currentStep === 1 && <Step1Ttile nextStep={nextStep} />}
+          {currentStep === 2 && <Step2Target prevStep={prevStep} nextStep={nextStep} />}
+          {currentStep === 3 && <Step3Reward prevStep={prevStep} nextStep={nextStep} />}
+          {currentStep === 4 && <Step4Check prevStep={prevStep} />}
         </div>
       </div>
     </FormProvider>
+  );
+}
+
+export default function MissionCreatePage() {
+  return (
+    <Suspense fallback={<div className="p-5 text-center">로딩 중...</div>}>
+      <MissionCreateForm />
+    </Suspense>
   );
 }
