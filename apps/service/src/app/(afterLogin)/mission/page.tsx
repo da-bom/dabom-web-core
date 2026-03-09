@@ -70,6 +70,11 @@ const MissionPage = () => {
           <ChevronIcon className="text-gray-800" sx={{ width: 16 }} />
         </MainBox>
       </Link>
+      <Link className="w-fill flex justify-center" href="/mission/create">
+        <Button size="lg" color="dark">
+          미션 만들기
+        </Button>
+      </Link>
     </div>
   );
 };
