@@ -13,7 +13,7 @@ const NotiBox = ({ title, description, isRead = true, className }: NotiBoxProps)
   return (
     <div
       className={cn(
-        'bg-brand-white flex h-20 w-full flex-col justify-center rounded-lg border-2 px-4 transition-all',
+        'bg-brand-white flex w-full flex-col justify-center rounded-lg border-2 p-4 px-4 transition-all',
         isRead ? 'border-gray-200' : 'border-primary',
         className,
       )}
