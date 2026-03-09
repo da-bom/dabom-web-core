@@ -37,7 +37,7 @@ const MissionPage = () => {
           </Card>
         ))}
       </div>
-      <Link href="/mission/log">
+      <Link href="/mission/history">
         <MainBox className="flex cursor-pointer items-center justify-between rounded-2xl p-4">
           <span className="text-body1-m">지난 내역 보기</span>
           <ChevronIcon className="text-gray-800" sx={{ width: 16 }} />
