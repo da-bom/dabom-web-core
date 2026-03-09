@@ -16,6 +16,7 @@ interface AppealRequestCardProps {
   dataLimit: string;
   reason: string;
   status: AppealStatus;
+  requesterName?: string;
   onClick?: () => void;
 }
 
@@ -24,6 +25,7 @@ export function AppealRequestCard({
   dataLimit,
   reason,
   status,
+  requesterName,
   onClick,
 }: AppealRequestCardProps) {
   const getStatusIcon = () => {

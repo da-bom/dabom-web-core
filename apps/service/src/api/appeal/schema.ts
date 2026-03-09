@@ -1,5 +1,5 @@
-export type NegotiationType = 'APPEAL' | 'EMERGENCY';
-export type NegotiationStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | 'CANCELLED';
+export type AppealType = 'NORMAL' | 'EMERGENCY';
+export type AppealStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
 
 export interface Author {
   customerId: number;
@@ -13,27 +13,25 @@ export interface Message {
   createdAt: string;
 }
 
-export interface Negotiation {
-  negotiationId: number;
-  type: NegotiationType;
-  status: NegotiationStatus;
-  requestedBytes: number;
-  reason: string;
-  requester: Author;
-  resolver: Author | null;
-  resolvedAt: string | null;
+export interface Appeal {
+  appealId: number;
+  type: AppealType;
+  policyAssignmentId: number;
+  requesterId: number;
+  requesterName: string;
+  requestReason: string;
+  desiredRules: {
+    limitBytes: number;
+  };
+  status: AppealStatus;
   createdAt: string;
-  updatedAt: string;
-  messages: Message[];
+  messages?: Message[];
 }
 
-export interface NegotiationResponse {
+export interface AppealResponse {
   success: boolean;
   data: {
-    content: Negotiation[];
-    page: number;
-    size: number;
-    totalElements: number;
-    totalPages: number;
+    appeals: Appeal[];
   };
+  timestamp: string;
 }
