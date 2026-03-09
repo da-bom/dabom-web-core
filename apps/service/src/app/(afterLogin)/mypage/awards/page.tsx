@@ -17,7 +17,7 @@ const AwardPage = () => {
   };
 
   return (
-    <div className="m-4">
+    <div className="m-5">
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-[repeat(auto-fill,minmax(200px,1fr))]">
         {AWARD_DATA.map((item, index) => (
           <Card

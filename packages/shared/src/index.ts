@@ -9,6 +9,7 @@ export { default as Card } from './components/Card';
 export { default as DaboIcon } from './components/DaboIcon';
 export { default as DropDown } from './components/DropDown';
 export { default as Grade } from './components/Grade';
+export { default as Input } from './components/Input';
 export { default as InputField } from './components/InputField';
 export { default as Logo } from './components/Logo';
 export { default as MainBox } from './components/MainBox';

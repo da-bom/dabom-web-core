@@ -38,7 +38,7 @@ const OwnerActionButton = ({ status }: { status: string }) => {
 
 const MissionPage = () => {
   return (
-    <div className="m-4 flex flex-col gap-5">
+    <div className="m-5 flex flex-col gap-5">
       <p className="flex flex-col">
         <span className="text-h2-m">현재 진행 중인 미션</span>
         <span className="text-body2-m gray-800">
@@ -69,6 +69,11 @@ const MissionPage = () => {
           <span className="text-body1-m">지난 내역 보기</span>
           <ChevronIcon className="text-gray-800" sx={{ width: 16 }} />
         </MainBox>
+      </Link>
+      <Link className="fixed right-0 bottom-25 left-0 mx-5" href="/mission/create">
+        <Button size="lg" color="dark" isFullWidth>
+          미션 만들기
+        </Button>
       </Link>
     </div>
   );
