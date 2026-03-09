@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { Suspense, useMemo, useState } from 'react';
 
 import { useSearchParams } from 'next/navigation';
 
@@ -13,7 +13,7 @@ import { mockAppealDetails } from 'src/data/appealDetails';
 import { getCurrentUserRole } from 'src/utils/auth';
 import { formatChatTime } from 'src/utils/formatTime';
 
-export default function AppealChatPage() {
+function AppealChatContent() {
   const searchParams = useSearchParams();
   const appealId = Number(searchParams.get('id'));
 
@@ -131,5 +131,13 @@ export default function AppealChatPage() {
         />
       </div>
     </div>
+  );
+}
+
+export default function AppealChatPage() {
+  return (
+    <Suspense fallback={<div className="h-full min-h-screen" />}>
+      <AppealChatContent />
+    </Suspense>
   );
 }
