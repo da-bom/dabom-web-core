@@ -1,5 +1,4 @@
 import { cn } from '../utils/cn';
-import Button from './Button';
 import DaboIcon from './DaboIcon';
 import MainBox from './MainBox';
 
@@ -7,21 +6,11 @@ interface CardProps {
   title: string;
   subtitle?: string;
   description: string;
-  buttonText: string;
-  disabled?: boolean;
-  onClick?: () => void;
   className?: string;
+  children: React.ReactNode;
 }
 
-const Card = ({
-  title,
-  subtitle,
-  description,
-  buttonText,
-  disabled = false,
-  onClick,
-  className,
-}: CardProps) => {
+const Card = ({ title, subtitle, description, className, children }: CardProps) => {
   return (
     <MainBox className={cn('w-fill flex flex-col justify-between rounded-2xl p-4', className)}>
       <div className="flex flex-col gap-1">
@@ -32,16 +21,7 @@ const Card = ({
         <span className="text-body1-m">{title}</span>
       </div>
       <span className="text-caption-m text-gray-500">{description}</span>
-
-      <Button
-        size="sm"
-        color={disabled ? 'gray' : 'light'}
-        isFullWidth
-        onClick={onClick}
-        disabled={disabled}
-      >
-        {disabled ? '사용 완료' : buttonText}
-      </Button>
+      {children}
     </MainBox>
   );
 };

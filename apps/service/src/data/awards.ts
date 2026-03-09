@@ -1,26 +1,26 @@
 export const AWARD_DATA = [
   {
     id: 1,
+    type: 'data',
     subtitle: '데이터',
     title: '100MB',
     description: '유효기간: 2026.12.20',
-    buttonText: '데이터 사용하기',
     isUsed: false,
   },
   {
     id: 2,
+    type: 'gifticon',
     subtitle: '메가커피',
     title: '아메리카노(ICE)',
     description: '유효기간: 2026.12.20',
-    buttonText: '기프티콘 보기',
     isUsed: false,
   },
   {
     id: 3,
+    type: 'gifticon',
     subtitle: 'CU',
     title: '5,000원권',
     description: '유효기간: 2026.12.20',
-    buttonText: '기프티콘 보기',
     isUsed: true,
   },
 ];
