@@ -2,7 +2,8 @@
 
 import { usePathname, useRouter } from 'next/navigation';
 
-import { ChevronIcon, Logo, NotificationIcon, cn } from '@shared';
+import { ChevronIcon, NotificationIcon } from '@icons';
+import { Logo, cn } from '@shared';
 
 interface HeaderProps {
   isBackVisible?: boolean;

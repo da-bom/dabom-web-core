@@ -5,6 +5,7 @@
     "dev": "turbo dev",
     "build": "turbo build",
     "lint": "turbo lint",
+    "format": "prettier --write .",
     "typecheck": "turbo typecheck",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf **/.next",
     "prepare": "husky"

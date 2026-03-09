@@ -1,6 +1,7 @@
 'use client';
 
-import { GraphIcon, ListIcon, cn } from '@shared';
+import { GraphIcon, ListIcon } from '@icons';
+import { cn } from '@shared';
 
 export type ViewMode = 'list' | 'chart';
 

@@ -1,6 +1,5 @@
-import React from 'react';
-
-import { TimeIcon, cn } from '@shared';
+import { TimeIcon } from '@icons';
+import { cn } from '@shared';
 
 import { Toggle } from '../common/Toggle';
 

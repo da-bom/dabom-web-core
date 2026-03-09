@@ -8,7 +8,7 @@ const __dirname = dirname(__filename);
 const srcDir = join(__dirname, 'src');
 const mainIndexFile = join(srcDir, 'index.ts');
 
-const directories = ['utils', 'components', 'hooks'];
+const directories = ['utils', 'components', 'hooks', 'constants'];
 
 let mainIndexContent = '';
 
@@ -20,16 +20,16 @@ directories.forEach((dir) => {
     (file) => (file.endsWith('.tsx') || file.endsWith('.ts')) && file !== 'index.ts',
   );
 
-  if (dir === 'utils') {
+  if (dir === 'utils' || dir === 'constants') {
     files.forEach((file) => {
       const name = file.replace(/\.(tsx|ts)$/, '');
-      mainIndexContent += `export * from "./${dir}/${name}";\n`;
+      mainIndexContent += `export * from './${dir}/${name}';\n`;
     });
   } else {
     // 2. 나머지는 기본 방식 (export { default as ... })
     files.forEach((file) => {
       const name = file.replace(/\.(tsx|ts)$/, '');
-      mainIndexContent += `export { default as ${name} } from "./${dir}/${name}";\n`;
+      mainIndexContent += `export { default as ${name} } from './${dir}/${name}';\n`;
     });
   }
 });

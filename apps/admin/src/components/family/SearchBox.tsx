@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
-import { CancelIcon, DropDown, MainBox, RadioGroup, SearchIcon } from '@shared';
+import { CancelIcon, SearchIcon } from '@icons';
+import { DropDown, MainBox, RadioGroup } from '@shared';
 
 const SORT_OPTION = [
   {

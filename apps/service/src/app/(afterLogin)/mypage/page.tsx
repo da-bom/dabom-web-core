@@ -1,46 +1,37 @@
-'use client';
+import Link from 'next/link';
 
-import dynamic from 'next/dynamic';
+import { ChevronIcon } from '@icons';
+import { MainBox } from '@shared';
 
-import { ChevronIcon, DaboIcon, MainBox } from '@shared';
-
-const ProgressBar = dynamic(() => import('src/components/common/ProgressBar'), {
-  ssr: false,
-});
+import MyInfo from 'src/components/mypage/MyInfo';
 
 const data = {
   name: '김철수',
-  usedGB: 100,
+  familyName: '김씨네 가족',
+  usedGB: 30,
   limitGB: 100,
 };
 
 const MyPage = () => {
-  const usagePercent = Math.min(Math.round((data.usedGB / data.limitGB) * 100), 100);
-  const displayStatus = 100 - usagePercent;
-
   return (
-    <div className="mx-5 mt-14 flex flex-col gap-4">
-      <MainBox className="flex w-full flex-col items-center gap-6 rounded-xl p-7">
-        <DaboIcon usage={displayStatus} />
-        <span className="text-h1-m">{data.name}</span>
-        <div className="flex w-full flex-col gap-2">
-          <div className="text-body2-m flex justify-between">
-            <span>내 데이터 사용량</span>
-            <span>
-              {data.usedGB}GB/{data.limitGB}GB
-            </span>
-          </div>
-          <ProgressBar value={usagePercent} />
-        </div>
+    <div className="m-5 flex flex-col gap-4">
+      <MainBox className="flex w-full flex-col gap-7 rounded-2xl px-5 py-4">
+        <MyInfo data={data} />
       </MainBox>
-      <MainBox className="flex h-14 items-center justify-between rounded-xl px-4">
-        <span>이용 약관</span>
-        <ChevronIcon className="text-gray-800" />
-      </MainBox>
-      <footer className="text-body2-m ml-2 flex flex-col items-start gap-1 text-gray-800 underline">
-        <button>로그아웃</button>
-        <button>회원탈퇴</button>
-      </footer>
+      <Link href="/mypage/awards">
+        <MainBox className="flex cursor-pointer items-center justify-between rounded-2xl p-4">
+          <span className="text-body1-m">내가 받은 보상 보기</span>
+          <ChevronIcon className="text-gray-800" sx={{ width: 16 }} />
+        </MainBox>
+      </Link>
+      {/* TODO: 약관 페이지 구현 후 수정 */}
+      <Link href="#">
+        <MainBox className="flex cursor-pointer items-center justify-between rounded-2xl p-4">
+          <span className="text-body1-m">이용 약관</span>
+          <ChevronIcon className="text-gray-800" sx={{ width: 16 }} />
+        </MainBox>
+      </Link>
+      <button className="text-body2-m ml-2 flex text-gray-800 underline">로그아웃</button>
     </div>
   );
 };

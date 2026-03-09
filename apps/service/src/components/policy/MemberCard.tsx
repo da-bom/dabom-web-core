@@ -5,15 +5,8 @@ import { toast } from 'react-hot-toast';
 
 import { useRouter } from 'next/navigation';
 
-import {
-  Badge,
-  ChevronIcon,
-  bytesToGB,
-  cn,
-  formatPhoneNumber,
-  formatSize,
-  gbToBytes,
-} from '@shared';
+import { ChevronIcon } from '@icons';
+import { Badge, bytesToGB, cn, formatPhoneNumber, formatSize, gbToBytes } from '@shared';
 
 import { PolicyBlockOwner } from './PolicyBlockOwner';
 import { PolicyLimitOwner } from './PolicyLimitOwner';
@@ -82,10 +75,8 @@ export default function MemberCard({
   });
 
   React.useEffect(() => {
-    if (currentLimitGBFromProp !== null) {
-      setLocalLimit(Math.max(LIMIT.MIN, currentLimitGBFromProp));
-    }
-  }, [currentLimitGBFromProp]);
+    setLocalLimit(Math.max(LIMIT.MIN, currentLimitGBFromProp ?? 0));
+  }, [LIMIT.MIN, currentLimitGBFromProp]);
 
   const sliderPercentage = isUnlimited
     ? 100

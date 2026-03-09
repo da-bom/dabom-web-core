@@ -1,6 +1,4 @@
-import React from 'react';
-
-import { DoNotIcon } from '@shared';
+import { DoNotIcon } from '@icons';
 
 import { Toggle } from '../common/Toggle';
 

@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { ErrorOutlineIcon, cn } from '@shared';
+import { ErrorOutlineIcon } from '@icons';
+import { cn } from '@shared';
 
 import { Toggle } from '../common/Toggle';
 import LimitInput from './LimitInput';

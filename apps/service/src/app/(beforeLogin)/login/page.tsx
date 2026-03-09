@@ -4,7 +4,8 @@ import { useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import { Button, ErrorIcon, InputField } from '@shared';
+import { ErrorIcon } from '@icons';
+import { Button, InputField } from '@shared';
 
 import { useLogin } from 'src/api/auth/useLogin';
 

@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 
-import { MainBox, ResetIcon } from '@shared';
+import { ResetIcon } from '@icons';
+import { MainBox } from '@shared';
 
 import { FamilySearchRequest } from 'src/api/family/schema';
 import FamilyDetail from 'src/components/family/FamilyDetail';

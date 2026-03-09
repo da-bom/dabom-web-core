@@ -1,4 +1,5 @@
-import { ErrorOutlineIcon, bytesToGB } from '@shared';
+import { ErrorOutlineIcon } from '@icons';
+import { bytesToGB } from '@shared';
 
 import { CustomerListType } from 'src/types/dataUsage';
 

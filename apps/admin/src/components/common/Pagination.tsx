@@ -1,6 +1,7 @@
 'use client';
 
-import { ChevronIcon, cn } from '@shared';
+import { ChevronIcon } from '@icons';
+import { cn } from '@shared';
 
 interface PaginationProps {
   currentPage: number;
