@@ -2,10 +2,12 @@
 
 import React from 'react';
 
+import Image from 'next/image';
+
+import { E911EmergencyIconFile } from '@icons';
 import {
   Block as BlockIcon,
   CheckCircleOutline as CheckCircleOutlineIcon,
-  Emergency as E911EmergencyIcon,
 } from '@mui/icons-material';
 import { Badge, BadgeColor } from '@shared';
 
@@ -37,7 +39,7 @@ export function AppealRequestCard({
       case 'rejected':
         return <BlockIcon sx={{ fontSize: 15 }} className="text-negative" />;
       case 'emergency':
-        return <E911EmergencyIcon sx={{ fontSize: 15 }} className="text-negative" />;
+        return <Image src={E911EmergencyIconFile} alt="emergency" />;
       case 'pending':
       default:
         return null;
