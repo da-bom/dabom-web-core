@@ -9,6 +9,8 @@ import {
 } from '@mui/icons-material';
 import { Badge, BadgeColor } from '@shared';
 
+import { APPEAL_TYPE_LABEL } from 'src/constants/appeal';
+
 export type AppealStatus = 'pending' | 'approved' | 'rejected' | 'emergency';
 
 interface AppealRequestCardProps {
@@ -56,7 +58,7 @@ export function AppealRequestCard({
     }
   };
 
-  const isEmergency = status === 'emergency' || policyType === '긴급 요청';
+  const isEmergency = status === 'emergency' || policyType === APPEAL_TYPE_LABEL.EMERGENCY;
 
   return (
     <div

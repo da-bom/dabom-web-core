@@ -4,10 +4,12 @@ import React, { useState } from 'react';
 
 import dynamic from 'next/dynamic';
 
-import { AppealRequestCard, AppealStatus, FilterSegment } from '@service/components/appeal';
-import { mockNegotiations } from '@service/data/negotiations';
-import { getCurrentUserRole } from '@service/utils/auth';
 import { Button, formatSize } from '@shared';
+
+import { AppealRequestCard, AppealStatus, FilterSegment } from 'src/components/appeal';
+import { APPEAL_TYPE_LABEL } from 'src/constants/appeal';
+import { mockNegotiations } from 'src/data/negotiations';
+import { getCurrentUserRole } from 'src/utils/auth';
 
 const AppealPageContent = () => {
   const [activeTab, setActiveTab] = useState<'progress' | 'completed'>('progress');
@@ -29,7 +31,8 @@ const AppealPageContent = () => {
         <div className="flex flex-col gap-2 pb-24">
           {filteredItems.map((item) => {
             const { total: formattedSize } = formatSize(item.desiredRules.limitBytes);
-            const policyType = item.type === 'EMERGENCY' ? '긴급 요청' : '데이터 한도';
+            const policyType =
+              item.type === 'EMERGENCY' ? APPEAL_TYPE_LABEL.EMERGENCY : APPEAL_TYPE_LABEL.NORMAL;
             let uiStatus: AppealStatus = item.status.toLowerCase() as AppealStatus;
             if (item.type === 'EMERGENCY') uiStatus = 'emergency';
 
