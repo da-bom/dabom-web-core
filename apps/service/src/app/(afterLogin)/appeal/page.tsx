@@ -3,21 +3,23 @@
 import React, { useState } from 'react';
 
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 
 import { Button, formatSize } from '@shared';
 
 import { AppealRequestCard, AppealStatus, FilterSegment } from 'src/components/appeal';
 import { APPEAL_TYPE_LABEL } from 'src/constants/appeal';
-import { mockNegotiations } from 'src/data/negotiations';
+import { mockAppealList } from 'src/data/appealList';
 import { getCurrentUserRole } from 'src/utils/auth';
 
 const AppealPageContent = () => {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<'progress' | 'completed'>('progress');
 
   const userRole = getCurrentUserRole();
   const isOwner = userRole === 'OWNER';
 
-  const filteredItems = mockNegotiations.filter((item) => {
+  const filteredItems = mockAppealList.filter((item) => {
     if (activeTab === 'progress') return item.status === 'PENDING';
     if (activeTab === 'completed') return item.status !== 'PENDING';
     return true;
@@ -28,7 +30,7 @@ const AppealPageContent = () => {
       <div className="flex flex-col gap-5">
         <FilterSegment activeTab={activeTab} onTabChange={setActiveTab} />
 
-        <div className="flex flex-col gap-2 pb-24">
+        <div className="flex flex-col gap-2">
           {filteredItems.map((item) => {
             const { total: formattedSize } = formatSize(item.desiredRules.limitBytes);
             const policyType =
@@ -44,6 +46,11 @@ const AppealPageContent = () => {
                 reason={item.requestReason}
                 status={uiStatus}
                 requesterName={isOwner ? item.requesterName : undefined}
+                onClick={() => {
+                  router.push(
+                    `/appeal/comment?policy=${encodeURIComponent(policyType)}&id=${item.appealId}&status=${item.status}`,
+                  );
+                }}
               />
             );
           })}
@@ -52,7 +59,7 @@ const AppealPageContent = () => {
 
       {!isOwner && (
         <div className="fixed bottom-24 left-0 flex w-full justify-center px-5">
-          <Button size="lg" color="dark">
+          <Button size="lg" color="dark" onClick={() => router.push('/appeal/objection')}>
             이의 제기하기
           </Button>
         </div>
