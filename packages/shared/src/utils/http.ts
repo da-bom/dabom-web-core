@@ -36,6 +36,18 @@ http.interceptors.response.use(
       const errorCode = data.error?.code;
       const serverMsg = data.error?.message;
 
+      if (
+        (errorCode === ERROR_CODES.AUTH_TOKEN_EXPIRED ||
+          errorCode === ERROR_CODES.AUTH_TOKEN_INVALID) &&
+        globalThis.window !== undefined
+      ) {
+        const currentPath = window.location.pathname;
+        if (currentPath !== '/expired' && currentPath !== '/login') {
+          localStorage.removeItem('access_token');
+          window.location.href = '/expired';
+        }
+      }
+
       const errorMessage =
         ERROR_MESSAGE_MAP[errorCode as keyof typeof ERROR_MESSAGE_MAP] ||
         serverMsg ||

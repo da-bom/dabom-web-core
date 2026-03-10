@@ -40,14 +40,14 @@ const Login = () => {
             type="email"
             value={email}
             placeholder="admin@dabom.com"
-            onChange={setEmail}
+            onValueChange={setEmail}
           />
           <InputField
             label="비밀번호"
             type="password"
             value={password}
             placeholder="비밀번호를 입력하세요"
-            onChange={setPassword}
+            onValueChange={setPassword}
           />
         </div>
         <Button size="lg" color="dark" onClick={handleLogin} disabled={isLoading}>
