@@ -61,14 +61,16 @@ export default function DataLimitAppealPage() {
         </div>
       </div>
 
-      <div className="fixed bottom-24 left-0 flex w-full gap-2 px-5">
+      <div className="fixed bottom-24 left-0 flex w-full justify-center gap-2 px-5">
         <Button size="md-short" color="light" onClick={() => router.back()}>
           이전
         </Button>
         <Button
           size="lg"
           color="dark"
-          onClick={() => router.push(`/appeal/comment?amount=${selectedLimit}&policy=데이터 한도`)}
+          onClick={() =>
+            router.push(`/appeal/create/reason?amount=${selectedLimit}&policy=데이터 한도`)
+          }
         >
           다음
         </Button>
