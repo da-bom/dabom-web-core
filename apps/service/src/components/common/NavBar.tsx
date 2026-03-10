@@ -16,7 +16,7 @@ const navItems = [
 const NavBar = () => {
   const pathname = usePathname();
 
-  const HIDE_NAVBAR_PATHS = ['/appeal/chat'];
+  const HIDE_NAVBAR_PATHS = ['/appeal/comment'];
   if (HIDE_NAVBAR_PATHS.some((path) => pathname.startsWith(path))) {
     return null;
   }

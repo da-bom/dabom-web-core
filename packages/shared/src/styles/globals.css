@@ -56,6 +56,10 @@
 
   /* shadow */
   --shadow-default: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+
+  /* radius */
+  --radius-bubble: 16px;
+  --radius-bubble-sm: 4px;
 }
 
 /* typography */

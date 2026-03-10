@@ -18,7 +18,6 @@ interface PolicySummaryCardProps {
 export function PolicySummaryCard({
   policyName,
   requestedValue,
-  previousValue,
   reasonText,
   isOwner = false,
   onApprove,
@@ -28,15 +27,8 @@ export function PolicySummaryCard({
     <MainBox className="flex w-full flex-col justify-center gap-2 rounded-2xl border border-gray-100 p-5">
       <div className="flex w-full flex-col items-start">
         <div className="text-body1-m text-gray-800">
-          <span>
-            정책: {policyName}: {previousValue || requestedValue}
-          </span>
-          {previousValue && (
-            <>
-              <br />
-              <span>변경: {requestedValue}</span>
-            </>
-          )}
+          <p>정책: {policyName}</p>
+          <p>변경: {requestedValue}</p>
         </div>
       </div>
       <div className="h-0 w-full border-t border-gray-100" />
@@ -45,7 +37,7 @@ export function PolicySummaryCard({
       </div>
 
       {isOwner && (
-        <div className="mt-2 flex w-full items-center gap-4">
+        <div className="flex w-full items-center gap-4">
           <button
             type="button"
             onClick={onReject}
