@@ -46,7 +46,7 @@ function AppealChatContent() {
   return (
     <div className="flex w-full flex-col">
       <main className="flex w-full flex-col items-center gap-4 px-5 pt-5 pb-24">
-        <div className="sticky top-0 z-10 flex w-full flex-col items-center gap-4 pb-2">
+        <div className="sticky top-0 z-10 flex w-full flex-col items-center gap-4">
           {status !== 'pending' && status !== 'cancelled' && (
             <Badge
               color={status === 'rejected' ? 'rejected' : 'approved'}
@@ -68,13 +68,7 @@ function AppealChatContent() {
           )}
 
           <PolicySummaryCard
-            policyName={
-              inputAmount
-                ? selectedPolicy
-                : initialData.type === 'EMERGENCY'
-                  ? APPEAL_TYPE_LABEL.EMERGENCY
-                  : APPEAL_TYPE_LABEL.NORMAL
-            }
+            policyName={selectedPolicy}
             requestedValue={
               inputAmount
                 ? `${inputAmount}GB`

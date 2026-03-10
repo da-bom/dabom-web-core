@@ -12,7 +12,13 @@ interface AppealInputBarProps {
   disabled?: boolean;
 }
 
-export function AppealInputBar({ value, onChange, onSubmit, disabled }: AppealInputBarProps) {
+export function AppealInputBar({
+  value,
+  onChange,
+  onSubmit,
+  buttonText,
+  disabled,
+}: AppealInputBarProps) {
   return (
     <div
       className={cn(
@@ -43,7 +49,7 @@ export function AppealInputBar({ value, onChange, onSubmit, disabled }: AppealIn
             disabled={disabled}
           >
             <span className={cn('text-body2-m', disabled ? 'text-gray-700' : 'text-white')}>
-              수정
+              {buttonText || '전송'}
             </span>
           </Button>
         </div>

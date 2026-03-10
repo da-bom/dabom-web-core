@@ -1,6 +1,5 @@
 import { AppealDetail } from '../api/appeal/schema';
 
-// 이의제기 상세 조회 (/appeals/{appealId}) 응답 데이터 구조에 맞춤 (type 제외됨)
 export const mockAppealDetails: AppealDetail[] = [
   {
     appealId: 1,

@@ -17,16 +17,14 @@ export function ChatBubble({ senderName, message, time, isMe }: ChatBubbleProps)
       {!isMe && senderName && <span className="text-caption-m">{senderName}</span>}
       <div
         className={cn(
-          'flex max-w-[70vw] flex-col justify-center gap-1 rounded-2xl px-4 py-3',
+          'rounded-bubble flex max-w-[70vw] flex-col justify-center border border-gray-200 px-4 py-3',
           isMe
-            ? 'bg-primary-50 items-end rounded-br-none border border-gray-200'
-            : 'bg-brand-white items-start rounded-bl-none border border-gray-200',
+            ? 'bg-primary-50 rounded-br-bubble-sm items-end'
+            : 'bg-brand-white rounded-bl-bubble-sm items-start',
         )}
       >
         <span className={cn('text-body1-m', isMe ? 'text-right' : 'text-left')}>{message}</span>
-        <span
-          className={cn('text-caption-m mt-1 text-gray-500', isMe ? 'text-right' : 'text-left')}
-        >
+        <span className={cn('text-caption-m text-gray-500', isMe ? 'text-right' : 'text-left')}>
           {time}
         </span>
       </div>
