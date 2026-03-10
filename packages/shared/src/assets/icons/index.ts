@@ -27,6 +27,8 @@ import FaceIcon from '@mui/icons-material/Face';
 import PuzzleIcon from '@mui/icons-material/ExtensionOutlined';
 import ShineIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import PendingIcon from '@mui/icons-material/Pending';
+import ApprovedIcon from './ApprovedIcon';
+import RejectedIcon from './RejectedIcon';
 import E911EmergencyIcon from './E911EmergencyIcon';
 
 export {
@@ -59,5 +61,8 @@ export {
   PuzzleIcon,
   ShineIcon,
   PendingIcon,
+  ApprovedIcon,
+  RejectedIcon,
   E911EmergencyIcon,
 };
+

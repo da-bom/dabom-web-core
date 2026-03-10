@@ -4,8 +4,8 @@ import React, { Suspense, useMemo, useState } from 'react';
 
 import { useSearchParams } from 'next/navigation';
 
-import { Block as BlockIcon, CheckCircle as CheckCircleIcon } from '@mui/icons-material';
-import { Badge, formatSize } from '@shared';
+import { ApprovedIcon, RejectedIcon } from '@icons';
+import { formatSize } from '@shared';
 
 import { AppealInputBar, ChatBubble, PolicySummaryCard } from 'src/components/appeal';
 import { APPEAL_STATUS_LABEL, APPEAL_TYPE_LABEL, APPEAL_UI_TEXT } from 'src/constants/appeal';
@@ -45,27 +45,10 @@ function AppealCommentContent() {
 
   return (
     <div className="flex w-full flex-col">
-      <main className="flex w-full flex-col items-center gap-4 px-5 pt-5 pb-24">
+      <main className="flex w-full flex-col items-center gap-4 p-5">
         <div className="sticky top-0 z-10 flex w-full flex-col items-center gap-4">
-          {status !== 'pending' && status !== 'cancelled' && (
-            <Badge
-              color={status === 'rejected' ? 'rejected' : 'approved'}
-              size="md_fixed"
-              className="gap-1"
-            >
-              {status === 'rejected' ? (
-                <>
-                  <BlockIcon sx={{ fontSize: 16 }} />
-                  {APPEAL_STATUS_LABEL.REJECTED}
-                </>
-              ) : (
-                <>
-                  <CheckCircleIcon sx={{ fontSize: 16 }} />
-                  {APPEAL_STATUS_LABEL.APPROVED}
-                </>
-              )}
-            </Badge>
-          )}
+          {status === 'rejected' && <RejectedIcon />}
+          {status === 'approved' && <ApprovedIcon />}
 
           <PolicySummaryCard
             policyName={selectedPolicy}
