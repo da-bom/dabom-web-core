@@ -5,7 +5,7 @@ import { ApiErrorResponse } from '@shared/type/error';
 
 import { formatFamilyPolicies } from 'src/utils/formatPolicy';
 
-import { FamilyDetail, FamilyPoliciesData, FamilyPoliciesDataSchema } from './scheme';
+import { FamilyDetail, FamilyPoliciesData, FamilyPoliciesDataSchema } from './schema';
 
 export const getFamilyPolicies = async (): Promise<FamilyPoliciesData> => {
   const response = await http.get('/families/policies');

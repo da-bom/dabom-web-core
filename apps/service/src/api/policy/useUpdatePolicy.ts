@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { ApiErrorResponse } from '@shared/type/error';
 
-import { UpdatePolicyRequest, UpdatePolicyResponse, UpdatePolicyResponseSchema } from './scheme';
+import { UpdatePolicyRequest, UpdatePolicyResponse, UpdatePolicyResponseSchema } from './schema';
 
 export const updatePolicy = async (payload: UpdatePolicyRequest): Promise<UpdatePolicyResponse> => {
   const response = await http.patch('families/policies', payload);

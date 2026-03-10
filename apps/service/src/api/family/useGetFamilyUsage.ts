@@ -8,7 +8,7 @@ import {
   FamilyUsageCurrentSchema,
   FamilyUsageMonthly,
   FamilyUsageMonthlySchema,
-} from './scheme';
+} from './schema';
 
 export const getFamilyUsage = async (year: number, month: number): Promise<FamilyUsageMonthly> => {
   const response = await http.get(`/families/usage/customers?year=${year}&month=${month}`);
