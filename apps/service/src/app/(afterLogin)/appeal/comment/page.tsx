@@ -8,10 +8,18 @@ import { ApprovedIcon, RejectedIcon } from '@icons';
 import { formatSize } from '@shared';
 
 import { AppealInputBar, ChatBubble, PolicySummaryCard } from 'src/components/appeal';
-import { APPEAL_STATUS_LABEL, APPEAL_TYPE_LABEL, APPEAL_UI_TEXT } from 'src/constants/appeal';
+import { APPEAL_TYPE_LABEL, APPEAL_UI_TEXT } from 'src/constants/appeal';
 import { mockAppealDetails } from 'src/data/appealDetails';
 import { getCurrentUserRole } from 'src/utils/auth';
 import { formatChatTime } from 'src/utils/formatTime';
+
+type AppealStatus = 'pending' | 'approved' | 'rejected' | 'cancelled';
+
+const VALID_STATUSES: AppealStatus[] = ['pending', 'approved', 'rejected', 'cancelled'];
+
+const isValidStatus = (status: string | null): status is AppealStatus => {
+  return VALID_STATUSES.includes(status?.toLowerCase() as AppealStatus);
+};
 
 function AppealCommentContent() {
   const searchParams = useSearchParams();
@@ -27,16 +35,10 @@ function AppealCommentContent() {
     return mockAppealDetails.find((n) => n.appealId === appealId) || mockAppealDetails[0];
   }, [appealId]);
 
-  const urlStatus = searchParams.get('status')?.toLowerCase() as
-    | 'pending'
-    | 'approved'
-    | 'rejected'
-    | 'cancelled';
-
-  const [status, setStatus] = useState<'pending' | 'approved' | 'rejected' | 'cancelled'>(
-    urlStatus ||
-      (initialData.status.toLowerCase() as 'pending' | 'approved' | 'rejected' | 'cancelled'),
-  );
+  const [status, setStatus] = useState<AppealStatus>(() => {
+    const rawStatus = initialData.status.toLowerCase();
+    return isValidStatus(rawStatus) ? rawStatus : 'pending';
+  });
 
   const displayReason = inputReason || initialData.requestReason;
 
