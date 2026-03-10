@@ -1,12 +1,9 @@
 'use client';
 
-import React from 'react';
+import { CheckOutlinedIcon, DoNotIcon, E911EmergencyIcon } from '@icons';
+import { Badge } from '@shared';
 
-import {
-  Block as BlockIcon,
-  CheckCircleOutline as CheckCircleOutlineIcon,
-} from '@mui/icons-material';
-import { Badge, BadgeColor, E911EmergencyIcon } from '@shared';
+import { BadgeColor } from '@shared/type/badge';
 
 import { APPEAL_TYPE_LABEL } from 'src/constants/appeal';
 
@@ -26,15 +23,14 @@ export function AppealRequestCard({
   dataLimit,
   reason,
   status,
-  requesterName,
   onClick,
 }: AppealRequestCardProps) {
   const getStatusIcon = () => {
     switch (status) {
       case 'approved':
-        return <CheckCircleOutlineIcon sx={{ fontSize: 15 }} className="text-positive" />;
+        return <CheckOutlinedIcon sx={{ fontSize: 15 }} className="text-positive" />;
       case 'rejected':
-        return <BlockIcon sx={{ fontSize: 15 }} className="text-negative" />;
+        return <DoNotIcon sx={{ fontSize: 15 }} className="text-negative" />;
       case 'emergency':
         return <E911EmergencyIcon className="text-negative" />;
       case 'pending':
@@ -77,7 +73,6 @@ export function AppealRequestCard({
         </div>
       </div>
 
-      {/* 요청 사유 영역 */}
       <p className="text-body2-m line-clamp-1 w-full text-gray-700">{reason}</p>
     </div>
   );
