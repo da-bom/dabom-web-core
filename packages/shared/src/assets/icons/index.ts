@@ -6,6 +6,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import DocumentIcon from '@mui/icons-material/DescriptionOutlined';
 import ChevronIcon from '@mui/icons-material/ArrowForwardIosOutlined';
 import CheckIcon from '@mui/icons-material/CheckCircle';
+import CheckOutlinedIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorIcon from '@mui/icons-material/Error';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import DoNotIcon from '@mui/icons-material/DoNotDisturbAlt';
@@ -25,6 +26,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import FaceIcon from '@mui/icons-material/Face';
 import PuzzleIcon from '@mui/icons-material/ExtensionOutlined';
 import ShineIcon from '@mui/icons-material/AutoAwesomeOutlined';
+import PendingIcon from '@mui/icons-material/PendingOutlined';
 
 export {
   HomeIcon,
@@ -35,6 +37,7 @@ export {
   DocumentIcon,
   ChevronIcon,
   CheckIcon,
+  CheckOutlinedIcon,
   ErrorIcon,
   ErrorOutlineIcon,
   DoNotIcon,
@@ -54,4 +57,5 @@ export {
   FaceIcon,
   PuzzleIcon,
   ShineIcon,
+  PendingIcon,
 };
