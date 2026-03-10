@@ -1,15 +1,6 @@
 import { ReactNode } from 'react';
 
-export type BadgeColor =
-  | 'primary'
-  | 'white'
-  | 'gray'
-  | 'outline'
-  | 'primary_light'
-  | 'negative'
-  | 'gray_light'
-  | 'emergency';
-export type BadgeSize = 'sm' | 'lg';
+import { BadgeColor, BadgeSize } from '../types/badge';
 
 interface BadgeProps {
   children: ReactNode;

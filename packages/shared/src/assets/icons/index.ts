@@ -30,6 +30,9 @@ import PendingIcon from '@mui/icons-material/Pending';
 import ApprovedIcon from './ApprovedIcon';
 import RejectedIcon from './RejectedIcon';
 import E911EmergencyIcon from './E911EmergencyIcon';
+import DashboardIcon from '@mui/icons-material/DashboardOutlined';
+import ChartIcon from '@mui/icons-material/BarChartOutlined';
+import GiftIcon from './GiftIcon';
 
 export {
   HomeIcon,
@@ -64,5 +67,8 @@ export {
   ApprovedIcon,
   RejectedIcon,
   E911EmergencyIcon,
+  DashboardIcon,
+  ChartIcon,
+  GiftIcon
 };
 
