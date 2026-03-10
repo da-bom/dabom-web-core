@@ -36,7 +36,7 @@ export function AppealRequestCard({
       case 'rejected':
         return <BlockIcon sx={{ fontSize: 15 }} className="text-negative" />;
       case 'emergency':
-        return <E911EmergencyIcon className="text-negative" sx={{ fontSize: 15 }} />;
+        return <E911EmergencyIcon className="text-negative" />;
       case 'pending':
       default:
         return null;

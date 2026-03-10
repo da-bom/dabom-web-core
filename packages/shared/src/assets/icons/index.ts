@@ -25,6 +25,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import FaceIcon from '@mui/icons-material/Face';
 import PuzzleIcon from '@mui/icons-material/ExtensionOutlined';
 import ShineIcon from '@mui/icons-material/AutoAwesomeOutlined';
+import E911EmergencyIcon from './E911EmergencyIcon';
 
 export {
   HomeIcon,
@@ -54,4 +55,5 @@ export {
   FaceIcon,
   PuzzleIcon,
   ShineIcon,
+  E911EmergencyIcon,
 };
