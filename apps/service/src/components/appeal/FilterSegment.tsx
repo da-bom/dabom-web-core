@@ -17,7 +17,7 @@ const FilterButton = ({
     <button
       type="button"
       className={cn(
-        'flex h-10.25 flex-1 cursor-pointer items-center justify-center rounded-lg transition-colors',
+        'flex h-full flex-1 cursor-pointer items-center justify-center rounded-lg transition-colors',
         isSelected ? 'bg-background-sub text-primary' : 'bg-transparent text-gray-600',
       )}
       onClick={onClick}
@@ -34,8 +34,8 @@ interface FilterSegmentProps {
 
 export function FilterSegment({ activeTab, onTabChange }: FilterSegmentProps) {
   return (
-    <div className="bg-brand-white flex h-14.25 w-full flex-col items-start gap-1 rounded-2xl border border-gray-200 p-2">
-      <div className="flex h-10.25 w-full items-center">
+    <div className="bg-brand-white flex h-fit w-full flex-col items-start gap-1 rounded-2xl border border-gray-200 p-2">
+      <div className="flex h-10 w-full items-center">
         <FilterButton isSelected={activeTab === 'progress'} onClick={() => onTabChange('progress')}>
           진행 중
         </FilterButton>
