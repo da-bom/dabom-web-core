@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import { ImageIcon } from '@icons';
 import { Button } from '@shared';
 
@@ -12,11 +14,11 @@ export const formatRewardProduct = ({ product }: { product: readonly Product[] }
       <div key={p.id}>{p.type === 'DATA' ? '-' : <ImageIcon />}</div>,
       <span key={p.id}>{p.productName}</span>,
       <span key={p.id}>{p.price.toLocaleString()}</span>,
-      <div key={p.id} className="flex justify-center">
+      <Link key={p.id} className="flex justify-center" href={`/reward/products/${p.id}`}>
         <Button size="sm" color="light">
           수정
         </Button>
-      </div>,
+      </Link>,
     ],
   }));
 };
