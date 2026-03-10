@@ -1,5 +1,5 @@
 export type AppealType = 'NORMAL' | 'EMERGENCY';
-export type AppealStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
+export type AppealStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | 'CANCELLED';
 
 export interface Comment {
   commentId: number;
@@ -42,10 +42,9 @@ export interface AppealDetail {
     nextCursor: string | null;
     hasNext: boolean;
   };
-  type?: AppealType; // 목록에서 넘어온 데이터를 UI에 그릴 때 필요할 수 있어 선택사항으로 추가
+  type?: AppealType;
 }
 
-// 기존 Appeal 인터페이스는 하위 호환성을 위해 유지하거나 제거 (여기서는 제거하고 Summary/Detail 사용)
 export type Appeal = AppealDetail;
 
 export interface AppealCreateRequest {

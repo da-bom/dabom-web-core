@@ -1,6 +1,5 @@
 import { AppealSummary } from '../api/appeal/schema';
 
-// 이의제기 목록 조회 (/appeals) 응답 데이터 구조에 맞춤
 export const mockAppealList: AppealSummary[] = [
   {
     appealId: 1,
@@ -34,5 +33,16 @@ export const mockAppealList: AppealSummary[] = [
     desiredRules: { limitBytes: 10737418240 },
     status: 'REJECTED',
     createdAt: '2026-03-01T19:30:00Z',
+  },
+  {
+    appealId: 4,
+    type: 'EMERGENCY',
+    policyAssignmentId: 58,
+    requesterId: 12346,
+    requesterName: '자녀1',
+    requestReason: '긴급하게 데이터가 더 필요해요',
+    desiredRules: { limitBytes: 5368709120 },
+    status: 'APPROVED',
+    createdAt: '2026-03-10T10:00:00Z',
   },
 ];
