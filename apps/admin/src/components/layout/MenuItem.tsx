@@ -15,7 +15,7 @@ interface MenuItemProps {
 const MenuItem = ({ label, path, icon: Icon, subItems, currentPath }: MenuItemProps) => {
   const hasSubItems = !!subItems;
 
-  const isOpen = currentPath.startsWith('/reward');
+  const isOpen = hasSubItems && currentPath.startsWith(path);
   const isParentActive = hasSubItems && isOpen;
   const isMainActive = !hasSubItems && currentPath === path;
 
