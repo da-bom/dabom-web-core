@@ -34,10 +34,11 @@ const Sidebar = () => {
             return (
               <MenuItem
                 key={item.id}
-                isSelected={pathname === item.path}
-                name={item.label}
-                href={item.path}
+                path={item.path}
+                label={item.label}
                 icon={item.icon}
+                currentPath={pathname}
+                subItems={'subItems' in item ? item.subItems : undefined}
               />
             );
           })}

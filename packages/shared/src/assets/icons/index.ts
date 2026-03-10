@@ -28,6 +28,9 @@ import PuzzleIcon from '@mui/icons-material/ExtensionOutlined';
 import ShineIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import PendingIcon from '@mui/icons-material/Pending';
 import E911EmergencyIcon from './E911EmergencyIcon';
+import DashboardIcon from '@mui/icons-material/DashboardOutlined';
+import ChartIcon from '@mui/icons-material/BarChartOutlined';
+import GiftIcon from './GiftIcon';
 
 export {
   HomeIcon,
@@ -60,4 +63,7 @@ export {
   ShineIcon,
   PendingIcon,
   E911EmergencyIcon,
+  DashboardIcon,
+  ChartIcon,
+  GiftIcon
 };
