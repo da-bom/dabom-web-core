@@ -24,7 +24,7 @@ export default function DataLimitAppealPage() {
   };
 
   return (
-    <div className="bg-background-base flex min-h-screen flex-col">
+    <div className="bg-background-base flex flex-col">
       <div className="flex flex-col items-center gap-7 px-5 pt-20">
         <div className="flex w-full flex-col items-start gap-2">
           <h1 className="text-h2-m">변경을 원하는 한도는 얼마인가요?</h1>
@@ -32,7 +32,7 @@ export default function DataLimitAppealPage() {
         </div>
 
         <div className="flex w-full flex-col gap-4">
-          <div className="bg-background-sub flex h-14 w-full items-center justify-center rounded-2xl border border-gray-200 px-4 py-4">
+          <div className="bg-background-sub flex h-fit w-full items-center justify-center rounded-2xl border border-gray-200 px-4 py-4">
             <span className="text-body1-m text-brand-black">현재 한도: {CURRENT_LIMIT}GB</span>
           </div>
 
