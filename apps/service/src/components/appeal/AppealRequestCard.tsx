@@ -2,14 +2,11 @@
 
 import React from 'react';
 
-import Image from 'next/image';
-
-import E911EmergencyIconFile from '@icons/E911Emergency.svg';
 import {
   Block as BlockIcon,
   CheckCircleOutline as CheckCircleOutlineIcon,
 } from '@mui/icons-material';
-import { Badge, BadgeColor } from '@shared';
+import { Badge, BadgeColor, E911EmergencyIcon } from '@shared';
 
 import { APPEAL_TYPE_LABEL } from 'src/constants/appeal';
 
@@ -39,7 +36,7 @@ export function AppealRequestCard({
       case 'rejected':
         return <BlockIcon sx={{ fontSize: 15 }} className="text-negative" />;
       case 'emergency':
-        return <Image src={E911EmergencyIconFile} alt="emergency" />;
+        return <E911EmergencyIcon className="text-negative" />;
       case 'pending':
       default:
         return null;
@@ -65,9 +62,9 @@ export function AppealRequestCard({
   return (
     <div
       onClick={onClick}
-      className="bg-brand-white flex h-21.25 w-full cursor-pointer flex-col justify-center gap-2 rounded-2xl border border-gray-200 p-4"
+      className="bg-brand-white flex w-full cursor-pointer flex-col justify-center gap-2 rounded-2xl border border-gray-200 p-4"
     >
-      <div className="flex h-6 w-full items-center justify-between">
+      <div className="flex h-fit w-full items-center justify-between">
         <div className="flex items-center gap-2">
           <Badge color={getBadgeColor()} className="px-4">
             <span className="text-body2-d">{policyType}</span>
@@ -81,7 +78,7 @@ export function AppealRequestCard({
       </div>
 
       {/* 요청 사유 영역 */}
-      <p className="text-body2-m line-clamp-1 h-5.25 w-full text-gray-700">{reason}</p>
+      <p className="text-body2-m line-clamp-1 w-full text-gray-700">{reason}</p>
     </div>
   );
 }

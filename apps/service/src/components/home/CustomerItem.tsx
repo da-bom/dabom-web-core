@@ -1,7 +1,7 @@
 import { ErrorOutlineIcon } from '@icons';
 import { bytesToGB } from '@shared';
 
-import { CustomerListType } from 'src/types/dataUsage';
+import { CustomerListType } from 'src/types/DataUsage';
 
 const WARNING_THRESHOLD = 0.6;
 

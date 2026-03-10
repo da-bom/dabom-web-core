@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 
 import { ApiErrorResponse } from '@shared/type/error';
 
-import { ServiceLoginRequest, ServiceLoginResponse, ServiceLoginResponseSchema } from './scheme';
+import { ServiceLoginRequest, ServiceLoginResponse, ServiceLoginResponseSchema } from './schema';
 
 export const login = async (
   phoneNumber: string,

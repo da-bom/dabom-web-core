@@ -44,7 +44,7 @@ export default function LoginPage() {
               type="tel"
               placeholder="전화번호를 입력해주세요"
               value={phoneNumber}
-              onChange={(value) => setPhoneNumber(value)}
+              onValueChange={(value) => setPhoneNumber(value)}
             />
 
             <InputField
@@ -52,7 +52,7 @@ export default function LoginPage() {
               type="password"
               placeholder="비밀번호를 입력해주세요"
               value={password}
-              onChange={(value) => {
+              onValueChange={(value) => {
                 setPassword(value);
                 setIsLoginFailed(false);
               }}

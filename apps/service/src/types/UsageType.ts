@@ -1,6 +1,6 @@
 import { CustomerDetail } from '@shared/type/familyType';
 
-import { FamilyDetail } from './policiesType';
+import { FamilyDetail } from './PoliciesType';
 
 export interface UsageCustomer extends Pick<
   CustomerDetail,

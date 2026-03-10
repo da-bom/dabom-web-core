@@ -1,4 +1,4 @@
-import { CustomerListType } from 'src/types/dataUsage';
+import { CustomerListType } from 'src/types/DataUsage';
 
 import CustomerItem from './CustomerItem';
 

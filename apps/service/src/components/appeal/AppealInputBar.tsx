@@ -8,17 +8,10 @@ interface AppealInputBarProps {
   value: string;
   onChange: (value: string) => void;
   onSubmit: () => void;
-  buttonText?: string;
   disabled?: boolean;
 }
 
-export function AppealInputBar({
-  value,
-  onChange,
-  onSubmit,
-  buttonText,
-  disabled,
-}: AppealInputBarProps) {
+export function AppealInputBar({ value, onChange, onSubmit, disabled }: AppealInputBarProps) {
   return (
     <div
       className={cn(
@@ -41,16 +34,14 @@ export function AppealInputBar({
             className="text-body2-m w-full bg-transparent outline-none disabled:text-gray-400"
           />
         </div>
-        <div className="flex h-9 w-16 items-center justify-center">
+        <div className="flex items-center justify-center">
           <Button
             size="sm"
             color={disabled ? 'gray' : 'dark'}
             onClick={onSubmit}
             disabled={disabled}
           >
-            <span className={cn('text-body2-m', disabled ? 'text-gray-700' : 'text-white')}>
-              {buttonText || '전송'}
-            </span>
+            수정
           </Button>
         </div>
       </div>

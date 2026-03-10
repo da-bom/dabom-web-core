@@ -5,7 +5,7 @@ import React, { useCallback, useState } from 'react';
 import { gbToBytes } from '@shared';
 
 import { useGetFamilyUsageCurrent } from 'src/api/family/useGetFamilyUsage';
-import { ServiceCustomerDetail } from 'src/api/policy/scheme';
+import { ServiceCustomerDetail } from 'src/api/policy/schema';
 import { useUpdatePolicy } from 'src/api/policy/useUpdatePolicy';
 import MemberCard from 'src/components/policy/MemberCard';
 import TimeSettingBottomSheet from 'src/components/policy/TimeSettingBottomSheet';

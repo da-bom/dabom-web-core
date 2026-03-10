@@ -9,7 +9,7 @@ import {
   UsageFamilySSEDataSchema,
   UsageSSEData,
   UsageSSEDataSchema,
-} from './scheme';
+} from './schema';
 
 export const connectUsageSSE = (
   onMessage: (eventName: string, rawData: string) => void,

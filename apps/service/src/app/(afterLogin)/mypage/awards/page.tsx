@@ -17,9 +17,9 @@ const AwardPage = () => {
   };
 
   return (
-    <div className="m-4">
+    <div className="m-5">
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-[repeat(auto-fill,minmax(200px,1fr))]">
-        {AWARD_DATA.map((item, index) => (
+        {AWARD_DATA.map((item) => (
           <Card
             className="h-45"
             key={item.id}
@@ -28,17 +28,11 @@ const AwardPage = () => {
             description={item.description}
           >
             {item.isUsed ? (
-              <Button
-                size="sm"
-                color="gray"
-                disabled
-                isFullWidth
-                onClick={() => handleCardClick(index)}
-              >
+              <Button size="sm" color="gray" disabled isFullWidth>
                 사용 완료
               </Button>
             ) : (
-              <Button size="sm" color="light" isFullWidth onClick={() => handleCardClick(index)}>
+              <Button size="sm" color="light" isFullWidth onClick={() => handleCardClick(item.id)}>
                 {item.type === 'data' ? '데이터 사용하기' : '기프티콘 보기'}
               </Button>
             )}

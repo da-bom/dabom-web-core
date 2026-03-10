@@ -3,7 +3,7 @@ import {
   FamilyDetail,
   FamilyPoliciesData,
   ServiceCustomerDetail,
-} from '../api/policy/scheme';
+} from '../api/policy/schema';
 
 export const formatFamilyPolicies = (familyData: FamilyPoliciesData): FamilyDetail => {
   const mappedCustomers: ServiceCustomerDetail[] = familyData.customers.map((c: ApiCustomer) => {
