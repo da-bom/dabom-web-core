@@ -23,7 +23,7 @@ export default function ObjectionPage() {
           <p className="text-body2-m text-gray-700">description</p>
         </div>
 
-        <MainBox className="w-full rounded-2xl border-gray-200">
+        <MainBox className="bg-brand-white flex w-full flex-col gap-4 rounded-2xl border-gray-200 px-4 py-8">
           <DropDown
             isOpen={isOpen}
             setIsOpen={setIsOpen}
@@ -36,7 +36,10 @@ export default function ObjectionPage() {
         </MainBox>
       </section>
 
-      <div className="fixed bottom-24 left-0 flex w-full justify-center px-5">
+      <div className="fixed bottom-24 left-0 flex w-full items-center justify-center gap-2 px-5">
+        <Button size="md-short" color="light" onClick={() => router.back()}>
+          이전
+        </Button>
         <Button
           size="lg"
           color="dark"

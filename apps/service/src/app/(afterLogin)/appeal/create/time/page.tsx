@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { Button, MainBox } from '@shared';
 
 import TimeSettingSheet from 'src/components/policy/TimeSettingBottomSheet';
+import { APPEAL_TYPE_LABEL } from 'src/constants/appeal';
 
 const CURRENT_START = '23:00';
 const CURRENT_END = '07:00';
@@ -63,7 +64,15 @@ function TimeLimitAppealContent() {
         <Button size="md-short" color="light" className="w-24" onClick={() => router.back()}>
           이전
         </Button>
-        <Button size="lg" color="dark" onClick={() => router.push('/appeal/objection')}>
+        <Button
+          size="lg"
+          color="dark"
+          onClick={() =>
+            router.push(
+              `/appeal/create/reason?start=${startTime}&end=${endTime}&policy=${encodeURIComponent(APPEAL_TYPE_LABEL.TIME_BLOCK)}`,
+            )
+          }
+        >
           다음
         </Button>
       </div>

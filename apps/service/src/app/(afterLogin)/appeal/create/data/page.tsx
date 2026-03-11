@@ -8,6 +8,7 @@ import { Button, MainBox, cn } from '@shared';
 
 import Slider from 'src/components/common/Slider';
 import LimitInput from 'src/components/policy/LimitInput';
+import { APPEAL_TYPE_LABEL } from 'src/constants/appeal';
 
 const MIN_LIMIT = 1;
 const MAX_LIMIT = 70;
@@ -61,7 +62,7 @@ export default function DataLimitAppealPage() {
         </div>
       </div>
 
-      <div className="fixed bottom-24 left-0 flex w-full justify-center gap-2 px-5">
+      <div className="fixed bottom-24 left-0 flex w-full items-center justify-center gap-2 px-5">
         <Button size="md-short" color="light" onClick={() => router.back()}>
           이전
         </Button>
@@ -69,7 +70,9 @@ export default function DataLimitAppealPage() {
           size="lg"
           color="dark"
           onClick={() =>
-            router.push(`/appeal/create/reason?amount=${selectedLimit}&policy=데이터 한도`)
+            router.push(
+              `/appeal/create/reason?amount=${selectedLimit}&policy=${encodeURIComponent(APPEAL_TYPE_LABEL.NORMAL)}`,
+            )
           }
         >
           다음
