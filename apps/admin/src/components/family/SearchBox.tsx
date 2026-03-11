@@ -1,67 +1,88 @@
 import { useState } from 'react';
 
 import { CancelIcon, SearchIcon } from '@icons';
-import { DropDown, MainBox, RadioGroup } from '@shared';
+import { Button, DropDown, MainBox, RadioGroup } from '@shared';
 
-const SORT_OPTION = [
-  {
-    label: '가나다 순',
-    value: 'abc',
-  },
-  {
-    label: '사용량 많은 순',
-    value: '',
-  },
-  {
-    label: '사용량 적은 순',
-    value: '',
-  },
-];
+interface FilterOption {
+  label: string;
+  value: string;
+}
 
-const SearchBox = () => {
+interface SearchBoxProps {
+  sortOptions: FilterOption[];
+  selectedSort: string;
+  onSortChange: (value: string) => void;
+  sortName: string;
+
+  children?: React.ReactNode;
+
+  searchOptions: string[];
+  onSearch: (type: string, keyword: string) => void;
+  onReset?: () => void;
+}
+
+const SearchBox = ({
+  sortOptions,
+  selectedSort,
+  onSortChange,
+  sortName,
+  children,
+  searchOptions,
+  onSearch,
+  onReset,
+}: SearchBoxProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState('전화번호');
+  const [selectedSearchType, setSelectedSearchType] = useState(searchOptions[0]);
+  const [keyword, setKeyword] = useState('');
+
   return (
-    <MainBox className="flex h-14 w-full items-center gap-5 px-5 py-3">
+    <MainBox className="flex w-full items-center gap-5 py-3 pr-3 pl-5">
       <RadioGroup
-        onChange={() => {
-          // TODO: 선택 로직 추가
-        }}
-        options={SORT_OPTION}
-        selectedValue="abc"
-        name="family-sort"
+        onChange={onSortChange}
+        options={sortOptions}
+        selectedValue={selectedSort}
+        name={sortName}
       />
+
+      {children && (
+        <>
+          <div className="self-stretch border border-gray-100" />
+          {children}
+        </>
+      )}
+
       <div className="self-stretch border border-gray-100" />
-      <div className="flex w-fit items-center gap-2">
-        <span className="text-body3-d shrink-0">데이터 사용량</span>
-        <input
-          className="bg-background-base outline-brand-dark h-8 w-14 rounded-sm"
-          type="number"
-        />{' '}
-        % ~
-        <input
-          className="bg-background-base outline-brand-dark h-8 w-14 rounded-sm"
-          type="number"
-        />{' '}
-        %
-      </div>
-      <div className="self-stretch border border-gray-100" />
+
       <div className="flex flex-1 items-center gap-2">
         <MainBox className="shrink-0">
           <DropDown
             isOpen={isOpen}
             setIsOpen={setIsOpen}
-            selectedOption={selectedOption}
-            setSelectedOption={setSelectedOption}
-            options={['전화번호', '이름']}
+            selectedOption={selectedSearchType}
+            setSelectedOption={setSelectedSearchType}
+            options={searchOptions}
             size="xs"
           />
         </MainBox>
         <SearchIcon sx={{ width: 16 }} />
-        <input className="outline-brand-dark flex-1 p-1" placeholder="검색어 입력" />
-        <button onClick={() => {}}>
+        <input
+          className="outline-brand-dark flex-1 p-1"
+          placeholder="검색어 입력"
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && onSearch(selectedSearchType, keyword)}
+        />
+        <button
+          onClick={() => {
+            setKeyword('');
+            onReset?.();
+          }}
+        >
           <CancelIcon className="cursor-pointer !text-gray-400" sx={{ width: 16 }} />
         </button>
+        <Button size="sm" color="dark">
+          검색
+        </Button>
       </div>
     </MainBox>
   );
