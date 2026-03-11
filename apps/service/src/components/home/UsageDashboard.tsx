@@ -12,6 +12,7 @@ import { useSSE } from 'src/api/family/useUsageSSE';
 import MonthNavigator from '../common/MonthNavigator';
 import ProgressBar from '../common/ProgressBar';
 import CustomerList from './CustomerList';
+import UsageActionCards from './UsageActionCards';
 import UsageChart from './UsageChart';
 import { ViewSegment } from './ViewSegment';
 
@@ -118,20 +119,24 @@ const UsageDashboard = () => {
   };
 
   return (
-    <div className="flex w-full flex-col gap-2 px-5 pt-15">
-      <MainBox className="w-full rounded-2xl p-5">
-        <div className="flex flex-col gap-2">
-          <span className="text-body1-m text-brand-dark">현재 데이터 사용량</span>
-          <div className="flex items-baseline gap-2">
-            <span className="text-main-m text-4xl font-bold">{totalUsageGB}GB</span>
-            <span className="text-body2-m text-gray-600">/ {totalLimitGB}GB</span>
+    <div className="flex w-full flex-col gap-2 p-5">
+      <div className="relative h-[172px] w-full">
+        <MainBox className="absolute bottom-0 left-0 flex h-38 w-full flex-col items-end justify-between rounded-2xl border-gray-200 p-5">
+          <div className="flex h-fit w-fit flex-col items-start gap-4">
+            <span className="text-body1-m h-fit w-fit">현재 데이터 사용량</span>
+            <div className="flex h-fit w-fit items-baseline gap-1">
+              <span className="text-main-m h-fit w-fit font-bold">{totalUsageGB}GB</span>
+              <span className="text-body2-m text-gray-500">/ {totalLimitGB}GB</span>
+            </div>
           </div>
+          <ProgressBar value={usagePercent} className="h-2" />
+        </MainBox>
+        <div className="absolute left-5">
+          <DaboIcon type="default" usage={usagePercent} width={130} height={130} />
         </div>
-        <DaboIcon usage={usagePercent} className="-mt-35 -mr-2 ml-auto block" />
-        <div className="mt-6">
-          <ProgressBar value={usagePercent} className="h-4" />
-        </div>
-      </MainBox>
+      </div>
+
+      <UsageActionCards />
 
       <div className="flex flex-col items-center gap-4">
         <MonthNavigator
