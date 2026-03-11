@@ -1,11 +1,12 @@
 'use client';
 
-import router from 'next/router';
+import { useRouter } from 'next/router';
 
 import { ImageIcon } from '@icons';
 import { Button, Drawer, Input, MainBox, RadioGroup, TextField } from '@shared';
 
 const RewardCreateDrawer = () => {
+  const router = useRouter();
   const handleSave = () => {};
   return (
     <Drawer>

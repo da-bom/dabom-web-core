@@ -10,15 +10,6 @@ export const ProductSchema = z.object({
   price: z.number().nonnegative(),
 });
 
-// TODO : API 연결 후 제거 예정
-export interface Product {
-  id: number;
-  type: 'DATA' | 'GIFTICON';
-  imgUrl: string | null;
-  productName: string;
-  price: number;
-}
-
 export const ProductListSchema = z.array(ProductSchema);
 
-// export type Product = z.infer<typeof ProductSchema>;
+export type Product = z.infer<typeof ProductSchema>;

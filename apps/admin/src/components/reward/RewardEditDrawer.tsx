@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import router from 'next/router';
+import { useRouter } from 'next/router';
 
 import { ImageIcon } from '@icons';
 import { Button, Drawer, Input, MainBox, TextField } from '@shared';
@@ -10,6 +10,7 @@ import { Button, Drawer, Input, MainBox, TextField } from '@shared';
 import ConfirmModal from '../common/ConfirmModal';
 
 const RewardEditDrawer = () => {
+  const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleSave = () => {};
   const handleDelete = () => {

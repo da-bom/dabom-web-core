@@ -19,7 +19,7 @@ export default function RootLayout({
         navigator.serviceWorker.getRegistrations().then((registrations) => {
           registrations.forEach((registration) => {
             registration.unregister();
-            console.log('🛠 서비스 워커가 비활성화되어 해제되었습니다.');
+            // console.log('🛠 서비스 워커가 비활성화되어 해제되었습니다.');
           });
         });
       }
