@@ -22,8 +22,50 @@ function RecapContent() {
   const [currentStep, setCurrentStep] = useState(0);
   const [data] = useState(MOCK_RECAP_DATA.data);
 
-  const totalSteps = RECAP_CONFIG.TOTAL_STEPS;
-  const isMorning = data.peakUsage.startHour >= 6 && data.peakUsage.startHour < 18;
+  const isMorning =
+    data.peakUsage.startHour >= RECAP_CONFIG.MORNING_START_HOUR &&
+    data.peakUsage.startHour < RECAP_CONFIG.MORNING_END_HOUR;
+
+  const successRate =
+    data.appealSummary.totalAppeals > 0
+      ? Math.round((data.appealSummary.approvedAppeals / data.appealSummary.totalAppeals) * 100)
+      : 0;
+
+  const steps = [
+    <RecapStep1Usage
+      key="step1"
+      usageByWeekday={data.usageByWeekday}
+      mostUsedWeekday={data.peakUsage.mostUsedWeekday}
+    />,
+    <RecapStep2Time
+      key="step2"
+      startHour={data.peakUsage.startHour}
+      endHour={data.peakUsage.endHour}
+    />,
+    <RecapStep3Appeal
+      key="step3"
+      requesterName={data.appealHighlights.topSuccessfulRequester.requesterName}
+      successRate={successRate}
+      appeals={data.appealHighlights.topSuccessfulRequester.recentApprovedAppeals}
+    />,
+    <RecapStep4Angel
+      key="step4"
+      approverName={data.appealHighlights.topAcceptedApprover.approverName}
+      approvedAppeals={data.appealHighlights.topAcceptedApprover.recentAcceptedAppeals.slice(
+        0,
+        RECAP_CONFIG.MAX_RECENT_APPEALS,
+      )}
+    />,
+    <RecapStep5Mission
+      key="step5"
+      totalCount={data.missionSummary.totalMissionCount}
+      successCount={data.missionSummary.completedMissionCount}
+      failureCount={data.missionSummary.rejectedRequestCount}
+    />,
+    <RecapStep6Report key="step6" score={data.communicationScore} />,
+  ];
+
+  const totalSteps = steps.length;
 
   const nextStep = () => {
     if (currentStep < totalSteps - 1) {
@@ -49,43 +91,7 @@ function RecapContent() {
         <BalancedOpalescentBackground />
       )}
 
-      <div className="flex flex-1 flex-col">
-        {currentStep === 0 && (
-          <RecapStep1Usage
-            usageByWeekday={data.usageByWeekday}
-            mostUsedWeekday={data.peakUsage.mostUsedWeekday}
-          />
-        )}
-        {currentStep === 1 && (
-          <RecapStep2Time startHour={data.peakUsage.startHour} endHour={data.peakUsage.endHour} />
-        )}
-        {currentStep === 2 && (
-          <RecapStep3Appeal
-            requesterName={data.appealHighlights.topSuccessfulRequester.requesterName}
-            successRate={Math.round(
-              (data.appealSummary.approvedAppeals / data.appealSummary.totalAppeals) * 100,
-            )}
-            appeals={data.appealHighlights.topSuccessfulRequester.recentApprovedAppeals}
-          />
-        )}
-        {currentStep === 3 && (
-          <RecapStep4Angel
-            approverName={data.appealHighlights.topAcceptedApprover.approverName}
-            approvedAppeals={data.appealHighlights.topAcceptedApprover.recentAcceptedAppeals.slice(
-              0,
-              3,
-            )}
-          />
-        )}
-        {currentStep === 4 && (
-          <RecapStep5Mission
-            totalCount={data.missionSummary.totalMissionCount}
-            successCount={data.missionSummary.completedMissionCount}
-            failureCount={data.missionSummary.rejectedRequestCount}
-          />
-        )}
-        {currentStep === 5 && <RecapStep6Report score={data.communicationScore} />}
-      </div>
+      <div className="flex flex-1 flex-col">{steps[currentStep]}</div>
 
       <div className="absolute inset-0 z-10 flex">
         <button

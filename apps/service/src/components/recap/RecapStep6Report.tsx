@@ -18,7 +18,7 @@ export function RecapStep6Report({ score }: RecapStep6ReportProps) {
       </h1>
 
       {/* 추가 예정이라서 색상 코드는 하드코딩으로 하겠습니다 */}
-      <div className="flex h-[150px] w-[150px] flex-none flex-col items-center justify-center bg-[#D9D9D9]">
+      <div className="flex h-36 w-36 flex-none flex-col items-center justify-center bg-[#D9D9D9]">
         <span className="text-h1-m text-center">
           일러스트
           <br />

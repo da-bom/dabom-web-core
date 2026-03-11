@@ -4,7 +4,7 @@ import React from 'react';
 
 import { DaboMoon, DaboSun } from '@shared';
 
-import { RECAP_UI_TEXT } from 'src/constants/recap';
+import { RECAP_CONFIG, RECAP_UI_TEXT } from 'src/constants/recap';
 
 interface RecapStep2TimeProps {
   startHour: number;
@@ -12,7 +12,8 @@ interface RecapStep2TimeProps {
 }
 
 export function RecapStep2Time({ startHour, endHour }: RecapStep2TimeProps) {
-  const isMorning = startHour >= 6 && startHour < 18;
+  const isMorning =
+    startHour >= RECAP_CONFIG.MORNING_START_HOUR && startHour < RECAP_CONFIG.MORNING_END_HOUR;
 
   return (
     <div className="relative flex flex-1 flex-col">
