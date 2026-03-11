@@ -4,7 +4,7 @@ import React, { Suspense, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import { Button } from '@shared';
+import { Button, IosShareIcon } from '@shared';
 
 import { RECAP_CONFIG, RECAP_UI_TEXT } from 'src/constants/recap';
 import { MOCK_RECAP_DATA } from 'src/data/recap';
@@ -16,6 +16,7 @@ import { RecapStep2Time } from './RecapStep2Time';
 import { RecapStep3Appeal } from './RecapStep3Appeal';
 import { RecapStep4Angel } from './RecapStep4Angel';
 import { RecapStep5Mission } from './RecapStep5Mission';
+import { RecapStep6Report } from './RecapStep6Report';
 
 function RecapContent() {
   const router = useRouter();
@@ -89,6 +90,7 @@ function RecapContent() {
             failureCount={data.missionSummary.rejectedRequestCount}
           />
         )}
+        {currentStep === 5 && <RecapStep6Report score={data.communicationScore} />}
       </div>
 
       <div className="absolute inset-0 flex">
@@ -107,10 +109,15 @@ function RecapContent() {
       </div>
 
       {currentStep === totalSteps - 1 && (
-        <div className="pointer-events-none fixed bottom-24 left-0 flex w-full justify-center px-5">
-          <Button size="lg" color="dark" className="pointer-events-auto" onClick={() => {}}>
-            {RECAP_UI_TEXT.SHARE}
-          </Button>
+        <div className="pointer-events-none fixed bottom-26 left-0 flex w-full justify-center px-5">
+          <div className="pointer-events-auto">
+            <Button size="lg" color="light" onClick={() => {}}>
+              <div className="flex items-center gap-2">
+                <IosShareIcon sx={{ fontSize: 16 }} />
+                {RECAP_UI_TEXT.SHARE}
+              </div>
+            </Button>
+          </div>
         </div>
       )}
     </div>

@@ -11,6 +11,8 @@ export const RECAP_UI_TEXT = {
   FAILURE: '실패',
   COUNT_UNIT: '건',
   SHARE: '리포트 공유하기',
+  STEP6_HIGH_SCORE: '와우!\n우리 가족은 서로를\n아주 잘 이해하고 있네요! 🏆',
+  STEP6_LOW_SCORE: '다음 달엔\n조금 더 솔직한\n조르기 메시지를 보내볼까요? 😊',
   WEEKDAY_LABELS: {
     monday: '월',
     tuesday: '화',

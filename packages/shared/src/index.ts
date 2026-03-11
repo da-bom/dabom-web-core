@@ -24,3 +24,4 @@ export { default as Table } from './components/Table';
 export { default as TextField } from './components/TextField';
 export * from './constants/colors';
 export * from './constants/time';
+export * from './assets/icons';
