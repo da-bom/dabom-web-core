@@ -13,7 +13,9 @@ export default function ObjectionPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string>(APPEAL_TYPE_LABEL.NORMAL);
 
-  const options = Object.values(APPEAL_TYPE_LABEL);
+  const options = Object.values(APPEAL_TYPE_LABEL).filter(
+    (label) => label !== APPEAL_TYPE_LABEL.EMERGENCY,
+  );
 
   return (
     <main className="mx-auto mt-20 flex w-full flex-col items-center px-5">

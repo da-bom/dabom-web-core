@@ -25,6 +25,9 @@ function AppealConfirmContent() {
     if (policy === APPEAL_TYPE_LABEL.TIME_BLOCK && start && end) {
       return `${start} ~ ${end}`;
     }
+    if (policy === APPEAL_TYPE_LABEL.EMERGENCY) {
+      return amount || '500MB';
+    }
     return '';
   };
 

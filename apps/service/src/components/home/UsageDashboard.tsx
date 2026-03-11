@@ -8,6 +8,9 @@ import { DaboIcon, MainBox, bytesToGB } from '@shared';
 
 import { useGetFamilyUsage, useGetFamilyUsageCurrent } from 'src/api/family/useGetFamilyUsage';
 import { useSSE } from 'src/api/family/useUsageSSE';
+import { APPEAL_TYPE_LABEL } from 'src/constants/appeal';
+import { mockAppealList } from 'src/data/appealList';
+import { getCurrentUserRole } from 'src/utils/auth';
 
 import MonthNavigator from '../common/MonthNavigator';
 import ProgressBar from '../common/ProgressBar';
@@ -118,6 +121,13 @@ const UsageDashboard = () => {
     }
   };
 
+  const userRole = getCurrentUserRole();
+  const isMember = userRole === 'MEMBER';
+
+  const isEmergencyUsed = mockAppealList.some(
+    (appeal) => appeal.type === 'EMERGENCY' && appeal.status !== 'CANCELLED',
+  );
+
   return (
     <div className="flex w-full flex-col items-center gap-7 p-5">
       <div className="relative h-38 w-full">
@@ -136,7 +146,17 @@ const UsageDashboard = () => {
         </div>
       </div>
 
-      <UsageActionCards />
+      <UsageActionCards
+        onRecapClick={() => router.push('/recap')}
+        onEmergencyClick={() =>
+          router.push(
+            `/appeal/create/reason?policy=${encodeURIComponent(APPEAL_TYPE_LABEL.EMERGENCY)}&amount=500MB`,
+          )
+        }
+        onBegClick={() => router.push('/appeal/objection')}
+        isEmergencyUsed={isCurrentMonth && isEmergencyUsed}
+        isMember={isMember}
+      />
 
       <MonthNavigator
         currentDateText={displayDate}
