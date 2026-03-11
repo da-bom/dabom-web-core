@@ -5,10 +5,14 @@ const ConfirmModal = ({
   children,
   isOpen,
   onClose,
+  buttonText,
+  onClickButton,
 }: {
   children: React.ReactNode;
   isOpen: boolean;
   onClose: () => void;
+  buttonText: string;
+  onClickButton: () => void;
 }) => {
   return (
     <ModalLayout isAdmin isOpen={isOpen} onClose={onClose}>
@@ -24,8 +28,8 @@ const ConfirmModal = ({
           placeholder="확인"
         />
 
-        <Button size="lg" color="light" className="text-negative">
-          보상 삭제
+        <Button size="lg" color="light" className="text-negative" onClick={onClickButton}>
+          {buttonText}
         </Button>
       </div>
     </ModalLayout>

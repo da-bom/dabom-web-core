@@ -18,7 +18,14 @@ const RewardEditDrawer = () => {
   };
   return (
     <>
-      <ConfirmModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+      <ConfirmModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        buttonText="보상 삭제"
+        onClickButton={() => {
+          // TODO: API 연결 후 추가 구현
+        }}
+      >
         <div className="text-body2-d flex flex-col gap-1">
           <p className="font-bold">• 삭제한 보상은 복구할 수 없습니다.</p>
           <p>• 보상이 삭제되어도 유저에게 제공된 보상은 해당 보상의 만료일까지 유효합니다.</p>
