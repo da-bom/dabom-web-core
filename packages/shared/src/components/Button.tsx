@@ -1,7 +1,7 @@
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   size: 'sm' | 'md' | 'md-short' | 'lg';
-  color: 'dark' | 'light' | 'gray' | 'primary';
+  color: 'dark' | 'light' | 'gray' | 'primary' | 'white';
   isFullWidth?: boolean;
   className?: string;
 }
@@ -15,6 +15,7 @@ const SIZE_STYLES = {
 
 const COLOR_STYLES = {
   dark: 'bg-brand-dark text-brand-white',
+  white: 'bg-brand-white text-brand-dark',
   light: 'bg-background-sub text-brand-black',
   gray: 'bg-gray-100 text-gray-700 cursor-not-allowed',
   primary: 'bg-primary text-brand-white',

@@ -21,7 +21,7 @@ const Slider = ({ min, max, value, onChange, disabled = false, className }: Slid
   };
 
   return (
-    <div className={cn('grid h-4 w-full items-center px-1', className)}>
+    <div className={cn('grid h-fit w-full items-center px-1', className)}>
       <div className="col-start-1 row-start-1 h-2 w-full rounded-full bg-gray-100" />
 
       <div
