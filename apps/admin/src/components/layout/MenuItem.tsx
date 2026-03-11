@@ -22,11 +22,9 @@ const MenuItem = ({ label, path, icon: Icon, subItems, currentPath }: MenuItemPr
   return (
     <div className="text-body1-m flex w-full flex-col gap-1">
       <Link
-        href={path}
+        href={hasSubItems ? subItems[0].path : path}
         onClick={(e) => {
-          if (isParentActive) {
-            e.preventDefault();
-          }
+          if (isParentActive) e.preventDefault();
         }}
         className={cn(
           'flex w-full items-center gap-2 rounded-md px-2 py-2 transition-colors',
