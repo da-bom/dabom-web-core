@@ -4,17 +4,19 @@ import React, { Suspense, useState } from 'react';
 
 import { Button, IosShareIcon } from '@shared';
 
+import { RecapStep1Usage } from 'src/components/recap/RecapStep1Usage';
+import { RecapStep2Time } from 'src/components/recap/RecapStep2Time';
+import { RecapStep3Appeal } from 'src/components/recap/RecapStep3Appeal';
+import { RecapStep4Angel } from 'src/components/recap/RecapStep4Angel';
+import { RecapStep5Mission } from 'src/components/recap/RecapStep5Mission';
+import { RecapStep6Report } from 'src/components/recap/RecapStep6Report';
+import BalancedOpalescentBackground from 'src/components/recap/utils/BalancedOpalescentBackground';
+import {
+  CrystalSkyBackground,
+  DeepBlueLuminousBackground,
+} from 'src/components/recap/utils/RecapStep2Background';
 import { RECAP_CONFIG, RECAP_UI_TEXT } from 'src/constants/recap';
 import { MOCK_RECAP_DATA } from 'src/data/recap';
-
-import BalancedOpalescentBackground from './BalancedOpalescentBackground';
-import { RecapStep1Usage } from './RecapStep1Usage';
-import { CrystalSkyBackground, DeepBlueLuminousBackground } from './RecapStep2Background';
-import { RecapStep2Time } from './RecapStep2Time';
-import { RecapStep3Appeal } from './RecapStep3Appeal';
-import { RecapStep4Angel } from './RecapStep4Angel';
-import { RecapStep5Mission } from './RecapStep5Mission';
-import { RecapStep6Report } from './RecapStep6Report';
 
 function RecapContent() {
   const [currentStep, setCurrentStep] = useState(0);

@@ -2,7 +2,6 @@
 
 import React from 'react';
 
-import { cn } from '@shared';
 import { RECAP_UI_TEXT } from 'src/constants/recap';
 
 interface UsageByWeekday {
