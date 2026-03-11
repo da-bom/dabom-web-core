@@ -18,7 +18,7 @@ const Drawer = ({ children }: { children: React.ReactNode }) => {
       >
         <div className="flex h-full flex-col gap-10 overflow-y-auto">
           <button className="text-brand-dark w-fit cursor-pointer" onClick={() => router.back()}>
-            <ChevronIcon />
+            <ChevronIcon sx={{ width: 20 }} />
           </button>
           {children}
         </div>

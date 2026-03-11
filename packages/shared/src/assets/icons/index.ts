@@ -35,6 +35,8 @@ import ChartIcon from '@mui/icons-material/BarChartOutlined';
 import SmsFailedIcon from '@mui/icons-material/SmsFailedOutlined';
 import IosShareIcon from '@mui/icons-material/IosShare';
 import GiftIcon from './GiftIcon';
+import ImageIcon from '@mui/icons-material/ImageOutlined';
+import WarningIcon from '@mui/icons-material/Warning';
 
 export {
   HomeIcon,
@@ -73,6 +75,8 @@ export {
   ChartIcon,
   SmsFailedIcon,
   IosShareIcon,
-  GiftIcon
+  GiftIcon,
+  ImageIcon,
+  WarningIcon
 };
 

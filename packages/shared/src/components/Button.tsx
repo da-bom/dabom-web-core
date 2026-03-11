@@ -3,6 +3,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size: 'sm' | 'md' | 'md-short' | 'lg';
   color: 'dark' | 'light' | 'gray' | 'primary';
   isFullWidth?: boolean;
+  className?: string;
 }
 
 const SIZE_STYLES = {
@@ -19,10 +20,17 @@ const COLOR_STYLES = {
   primary: 'bg-primary text-brand-white',
 };
 
-const Button = ({ children, size, color, isFullWidth = false, ...props }: ButtonProps) => {
+const Button = ({
+  children,
+  size,
+  color,
+  isFullWidth = false,
+  className,
+  ...props
+}: ButtonProps) => {
   return (
     <button
-      className={`flex cursor-pointer items-center justify-center border border-gray-200 transition-all ${SIZE_STYLES[size]} ${isFullWidth && 'w-full'} ${COLOR_STYLES[color]}`}
+      className={`flex cursor-pointer items-center justify-center border border-gray-200 transition-all ${SIZE_STYLES[size]} ${isFullWidth && 'w-full'} ${COLOR_STYLES[color]} ${className}`}
       {...props}
     >
       {children}

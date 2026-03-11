@@ -5,7 +5,7 @@ import { ComponentPropsWithoutRef, forwardRef, useState } from 'react';
 import { VisibilityIcon, VisibilityOffIcon } from '../assets/icons';
 import { cn } from '../utils/cn';
 
-type InputType = 'text' | 'password' | 'tel' | 'email';
+type InputType = 'text' | 'password' | 'tel' | 'email' | 'number';
 
 export interface InputProps extends ComponentPropsWithoutRef<'input'> {
   type: InputType;
