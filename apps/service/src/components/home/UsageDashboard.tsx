@@ -119,8 +119,8 @@ const UsageDashboard = () => {
   };
 
   return (
-    <div className="flex w-full flex-col gap-2 p-5">
-      <div className="relative h-[172px] w-full">
+    <div className="flex w-full flex-col items-center gap-7 p-5">
+      <div className="relative h-38 w-full">
         <MainBox className="absolute bottom-0 left-0 flex h-38 w-full flex-col items-end justify-between rounded-2xl border-gray-200 p-5">
           <div className="flex h-fit w-fit flex-col items-start gap-4">
             <span className="text-body1-m h-fit w-fit">현재 데이터 사용량</span>
@@ -138,34 +138,33 @@ const UsageDashboard = () => {
 
       <UsageActionCards />
 
-      <div className="flex flex-col items-center gap-4">
-        <MonthNavigator
-          currentDateText={displayDate}
-          onPrev={handlePrevMonth}
-          onNext={handleNextMonth}
-        />
-        <div className="flex h-8 w-full items-center rounded-full">
-          <ViewSegment viewMode={viewMode} onModeChange={handleModeChange} />
-        </div>
-      </div>
+      <MonthNavigator
+        currentDateText={displayDate}
+        onPrev={handlePrevMonth}
+        onNext={handleNextMonth}
+      />
 
-      {processedCustomers.length === 0 ? (
-        <MainBox className="m-auto w-full rounded-2xl pt-10 pb-5">
-          <div className="flex flex-1 items-center justify-center text-gray-400">
-            <p>등록된 가족 구성원이 없어요.</p>
-          </div>
-        </MainBox>
-      ) : viewMode === 'list' ? (
-        <MainBox className="w-full rounded-2xl">
-          <CustomerList customers={processedCustomers} />
-        </MainBox>
-      ) : (
-        <UsageChart
-          customers={processedCustomers}
-          totalUsageGB={totalUsageGB}
-          totalQuotaBytes={displayTotalLimitBytes}
-        />
-      )}
+      <div className="flex w-full flex-col gap-2">
+        <ViewSegment viewMode={viewMode} onModeChange={handleModeChange} />
+
+        {processedCustomers.length === 0 ? (
+          <MainBox className="m-auto w-full rounded-2xl pt-10 pb-5">
+            <div className="flex flex-1 items-center justify-center text-gray-400">
+              <p>등록된 가족 구성원이 없어요.</p>
+            </div>
+          </MainBox>
+        ) : viewMode === 'list' ? (
+          <MainBox className="w-full rounded-2xl">
+            <CustomerList customers={processedCustomers} />
+          </MainBox>
+        ) : (
+          <UsageChart
+            customers={processedCustomers}
+            totalUsageGB={totalUsageGB}
+            totalQuotaBytes={displayTotalLimitBytes}
+          />
+        )}
+      </div>
     </div>
   );
 };
