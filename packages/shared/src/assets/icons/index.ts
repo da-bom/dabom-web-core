@@ -34,6 +34,7 @@ import DashboardIcon from '@mui/icons-material/DashboardOutlined';
 import ChartIcon from '@mui/icons-material/BarChartOutlined';
 import GiftIcon from './GiftIcon';
 import ImageIcon from '@mui/icons-material/ImageOutlined';
+import WarningIcon from '@mui/icons-material/Warning';
 
 export {
   HomeIcon,
@@ -71,6 +72,7 @@ export {
   DashboardIcon,
   ChartIcon,
   GiftIcon,
-  ImageIcon
+  ImageIcon,
+  WarningIcon,
 };
 
