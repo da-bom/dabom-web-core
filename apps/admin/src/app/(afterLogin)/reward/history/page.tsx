@@ -8,7 +8,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Table } from '@shared';
 
 import Pagination from 'src/components/common/Pagination';
-import SearchBox from 'src/components/family/SearchBox';
+import SearchBox from 'src/components/common/SearchBox';
 import { REWARD_HISTORY } from 'src/data/reward';
 import { formatRewardHistory } from 'src/utils/formatRewardHistory';
 
@@ -31,7 +31,7 @@ const RewardHistoryContent = () => {
         <SearchBox
           sortOptions={[
             { label: '최신 지급순', value: 'latest' },
-            { label: '만료 임박순', value: 'manryo' },
+            { label: '만료 임박순', value: 'expiring-soon' },
             { label: '미사용 내역만 보기 ', value: 'nouse' },
           ]}
           selectedSort="latest"
@@ -39,6 +39,7 @@ const RewardHistoryContent = () => {
           sortName="reward-sort"
           searchOptions={['전화번호', '쿠폰번호']}
           onSearch={(type, val) => console.log(type, val)}
+          onClickSearch={() => {}}
         />
 
         <Table

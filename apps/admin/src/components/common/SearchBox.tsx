@@ -19,6 +19,7 @@ interface SearchBoxProps {
   searchOptions: string[];
   onSearch: (type: string, keyword: string) => void;
   onReset?: () => void;
+  onClickSearch: () => void;
 }
 
 const SearchBox = ({
@@ -30,6 +31,7 @@ const SearchBox = ({
   searchOptions,
   onSearch,
   onReset,
+  onClickSearch,
 }: SearchBoxProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedSearchType, setSelectedSearchType] = useState(searchOptions[0]);
@@ -80,7 +82,7 @@ const SearchBox = ({
         >
           <CancelIcon className="cursor-pointer !text-gray-400" sx={{ width: 16 }} />
         </button>
-        <Button size="sm" color="dark">
+        <Button size="sm" color="dark" onClick={onClickSearch}>
           검색
         </Button>
       </div>

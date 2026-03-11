@@ -6,9 +6,9 @@ import { ResetIcon } from '@icons';
 import { MainBox } from '@shared';
 
 import { FamilySearchRequest } from 'src/api/family/schema';
+import SearchBox from 'src/components/common/SearchBox';
 import FamilyDetail from 'src/components/family/FamilyDetail';
 import FamilyList from 'src/components/family/FamilyList';
-import SearchBox from 'src/components/family/SearchBox';
 
 const INITIAL_FAMILY_SEARCH_PARAMS: FamilySearchRequest = {
   page: 0,
@@ -46,14 +46,14 @@ const FamilyPage = () => {
           sortName="family-sort"
           searchOptions={['전화번호', '이름']}
           onSearch={(type, val) => console.log(type, val)}
+          onClickSearch={() => {}}
         >
-          {/* children으로 사용량 입력기 전달 */}
           <div className="flex w-fit items-center gap-2">
             <span className="text-body3-d shrink-0">데이터 사용량</span>
             <input className="bg-background-base h-8 w-14 rounded-sm" type="number" /> % ~
             <input className="bg-background-base h-8 w-14 rounded-sm" type="number" /> %
           </div>
-        </SearchBox>{' '}
+        </SearchBox>
       </div>
       <div className="flex gap-5">
         <MainBox className="w-86 p-4">
