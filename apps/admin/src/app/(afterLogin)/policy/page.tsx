@@ -16,8 +16,8 @@ const PolicyContent = () => {
   const searchParams = useSearchParams();
 
   const currentPage = Number(searchParams.get('page')) || 1;
-  const { data } = useGetPolicy(currentPage - 1);
-  const policyRows = formatPolicy({ policies: data?.policies ?? [] });
+
+  const { data, isLoading } = useGetPolicy(currentPage - 1);
 
   const handlePageChange = (newPage: number) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -25,7 +25,15 @@ const PolicyContent = () => {
     router.push(`${pathname}?${params.toString()}`);
   };
 
-  if (!data) return <div>표시할 정책 데이터가 없습니다.</div>;
+  if (isLoading) {
+    return <div className="p-10 text-center">로딩 중...</div>;
+  }
+
+  if (!data || data.policies.length === 0) {
+    return <div className="p-10 text-center">표시할 정책이 없습니다.</div>;
+  }
+
+  const policyRows = formatPolicy({ policies: data.policies });
 
   return (
     <div className="mt-6 flex h-screen flex-col">
@@ -36,13 +44,8 @@ const PolicyContent = () => {
           className="rounded-md"
         />
       </div>
-      <Pagination
-        currentPage={currentPage}
-        // TODO: 백엔드 수정 후 반영
-        // totalPages={data.totalPages}
-        totalPages={5}
-        onPageChange={handlePageChange}
-      />
+
+      <Pagination currentPage={currentPage} totalPages={5} onPageChange={handlePageChange} />
     </div>
   );
 };

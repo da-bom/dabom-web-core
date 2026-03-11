@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { Button, cn, formatSize } from '@shared';
+import { Button, formatSize } from '@shared';
 
 import {
   AppBlock,
@@ -37,7 +37,7 @@ export const formatPolicy = ({ policies }: { policies: Policy[] }) => {
     const isDeactive = !p.isActive;
 
     const cell = (children: React.ReactNode) => (
-      <div className={cn(isDeactive && 'text-gray-400 opacity-60')}>{children}</div>
+      <div className={isDeactive ? 'text-gray-400' : ''}>{children}</div>
     );
 
     return {
