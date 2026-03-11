@@ -1,9 +1,9 @@
 'use client';
 
-import RewardCreateDrawer from 'src/components/reward/RewardCreateDrawer';
+import RewardEditDrawer from 'src/components/reward/RewardEditDrawer';
 
 const Page = () => {
-  return <RewardCreateDrawer />;
+  return <RewardEditDrawer />;
 };
 
 export default Page;
