@@ -1,7 +1,9 @@
 'use client';
 
-import { usePathname, useSearchParams } from 'next/navigation';
-import { useRouter } from 'next/navigation';
+import { Suspense } from 'react';
+
+// 1. Suspense 임포트
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { Table } from '@shared';
 
@@ -10,7 +12,7 @@ import SearchBox from 'src/components/family/SearchBox';
 import { REWARD_HISTORY } from 'src/data/reward';
 import { formatRewardHistory } from 'src/utils/formatRewardHistory';
 
-const RewardHistoryPage = () => {
+const RewardHistoryContent = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -45,14 +47,16 @@ const RewardHistoryPage = () => {
           rows={formatRewardHistory({ history: REWARD_HISTORY })}
         />
       </div>
-      <Pagination
-        currentPage={currentPage}
-        // TODO: API 연결 후 반영
-        // totalPages={data.totalPages}
-        totalPages={5}
-        onPageChange={handlePageChange}
-      />
+      <Pagination currentPage={currentPage} totalPages={5} onPageChange={handlePageChange} />
     </div>
+  );
+};
+
+const RewardHistoryPage = () => {
+  return (
+    <Suspense fallback={<div>로딩</div>}>
+      <RewardHistoryContent />
+    </Suspense>
   );
 };
 
