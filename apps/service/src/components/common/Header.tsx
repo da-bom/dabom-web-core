@@ -67,7 +67,11 @@ const Header = ({
       </div>
 
       <div className="flex items-center justify-center">
-        <Logo type="default" width={69} height={16} />
+        {pathname === '/recap' ? (
+          <span className="text-body1-m">리캡</span>
+        ) : (
+          <Logo type="default" width={69} height={16} />
+        )}
       </div>
 
       <div className="flex items-center justify-center">
