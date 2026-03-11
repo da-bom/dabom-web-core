@@ -9,7 +9,7 @@ import { Button, Drawer, Input, MainBox, TextField } from '@shared';
 
 import ConfirmModal from '../common/ConfirmModal';
 
-const RewardCreateDrawer = () => {
+const RewardEditDrawer = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleSave = () => {};
   const handleDelete = () => {
@@ -70,4 +70,4 @@ const RewardCreateDrawer = () => {
   );
 };
 
-export default RewardCreateDrawer;
+export default RewardEditDrawer;

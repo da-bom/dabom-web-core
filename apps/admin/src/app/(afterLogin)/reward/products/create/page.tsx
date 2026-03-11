@@ -1,5 +1,9 @@
-const RewardProductPage = () => {
-  return <div className="flex flex-col gap-4">보상 만드릭</div>;
+'use client';
+
+import RewardCreateDrawer from 'src/components/reward/RewardCreateDrawer';
+
+const Page = () => {
+  return <RewardCreateDrawer />;
 };
 
-export default RewardProductPage;
+export default Page;
