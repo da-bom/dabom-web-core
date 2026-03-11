@@ -5,11 +5,13 @@ import React, { Suspense, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { Button } from '@shared';
+
 import { RECAP_CONFIG, RECAP_UI_TEXT } from 'src/constants/recap';
 import { MOCK_RECAP_DATA } from 'src/data/recap';
 
 import BalancedOpalescentBackground from './BalancedOpalescentBackground';
 import { RecapStep1Usage } from './RecapStep1Usage';
+import { CrystalSkyBackground, DeepBlueLuminousBackground } from './RecapStep2Background';
 import { RecapStep2Time } from './RecapStep2Time';
 
 function RecapContent() {
@@ -19,6 +21,7 @@ function RecapContent() {
   const [data] = useState(MOCK_RECAP_DATA.data);
 
   const totalSteps = RECAP_CONFIG.TOTAL_STEPS;
+  const isMorning = data.peakUsage.startHour >= 6 && data.peakUsage.startHour < 18;
 
   const nextStep = () => {
     if (currentStep < totalSteps - 1) {
@@ -39,6 +42,7 @@ function RecapContent() {
   return (
     <div className="relative flex flex-1 flex-col overflow-hidden bg-transparent">
       {currentStep === 0 && <BalancedOpalescentBackground />}
+      {currentStep === 1 && (isMorning ? <CrystalSkyBackground /> : <DeepBlueLuminousBackground />)}
 
       <div className="flex flex-1 flex-col">
         {currentStep === 0 && (
@@ -52,7 +56,7 @@ function RecapContent() {
         )}
       </div>
 
-      <div className="absolute inset-0 flex">
+      {/* <div className="absolute inset-0 flex">
         <button
           type="button"
           onClick={prevStep}
@@ -65,7 +69,7 @@ function RecapContent() {
           className="h-full w-2/3 cursor-pointer"
           aria-label="Next step"
         />
-      </div>
+      </div> */}
 
       {currentStep === totalSteps - 1 && (
         <div className="pointer-events-none fixed bottom-24 left-0 flex w-full justify-center px-5">

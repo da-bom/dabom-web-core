@@ -61,6 +61,17 @@
   --color-opalescent-blue: #e6f3ff;
   --color-opalescent-yellow: #fffaec;
 
+  /* Step 2 Background Colors */
+  --color-recap-morning-base: #c2dbff;
+  --color-recap-morning-glow-1: #a3c9ff;
+  --color-recap-morning-glow-2: #8ab9ff;
+  --color-recap-morning-glow-3: #6ca6ff;
+
+  --color-recap-night-base: #1c1956;
+  --color-recap-night-glow-1: #00b0ff;
+  --color-recap-night-glow-2: #1a237e;
+  --color-recap-night-glow-3: #006064;
+
   /* shadow */
   --shadow-default: 0 0 10px 0 rgba(0, 0, 0, 0.1);
 

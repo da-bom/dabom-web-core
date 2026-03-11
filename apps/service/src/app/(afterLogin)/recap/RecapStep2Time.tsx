@@ -2,7 +2,8 @@
 
 import React from 'react';
 
-import { cn } from '@shared';
+import { DaboMoon, DaboSun, cn } from '@shared';
+
 import { RECAP_UI_TEXT } from 'src/constants/recap';
 
 interface RecapStep2TimeProps {
@@ -15,12 +16,12 @@ export function RecapStep2Time({ startHour, endHour }: RecapStep2TimeProps) {
 
   return (
     <div className="relative flex flex-1 flex-col overflow-hidden transition-colors duration-500">
-      <div className="relative mt-[140px] px-[27px]"></div>
+      <div className="mt-[29px] pl-[27px]">{isMorning ? <DaboSun /> : <DaboMoon />}</div>
 
-      <div className="mt-[114px] px-[39px]">
+      <div className="mt-[114px] pl-[39px]">
         <h1
           className={cn(
-            'text-[24px] leading-[29px] font-semibold break-keep',
+            'text-h1-m w-fit break-keep whitespace-pre-line',
             isMorning ? 'text-brand-black' : 'text-brand-white',
           )}
         >
