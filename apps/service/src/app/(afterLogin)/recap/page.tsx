@@ -10,6 +10,7 @@ import { MOCK_RECAP_DATA } from 'src/data/recap';
 
 import BalancedOpalescentBackground from './BalancedOpalescentBackground';
 import { RecapStep1Usage } from './RecapStep1Usage';
+import { RecapStep2Time } from './RecapStep2Time';
 
 function RecapContent() {
   const router = useRouter();
@@ -37,7 +38,8 @@ function RecapContent() {
 
   return (
     <div className="relative flex flex-1 flex-col overflow-hidden bg-transparent">
-      <BalancedOpalescentBackground />
+      {currentStep === 0 && <BalancedOpalescentBackground />}
+
       <div className="flex flex-1 flex-col">
         {currentStep === 0 && (
           <RecapStep1Usage
@@ -45,6 +47,24 @@ function RecapContent() {
             mostUsedWeekday={data.peakUsage.mostUsedWeekday}
           />
         )}
+        {currentStep === 1 && (
+          <RecapStep2Time startHour={data.peakUsage.startHour} endHour={data.peakUsage.endHour} />
+        )}
+      </div>
+
+      <div className="absolute inset-0 flex">
+        <button
+          type="button"
+          onClick={prevStep}
+          className="h-full w-1/3 cursor-pointer"
+          aria-label="Previous step"
+        />
+        <button
+          type="button"
+          onClick={nextStep}
+          className="h-full w-2/3 cursor-pointer"
+          aria-label="Next step"
+        />
       </div>
 
       {currentStep === totalSteps - 1 && (
