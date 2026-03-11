@@ -5,6 +5,11 @@ export const RECAP_UI_TEXT = {
   STEP3_TITLE_PREFIX: '님의 간절한 조르기가 ',
   STEP3_TITLE_SUFFIX: ' 통했어요',
   STEP4_TITLE_SUFFIX: '님이\n가장 너그러운 데이터 천사로\n등극하셨네요!',
+  STEP5_TITLE_PREFIX: '이번 달 우리 가족은\n',
+  STEP5_TITLE_SUFFIX: '개의 미션을 진행했어요',
+  SUCCESS: '성공',
+  FAILURE: '실패',
+  COUNT_UNIT: '건',
   SHARE: '리포트 공유하기',
   WEEKDAY_LABELS: {
     monday: '월',

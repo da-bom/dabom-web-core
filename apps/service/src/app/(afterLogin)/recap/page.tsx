@@ -15,6 +15,7 @@ import { CrystalSkyBackground, DeepBlueLuminousBackground } from './RecapStep2Ba
 import { RecapStep2Time } from './RecapStep2Time';
 import { RecapStep3Appeal } from './RecapStep3Appeal';
 import { RecapStep4Angel } from './RecapStep4Angel';
+import { RecapStep5Mission } from './RecapStep5Mission';
 
 function RecapContent() {
   const router = useRouter();
@@ -81,9 +82,16 @@ function RecapContent() {
             )}
           />
         )}
+        {currentStep === 4 && (
+          <RecapStep5Mission
+            totalCount={data.missionSummary.totalMissionCount}
+            successCount={data.missionSummary.completedMissionCount}
+            failureCount={data.missionSummary.rejectedRequestCount}
+          />
+        )}
       </div>
 
-      {/* <div className="absolute inset-0 flex">
+      <div className="absolute inset-0 flex">
         <button
           type="button"
           onClick={prevStep}
@@ -96,7 +104,7 @@ function RecapContent() {
           className="h-full w-2/3 cursor-pointer"
           aria-label="Next step"
         />
-      </div> */}
+      </div>
 
       {currentStep === totalSteps - 1 && (
         <div className="pointer-events-none fixed bottom-24 left-0 flex w-full justify-center px-5">

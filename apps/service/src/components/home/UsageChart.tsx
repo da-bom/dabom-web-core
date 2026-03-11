@@ -11,13 +11,38 @@ import { CustomerListType } from 'src/types/DataUsage';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 interface Props {
-  customers: CustomerListType[];
-  totalUsageGB: number;
-  totalQuotaBytes: number;
+  customers?: CustomerListType[];
+  totalUsageGB?: number;
+  totalQuotaBytes?: number;
+
+  items?: { id: number | string; name: string; value: number; color: string }[];
+  unit?: string;
 }
 
-const UsageChart = ({ customers, totalUsageGB, totalQuotaBytes }: Props) => {
-  if (!customers || customers.length === 0) {
+const UsageChart = ({ customers, totalUsageGB, totalQuotaBytes, items, unit = 'GB' }: Props) => {
+  const showLegend = !items;
+  const cutout = '30%';
+  const chartSize = 215;
+  const containerWidth = showLegend ? 264 : chartSize;
+
+  const getChartData = () => {
+    if (items) return items;
+
+    if (customers) {
+      return customers.map((customer, index) => ({
+        id: customer.customerId,
+        name: customer.name,
+        value: bytesToGB(customer.monthlyUsedBytes),
+        color: CHART_COLOR.COLORS[index % CHART_COLOR.COLORS.length],
+      }));
+    }
+
+    return [];
+  };
+
+  const chartDataRaw = getChartData();
+
+  if (chartDataRaw.length === 0) {
     return (
       <div className="flex w-full items-center justify-center p-8 text-gray-400">
         <p>데이터가 없습니다.</p>
@@ -25,33 +50,18 @@ const UsageChart = ({ customers, totalUsageGB, totalQuotaBytes }: Props) => {
     );
   }
 
-  const isEmpty = totalUsageGB === 0;
-  const totalQuotaGB = bytesToGB(totalQuotaBytes);
-  const remainingTotalGB = Math.max(0, totalQuotaGB - totalUsageGB);
+  const chartData = [...chartDataRaw];
 
-  const memberSlices = customers.map((customer, index) => {
-    const idx = index % CHART_COLOR.COLORS.length;
-    const usedGB = bytesToGB(customer.monthlyUsedBytes);
-
-    return {
-      id: customer.customerId,
-      name: customer.name,
-      value: usedGB,
-      color: CHART_COLOR.COLORS[idx],
-      isRemaining: false,
-    };
-  });
-
-  const chartData = [
-    ...memberSlices,
-    {
+  if (totalQuotaBytes !== undefined && totalUsageGB !== undefined) {
+    const totalQuotaGB = bytesToGB(totalQuotaBytes);
+    const remainingTotalGB = Math.max(0, totalQuotaGB - totalUsageGB);
+    chartData.push({
       id: 'total-remaining',
       name: '전체 잔여 용량',
       value: remainingTotalGB,
       color: '#ffffff',
-      isRemaining: true,
-    },
-  ];
+    });
+  }
 
   const data = {
     labels: chartData.map((c) => c.name),
@@ -73,11 +83,11 @@ const UsageChart = ({ customers, totalUsageGB, totalQuotaBytes }: Props) => {
         display: false,
       },
       tooltip: {
-        enabled: !isEmpty,
+        enabled: true,
         callbacks: {
           label: (context: TooltipItem<'pie'>) => {
             const val = context.parsed;
-            return ` ${context.label}: ${val.toFixed(1)}GB`;
+            return ` ${context.label}: ${val}${unit}`;
           },
         },
         backgroundColor: 'rgba(255, 255, 255, 0.95)',
@@ -93,29 +103,31 @@ const UsageChart = ({ customers, totalUsageGB, totalQuotaBytes }: Props) => {
         },
       },
     },
-    cutout: '35%',
+    cutout: cutout,
   };
 
-  const legendData = customers.map((customer, index) => ({
-    id: customer.customerId,
-    name: customer.name,
-    color: CHART_COLOR.COLORS[index % CHART_COLOR.COLORS.length],
-  }));
-
   return (
-    <div className="animate-in fade-in zoom-in-95 flex w-full flex-col items-center gap-5 duration-500">
-      <div className="relative flex aspect-square w-full items-center justify-center">
+    <div
+      className="animate-in fade-in zoom-in-95 mx-auto flex flex-col items-center gap-4 duration-500"
+      style={{ width: containerWidth }}
+    >
+      <div
+        className="relative flex aspect-square items-center justify-center"
+        style={{ width: chartSize }}
+      >
         <Pie data={data} options={options} />
       </div>
 
-      <div className="flex flex-wrap justify-center gap-x-6 gap-y-3">
-        {legendData.map((c) => (
-          <div key={c.id} className="flex items-center gap-2">
-            <div className="h-3 w-3 rounded-full" style={{ backgroundColor: c.color }} />
-            <span className="text-caption-m">{c.name}</span>
-          </div>
-        ))}
-      </div>
+      {showLegend && (
+        <div className="flex flex-wrap justify-center gap-x-4 gap-y-3">
+          {chartDataRaw.map((c) => (
+            <div key={c.id} className="flex items-center gap-1">
+              <div className="h-4 w-4 rounded-full" style={{ backgroundColor: c.color }} />
+              <span className="text-caption-m">{c.name}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

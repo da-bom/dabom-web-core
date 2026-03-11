@@ -32,6 +32,7 @@ import RejectedIcon from './RejectedIcon';
 import E911EmergencyIcon from './E911EmergencyIcon';
 import DashboardIcon from '@mui/icons-material/DashboardOutlined';
 import ChartIcon from '@mui/icons-material/BarChartOutlined';
+import SmsFailedIcon from '@mui/icons-material/SmsFailedOutlined';
 import GiftIcon from './GiftIcon';
 
 export {
@@ -69,6 +70,7 @@ export {
   E911EmergencyIcon,
   DashboardIcon,
   ChartIcon,
+  SmsFailedIcon,
   GiftIcon
 };
 
