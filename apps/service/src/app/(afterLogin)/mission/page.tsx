@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { ChevronIcon } from '@icons';
 import { Button, Card, MainBox } from '@shared';
 
-import { MissionItem } from 'src/api/mission/schema';
+import { Mission } from 'src/api/mission/schema';
 import { useGetMissions } from 'src/api/mission/useGetMissions';
 import MemberActionButton from 'src/components/mission/MemberActionButton';
 import OwnerActionButton from 'src/components/mission/OwnerActionButton';
@@ -33,7 +33,7 @@ const MissionPage = () => {
       </p>
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-[repeat(auto-fill,minmax(200px,1fr))]">
         {missions.length > 0 ? (
-          missions.map((mission: MissionItem) => (
+          missions.map((mission: Mission) => (
             <Card
               className="h-55"
               key={mission.missionItemId}
@@ -41,10 +41,9 @@ const MissionPage = () => {
               description={`보상: ${mission.reward.name} (${mission.reward.value}${mission.reward.unit})`}
             >
               {isOwner ? (
-                // API의 requestStatus 전달
-                <OwnerActionButton status={mission.requestStatus} />
+                <OwnerActionButton id={mission.missionItemId} status={mission.requestStatus} />
               ) : (
-                <MemberActionButton status={mission.requestStatus} />
+                <MemberActionButton id={mission.missionItemId} status={mission.requestStatus} />
               )}
             </Card>
           ))

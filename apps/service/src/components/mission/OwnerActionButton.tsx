@@ -2,7 +2,7 @@ import { Button } from '@shared';
 
 import StatusBox from './StatusBox';
 
-const OwnerActionButton = ({ status }: { status: string }) => {
+const OwnerActionButton = ({ id, status }: { id: number; status: string }) => {
   if (status === 'PENDING') return <StatusBox>진행 중</StatusBox>;
   return (
     <div className="flex gap-2">

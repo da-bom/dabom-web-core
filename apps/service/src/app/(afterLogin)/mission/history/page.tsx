@@ -12,7 +12,6 @@ const MissionHistoryPage = () => {
   if (isLoading) return <div className="m-4 text-center text-gray-500">불러오는 중...</div>;
   if (isError) return <div className="m-4 text-center text-red-500">데이터 로드 실패</div>;
 
-  // 🚀 최종 JSON 구조에 따라 data.requests에 접근!
   const historyList = data?.requests ?? [];
 
   return (

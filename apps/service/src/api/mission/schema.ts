@@ -36,10 +36,9 @@ export const MissionResponseSchema = z.object({
   hasNext: z.boolean(),
 });
 
-export type MissionItem = z.infer<typeof MissionItemSchema>;
+export type Mission = z.infer<typeof MissionSchema>;
 export type MissionResponse = z.infer<typeof MissionResponseSchema>;
 
-// 2. 보상 정보
 const RewardSchema = z.object({
   rewardId: z.number(),
   name: z.string(),
@@ -80,3 +79,29 @@ export const MissionHistoryDataSchema = z.object({
   hasNext: z.boolean(),
 });
 export type MissionHistoryData = z.infer<typeof MissionHistoryDataSchema>;
+
+export const MissionRequestResponseDataSchema = z.object({
+  requestId: z.number(),
+  missionItem: MissionItemSchema,
+  status: z.string(),
+  requestedBy: z.object({
+    customerId: z.number(),
+    name: z.string(),
+  }),
+  createdAt: z.string(),
+});
+
+export const MissionRequestResponseSchema = z.object({
+  success: z.boolean(),
+  data: MissionRequestResponseDataSchema,
+  error: z
+    .object({
+      code: z.string(),
+      message: z.string(),
+      details: z.record(z.any()),
+    })
+    .nullable(),
+  timestamp: z.string(),
+});
+
+export type MissionRequestResponse = z.infer<typeof MissionRequestResponseSchema>;
