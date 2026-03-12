@@ -184,6 +184,7 @@ const UsageDashboard = () => {
           </MainBox>
         ) : (
           <UsageChart
+            variant="card"
             customers={processedCustomers}
             totalUsageGB={totalUsageGB}
             totalQuotaBytes={displayTotalLimitBytes}
