@@ -38,6 +38,7 @@ import GiftIcon from './GiftIcon';
 import ImageIcon from '@mui/icons-material/ImageOutlined';
 import WarningIcon from '@mui/icons-material/Warning';
 import CopyIcon from '@mui/icons-material/ContentCopy';
+import HeartIcon from '@mui/icons-material/Favorite';
 
 export {
   HomeIcon,
@@ -79,6 +80,7 @@ export {
   GiftIcon,
   ImageIcon,
   WarningIcon,
-  CopyIcon
+  CopyIcon,
+  HeartIcon
 };
 
