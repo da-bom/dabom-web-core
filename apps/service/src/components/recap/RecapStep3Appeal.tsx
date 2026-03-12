@@ -22,7 +22,7 @@ interface RecapStep3AppealProps {
 export function RecapStep3Appeal({ requesterName, appeals, successRate }: RecapStep3AppealProps) {
   return (
     <div className="flex h-fit flex-col items-center gap-10 p-8">
-      <h1 className="text-h1-m h-fit w-full leading-[29px] break-keep">
+      <h1 className="text-h1-m h-fit w-full leading-[29px] break-keep whitespace-pre-line">
         {requesterName}
         {RECAP_UI_TEXT.STEP3_TITLE_PREFIX}
         {successRate}%{RECAP_UI_TEXT.STEP3_TITLE_SUFFIX}

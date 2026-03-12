@@ -2,7 +2,7 @@ export const RECAP_UI_TEXT = {
   STEP1_TITLE_SUFFIX: '요일에 데이터를 많이 사용하시네요!',
   STEP2_NIGHT_SUFFIX: '시에 데이터를\n가장 많이 이용하시네요🦉',
   STEP2_MORNING_SUFFIX: '시에 데이터를\n가장 많이 이용하시네요🥞',
-  STEP3_TITLE_PREFIX: '님의 간절한 조르기가 ',
+  STEP3_TITLE_PREFIX: '님의 이의 제기가\n',
   STEP3_TITLE_SUFFIX: ' 통했어요',
   STEP4_TITLE_SUFFIX: '님이\n가장 너그러운 데이터 천사로\n등극하셨네요!',
   STEP5_TITLE_PREFIX: '이번 달 우리 가족은\n',
