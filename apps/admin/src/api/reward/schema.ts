@@ -1,15 +1,20 @@
 import { z } from 'zod';
 
-export const ProductTypeEnum = z.enum(['DATA', 'GIFTICON']);
-
-export const ProductSchema = z.object({
-  id: z.number().int().positive(),
-  type: ProductTypeEnum,
-  imgUrl: z.string().nullable(),
-  productName: z.string().min(1, '상품명은 필수입니다.'),
-  price: z.number().nonnegative(),
+export const RewardTemplateSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  category: z.enum(['DATA', 'GIFTICON']),
+  thumbnailUrl: z.string().nullable(),
+  price: z.number(),
+  isSystem: z.boolean(),
+  isActive: z.boolean(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
 });
 
-export const ProductListSchema = z.array(ProductSchema);
+export type RewardTemplate = z.infer<typeof RewardTemplateSchema>;
 
-export type Product = z.infer<typeof ProductSchema>;
+export const RewardTemplatesResponseSchema = z.object({
+  success: z.boolean(),
+  data: z.array(RewardTemplateSchema),
+});

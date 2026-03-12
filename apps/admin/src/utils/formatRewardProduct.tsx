@@ -3,21 +3,23 @@ import Link from 'next/link';
 import { ImageIcon } from '@icons';
 import { Button } from '@shared';
 
-import { Product } from 'src/api/reward/schema';
+import { RewardTemplate } from 'src/api/reward/schema';
 
-export const formatRewardProduct = ({ product }: { product: readonly Product[] }) => {
-  return product.map((p) => ({
+export const formatRewardProduct = ({ products }: { products: readonly RewardTemplate[] }) => {
+  const items = products ?? [];
+
+  return items.map((p) => ({
     id: p.id,
     cells: [
       <span key={`${p.id}-id`}>{p.id}</span>,
 
-      <span key={`${p.id}-type`}>{p.type === 'DATA' ? '데이터' : '기프티콘'}</span>,
+      <span key={`${p.id}-type`}>{p.category === 'DATA' ? '데이터' : '기프티콘'}</span>,
 
       <div key={`${p.id}-icon`} className="flex justify-center">
-        {p.type === 'DATA' ? '-' : <ImageIcon />}
+        {p.thumbnailUrl ? <ImageIcon /> : '-'}
       </div>,
 
-      <span key={`${p.id}-name`}>{p.productName}</span>,
+      <span key={`${p.id}-name`}>{p.name}</span>,
 
       <span key={`${p.id}-price`}>{p.price.toLocaleString()}</span>,
 
