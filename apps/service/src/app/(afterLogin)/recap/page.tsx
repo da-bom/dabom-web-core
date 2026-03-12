@@ -1,9 +1,10 @@
 'use client';
 
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, useMemo, useState } from 'react';
 
 import { Button, IosShareIcon } from '@shared';
 
+import { useGetMonthlyRecap } from 'src/api/recap/useGetMonthlyRecap';
 import { RecapStep1Usage } from 'src/components/recap/RecapStep1Usage';
 import { RecapStep2Time } from 'src/components/recap/RecapStep2Time';
 import { RecapStep3Appeal } from 'src/components/recap/RecapStep3Appeal';
@@ -16,11 +17,34 @@ import {
   DeepBlueLuminousBackground,
 } from 'src/components/recap/utils/RecapStep2Background';
 import { RECAP_CONFIG, RECAP_UI_TEXT } from 'src/constants/recap';
-import { MOCK_RECAP_DATA } from 'src/data/recap';
 
 function RecapContent() {
   const [currentStep, setCurrentStep] = useState(0);
-  const [data] = useState(MOCK_RECAP_DATA.data);
+
+  const { year, month } = useMemo(() => {
+    const now = new Date();
+    return {
+      year: now.getFullYear(),
+      month: now.getMonth() + 1,
+    };
+  }, []);
+
+  const { data, isLoading, isError } = useGetMonthlyRecap(year, month);
+
+  if (isLoading || !data) {
+    return <div className="bg-background-base h-full min-h-screen" />;
+  }
+
+  if (isError) {
+    return (
+      <div className="bg-background-base flex h-full min-h-screen flex-col items-center justify-center p-8 text-center">
+        <p className="text-h2-m mb-4">오류 발생.</p>
+        <Button size="md" color="light" onClick={() => window.location.reload()}>
+          다시 시도하기
+        </Button>
+      </div>
+    );
+  }
 
   const isMorning =
     data.peakUsage.startHour >= RECAP_CONFIG.MORNING_START_HOUR &&
@@ -62,7 +86,7 @@ function RecapContent() {
       successCount={data.missionSummary.completedMissionCount}
       failureCount={data.missionSummary.rejectedRequestCount}
     />,
-    <RecapStep6Report key="step6" score={data.communicationScore} />,
+    <RecapStep6Report key="step6" score={data.communicationScore ?? 0} />,
   ];
 
   const totalSteps = steps.length;
