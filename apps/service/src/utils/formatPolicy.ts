@@ -41,6 +41,10 @@ export const formatFamilyPolicies = (familyData: FamilyPoliciesData): FamilyDeta
       monthlyLimitBytes,
       isBlocked,
       timeLimit,
+      assignmentIds: {
+        monthlyLimit: monthlyPolicy?.assignmentId,
+        timeBlock: timeBlockPolicy?.assignmentId,
+      },
     };
   });
 

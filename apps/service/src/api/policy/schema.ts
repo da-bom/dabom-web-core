@@ -75,6 +75,10 @@ export type UpdatePolicyResponse = z.infer<typeof UpdatePolicyResponseSchema>;
 export interface ServiceCustomerDetail extends CustomerDetail {
   timeLimit: { start: string; end: string } | null;
   isBlocked: boolean;
+  assignmentIds: {
+    monthlyLimit?: number;
+    timeBlock?: number;
+  };
 }
 
 export interface FamilyDetail {

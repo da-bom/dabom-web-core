@@ -103,3 +103,35 @@ export const EmergencyAppealResponseSchema = z.object({
 });
 
 export type EmergencyAppealResponse = z.infer<typeof EmergencyAppealResponseSchema>;
+
+export const AppealCreateRequestSchema = z.object({
+  policyAssignmentId: z.number(),
+  requestReason: z.string().min(1),
+  desiredRules: z
+    .object({
+      limitBytes: z.number().optional(),
+      start: z.string().optional(),
+      end: z.string().optional(),
+    })
+    .optional(),
+});
+
+export type AppealCreateRequest = z.infer<typeof AppealCreateRequestSchema>;
+
+export const AppealCreateResponseSchema = z.object({
+  success: z.boolean(),
+  data: z.object({
+    appealId: z.number(),
+    policyAssignmentId: z.number(),
+    status: AppealStatusSchema,
+    desiredRules: z
+      .object({
+        limitBytes: z.number(),
+      })
+      .nullable(),
+    createdAt: z.string(),
+  }),
+  timestamp: z.string(),
+});
+
+export type AppealCreateResponse = z.infer<typeof AppealCreateResponseSchema>;

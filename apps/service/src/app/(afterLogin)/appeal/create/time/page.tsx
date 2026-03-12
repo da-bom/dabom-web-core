@@ -6,8 +6,10 @@ import { useRouter } from 'next/navigation';
 
 import { Button, MainBox } from '@shared';
 
+import { useGetFamilyPolicies } from 'src/api/policy/useGetFamilyPolicies';
 import TimeSettingSheet from 'src/components/policy/TimeSettingBottomSheet';
 import { APPEAL_TYPE_LABEL, APPEAL_UI_TEXT } from 'src/constants/appeal';
+import { getCurrentUserId } from 'src/utils/auth';
 
 const CURRENT_START = '23:00';
 const CURRENT_END = '07:00';
@@ -20,6 +22,12 @@ function TimeLimitAppealContent() {
 
   const [isStartSheetOpen, setIsStartSheetOpen] = useState(false);
   const [isEndSheetOpen, setIsEndSheetOpen] = useState(false);
+
+  const { data: familyData } = useGetFamilyPolicies();
+  const currentUserId = getCurrentUserId();
+
+  const myPolicyId = familyData?.customers.find((c) => c.customerId === currentUserId)
+    ?.assignmentIds.timeBlock;
 
   return (
     <div className="bg-background-base flex flex-col">
@@ -69,7 +77,7 @@ function TimeLimitAppealContent() {
           color="dark"
           onClick={() =>
             router.push(
-              `/appeal/create/reason?start=${startTime}&end=${endTime}&policy=${encodeURIComponent(APPEAL_TYPE_LABEL.TIME_BLOCK)}`,
+              `/appeal/create/reason?id=${myPolicyId || ''}&start=${startTime}&end=${endTime}&policy=${encodeURIComponent(APPEAL_TYPE_LABEL.TIME_BLOCK)}`,
             )
           }
         >
