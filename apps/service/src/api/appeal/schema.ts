@@ -168,3 +168,25 @@ export const CreateCommentResponseSchema = z.object({
 });
 
 export type CreateCommentResponse = z.infer<typeof CreateCommentResponseSchema>;
+
+export const AppealRespondRequestSchema = z.object({
+  action: z.enum(['APPROVED', 'REJECTED']),
+  rejectReason: z.string().nullable(),
+});
+
+export type AppealRespondRequest = z.infer<typeof AppealRespondRequestSchema>;
+
+export const AppealRespondResultSchema = z.object({
+  appealId: z.number(),
+  status: AppealStatusSchema,
+  rejectReason: z.string().nullable(),
+  resolvedById: z.number(),
+  resolvedAt: z.string(),
+});
+
+export const AppealRespondResponseSchema = z.object({
+  success: z.boolean(),
+  data: AppealRespondResultSchema,
+});
+
+export type AppealRespondResponse = z.infer<typeof AppealRespondResponseSchema>;

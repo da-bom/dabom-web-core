@@ -1,6 +1,7 @@
 'use client';
 
 import React, { Suspense, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { toast } from 'react-hot-toast';
 
 import { useSearchParams } from 'next/navigation';
 
@@ -8,6 +9,7 @@ import { ApprovedIcon, RejectedIcon } from '@icons';
 import { formatSize } from '@shared';
 
 import { useSuspenseGetAppealDetail } from 'src/api/appeal/useGetAppealDetail';
+import { usePatchAppealRespond } from 'src/api/appeal/usePatchAppealRespond';
 import { usePostComment } from 'src/api/appeal/usePostComment';
 import { AppealInputBar, ChatBubble, PolicySummaryCard } from 'src/components/appeal';
 import { APPEAL_TYPE_LABEL, APPEAL_UI_TEXT } from 'src/constants/appeal';
@@ -29,6 +31,7 @@ function AppealCommentContent() {
 
   const { data } = useSuspenseGetAppealDetail(appealId);
   const { mutateAsync: postComment } = usePostComment(appealId);
+  const { mutateAsync: respondAppeal } = usePatchAppealRespond(appealId);
 
   const [inputValue, setInputValue] = useState('');
 
@@ -56,6 +59,29 @@ function AppealCommentContent() {
       setInputValue('');
     } catch (error) {
       console.error('댓글 작성 실패:', error);
+    }
+  };
+
+  const handleApprove = async () => {
+    try {
+      await respondAppeal({ action: 'APPROVED', rejectReason: null });
+      toast.success('이의제기를 승인했습니다.');
+    } catch (error) {
+      console.error('승인 실패:', error);
+      toast.error('승인에 실패했습니다.');
+    }
+  };
+
+  const handleReject = async () => {
+    const reason = window.prompt('거절 사유를 입력해주세요.');
+    if (reason === null) return;
+
+    try {
+      await respondAppeal({ action: 'REJECTED', rejectReason: reason || '사유 없음' });
+      toast.success('이의제기를 거절했습니다.');
+    } catch (error) {
+      console.error('거절 실패:', error);
+      toast.error('거절에 실패했습니다.');
     }
   };
 
@@ -111,12 +137,8 @@ function AppealCommentContent() {
               )
             }
             isOwner={status === 'pending' && isOwner}
-            onApprove={() => {
-              console.log('approved');
-            }}
-            onReject={() => {
-              console.log('rejected');
-            }}
+            onApprove={handleApprove}
+            onReject={handleReject}
           />
         </div>
 
