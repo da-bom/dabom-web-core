@@ -3,7 +3,7 @@
 import React from 'react';
 
 import { Block as BlockIcon, CheckCircleOutline as CheckCircleIcon } from '@mui/icons-material';
-import { MainBox } from '@shared';
+import { Divider, MainBox } from '@shared';
 
 interface PolicySummaryCardProps {
   policyName: string;
@@ -31,7 +31,7 @@ export function PolicySummaryCard({
           <p>변경: {requestedValue}</p>
         </div>
       </div>
-      <div className="h-0 w-full border-t border-gray-100" />
+      <Divider />
       <div className="flex w-full items-center">
         <span className="text-body1-m text-gray-800">{reasonText}</span>
       </div>

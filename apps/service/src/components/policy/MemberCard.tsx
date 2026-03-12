@@ -6,7 +6,7 @@ import { toast } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 
 import { ChevronIcon } from '@icons';
-import { Badge, bytesToGB, cn, formatPhoneNumber, formatSize, gbToBytes } from '@shared';
+import { Badge, Divider, bytesToGB, cn, formatPhoneNumber, formatSize, gbToBytes } from '@shared';
 
 import { PolicyBlockOwner } from './PolicyBlockOwner';
 import { PolicyLimitOwner } from './PolicyLimitOwner';
@@ -222,7 +222,7 @@ export default function MemberCard({
                   onToggleBlock={() => handlers.onToggleBlock?.(idStr)}
                 />
 
-                <div className="mx-0 border-t border-gray-100" />
+                <Divider />
 
                 <PolicyLimitOwner
                   isDisabled={isDisabled}
@@ -238,7 +238,7 @@ export default function MemberCard({
                   onSliderChange={handleSliderChange}
                 />
 
-                <div className="border-t border-gray-100" />
+                <Divider />
 
                 <PolicyTimeOwner
                   isDisabled={isDisabled}
@@ -247,7 +247,7 @@ export default function MemberCard({
                   onTimeClick={(type) => handlers.onTimeClick(idStr, type)}
                 />
 
-                <div className="border-t border-gray-400" />
+                <Divider className="border-gray-400" />
                 <button
                   type="button"
                   className="flex h-5.25 w-full items-center justify-end gap-1"
