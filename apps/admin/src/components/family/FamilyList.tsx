@@ -27,7 +27,7 @@ const FamilyList = ({
   return (
     <div className="flex h-[calc(100vh-250px)] flex-col gap-2">
       <span className="text-body1-d">검색 결과 (총 {data?.totalElements}건)</span>
-      <div className="border border-gray-100" />
+      <div className="border-t border-gray-100" />
       <div className="flex flex-col gap-2 overflow-auto py-2">
         {totalElements > 0 ? (
           familyList.map((f) => (

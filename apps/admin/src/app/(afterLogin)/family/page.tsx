@@ -55,11 +55,11 @@ const FamilyPage = () => {
           </div>
         </SearchBox>
       </div>
-      <div className="flex gap-5">
+      <div className="flex h-full gap-5">
         <MainBox className="w-86 p-4">
           <FamilyList params={params} selectedFam={selectedFam} setSelectedFam={setSelectedFam} />
         </MainBox>
-        <MainBox className="w-full flex-1">
+        <MainBox className="h-full w-full flex-1">
           <FamilyDetail selectedFam={selectedFam} />
         </MainBox>
       </div>
