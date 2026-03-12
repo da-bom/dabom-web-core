@@ -6,10 +6,12 @@ const nextConfigBase: NextConfig = {
 
   webpack(config) {
     config.module.rules.push({
+      transpilePackages: ['@tanstack/react-query', '@tanstack/react-query-devtools'],
       test: /\.svg$/i,
       issuer: /\.[jt]sx?$/,
       use: ['@svgr/webpack'],
     });
+
     return config;
   },
 };

@@ -2,7 +2,8 @@
 
 import React, { Suspense, useState } from 'react';
 
-import { Button, IosShareIcon } from '@shared';
+import { IosShareIcon } from '@icons';
+import { Button } from '@shared';
 
 import { RecapStep1Usage } from 'src/components/recap/RecapStep1Usage';
 import { RecapStep2Time } from 'src/components/recap/RecapStep2Time';

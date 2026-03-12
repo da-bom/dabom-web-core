@@ -1,6 +1,4 @@
-import React from 'react';
-
-export function DaboSun({ className }: { className?: string }) {
+const DaboSun = ({ className }: { className?: string }) => {
   return (
     <svg
       width="118"
@@ -52,4 +50,6 @@ export function DaboSun({ className }: { className?: string }) {
       />
     </svg>
   );
-}
+};
+
+export default DaboSun;

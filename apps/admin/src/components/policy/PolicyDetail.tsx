@@ -4,36 +4,44 @@ import { useState } from 'react';
 
 import { useParams, useRouter } from 'next/navigation';
 
-import { CheckOutlinedIcon, UnpublishedIcon } from '@icons';
 import { Button, Drawer, DropDown, MainBox, TextField } from '@shared';
 
 import { Policy } from 'src/api/policy/schema';
 import { useGetPolicyDetail } from 'src/api/policy/useGetPolicyDetail';
 import { useUpdatePolicy } from 'src/api/policy/useUpdatePolicy';
 
+import Error from '../common/Error';
+import Loading from '../common/Loading';
+import Status from './Status';
 import StatusField from './StatusField';
 import DefaultRuleField from './rule/DefaultRuleField';
 
-const PolicyDetailModal = () => {
+const PolicyDetailDrawer = () => {
   const params = useParams();
   const policyId = Number(params.id);
-
   const { data, isLoading, isError } = useGetPolicyDetail(policyId);
 
-  if (isLoading) return <div>로딩</div>;
-  if (isError) return <div>에러</div>;
-  if (!data) return <div>데이터가 없습니다.</div>;
+  return (
+    <Drawer>
+      {isLoading && <Loading />}
 
-  return <PolicyDetailContent data={data} policyId={policyId} />;
+      {!isLoading && isError && <Error title="데이터를 불러오지 못했습니다." />}
+
+      {!isLoading && !isError && !data && <Error title="데이터가 존재하지 않습니다." />}
+
+      {!isLoading && !isError && data && <PolicyDetailContent data={data} policyId={policyId} />}
+    </Drawer>
+  );
 };
 
-export default PolicyDetailModal;
+export default PolicyDetailDrawer;
 
 const PolicyDetailContent = ({ data, policyId }: { data: Policy; policyId: number }) => {
   const router = useRouter();
   const { mutate: updatePolicy } = useUpdatePolicy();
 
   const [isOpen, setIsOpen] = useState(false);
+
   const [newData, setNewData] = useState({
     type: data.type,
     description: data.description,
@@ -64,7 +72,7 @@ const PolicyDetailContent = ({ data, policyId }: { data: Policy; policyId: numbe
   };
 
   return (
-    <Drawer>
+    <>
       <header className="flex flex-col gap-3">
         <Status active={newData.isActive} />
         <h1 className="text-h2-d">{data.name}</h1>
@@ -116,24 +124,6 @@ const PolicyDetailContent = ({ data, policyId }: { data: Policy; policyId: numbe
           변경사항 저장
         </Button>
       </div>
-    </Drawer>
+    </>
   );
 };
-
-const Status = ({ active }: { active: boolean }) => (
-  <div
-    className={`text-body1-d flex items-center gap-1 ${active ? 'text-primary' : 'text-gray-600'}`}
-  >
-    {active ? (
-      <>
-        <CheckOutlinedIcon sx={{ width: 14 }} />
-        <span className="text-body2-d font-bold">활성화</span>
-      </>
-    ) : (
-      <>
-        <UnpublishedIcon sx={{ width: 14 }} />
-        <span className="text-body2-d font-bold">비활성화</span>
-      </>
-    )}
-  </div>
-);

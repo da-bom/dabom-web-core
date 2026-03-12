@@ -7,6 +7,8 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Table } from '@shared';
 
 import { useGetPolicy } from 'src/api/policy/useGetPolicy';
+import Error from 'src/components/common/Error';
+import Loading from 'src/components/common/Loading';
 import Pagination from 'src/components/common/Pagination';
 import { formatPolicy } from 'src/utils/formatPolicy';
 
@@ -22,7 +24,7 @@ const PolicyContent = () => {
 
   const { data, isPending } = useGetPolicy(page);
 
-  if (isPending) return <div>로딩 중</div>;
+  if (isPending) return <Loading />;
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage - 1);
@@ -32,7 +34,7 @@ const PolicyContent = () => {
   };
 
   if (!data || !data.policies || data.policies.length === 0) {
-    return <div>표시할 정책이 없습니다.</div>;
+    return <Error title="정책이 존재하지 않습니다." />;
   }
 
   const policyRows = formatPolicy({ policies: data.policies });
@@ -57,7 +59,7 @@ const PolicyContent = () => {
 
 export default function PolicyPage() {
   return (
-    <Suspense fallback={<div>로딩</div>}>
+    <Suspense fallback={<Loading />}>
       <PolicyContent />
     </Suspense>
   );

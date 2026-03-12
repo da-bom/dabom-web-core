@@ -1,9 +1,12 @@
 'use client';
 
+import { Divider } from '@shared';
+
 import { FamilySearchRequest } from 'src/api/family/schema';
 import { useGetFamilies } from 'src/api/family/useGetFamilies';
 
 import Error from '../common/Error';
+import Loading from '../common/Loading';
 import FamilyItem from './FamilyItem';
 
 const FamilyList = ({
@@ -20,14 +23,12 @@ const FamilyList = ({
   const familyList = data?.content || [];
   const totalElements = data?.numberOfElements || 0;
 
-  if (isLoading) {
-    return <div>로딩</div>;
-  }
+  if (isLoading) return <Loading />;
 
   return (
     <div className="flex h-[calc(100vh-250px)] flex-col gap-2">
       <span className="text-body1-d">검색 결과 (총 {data?.totalElements}건)</span>
-      <div className="border border-gray-100" />
+      <Divider />
       <div className="flex flex-col gap-2 overflow-auto py-2">
         {totalElements > 0 ? (
           familyList.map((f) => (

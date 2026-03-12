@@ -7,6 +7,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { Table } from '@shared';
 
+import Loading from 'src/components/common/Loading';
 import Pagination from 'src/components/common/Pagination';
 import SearchBox from 'src/components/common/SearchBox';
 import { REWARD_HISTORY } from 'src/data/reward';
@@ -55,7 +56,7 @@ const RewardHistoryContent = () => {
 
 const RewardHistoryPage = () => {
   return (
-    <Suspense fallback={<div>로딩</div>}>
+    <Suspense fallback={<Loading />}>
       <RewardHistoryContent />
     </Suspense>
   );

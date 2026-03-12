@@ -1,7 +1,7 @@
-import PolicyDetailModal from 'src/components/policy/PolicyDetail';
+import PolicyDetailDrawer from 'src/components/policy/PolicyDetail';
 
 const PolicyDetailPage = () => {
-  return <PolicyDetailModal />;
+  return <PolicyDetailDrawer />;
 };
 
 export default PolicyDetailPage;

@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 
 import { EditIcon } from '@icons';
-import { DaboIcon, Grade, cn } from '@shared';
+import { DaboIcon, Divider, Grade, cn } from '@shared';
 
 import PolicySimple from '../policy/PolicySimple';
 
@@ -101,7 +101,7 @@ const MyInfo = ({
         </div>
         <ProgressBar value={usagePercent} />
       </div>
-      <div className="border-t border-gray-100" />
+      <Divider />
 
       <PolicySimple>
         <PolicySimple.Block isBlocked />

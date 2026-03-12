@@ -4,6 +4,8 @@ import { useEffect } from 'react';
 
 import '@globalstyles';
 
+import { Providers } from './providers';
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: Readonly<React.ReactNode> }>) {
@@ -27,7 +29,9 @@ export default function RootLayout({
   }, []);
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

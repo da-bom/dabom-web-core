@@ -1,6 +1,4 @@
-import React from 'react';
-
-export function DaboMoon({ className }: { className?: string }) {
+const DaboMoon = ({ className }: { className?: string }) => {
   return (
     <svg
       width="112"
@@ -24,4 +22,6 @@ export function DaboMoon({ className }: { className?: string }) {
       <ellipse cx="89.6048" cy="47.3416" rx="5.18601" ry="8.64335" fill="black" fillOpacity="0.2" />
     </svg>
   );
-}
+};
+
+export default DaboMoon;

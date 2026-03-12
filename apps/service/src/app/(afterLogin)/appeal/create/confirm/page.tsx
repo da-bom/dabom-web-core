@@ -4,7 +4,7 @@ import React, { Suspense } from 'react';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { Button, MainBox } from '@shared';
+import { Button, Divider, MainBox } from '@shared';
 
 import { APPEAL_TYPE_LABEL, APPEAL_UI_TEXT } from 'src/constants/appeal';
 
@@ -51,7 +51,7 @@ function AppealConfirmContent() {
             </span>
           </div>
 
-          <div className="mx-5 border-t border-gray-100" />
+          <Divider className="mx-5" />
 
           <div className="flex flex-col px-5 pt-2 pb-5">
             <span className="text-body1-m font-medium text-gray-800">
