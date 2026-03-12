@@ -1,0 +1,89 @@
+'use client';
+
+import React, { Suspense } from 'react';
+
+import { useRouter, useSearchParams } from 'next/navigation';
+
+import { Button, MainBox } from '@shared';
+
+import { APPEAL_TYPE_LABEL, APPEAL_UI_TEXT } from 'src/constants/appeal';
+
+function AppealConfirmContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const policy = searchParams.get('policy');
+  const amount = searchParams.get('amount');
+  const start = searchParams.get('start');
+  const end = searchParams.get('end');
+  const reason = searchParams.get('reason');
+
+  const getChangedValue = () => {
+    if (policy === APPEAL_TYPE_LABEL.NORMAL && amount) {
+      return `${amount}GB`;
+    }
+    if (policy === APPEAL_TYPE_LABEL.TIME_BLOCK && start && end) {
+      return `${start} ~ ${end}`;
+    }
+    if (policy === APPEAL_TYPE_LABEL.EMERGENCY) {
+      return amount || APPEAL_UI_TEXT.EMERGENCY_DATA_AMOUNT;
+    }
+    return '';
+  };
+
+  return (
+    <div className="bg-background-base flex flex-col">
+      <div className="flex flex-col items-center gap-7 px-5 pt-20">
+        <div className="flex w-full flex-col items-start gap-2">
+          <h1 className="text-h2-m">{APPEAL_UI_TEXT.CONFIRM_TITLE}</h1>
+          <p className="text-body2-m text-gray-700">{APPEAL_UI_TEXT.CONFIRM_DESCRIPTION}</p>
+        </div>
+
+        <MainBox className="bg-brand-white flex h-fit w-full flex-col gap-0 rounded-2xl border border-gray-100">
+          <div className="flex flex-col px-5 pt-5 pb-2">
+            <span className="text-body1-m text-gray-800">
+              {APPEAL_UI_TEXT.POLICY_PREFIX}
+              {policy}
+            </span>
+            <span className="text-body1-m text-gray-800">
+              {APPEAL_UI_TEXT.CHANGE_PREFIX}
+              {getChangedValue()}
+            </span>
+          </div>
+
+          <div className="mx-5 border-t border-gray-100" />
+
+          <div className="flex flex-col px-5 pt-2 pb-5">
+            <span className="text-body1-m font-medium text-gray-800">
+              {APPEAL_UI_TEXT.REASON_PREFIX}
+              {reason}
+            </span>
+          </div>
+        </MainBox>
+      </div>
+
+      <div className="fixed bottom-24 left-0 flex w-full items-center justify-center gap-2 px-5">
+        <Button size="md-short" color="light" onClick={() => router.back()}>
+          이전
+        </Button>
+        <Button
+          size="lg"
+          color="primary"
+          onClick={() => {
+            router.push('/appeal');
+          }}
+        >
+          이의 제기 하기
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+export default function AppealConfirmPage() {
+  return (
+    <Suspense fallback={<div className="h-full min-h-screen" />}>
+      <AppealConfirmContent />
+    </Suspense>
+  );
+}

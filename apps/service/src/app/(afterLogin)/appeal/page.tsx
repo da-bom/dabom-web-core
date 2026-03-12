@@ -58,9 +58,12 @@ const AppealPageContent = () => {
       </div>
 
       {!isOwner && (
-        <div className="fixed bottom-24 left-0 flex w-full justify-center px-5">
+        <div className="fixed bottom-24 left-0 flex w-full items-center justify-center gap-2 px-5">
+          <Button size="md-short" color="light" onClick={() => router.back()}>
+            이전
+          </Button>
           <Button size="lg" color="dark" onClick={() => router.push('/appeal/objection')}>
-            이의 제기하기
+            다음
           </Button>
         </div>
       )}

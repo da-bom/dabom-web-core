@@ -30,7 +30,7 @@ const NavBar = () => {
               return <div key="home-placeholder" className="w-8" />;
             }
 
-            const isActive = pathname === item.href;
+            const isActive = pathname.startsWith(item.href);
             const Icon = item.icon;
 
             return (

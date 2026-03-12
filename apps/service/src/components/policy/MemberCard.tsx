@@ -78,10 +78,6 @@ export default function MemberCard({
     setLocalLimit(Math.max(LIMIT.MIN, currentLimitGBFromProp ?? 0));
   }, [LIMIT.MIN, currentLimitGBFromProp]);
 
-  const sliderPercentage = isUnlimited
-    ? 100
-    : ((localLimit - LIMIT.MIN) / (LIMIT.MAX - LIMIT.MIN)) * 100;
-
   const formattedUsed = formatSize(customer.monthlyUsedBytes).total;
   const displayedTotalBytes = isUnlimited ? null : gbToBytes(localLimit);
   const formattedTotal = isUnlimited ? '무제한' : formatSize(displayedTotalBytes || 0).total;
@@ -134,9 +130,9 @@ export default function MemberCard({
     }, 500);
   };
 
-  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSliderChange = (value: number) => {
     if (isEditingByOther) return;
-    updateLimit(Number(e.target.value));
+    updateLimit(value);
   };
 
   const handleInputChange = (value: string) => {
@@ -232,7 +228,6 @@ export default function MemberCard({
                   isDisabled={isDisabled}
                   isUnlimited={isUnlimited}
                   localLimit={localLimit}
-                  sliderPercentage={sliderPercentage}
                   LIMIT={LIMIT}
                   onLimitToggle={() => {
                     if (!isEditingByOther && !state.isBlocked) {

@@ -18,14 +18,14 @@ const VIEW_OPTIONS = [
   },
   {
     id: 'chart' as const,
-    label: '차트',
+    label: '그래프',
     Icon: GraphIcon,
   },
 ] as const;
 
 export const ViewSegment = ({ viewMode, onModeChange }: ViewSegmentProps) => {
   return (
-    <div className="bg-brand-white flex h-8 w-full items-center rounded-full border border-gray-200">
+    <div className="bg-brand-white flex h-8 w-full flex-row items-center justify-center gap-1 rounded-full border border-gray-200 px-2">
       {VIEW_OPTIONS.map(({ id, label, Icon }) => {
         const isActive = viewMode === id;
         return (
@@ -33,11 +33,11 @@ export const ViewSegment = ({ viewMode, onModeChange }: ViewSegmentProps) => {
             key={id}
             onClick={() => onModeChange(id)}
             className={cn(
-              'text-caption-m mx-2 flex h-5 flex-1 items-center justify-center gap-1 rounded-full transition-colors',
-              isActive ? 'bg-primary-50 text-primary' : 'bg-transparent text-gray-400',
+              'text-caption-m flex h-5 flex-1 items-center justify-center gap-1 rounded-full transition-colors',
+              isActive ? 'bg-primary-50 text-primary' : 'text-gray-400',
             )}
           >
-            <Icon sx={{ fontSize: 18 }} />
+            <Icon sx={{ fontSize: id === 'list' ? '13px' : '15px' }} />
             <span>{label}</span>
           </button>
         );

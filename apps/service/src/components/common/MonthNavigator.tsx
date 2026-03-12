@@ -18,23 +18,23 @@ const MonthNavigator = ({ currentDateText, onPrev, onNext }: MonthNavigatorProps
   };
 
   return (
-    <div className="flex items-center justify-center gap-10 py-6 select-none">
+    <div className="flex h-6 w-fit flex-row items-center justify-center gap-10 select-none">
       <button
         onClick={handlePrev}
         className="flex items-center justify-center transition-opacity hover:opacity-70 active:scale-95"
         aria-label="이전 달로 이동"
       >
-        <ChevronIcon className="rotate-180" />
+        <ChevronIcon sx={{ width: 16 }} className="rotate-180" />
       </button>
 
-      <span className="text-body1-m w-28 text-center tabular-nums">{currentDateText}</span>
+      <span className="text-body1-m w-fit text-center tabular-nums">{currentDateText}</span>
 
       <button
         onClick={handleNext}
         className="flex items-center justify-center transition-opacity hover:opacity-70 active:scale-95"
         aria-label="다음 달로 이동"
       >
-        <ChevronIcon />
+        <ChevronIcon sx={{ width: 16 }} />
       </button>
     </div>
   );

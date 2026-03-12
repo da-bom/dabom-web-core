@@ -128,7 +128,7 @@
 
 /* Mobile */
 @utility text-main-m {
-  font-size: 2rem;
+  font-size: 2.5rem;
   line-height: 1.2;
   font-weight: 700;
 }
@@ -161,6 +161,11 @@
   font-size: 0.75rem;
   line-height: 140%;
   font-weight: 400;
+}
+
+@utility bg-emergency-gradient {
+  background:
+    linear-gradient(180deg, rgba(254, 254, 254, 0.1) 0%, rgba(255, 56, 60, 0.1) 100%), #ffffff;
 }
 
 /* Grid */
