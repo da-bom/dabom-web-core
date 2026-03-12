@@ -10,6 +10,7 @@ import { ImageIcon } from '@icons';
 import { Button, Drawer, Input, MainBox, TextField } from '@shared';
 
 import { RewardUpdate, RewardUpdateSchema } from 'src/api/reward/schema';
+import { useDeleteReward } from 'src/api/reward/useDeleteReward';
 import { useUpdateReward } from 'src/api/reward/useUpdateReward';
 
 import ConfirmModal from '../common/ConfirmModal';
@@ -22,6 +23,7 @@ const RewardEditDrawer = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { mutate: updateReward, isPending } = useUpdateReward();
+  const { mutate: deleteReward } = useDeleteReward();
 
   const { register, handleSubmit } = useForm<RewardUpdate>({
     resolver: zodResolver(RewardUpdateSchema),
@@ -42,7 +44,7 @@ const RewardEditDrawer = () => {
         onClose={() => setIsModalOpen(false)}
         buttonText="보상 삭제"
         onClickButton={() => {
-          // TODO: 삭제 API 연결 시 추가
+          deleteReward(targetId);
           setIsModalOpen(false);
         }}
       >
