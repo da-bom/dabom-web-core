@@ -53,23 +53,41 @@ const AppealPageContent = () => {
 
         <div className="flex flex-col gap-2">
           {filteredItems.map((item) => {
-            const { total: formattedSize } = formatSize(item.desiredRules.limitBytes);
-            const policyType =
-              item.type === 'EMERGENCY' ? APPEAL_TYPE_LABEL.EMERGENCY : APPEAL_TYPE_LABEL.NORMAL;
+            const rawLimitBytes = item.desiredRules?.limitBytes;
+            const startTime = item.desiredRules?.start;
+            const endTime = item.desiredRules?.end;
+
+            let displayValue = '';
+            const numLimitBytes = rawLimitBytes !== null ? Number(rawLimitBytes) : NaN;
+
+            if (!isNaN(numLimitBytes)) {
+              const { total } = formatSize(numLimitBytes);
+              displayValue = total;
+            } else if (startTime && endTime) {
+              displayValue = `${startTime} ~ ${endTime}`;
+            }
+
+            let policyLabel: string = APPEAL_TYPE_LABEL.NORMAL;
+            if (item.type === 'EMERGENCY') {
+              policyLabel = APPEAL_TYPE_LABEL.EMERGENCY;
+            } else if (startTime || endTime) {
+              policyLabel = APPEAL_TYPE_LABEL.TIME_BLOCK;
+            }
+
             let uiStatus: AppealStatus = item.status.toLowerCase() as AppealStatus;
             if (item.type === 'EMERGENCY') uiStatus = 'emergency';
 
             return (
               <AppealRequestCard
                 key={item.appealId}
-                policyType={policyType}
-                dataLimit={formattedSize}
+                policyType={policyLabel}
+                dataLimit={displayValue}
                 reason={item.requestReason}
                 status={uiStatus}
                 requesterName={isOwner ? item.requesterName : undefined}
                 onClick={() => {
                   router.push(
-                    `/appeal/comment?policy=${encodeURIComponent(policyType)}&id=${item.appealId}&status=${item.status}`,
+                    `/appeal/comment?policy=${encodeURIComponent(policyLabel)}&id=${item.appealId}&status=${item.status}`,
                   );
                 }}
               />

@@ -23,9 +23,13 @@ export const AppealSummarySchema = z.object({
   requesterId: z.number(),
   requesterName: z.string(),
   requestReason: z.string(),
-  desiredRules: z.object({
-    limitBytes: z.number(),
-  }),
+  desiredRules: z
+    .object({
+      limitBytes: z.number().optional(),
+      start: z.string().optional(),
+      end: z.string().optional(),
+    })
+    .nullable(),
   status: AppealStatusSchema,
   createdAt: z.string(),
 });
@@ -40,9 +44,13 @@ export const AppealDetailSchema = z.object({
   requesterName: z.string(),
   requestReason: z.string(),
   rejectReason: z.string().nullable(),
-  desiredRules: z.object({
-    limitBytes: z.number(),
-  }),
+  desiredRules: z
+    .object({
+      limitBytes: z.number().optional(),
+      start: z.string().optional(),
+      end: z.string().optional(),
+    })
+    .nullable(),
   status: AppealStatusSchema,
   resolvedById: z.number().nullable(),
   resolvedAt: z.string().nullable(),
@@ -126,7 +134,9 @@ export const AppealCreateResponseSchema = z.object({
     status: AppealStatusSchema,
     desiredRules: z
       .object({
-        limitBytes: z.number(),
+        limitBytes: z.number().optional(),
+        start: z.string().optional(),
+        end: z.string().optional(),
       })
       .nullable(),
     createdAt: z.string(),

@@ -35,6 +35,32 @@ function AppealCommentContent() {
   const rawStatus = data.status.toLowerCase();
   const status = isValidStatus(rawStatus) ? rawStatus : 'pending';
 
+  const policyLabel = useMemo(() => {
+    if (data.type === 'EMERGENCY') return APPEAL_TYPE_LABEL.EMERGENCY;
+    if (data.policyType === 'TIME_BLOCK') return APPEAL_TYPE_LABEL.TIME_BLOCK;
+    if (data.policyType === 'MONTHLY_LIMIT') return APPEAL_TYPE_LABEL.NORMAL;
+    return APPEAL_TYPE_LABEL.NORMAL;
+  }, [data]);
+
+  const requestedValue = useMemo(() => {
+    const rawLimitBytes = data.desiredRules?.limitBytes;
+    const startTime = data.desiredRules?.start;
+    const endTime = data.desiredRules?.end;
+
+    const numLimitBytes = rawLimitBytes !== null ? Number(rawLimitBytes) : NaN;
+
+    if (!isNaN(numLimitBytes)) {
+      return formatSize(numLimitBytes).total;
+    }
+    if (startTime && endTime) {
+      return `${startTime} ~ ${endTime}`;
+    }
+    if (data.type === 'EMERGENCY') {
+      return APPEAL_UI_TEXT.EMERGENCY_DATA_AMOUNT;
+    }
+    return '-';
+  }, [data]);
+
   return (
     <div className="flex w-full flex-col">
       <main className="flex w-full flex-col items-center gap-4 p-5">
@@ -43,8 +69,8 @@ function AppealCommentContent() {
           {status === 'approved' && <ApprovedIcon />}
 
           <PolicySummaryCard
-            policyName={data.policyType || APPEAL_TYPE_LABEL.NORMAL}
-            requestedValue={formatSize(data.desiredRules.limitBytes).total}
+            policyName={policyLabel}
+            requestedValue={requestedValue}
             reasonText={
               status === 'rejected' ? (
                 <>
