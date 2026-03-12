@@ -25,14 +25,14 @@ const UsageActionCards = ({
       >
         <div className="flex flex-col gap-4">
           <div className="flex flex-row items-center gap-2">
-            <DocumentIcon sx={{ width: 18, height: 18 }} />
+            <DocumentIcon sx={{ width: 16 }} />
             <span className="text-body1-m font-bold">리캡</span>
           </div>
           <p className="text-caption-m">지난달 사용 통계를 확인해 보세요.</p>
         </div>
         <div className="flex flex-row items-center justify-end gap-1">
           <span className="text-caption-m">자세히 보기</span>
-          <ChevronIcon sx={{ width: 10, height: 10 }} />
+          <ChevronIcon sx={{ width: 16 }} />
         </div>
       </div>
 
@@ -51,7 +51,7 @@ const UsageActionCards = ({
               </span>
             </div>
             <div className="flex flex-row items-center justify-end">
-              <ChevronIcon sx={{ width: 10, height: 10 }} />
+              <ChevronIcon sx={{ width: 16 }} />
             </div>
           </div>
         ) : (
@@ -68,7 +68,7 @@ const UsageActionCards = ({
             </div>
             <div className="flex flex-row items-center justify-end gap-1">
               <span className="text-caption-m">데이터 조르기</span>
-              <ChevronIcon sx={{ width: 10, height: 10 }} />
+              <ChevronIcon sx={{ width: 16 }} />
             </div>
           </div>
         ))}
