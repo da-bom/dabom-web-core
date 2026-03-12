@@ -1,18 +1,40 @@
-import z from 'zod';
+import { z } from 'zod';
 
-export const missionSchema = z.object({
-  title: z.string().max(20, '최대 20자까지 입력 가능합니다.'),
-  targetId: z.number(),
-  reward: z.discriminatedUnion('type', [
-    z.object({
-      type: z.literal('DATA'),
-      value: z.string(),
-    }),
-    z.object({
-      type: z.literal('GIFTICON'),
-      value: z.number(),
-    }),
-  ]),
+export const MissionRequestSchema = z.object({
+  cursor: z.string().optional().nullable(),
+  size: z.number().int().default(20),
 });
 
-export type MissionForm = z.infer<typeof missionSchema>;
+export type MissionRequest = z.infer<typeof MissionRequestSchema>;
+
+export const MissionItemSchema = z.object({
+  missionItemId: z.number(),
+  missionText: z.string(),
+  requestStatus: z.enum(['CREATED', 'REQUESTED']),
+  target: z.object({
+    customerId: z.number(),
+    name: z.string(),
+  }),
+  createdBy: z.object({
+    customerId: z.number(),
+    name: z.string(),
+  }),
+  reward: z.object({
+    rewardId: z.number(),
+    name: z.string(),
+    category: z.string(),
+    value: z.number(),
+    unit: z.string(),
+    templateId: z.number(),
+  }),
+  createdAt: z.string(),
+});
+
+export const MissionResponseSchema = z.object({
+  missions: z.array(MissionItemSchema),
+  nextCursor: z.string().nullable(),
+  hasNext: z.boolean(),
+});
+
+export type MissionItem = z.infer<typeof MissionItemSchema>;
+export type MissionResponse = z.infer<typeof MissionResponseSchema>;
