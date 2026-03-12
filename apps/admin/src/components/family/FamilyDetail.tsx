@@ -22,7 +22,7 @@ const FamilyDetail = ({ selectedFam }: { selectedFam: number | undefined }) => {
 
   if (isLoading) return <Loading />;
 
-  if (!familyDetail) return <div>가족 정보 없음</div>;
+  if (!familyDetail) return <Error title="가족 정보가 존재하지 않습니다." />;
 
   return (
     <div className="flex h-full w-full flex-1 flex-col justify-between gap-4 p-4">
