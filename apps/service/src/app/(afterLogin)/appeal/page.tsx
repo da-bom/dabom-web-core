@@ -7,19 +7,40 @@ import { useRouter } from 'next/navigation';
 
 import { Button, formatSize } from '@shared';
 
+import { useGetAppeals } from 'src/api/appeal/useGetAppeals';
 import { AppealRequestCard, AppealStatus, FilterSegment } from 'src/components/appeal';
 import { APPEAL_TYPE_LABEL } from 'src/constants/appeal';
-import { mockAppealList } from 'src/data/appealList';
 import { getCurrentUserRole } from 'src/utils/auth';
 
 const AppealPageContent = () => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<'progress' | 'completed'>('progress');
 
+  const { data, isLoading, isError } = useGetAppeals();
+
   const userRole = getCurrentUserRole();
   const isOwner = userRole === 'OWNER';
 
-  const filteredItems = mockAppealList.filter((item) => {
+  if (isLoading) {
+    return (
+      <div className="flex h-full min-h-screen items-center justify-center">
+        <p className="text-body1-m">이의제기 목록을 불러오는 중...</p>
+      </div>
+    );
+  }
+
+  if (isError || !data) {
+    return (
+      <div className="flex h-full min-h-screen flex-col items-center justify-center p-8 text-center">
+        <p className="text-h2-m mb-4">목록을 불러오는 중 오류가 발생했습니다.</p>
+        <Button size="md" color="light" onClick={() => window.location.reload()}>
+          다시 시도하기
+        </Button>
+      </div>
+    );
+  }
+
+  const filteredItems = data.appeals.filter((item) => {
     if (activeTab === 'progress') return item.status === 'PENDING';
     if (activeTab === 'completed') return item.status !== 'PENDING';
     return true;

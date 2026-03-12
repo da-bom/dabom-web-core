@@ -1,84 +1,73 @@
-export type AppealType = 'NORMAL' | 'EMERGENCY';
-export type AppealStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | 'CANCELLED';
+import { z } from 'zod';
 
-export interface Comment {
-  commentId: number;
-  authorId: number;
-  authorName: string;
-  comment: string;
-  createdAt: string;
-}
+export const AppealTypeSchema = z.enum(['NORMAL', 'EMERGENCY']);
+export const AppealStatusSchema = z.enum(['PENDING', 'APPROVED', 'REJECTED', 'CANCELLED']);
 
-export interface AppealSummary {
-  appealId: number;
-  type: AppealType;
-  policyAssignmentId: number;
-  requesterId: number;
-  requesterName: string;
-  requestReason: string;
-  desiredRules: {
-    limitBytes: number;
-  };
-  status: AppealStatus;
-  createdAt: string;
-}
+export type AppealType = z.infer<typeof AppealTypeSchema>;
+export type AppealStatus = z.infer<typeof AppealStatusSchema>;
 
-export interface AppealDetail {
-  appealId: number;
-  policyAssignmentId: number;
-  requesterId: number;
-  requesterName: string;
-  requestReason: string;
-  rejectReason: string | null;
-  desiredRules: {
-    limitBytes: number;
-  };
-  status: AppealStatus;
-  resolvedById: number | null;
-  resolvedAt: string | null;
-  createdAt: string;
-  comments: {
-    content: Comment[];
-    nextCursor: string | null;
-    hasNext: boolean;
-  };
-  type?: AppealType;
-}
+export const CommentSchema = z.object({
+  commentId: z.number(),
+  authorId: z.number(),
+  authorName: z.string(),
+  comment: z.string(),
+  createdAt: z.string(),
+});
 
-export type Appeal = AppealDetail;
+export type Comment = z.infer<typeof CommentSchema>;
 
-export interface AppealCreateRequest {
-  policyAssignmentId: number;
-  requestReason: string;
-  desiredRules?: {
-    limitBytes: number;
-  };
-}
+export const AppealSummarySchema = z.object({
+  appealId: z.number(),
+  type: AppealTypeSchema,
+  policyAssignmentId: z.number(),
+  requesterId: z.number(),
+  requesterName: z.string(),
+  requestReason: z.string(),
+  desiredRules: z.object({
+    limitBytes: z.number(),
+  }),
+  status: AppealStatusSchema,
+  createdAt: z.string(),
+});
 
-export interface AppealCreateResponse {
-  success: boolean;
-  data: {
-    appealId: number;
-    policyAssignmentId: number;
-    status: AppealStatus;
-    desiredRules: {
-      limitBytes: number;
-    };
-    createdAt: string;
-  };
-  timestamp: string;
-}
+export type AppealSummary = z.infer<typeof AppealSummarySchema>;
 
-export interface AppealResponse {
-  success: boolean;
-  data: {
-    appeals: AppealSummary[];
-  };
-  timestamp: string;
-}
+export const AppealDetailSchema = z.object({
+  appealId: z.number(),
+  policyAssignmentId: z.number(),
+  requesterId: z.number(),
+  requesterName: z.string(),
+  requestReason: z.string(),
+  rejectReason: z.string().nullable(),
+  desiredRules: z.object({
+    limitBytes: z.number(),
+  }),
+  status: AppealStatusSchema,
+  resolvedById: z.number().nullable(),
+  resolvedAt: z.string().nullable(),
+  createdAt: z.string(),
+  comments: z.object({
+    content: z.array(CommentSchema),
+    nextCursor: z.string().nullable(),
+    hasNext: z.boolean(),
+  }),
+  type: AppealTypeSchema.optional(),
+});
 
-export interface AppealDetailResponse {
-  success: boolean;
-  data: AppealDetail;
-  timestamp: string;
-}
+export type AppealDetail = z.infer<typeof AppealDetailSchema>;
+
+export const AppealsListDataSchema = z.object({
+  appeals: z.array(AppealSummarySchema),
+  nextCursor: z.string().nullable(),
+  hasNext: z.boolean(),
+});
+
+export type AppealsListData = z.infer<typeof AppealsListDataSchema>;
+
+export const AppealListResponseSchema = z.object({
+  success: z.boolean(),
+  data: AppealsListDataSchema,
+  timestamp: z.string(),
+});
+
+export type AppealListResponse = z.infer<typeof AppealListResponseSchema>;
