@@ -6,7 +6,7 @@ import { cn } from '@shared';
 
 interface ChatBubbleProps {
   senderName?: string;
-  message: string;
+  message: React.ReactNode;
   time: string;
   isMe: boolean;
 }
@@ -14,7 +14,7 @@ interface ChatBubbleProps {
 export function ChatBubble({ senderName, message, time, isMe }: ChatBubbleProps) {
   return (
     <div className={cn('flex w-full flex-col gap-1', isMe ? 'items-end' : 'items-start')}>
-      {!isMe && senderName && <span className="text-caption-m">{senderName}</span>}
+      {!isMe && senderName && <span className="text-caption-m leading-[17px]">{senderName}</span>}
       <div
         className={cn(
           'rounded-bubble flex w-fit max-w-[70vw] flex-col justify-center border border-gray-200 px-4 py-3',
