@@ -35,6 +35,7 @@ export type AppealSummary = z.infer<typeof AppealSummarySchema>;
 export const AppealDetailSchema = z.object({
   appealId: z.number(),
   policyAssignmentId: z.number(),
+  policyType: z.string(),
   requesterId: z.number(),
   requesterName: z.string(),
   requestReason: z.string(),
@@ -55,6 +56,14 @@ export const AppealDetailSchema = z.object({
 });
 
 export type AppealDetail = z.infer<typeof AppealDetailSchema>;
+
+export const AppealDetailResponseSchema = z.object({
+  success: z.boolean(),
+  data: AppealDetailSchema,
+  timestamp: z.string(),
+});
+
+export type AppealDetailResponse = z.infer<typeof AppealDetailResponseSchema>;
 
 export const AppealsListDataSchema = z.object({
   appeals: z.array(AppealSummarySchema),
