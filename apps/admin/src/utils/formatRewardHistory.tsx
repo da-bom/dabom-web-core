@@ -32,26 +32,22 @@ export const formatRewardHistory = ({ history }: { history: readonly RewardHisto
       >
         {item.status}
       </span>,
-
       <span key={`product-${item.id}`}>{item.productName}</span>,
 
       <span key={`mission-${item.id}`}>{item.mission}</span>,
 
-      <div key={`coupon-${item.id}`} className="flex items-center justify-center gap-1">
+      <span key={`coupon-${item.id}`} className="inline-flex items-center gap-1">
         <span>
           {item.couponNumber.length > 4 ? `${item.couponNumber.slice(0, -4)}****` : '****'}
         </span>
         <button
-          onClick={() => {
-            navigator.clipboard.writeText(item.couponNumber);
-          }}
+          type="button"
+          onClick={() => navigator.clipboard.writeText(item.couponNumber)}
+          className="flex items-center"
         >
-          <CopyIcon
-            className="cursor-pointer text-gray-400 hover:text-gray-800"
-            sx={{ width: 16 }}
-          />
+          <CopyIcon className="text-gray-400 hover:text-gray-800" sx={{ width: 16 }} />
         </button>
-      </div>,
+      </span>,
 
       <span key={`issued-${item.id}`}>{dayjs(item.issuedAt).format('YYYY.MM.DD')}</span>,
 

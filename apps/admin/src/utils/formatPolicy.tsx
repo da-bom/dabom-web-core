@@ -44,15 +44,19 @@ export const formatPolicy = ({ policies }: { policies: Policy[] }) => {
         <span key="name" className={activeClass}>
           {p.name}
         </span>,
+
         <span key="role" className={activeClass}>
           {p.requireRole}
         </span>,
+
         <span key="rule" className={activeClass}>
           {formatDefaultRule(p.type, p.defaultRules)}
         </span>,
+
         <span key="status" className={p.isActive ? 'text-primary' : 'text-gray-400'}>
           {p.isActive ? '활성화' : '비활성화'}
         </span>,
+
         p.isActive ? (
           <Link key="edit" href={`/policy/${p.policyId}`}>
             <Button color="light" size="sm">

@@ -4,11 +4,15 @@ import { FamilyCustomer } from 'src/api/family/schema';
 import DataInput from 'src/components/family/DataInput';
 
 export const formatFamily = ({ customer }: { customer: FamilyCustomer[] }) => {
-  return customer.map((i) => ({
-    id: i.customerId,
-    cells: [
-      <div className="flex justify-center" key={i.customerId}>
+  return customer.map((i) => {
+    const usage = formatSize(i.monthlyUsedBytes);
+    const limit = i.monthlyLimitBytes ? formatSize(i.monthlyLimitBytes) : null;
+
+    return {
+      id: i.customerId,
+      cells: [
         <Switch
+          key={`role-${i.customerId}`}
           type={i.role === 'OWNER' ? 'primary' : 'secondary'}
           size="sm"
           onClick={() => {
@@ -16,21 +20,21 @@ export const formatFamily = ({ customer }: { customer: FamilyCustomer[] }) => {
           }}
         >
           {i.role}
-        </Switch>
-      </div>,
-      <span key={`name-${i.customerId}`}>{i.name}</span>,
-      <div key={`usage-${i.customerId}`} className="flex justify-center">
-        <div className="flex w-60 items-center justify-end gap-2">
+        </Switch>,
+
+        <span key={`name-${i.customerId}`}>{i.name}</span>,
+
+        <span key={`usage-${i.customerId}`} className="flex w-60 items-center justify-end gap-2">
           <span className="text-gray-700">
-            {formatSize(i.monthlyUsedBytes).value.toFixed(0)}
-            {formatSize(i.monthlyUsedBytes).unit} /{' '}
+            {usage.value.toFixed(0)}
+            {usage.unit} /
           </span>
-          {i.monthlyLimitBytes ? (
-            <DataInput limit={formatSize(i.monthlyLimitBytes)} />
+          {limit ? (
+            <DataInput limit={limit} />
           ) : // TODO: 데이터가 차단된 경우 추가
           null}
-        </div>
-      </div>,
-    ],
-  }));
+        </span>,
+      ],
+    };
+  });
 };
