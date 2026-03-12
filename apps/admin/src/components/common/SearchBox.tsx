@@ -1,0 +1,93 @@
+import { useState } from 'react';
+
+import { CancelIcon, SearchIcon } from '@icons';
+import { Button, DropDown, MainBox, RadioGroup } from '@shared';
+
+interface FilterOption {
+  label: string;
+  value: string;
+}
+
+interface SearchBoxProps {
+  sortOptions: FilterOption[];
+  selectedSort: string;
+  onSortChange: (value: string) => void;
+  sortName: string;
+
+  children?: React.ReactNode;
+
+  searchOptions: string[];
+  onSearch: (type: string, keyword: string) => void;
+  onReset?: () => void;
+  onClickSearch: () => void;
+}
+
+const SearchBox = ({
+  sortOptions,
+  selectedSort,
+  onSortChange,
+  sortName,
+  children,
+  searchOptions,
+  onSearch,
+  onReset,
+  onClickSearch,
+}: SearchBoxProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedSearchType, setSelectedSearchType] = useState(searchOptions[0]);
+  const [keyword, setKeyword] = useState('');
+
+  return (
+    <MainBox className="flex w-full items-center gap-5 py-3 pr-3 pl-5">
+      <RadioGroup
+        onChange={onSortChange}
+        options={sortOptions}
+        selectedValue={selectedSort}
+        name={sortName}
+      />
+
+      {children && (
+        <>
+          <div className="self-stretch border border-gray-100" />
+          {children}
+        </>
+      )}
+
+      <div className="self-stretch border border-gray-100" />
+
+      <div className="flex flex-1 items-center gap-2">
+        <MainBox className="shrink-0">
+          <DropDown
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            selectedOption={selectedSearchType}
+            setSelectedOption={setSelectedSearchType}
+            options={searchOptions}
+            size="xs"
+          />
+        </MainBox>
+        <SearchIcon sx={{ width: 16 }} />
+        <input
+          className="outline-brand-dark flex-1 p-1"
+          placeholder="검색어 입력"
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && onSearch(selectedSearchType, keyword)}
+        />
+        <button
+          onClick={() => {
+            setKeyword('');
+            onReset?.();
+          }}
+        >
+          <CancelIcon className="cursor-pointer !text-gray-400" sx={{ width: 16 }} />
+        </button>
+        <Button size="sm" color="dark" onClick={onClickSearch}>
+          검색
+        </Button>
+      </div>
+    </MainBox>
+  );
+};
+
+export default SearchBox;

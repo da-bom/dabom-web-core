@@ -25,7 +25,7 @@ export const MENU = [
   {
     id: 'REWARD',
     label: '보상 관리',
-    path: '/reward/products',
+    path: '/reward',
     icon: GiftIcon,
     subItems: [
       {

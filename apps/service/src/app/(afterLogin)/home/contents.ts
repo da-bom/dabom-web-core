@@ -11,4 +11,6 @@ export const CHART_COLOR = {
     '#DDE5DD',
     '#E9EDF1',
   ],
+  RECAP_SUCCESS: '#FEEECF',
+  RECAP_FAILURE: '#C2DBFF',
 } as const;
