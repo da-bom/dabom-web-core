@@ -10,7 +10,7 @@ import { ImageIcon } from '@icons';
 import { Button, Drawer, Input, MainBox, TextField, useUploadImage } from '@shared';
 
 import { RewardUpdate, RewardUpdateSchema } from 'src/api/reward/schema';
-import { useDeleteReward } from 'src/api/reward/useDeleteReward';
+import { useDeleteRewardTemplate } from 'src/api/reward/useDeleteRewardTemplate';
 import { useGetRewardDetail } from 'src/api/reward/useGetRewardDetail';
 import { useUpdateReward } from 'src/api/reward/useUpdateReward';
 
@@ -29,7 +29,7 @@ const RewardEditDrawer = () => {
   const { data: rewardData, isLoading: isDetailLoading } = useGetRewardDetail(targetId);
 
   const { mutate: updateReward, isPending: isUpdating } = useUpdateReward();
-  const { mutate: deleteReward, isPending: isDeleting } = useDeleteReward();
+  const { mutate: deleteReward, isPending: isDeleting } = useDeleteRewardTemplate();
   const { mutateAsync: uploadImage, isPending: isUploading } = useUploadImage();
 
   const { register, handleSubmit, setValue, reset } = useForm<RewardUpdate>({
@@ -79,7 +79,7 @@ const RewardEditDrawer = () => {
   const onClickDelete = () => {
     deleteReward(targetId, {
       onSuccess: (res) => {
-        if (res) {
+        if (res.success) {
           setIsModalOpen(false);
           router.push('/reward/products');
         }

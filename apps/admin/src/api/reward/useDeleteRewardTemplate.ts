@@ -9,7 +9,7 @@ export const deleteRewardTemplate = async (id: number) => {
   return DeleteRewardTemplateResponseSchema.parse(res);
 };
 
-export const useDeleteReward = () => {
+export const useDeleteRewardTemplate = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
