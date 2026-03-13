@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Suspense, useMemo, useState } from 'react';
+import React, { Suspense, useState } from 'react';
 
 import { useSearchParams } from 'next/navigation';
 
@@ -8,6 +8,7 @@ import { ApprovedIcon, RejectedIcon } from '@icons';
 import { Button, formatSize } from '@shared';
 
 import { useGetAppealDetail } from 'src/api/appeal/useGetAppealDetail';
+import { usePatchAppealRespond } from 'src/api/appeal/usePatchAppealRespond';
 import { AppealInputBar, ChatBubble, PolicySummaryCard } from 'src/components/appeal';
 import { APPEAL_TYPE_LABEL, APPEAL_UI_TEXT } from 'src/constants/appeal';
 import { getCurrentUserRole } from 'src/utils/auth';
@@ -30,9 +31,10 @@ function AppealCommentContent() {
   const inputReason = searchParams.get('reason');
 
   const cursor = searchParams.get('cursor') || undefined;
-  const size = Number(searchParams.get('size'));
+  const size = Number(searchParams.get('size')) || undefined;
 
   const { data, isLoading, isError, refetch } = useGetAppealDetail(appealId, cursor, size);
+  const { mutateAsync: respondAppeal } = usePatchAppealRespond(appealId);
 
   const [inputValue, setInputValue] = useState('');
 
@@ -62,6 +64,25 @@ function AppealCommentContent() {
     ? (data.status.toLowerCase() as AppealStatus)
     : 'pending';
   const displayReason = inputReason || data.requestReason;
+
+  const handleApprove = async () => {
+    try {
+      await respondAppeal({ action: 'APPROVED', rejectReason: null });
+    } catch (error) {
+      console.error('승인 실패:', error);
+    }
+  };
+
+  const handleReject = async () => {
+    const reason = '';
+    if (reason === null) return;
+
+    try {
+      await respondAppeal({ action: 'REJECTED', rejectReason: reason || '사유 없음' });
+    } catch (error) {
+      console.error('거절 실패:', error);
+    }
+  };
 
   return (
     <div className="flex w-full flex-col">
@@ -95,8 +116,8 @@ function AppealCommentContent() {
               )
             }
             isOwner={status === 'pending' && isOwner}
-            onApprove={() => {}}
-            onReject={() => {}}
+            onApprove={handleApprove}
+            onReject={handleReject}
           />
         </div>
 
