@@ -2,15 +2,17 @@
 
 import { Suspense } from 'react';
 
-// 1. Suspense 임포트
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { Table } from '@shared';
 
+// 🔍 추가
+import { RewardGrantParamsSchema } from 'src/api/reward/schema';
+import { useGetRewardGrants } from 'src/api/reward/useGetRewardGrants';
 import Loading from 'src/components/common/Loading';
 import Pagination from 'src/components/common/Pagination';
 import SearchBox from 'src/components/common/SearchBox';
-import { REWARD_HISTORY } from 'src/data/reward';
+// 🔍 추가
 import { formatRewardHistory } from 'src/utils/formatRewardHistory';
 
 const RewardHistoryContent = () => {
@@ -18,12 +20,57 @@ const RewardHistoryContent = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const currentPage = Number(searchParams.get('page')) || 1;
+  // 🔍 1. URLSearchParams를 Zod 스키마로 파싱하여 API 파라미터 생성
+  const params = {
+    page: Number(searchParams.get('page')) || 0,
+    size: 20,
+    status: searchParams.get('status') || '',
+    sort: (searchParams.get('sort') as 'LATEST' | 'EXPIRING_SOON') || 'LATEST',
+    unusedOnly: searchParams.get('unusedOnly') === 'true',
+    phoneNumber: searchParams.get('phoneNumber') || '',
+  };
+
+  const validatedParams = RewardGrantParamsSchema.parse(params);
+
+  // 🔍 2. 실제 API 호출
+  const { data, isLoading } = useGetRewardGrants(validatedParams);
+
+  // 🔍 3. URL 파라미터 업데이트 공통 함수
+  const updateParams = (newParams: Record<string, string | number | boolean | undefined>) => {
+    const nextParams = new URLSearchParams(searchParams.toString());
+
+    Object.entries(newParams).forEach(([key, value]) => {
+      if (value === undefined || value === '' || value === false) {
+        nextParams.delete(key);
+      } else {
+        nextParams.set(key, String(value));
+      }
+    });
+
+    // 필터 변경 시 페이지는 항상 0으로 초기화
+    if (!newParams.page) nextParams.set('page', '0');
+
+    router.push(`${pathname}?${nextParams.toString()}`);
+  };
 
   const handlePageChange = (newPage: number) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set('page', newPage.toString());
-    router.push(`${pathname}?${params.toString()}`);
+    updateParams({ page: newPage });
+  };
+
+  const handleSortChange = (val: string) => {
+    // SearchBox의 옵션 값에 맞춰 status나 sort 처리
+    if (val === 'nouse') {
+      updateParams({ unusedOnly: true });
+    } else {
+      updateParams({ sort: val === 'latest' ? 'LATEST' : 'EXPIRING_SOON', unusedOnly: false });
+    }
+  };
+
+  const handleSearch = (type: string, val: string) => {
+    if (type === '전화번호') {
+      updateParams({ phoneNumber: val });
+    }
+    // 쿠폰번호 검색 필드가 API에 생긴다면 추가 대응
   };
 
   return (
@@ -33,23 +80,42 @@ const RewardHistoryContent = () => {
           sortOptions={[
             { label: '최신 지급순', value: 'latest' },
             { label: '만료 임박순', value: 'expiring-soon' },
-            { label: '미사용 내역만 보기 ', value: 'nouse' },
+            { label: '미사용 내역만 보기', value: 'nouse' },
           ]}
-          selectedSort="latest"
-          onSortChange={() => {}}
+          selectedSort={validatedParams.unusedOnly ? 'nouse' : validatedParams.sort.toLowerCase()}
+          onSortChange={handleSortChange}
           sortName="reward-sort"
           searchOptions={['전화번호', '쿠폰번호']}
-          onSearch={(type, val) => console.log(type, val)}
-          onClickSearch={() => {}}
+          onSearch={handleSearch}
+          onClickSearch={() => {}} // SearchBox 내부에 따라 선택적 사용
         />
 
-        <Table
-          className="rounded-md"
-          headers={['전화번호', '사용 여부', '상품', '지급 미션', '쿠폰 번호', '발급일', '만료일']}
-          rows={formatRewardHistory({ history: REWARD_HISTORY })}
-        />
+        {isLoading ? (
+          <div className="flex flex-1 items-center justify-center">
+            <Loading />
+          </div>
+        ) : (
+          <Table
+            className="rounded-md"
+            headers={[
+              '전화번호',
+              '사용 여부',
+              '상품',
+              '지급 미션',
+              '쿠폰 번호',
+              '발급일',
+              '만료일',
+            ]}
+            // 🔍 API에서 받은 data.content를 포맷팅하여 전달
+            rows={formatRewardHistory({ history: data?.content || [] })}
+          />
+        )}
       </div>
-      <Pagination currentPage={currentPage} totalPages={5} onPageChange={handlePageChange} />
+      <Pagination
+        currentPage={validatedParams.page}
+        totalPages={data?.totalPages || 1}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 };
