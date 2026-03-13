@@ -4,8 +4,10 @@ import React, { Suspense } from 'react';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { Button, Divider, MainBox } from '@shared';
+import { Button, Divider, MainBox, gbToBytes } from '@shared';
 
+import { usePostAppeal } from 'src/api/appeal/usePostAppeal';
+import { usePostEmergencyAppeal } from 'src/api/appeal/usePostEmergencyAppeal';
 import { APPEAL_TYPE_LABEL, APPEAL_UI_TEXT } from 'src/constants/appeal';
 
 function AppealConfirmContent() {
@@ -16,7 +18,38 @@ function AppealConfirmContent() {
   const amount = searchParams.get('amount');
   const start = searchParams.get('start');
   const end = searchParams.get('end');
-  const reason = searchParams.get('reason');
+  const reason = searchParams.get('reason') || '';
+  const policyAssignmentId = Number(searchParams.get('id')) || 0;
+
+  const { mutateAsync: postEmergency } = usePostEmergencyAppeal();
+  const { mutateAsync: postAppeal } = usePostAppeal();
+
+  const handleSubmit = async () => {
+    try {
+      if (policy === APPEAL_TYPE_LABEL.EMERGENCY) {
+        await postEmergency(reason);
+      } else {
+        const desiredRules: { limitBytes?: number; start?: string; end?: string } = {};
+
+        if (policy === APPEAL_TYPE_LABEL.NORMAL && amount) {
+          desiredRules.limitBytes = gbToBytes(Number(amount));
+        } else if (policy === APPEAL_TYPE_LABEL.TIME_BLOCK && start && end) {
+          desiredRules.start = start;
+          desiredRules.end = end;
+        }
+
+        const requestData = {
+          policyAssignmentId,
+          requestReason: reason,
+          desiredRules,
+        };
+        await postAppeal(requestData);
+      }
+      router.push('/appeal');
+    } catch (error) {
+      console.error('이의 제기 요청 실패:', error);
+    }
+  };
 
   const getChangedValue = () => {
     if (policy === APPEAL_TYPE_LABEL.NORMAL && amount) {
@@ -26,7 +59,7 @@ function AppealConfirmContent() {
       return `${start} ~ ${end}`;
     }
     if (policy === APPEAL_TYPE_LABEL.EMERGENCY) {
-      return amount || APPEAL_UI_TEXT.EMERGENCY_DATA_AMOUNT;
+      return APPEAL_UI_TEXT.EMERGENCY_DATA_AMOUNT;
     }
     return '';
   };
@@ -66,13 +99,7 @@ function AppealConfirmContent() {
         <Button size="md-short" color="light" onClick={() => router.back()}>
           이전
         </Button>
-        <Button
-          size="lg"
-          color="primary"
-          onClick={() => {
-            router.push('/appeal');
-          }}
-        >
+        <Button size="lg" color="primary" onClick={handleSubmit}>
           이의 제기 하기
         </Button>
       </div>
