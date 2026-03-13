@@ -90,12 +90,12 @@ export const RewardGrantListResponseSchema = z.object({
 
 export const DeleteRewardTemplateResponseSchema = z.object({
   success: z.boolean(),
-  data: z.any().nullable(),
+  data: z.unknown().nullable(),
   error: z
     .object({
       code: z.string().nullable(),
       message: z.string().nullable(),
-      details: z.record(z.any()).nullable(),
+      details: z.record(z.unknown()).nullable(),
     })
     .nullable(),
   timestamp: z.string(),
