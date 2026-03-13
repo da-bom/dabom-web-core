@@ -9,13 +9,7 @@ interface UpdateParams {
 }
 
 export const updateRewardTemplate = async ({ id, payload }: UpdateParams) => {
-  const finalPayload = {
-    ...payload,
-    category: 'GIFTICON',
-    thumbnailUrl: '', // TODO: 추후 이미지 업로드 기능 구현 시 수정
-  };
-
-  const response = await http.put(`/admin/rewards/templates/${id}`, finalPayload);
+  const response = await http.put(`/admin/rewards/templates/${id}`, payload);
 
   try {
     return RewardTemplateSchema.parse(response);
@@ -31,12 +25,14 @@ export const useUpdateReward = () => {
   return useMutation({
     mutationFn: updateRewardTemplate,
     onSuccess: (_, { id }) => {
+      // 목록과 상세 쿼리 모두 무효화하여 최신 데이터 유지
       queryClient.invalidateQueries({ queryKey: ['rewardTemplates'] });
       queryClient.invalidateQueries({ queryKey: ['rewardTemplate', id] });
 
-      alert('보상이 수정되었습니다.');
+      alert('보상이 성공적으로 수정되었습니다.');
     },
-    onError: () => {
+    onError: (error) => {
+      console.error('수정 실패:', error);
       alert('보상 수정에 실패했습니다.');
     },
   });

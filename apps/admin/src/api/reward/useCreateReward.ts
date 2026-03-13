@@ -1,5 +1,3 @@
-import { useRouter } from 'next/navigation';
-
 import { http } from '@shared';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -18,18 +16,16 @@ export const createRewardTemplate = async (payload: RewardCreate) => {
 
 export const useCreateReward = () => {
   const queryClient = useQueryClient();
-  const router = useRouter();
 
   return useMutation({
     mutationFn: createRewardTemplate,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['rewardTemplates'] });
-      alert('보상이 성공적으로 등록되었습니다.');
-      router.push('/reward/products');
+      alert('보상이 성공적으로 추가되었습니다.');
     },
     onError: (error) => {
       console.error('생성 실패:', error);
-      alert('보상 등록에 실패했습니다.');
+      alert('보상 추가에 실패했습니다.');
     },
   });
 };

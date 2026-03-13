@@ -8,8 +8,8 @@ export const RewardTemplateSchema = z.object({
   price: z.number().nonnegative(),
   isSystem: z.boolean(),
   isActive: z.boolean(),
-  createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
 });
 
 export type RewardTemplate = z.infer<typeof RewardTemplateSchema>;
@@ -37,10 +37,68 @@ export const RewardCreateResponseSchema = z.object({
 
 export const RewardUpdateSchema = z.object({
   name: z.string().min(1, '보상 이름을 입력해주세요.'),
-  // TODO: 이미지 API 연결 후 옵셔널 제거
   thumbnailUrl: z.string().optional().nullable(),
   price: z.number().min(0),
   isActive: z.boolean().default(true),
 });
 
 export type RewardUpdate = z.infer<typeof RewardUpdateSchema>;
+
+export const RewardGrantParamsSchema = z.object({
+  page: z.preprocess((val) => Number(val ?? 0), z.number().default(0)),
+  size: z.preprocess((val) => Number(val ?? 20), z.number().default(20)),
+  status: z.enum(['ISSUED', 'USED', 'EXPIRED']).optional().or(z.literal('')),
+  sort: z.enum(['LATEST', 'EXPIRING_SOON']).default('LATEST'),
+  unusedOnly: z.boolean().optional(),
+  phoneNumber: z.string().optional(),
+});
+
+export type RewardGrantParams = z.infer<typeof RewardGrantParamsSchema>;
+
+export const RewardGrantSchema = z.object({
+  grantId: z.number(),
+  reward: z.object({
+    rewardId: z.number(),
+    name: z.string(),
+    category: z.enum(['DATA', 'GIFTICON']),
+    thumbnailUrl: z.string().nullable(),
+  }),
+  customer: z.object({
+    customerId: z.number(),
+    name: z.string(),
+    phoneNumber: z.string(),
+  }),
+  mission: z.object({
+    missionItemId: z.number(),
+    missionText: z.string(),
+  }),
+  couponCode: z.string().nullable(),
+  status: z.enum(['ISSUED', 'USED', 'EXPIRED']),
+  createdAt: z.string(),
+  expiredAt: z.string().nullable(),
+});
+
+export type RewardGrant = z.infer<typeof RewardGrantSchema>;
+
+export const RewardGrantListResponseSchema = z.object({
+  content: z.array(RewardGrantSchema),
+  page: z.number(),
+  size: z.number(),
+  totalElements: z.number(),
+  totalPages: z.number(),
+});
+
+export const DeleteRewardTemplateResponseSchema = z.object({
+  success: z.boolean(),
+  data: z.unknown().nullable(),
+  error: z
+    .object({
+      code: z.string().nullable(),
+      message: z.string().nullable(),
+      details: z.record(z.unknown()).nullable(),
+    })
+    .nullable(),
+  timestamp: z.string(),
+});
+
+export type DeleteRewardTemplateResponse = z.infer<typeof DeleteRewardTemplateResponseSchema>;

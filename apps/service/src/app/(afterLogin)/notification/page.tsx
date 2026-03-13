@@ -35,6 +35,7 @@ export default function NotificationPage() {
         setPage((prev) => prev + 1);
       }
     } catch (error) {
+      console.error(error);
     } finally {
       setIsLoading(false);
     }
