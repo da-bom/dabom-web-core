@@ -189,7 +189,7 @@ const RewardEditDrawer = () => {
               color="light"
               size="md-short"
               type="button"
-              className="text-negative font-bold"
+              className="text-negative"
               onClick={() => setIsModalOpen(true)}
               disabled={isSubmitting}
             >
