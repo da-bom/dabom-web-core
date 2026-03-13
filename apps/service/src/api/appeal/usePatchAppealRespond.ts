@@ -1,11 +1,7 @@
 import { http } from '@shared';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import {
-  AppealRespondRequest,
-  AppealRespondResponseSchema,
-  AppealRespondResultSchema,
-} from './schema';
+import { AppealRespondRequest, AppealRespondResponseSchema } from './schema';
 
 export const patchAppealRespond = async (appealId: number, data: AppealRespondRequest) => {
   console.log(`🌐 이의제기 응답 API 호출: /appeals/${appealId}/respond`, data);
@@ -15,12 +11,8 @@ export const patchAppealRespond = async (appealId: number, data: AppealRespondRe
   console.log('✅ 이의제기 응답 성공 응답:', response);
 
   try {
-    const fullParsed = AppealRespondResponseSchema.safeParse(response);
-    if (fullParsed.success) {
-      return fullParsed.data.data;
-    }
-
-    return AppealRespondResultSchema.parse(response);
+    const parsed = AppealRespondResponseSchema.parse(response);
+    return parsed;
   } catch (error) {
     console.error('❌ 이의제기 응답 Zod 파싱 실패:', error);
     throw error;

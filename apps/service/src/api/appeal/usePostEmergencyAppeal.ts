@@ -20,7 +20,7 @@ export const postEmergencyAppeal = async (requestReason: string) => {
 
   try {
     const parsed = EmergencyAppealResponseSchema.parse(response);
-    return parsed.data;
+    return parsed;
   } catch (error) {
     console.error('❌ 긴급 쿼터 요청 Zod 파싱 실패:', error);
     throw error;

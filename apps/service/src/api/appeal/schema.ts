@@ -6,187 +6,117 @@ export const AppealStatusSchema = z.enum(['PENDING', 'APPROVED', 'REJECTED', 'CA
 export type AppealType = z.infer<typeof AppealTypeSchema>;
 export type AppealStatus = z.infer<typeof AppealStatusSchema>;
 
+const DesiredRulesSchema = z
+  .object({
+    limitBytes: z.number().optional(),
+    start: z.string().optional(),
+    end: z.string().optional(),
+  })
+  .nullable();
+
+const AppealBaseSchema = z.object({
+  appealId: z.number(),
+  policyAssignmentId: z.number(),
+  status: AppealStatusSchema,
+  desiredRules: DesiredRulesSchema,
+  createdAt: z.string(),
+});
+
 export const CommentSchema = z.object({
   commentId: z.number(),
+  appealId: z.number(),
   authorId: z.number(),
   authorName: z.string(),
   comment: z.string(),
   createdAt: z.string(),
 });
 
-export type Comment = z.infer<typeof CommentSchema>;
-
-export const AppealSummarySchema = z.object({
-  appealId: z.number(),
+export const AppealSummarySchema = AppealBaseSchema.extend({
   type: AppealTypeSchema,
-  policyAssignmentId: z.number(),
-  requesterId: z.number(),
-  requesterName: z.string(),
-  requestReason: z.string(),
-  desiredRules: z
-    .object({
-      limitBytes: z.number().optional(),
-      start: z.string().optional(),
-      end: z.string().optional(),
-    })
-    .nullable(),
-  status: AppealStatusSchema,
-  createdAt: z.string(),
-});
-
-export type AppealSummary = z.infer<typeof AppealSummarySchema>;
-
-export const AppealDetailSchema = z.object({
-  appealId: z.number(),
-  policyAssignmentId: z.number(),
   policyType: z.string(),
   requesterId: z.number(),
   requesterName: z.string(),
   requestReason: z.string(),
-  rejectReason: z.string().nullable(),
-  desiredRules: z
-    .object({
-      limitBytes: z.number().optional(),
-      start: z.string().optional(),
-      end: z.string().optional(),
-    })
-    .nullable(),
-  status: AppealStatusSchema,
-  resolvedById: z.number().nullable(),
-  resolvedAt: z.string().nullable(),
-  createdAt: z.string(),
-  comments: z.object({
-    content: z.array(CommentSchema),
-    nextCursor: z.string().nullable(),
-    hasNext: z.boolean(),
-  }),
-  type: AppealTypeSchema.optional(),
 });
 
-export type AppealDetail = z.infer<typeof AppealDetailSchema>;
-
-export const AppealDetailResponseSchema = z.object({
-  success: z.boolean(),
-  data: AppealDetailSchema,
-  timestamp: z.string(),
-});
-
-export type AppealDetailResponse = z.infer<typeof AppealDetailResponseSchema>;
-
-export const AppealsListDataSchema = z.object({
+/** 이의제기 목록 조회 */
+export const AppealListResponseSchema = z.object({
   appeals: z.array(AppealSummarySchema),
   nextCursor: z.string().nullable(),
   hasNext: z.boolean(),
 });
 
-export type AppealsListData = z.infer<typeof AppealsListDataSchema>;
-
-export const AppealListResponseSchema = z.object({
-  success: z.boolean(),
-  data: AppealsListDataSchema,
-  timestamp: z.string(),
+/** 이의제기 상세 조회 */
+export const AppealDetailResponseSchema = AppealSummarySchema.extend({
+  rejectReason: z.string().nullable(),
+  resolvedById: z.number().nullable(),
+  resolvedAt: z.string().nullable(),
+  comments: z.object({
+    content: z.array(CommentSchema),
+    nextCursor: z.string().nullable(),
+    hasNext: z.boolean(),
+  }),
 });
 
-export type AppealListResponse = z.infer<typeof AppealListResponseSchema>;
+/** 이의제기 생성 */
+export const AppealCreateResponseSchema = AppealBaseSchema;
+
+export const AppealCreateRequestSchema = z.object({
+  policyAssignmentId: z.number(),
+  requestReason: z.string().min(1),
+  desiredRules: DesiredRulesSchema.optional(),
+});
+
+/** 긴급 쿼터 요청 */
+export const EmergencyAppealResponseSchema = z.object({
+  appealId: z.number(),
+  type: z.literal('EMERGENCY'),
+  status: z.literal('APPROVED'),
+  additionalBytes: z.number(),
+  newMonthlyLimitBytes: z.number(),
+  requestReason: z.string(),
+  createdAt: z.string(),
+});
 
 export const EmergencyAppealRequestSchema = z.object({
   requestReason: z.string(),
   additionalBytes: z.number(),
 });
 
-export type EmergencyAppealRequest = z.infer<typeof EmergencyAppealRequestSchema>;
-
-export const EmergencyAppealResponseSchema = z.object({
-  success: z.boolean(),
-  data: z.object({
-    appealId: z.number(),
-    type: z.literal('EMERGENCY'),
-    status: z.literal('APPROVED'),
-    additionalBytes: z.number(),
-    newMonthlyLimitBytes: z.number(),
-    requestReason: z.string(),
-    createdAt: z.string(),
-  }),
-  timestamp: z.string(),
+/** 이의제기 승인/거절 */
+export const AppealRespondResponseSchema = AppealBaseSchema.extend({
+  rejectReason: z.string().nullable(),
+  resolvedById: z.number().nullable(),
+  resolvedAt: z.string().nullable(),
 });
-
-export type EmergencyAppealResponse = z.infer<typeof EmergencyAppealResponseSchema>;
-
-export const AppealCreateRequestSchema = z.object({
-  policyAssignmentId: z.number(),
-  requestReason: z.string().min(1),
-  desiredRules: z
-    .object({
-      limitBytes: z.number().optional(),
-      start: z.string().optional(),
-      end: z.string().optional(),
-    })
-    .optional(),
-});
-
-export type AppealCreateRequest = z.infer<typeof AppealCreateRequestSchema>;
-
-export const AppealCreateResponseSchema = z.object({
-  success: z.boolean(),
-  data: z.object({
-    appealId: z.number(),
-    policyAssignmentId: z.number(),
-    status: AppealStatusSchema,
-    desiredRules: z
-      .object({
-        limitBytes: z.number().optional(),
-        start: z.string().optional(),
-        end: z.string().optional(),
-      })
-      .nullable(),
-    createdAt: z.string(),
-  }),
-  timestamp: z.string(),
-});
-
-export type AppealCreateResponse = z.infer<typeof AppealCreateResponseSchema>;
-
-export const CreateCommentRequestSchema = z.object({
-  comment: z.string().min(1),
-});
-
-export type CreateCommentRequest = z.infer<typeof CreateCommentRequestSchema>;
-
-export const CommentResultSchema = z.object({
-  commentId: z.number(),
-  appealId: z.number(),
-  authorId: z.number(),
-  authorName: z.string(),
-  comment: z.string(),
-  createdAt: z.string(),
-});
-
-export const CreateCommentResponseSchema = z.object({
-  success: z.boolean(),
-  data: CommentResultSchema,
-  timestamp: z.string(),
-});
-
-export type CreateCommentResponse = z.infer<typeof CreateCommentResponseSchema>;
 
 export const AppealRespondRequestSchema = z.object({
   action: z.enum(['APPROVED', 'REJECTED']),
   rejectReason: z.string().nullable(),
 });
 
+/** 이의제기 댓글 작성 */
+export const CreateCommentResponseSchema = CommentSchema;
+
+export const CreateCommentRequestSchema = z.object({
+  comment: z.string().min(1),
+});
+
+export type Comment = z.infer<typeof CommentSchema>;
+export type AppealSummary = z.infer<typeof AppealSummarySchema>;
+export type AppealDetail = z.infer<typeof AppealDetailResponseSchema>;
+
+export type AppealListResponse = z.infer<typeof AppealListResponseSchema>;
+export type AppealDetailResponse = AppealDetail;
+
+export type AppealCreateRequest = z.infer<typeof AppealCreateRequestSchema>;
+export type AppealCreateResponse = z.infer<typeof AppealCreateResponseSchema>;
+
+export type EmergencyAppealRequest = z.infer<typeof EmergencyAppealRequestSchema>;
+export type EmergencyAppealResponse = z.infer<typeof EmergencyAppealResponseSchema>;
+
 export type AppealRespondRequest = z.infer<typeof AppealRespondRequestSchema>;
-
-export const AppealRespondResultSchema = z.object({
-  appealId: z.number(),
-  status: AppealStatusSchema,
-  rejectReason: z.string().nullable(),
-  resolvedById: z.number(),
-  resolvedAt: z.string(),
-});
-
-export const AppealRespondResponseSchema = z.object({
-  success: z.boolean(),
-  data: AppealRespondResultSchema,
-});
-
 export type AppealRespondResponse = z.infer<typeof AppealRespondResponseSchema>;
+
+export type CreateCommentRequest = z.infer<typeof CreateCommentRequestSchema>;
+export type CreateCommentResponse = z.infer<typeof CreateCommentResponseSchema>;
