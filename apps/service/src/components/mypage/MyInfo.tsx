@@ -5,7 +5,9 @@ import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 
 import { EditIcon } from '@icons';
-import { DaboIcon, Divider, Grade, cn } from '@shared';
+import { DaboIcon, Divider, Grade, bytesToGB, cn } from '@shared';
+
+import { useGetMyPage } from 'src/api/mypage/useGetMypage';
 
 import PolicySimple from '../policy/PolicySimple';
 
@@ -13,31 +15,40 @@ const ProgressBar = dynamic(() => import('src/components/common/ProgressBar'), {
   ssr: false,
 });
 
-const MyInfo = ({
-  data,
-}: {
-  data: {
-    name: string;
-    familyName: string;
-    usedGB: number;
-    limitGB: number;
-  };
-}) => {
-  const [familyName, setFamilyName] = useState(data.familyName);
+const MyInfo = () => {
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth() + 1;
+
+  const { data: myPageData, isLoading } = useGetMyPage(currentYear, currentMonth);
+
+  const [familyName, setFamilyName] = useState('');
   const [inputWidth, setInputWidth] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
 
   const spanRef = useRef<HTMLSpanElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const usagePercent = Math.min(Math.round((data.usedGB / data.limitGB) * 100), 100);
-  const displayStatus = 100 - usagePercent;
+  const [isInitialized, setIsInitialized] = useState(false);
+  if (myPageData?.familyName && !isInitialized && !isEditing) {
+    setFamilyName(myPageData.familyName);
+    setIsInitialized(true);
+  }
 
   useEffect(() => {
     if (spanRef.current) {
       setInputWidth(spanRef.current.offsetWidth);
     }
   }, [familyName]);
+
+  if (isLoading) return <div>로딩</div>;
+  if (!myPageData) return null;
+
+  const usedGB = bytesToGB(myPageData.monthlyUsedBytes);
+  const limitGB = myPageData.monthlyLimitBytes ? bytesToGB(myPageData.monthlyLimitBytes) : null;
+
+  const usagePercent = limitGB ? Math.min(Math.round((usedGB / limitGB) * 100), 100) : 0;
+  const displayStatus = 100 - usagePercent;
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -67,9 +78,10 @@ const MyInfo = ({
 
               <input
                 ref={inputRef}
-                className={`text-body1-m bg-transparent p-0 transition-all outline-none focus:ring-0 ${
-                  isEditing ? 'border-b border-gray-400' : 'border-none'
-                }`}
+                className={cn(
+                  'text-body1-m bg-transparent p-0 transition-all outline-none focus:ring-0',
+                  isEditing ? 'border-b border-gray-400' : 'border-none',
+                )}
                 style={{ width: `${inputWidth}px`, minWidth: '20px' }}
                 value={familyName}
                 onChange={(e) => setFamilyName(e.target.value)}
@@ -86,7 +98,7 @@ const MyInfo = ({
             </button>
           </div>
           <div className="flex gap-1">
-            <span className="text-h2-m">{data.name}</span>
+            <span className="text-h2-m">{myPageData.name}</span>
             <Grade grade="NORMAL" />
           </div>
         </div>
@@ -96,7 +108,7 @@ const MyInfo = ({
         <div className="flex justify-between">
           <span className="text-caption-m">내 데이터 사용량</span>
           <span className="text-caption-m">
-            {data.usedGB}GB / {data.limitGB}GB
+            {usedGB.toFixed(1)}GB / {limitGB ? `${limitGB}GB` : '무제한'}
           </span>
         </div>
         <ProgressBar value={usagePercent} />
@@ -104,9 +116,17 @@ const MyInfo = ({
       <Divider />
 
       <PolicySimple>
-        <PolicySimple.Block isBlocked />
-        <PolicySimple.Limit text="-" disabled />
-        <PolicySimple.Time text="-" isOn disabled />
+        <PolicySimple.Block isBlocked={myPageData.isBlocked} />
+        <PolicySimple.Limit text={limitGB ? `${limitGB}GB` : '무제한'} disabled={!limitGB} />
+        <PolicySimple.Time
+          text={
+            myPageData.timeBlock?.start
+              ? `${myPageData.timeBlock.start}~${myPageData.timeBlock.end}`
+              : '-'
+          }
+          isOn={!!myPageData.timeBlock?.start}
+          disabled={!myPageData.timeBlock?.start}
+        />
       </PolicySimple>
     </>
   );
