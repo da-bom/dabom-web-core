@@ -8,8 +8,8 @@ export const RewardTemplateSchema = z.object({
   price: z.number().nonnegative(),
   isSystem: z.boolean(),
   isActive: z.boolean(),
-  createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
 });
 
 export type RewardTemplate = z.infer<typeof RewardTemplateSchema>;
