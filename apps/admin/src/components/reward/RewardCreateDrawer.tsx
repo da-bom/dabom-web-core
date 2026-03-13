@@ -55,7 +55,11 @@ const RewardCreateDrawer = () => {
   };
 
   const onSubmit = (data: RewardCreate) => {
-    createReward(data);
+    createReward(data, {
+      onSuccess: () => {
+        router.back();
+      },
+    });
   };
 
   const isSubmitting = isCreating || isUploading;

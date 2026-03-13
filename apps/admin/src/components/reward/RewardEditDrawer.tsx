@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useParams, useRouter } from 'next/navigation';
@@ -11,6 +11,7 @@ import { Button, Drawer, Input, MainBox, TextField, useUploadImage } from '@shar
 
 import { RewardUpdate, RewardUpdateSchema } from 'src/api/reward/schema';
 import { useDeleteReward } from 'src/api/reward/useDeleteReward';
+import { useGetRewardDetail } from 'src/api/reward/useGetRewardDetail';
 import { useUpdateReward } from 'src/api/reward/useUpdateReward';
 
 import ConfirmModal from '../common/ConfirmModal';
@@ -25,14 +26,26 @@ const RewardEditDrawer = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
+  const { data: rewardData, isLoading: isDetailLoading } = useGetRewardDetail(targetId);
+
   const { mutate: updateReward, isPending: isUpdating } = useUpdateReward();
   const { mutate: deleteReward, isPending: isDeleting } = useDeleteReward();
-
   const { mutateAsync: uploadImage, isPending: isUploading } = useUploadImage();
 
-  const { register, handleSubmit, setValue } = useForm<RewardUpdate>({
+  const { register, handleSubmit, setValue, reset } = useForm<RewardUpdate>({
     resolver: zodResolver(RewardUpdateSchema),
   });
+
+  useEffect(() => {
+    if (rewardData) {
+      reset({
+        name: rewardData.name,
+        price: rewardData.price,
+        thumbnailUrl: rewardData.thumbnailUrl,
+      });
+      setPreviewUrl(rewardData.thumbnailUrl);
+    }
+  }, [rewardData, reset]);
 
   const handleImageClick = () => {
     if (isUploading) return;
@@ -45,18 +58,22 @@ const RewardEditDrawer = () => {
 
     try {
       const uploadedUrl = await uploadImage({ file, type: 'REWARD' });
-
       setValue('thumbnailUrl', uploadedUrl);
       setPreviewUrl(uploadedUrl);
     } catch (error) {
-      console.error('이미지 업로드 실패:', error);
+      console.error(error);
     } finally {
       if (fileInputRef.current) fileInputRef.current.value = '';
     }
   };
 
   const onSubmit = (data: RewardUpdate) => {
-    updateReward({ id: targetId, payload: data });
+    updateReward(
+      { id: targetId, payload: data },
+      {
+        onSuccess: () => router.back(),
+      },
+    );
   };
 
   const handleDelete = () => {
@@ -64,6 +81,16 @@ const RewardEditDrawer = () => {
   };
 
   const isSubmitting = isUpdating || isUploading || isDeleting;
+
+  if (isDetailLoading) {
+    return (
+      <Drawer>
+        <div className="flex h-full items-center justify-center">
+          <Loading />
+        </div>
+      </Drawer>
+    );
+  }
 
   return (
     <>
@@ -101,9 +128,10 @@ const RewardEditDrawer = () => {
 
           <div className="flex flex-1 flex-col gap-8">
             <TextField label="유형">
-              <div className="text-body3-d bg-background-base rounded-md p-2 text-gray-700">
-                유형은 변경할 수 없습니다.
-              </div>
+              <span className="text-body3-d bg-background-base rounded-md p-2 text-gray-700">
+                {rewardData?.category === 'DATA' ? '데이터' : '기프티콘'}
+              </span>
+              <span className="text-body3-d text-gray-700">유형은 변경할 수 없습니다.</span>
             </TextField>
 
             <TextField label="썸네일">
