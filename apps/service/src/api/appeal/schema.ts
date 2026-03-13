@@ -24,7 +24,6 @@ const AppealBaseSchema = z.object({
 
 export const CommentSchema = z.object({
   commentId: z.number(),
-  appealId: z.number(),
   authorId: z.number(),
   authorName: z.string(),
   comment: z.string(),
@@ -56,6 +55,7 @@ export const AppealDetailResponseSchema = AppealSummarySchema.extend({
     nextCursor: z.string().nullable(),
     hasNext: z.boolean(),
   }),
+  type: AppealTypeSchema.optional(),
 });
 
 /** 이의제기 생성 */

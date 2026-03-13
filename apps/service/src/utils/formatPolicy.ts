@@ -18,6 +18,12 @@ export const formatFamilyPolicies = (familyData: FamilyPoliciesData): FamilyDeta
     const monthlyLimitBytes = monthlyPolicy ? (monthlyPolicy.rules?.limitBytes ?? null) : null;
     const isBlocked = manualBlockPolicy?.isActive ?? false;
 
+    const assignmentIds = {
+      monthlyLimit: monthlyPolicy?.assignmentId ?? null,
+      timeBlock: timeBlockPolicy?.assignmentId ?? null,
+      manualBlock: manualBlockPolicy?.assignmentId ?? null,
+    };
+
     let timeLimit: { start: string; end: string } | null = null;
     if (timeBlockPolicy?.isActive) {
       const { start, end } = timeBlockPolicy.rules ?? {};
@@ -41,6 +47,8 @@ export const formatFamilyPolicies = (familyData: FamilyPoliciesData): FamilyDeta
       monthlyLimitBytes,
       isBlocked,
       timeLimit,
+      policies: c.policies,
+      assignmentIds,
     };
   });
 

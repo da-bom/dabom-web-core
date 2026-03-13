@@ -6,9 +6,11 @@ import { useRouter } from 'next/navigation';
 
 import { Button, MainBox } from '@shared';
 
+import { useGetFamilyPolicies } from 'src/api/policy/useGetFamilyPolicies';
 import Slider from 'src/components/common/Slider';
 import LimitInput from 'src/components/policy/LimitInput';
 import { APPEAL_TYPE_LABEL, APPEAL_UI_TEXT } from 'src/constants/appeal';
+import { getCurrentUserId } from 'src/utils/auth';
 
 const MIN_LIMIT = 1;
 const MAX_LIMIT = 70;
@@ -17,6 +19,12 @@ const CURRENT_LIMIT = 50;
 export default function DataLimitAppealPage() {
   const router = useRouter();
   const [selectedLimit, setSelectedLimit] = useState(50);
+
+  const { data: familyData } = useGetFamilyPolicies();
+  const currentUserId = getCurrentUserId();
+
+  const myPolicyId = familyData?.customers.find((c) => c.customerId === currentUserId)
+    ?.assignmentIds?.monthlyLimit;
 
   const handleInputChange = (value: string) => {
     const numericValue = value.replace(/\D/g, '');
@@ -72,7 +80,7 @@ export default function DataLimitAppealPage() {
           color="dark"
           onClick={() =>
             router.push(
-              `/appeal/create/reason?amount=${selectedLimit}&policy=${encodeURIComponent(APPEAL_TYPE_LABEL.NORMAL)}`,
+              `/appeal/create/reason?id=${myPolicyId || ''}&amount=${selectedLimit}&policy=${encodeURIComponent(APPEAL_TYPE_LABEL.NORMAL)}`,
             )
           }
         >

@@ -75,6 +75,7 @@ export type UpdatePolicyResponse = z.infer<typeof UpdatePolicyResponseSchema>;
 export interface ServiceCustomerDetail extends CustomerDetail {
   timeLimit: { start: string; end: string } | null;
   isBlocked: boolean;
+  policies: ApiPolicy[];
 }
 
 export interface FamilyDetail {
