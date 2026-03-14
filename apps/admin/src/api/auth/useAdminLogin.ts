@@ -1,4 +1,4 @@
-import { ACCESS_TOKEN_KEY, http } from '@shared';
+import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY, http } from '@shared';
 import { useMutation } from '@tanstack/react-query';
 
 import { ApiErrorResponse } from '@shared/types/error';
@@ -30,7 +30,7 @@ export const useAdminLogin = () => {
 
     onSuccess: (data) => {
       localStorage.setItem(ACCESS_TOKEN_KEY, data.accessToken);
-      localStorage.setItem('refresh_token', data.refreshToken);
+      localStorage.setItem(REFRESH_TOKEN_KEY, data.refreshToken);
     },
 
     onError: (error: ApiErrorResponse) => {

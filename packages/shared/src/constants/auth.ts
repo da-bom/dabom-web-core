@@ -1,7 +1,14 @@
-const storageKey = process.env.NEXT_PUBLIC_STORAGE_ACCESS_KEY;
+const accessKey = process.env.NEXT_PUBLIC_STORAGE_ACCESS_KEY;
+const refreshKey = process.env.NEXT_PUBLIC_STORAGE_REFRESH_KEY;
 
-if (!storageKey) {
-  throw new Error('환경 변수 ACCESS_TOKEN_KEY가 설정되지 않았습니다. .env 파일을 확인해주세요.');
+if (!accessKey || !refreshKey) {
+  throw new Error(
+    `환경 변수 설정이 누락되었습니다. 
+     ACCESS_KEY: ${accessKey ? 'OK' : 'MISSING'}, 
+     REFRESH_KEY: ${refreshKey ? 'OK' : 'MISSING'}
+     .env 파일을 확인해주세요.`,
+  );
 }
 
-export const ACCESS_TOKEN_KEY = storageKey;
+export const ACCESS_TOKEN_KEY = accessKey;
+export const REFRESH_TOKEN_KEY = refreshKey;
