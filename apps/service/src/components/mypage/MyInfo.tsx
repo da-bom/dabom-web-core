@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 
 import { EditIcon } from '@icons';
-import { DaboIcon, Divider, Grade, bytesToGB, cn } from '@shared';
+import { CURRENT_DATE, DaboIcon, Divider, Grade, bytesToGB, cn } from '@shared';
 
 import { useGetMyPage } from 'src/api/mypage/useGetMypage';
 
@@ -16,11 +16,7 @@ const ProgressBar = dynamic(() => import('src/components/common/ProgressBar'), {
 });
 
 const MyInfo = () => {
-  const now = new Date();
-  const currentYear = now.getFullYear();
-  const currentMonth = now.getMonth() + 1;
-
-  const { data: myPageData, isLoading } = useGetMyPage(currentYear, currentMonth);
+  const { data: myPageData, isLoading } = useGetMyPage(CURRENT_DATE.YEAR, CURRENT_DATE.MONTH);
 
   const [familyName, setFamilyName] = useState('');
   const [inputWidth, setInputWidth] = useState(0);
@@ -29,10 +25,8 @@ const MyInfo = () => {
   const spanRef = useRef<HTMLSpanElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [isInitialized, setIsInitialized] = useState(false);
-  if (myPageData?.familyName && !isInitialized && !isEditing) {
+  if (myPageData?.familyName && !familyName && !isEditing) {
     setFamilyName(myPageData.familyName);
-    setIsInitialized(true);
   }
 
   useEffect(() => {

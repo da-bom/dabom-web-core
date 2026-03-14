@@ -26,4 +26,5 @@ export { default as Table } from './components/Table';
 export { default as TextField } from './components/TextField';
 export * from './hooks/useUploadImage';
 export * from './constants/colors';
+export * from './constants/date';
 export * from './constants/time';

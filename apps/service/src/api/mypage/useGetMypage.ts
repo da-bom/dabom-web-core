@@ -8,8 +8,6 @@ export const getMyPageInfo = async (year: number, month: number) => {
     params: { year, month },
   });
 
-  console.log(response);
-
   try {
     return MyPageInfoSchema.parse(response);
   } catch (error) {
