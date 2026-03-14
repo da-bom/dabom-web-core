@@ -64,7 +64,7 @@ export const AppealHighlightsSchema = z.object({
   topAcceptedApprover: TopAcceptedApproverSchema.nullable(),
 });
 
-export const MonthlyRecapDataSchema = z.object({
+export const MonthlyRecapResponseSchema = z.object({
   recapId: z.number(),
   familyId: z.number(),
   familyName: z.string(),
@@ -81,10 +81,5 @@ export const MonthlyRecapDataSchema = z.object({
   generatedAt: z.string(),
 });
 
-export const MonthlyRecapResponseSchema = z.object({
-  success: z.boolean(),
-  data: MonthlyRecapDataSchema,
-});
-
-export type MonthlyRecapData = z.infer<typeof MonthlyRecapDataSchema>;
+export type MonthlyRecapData = z.infer<typeof MonthlyRecapResponseSchema>;
 export type MonthlyRecapResponse = z.infer<typeof MonthlyRecapResponseSchema>;

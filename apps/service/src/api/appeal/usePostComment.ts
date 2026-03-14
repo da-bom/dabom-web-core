@@ -26,9 +26,7 @@ export const usePostComment = (appealId: number) => {
       queryClient.invalidateQueries({ queryKey: ['appealDetail', appealId] });
     },
     onError: (error: ApiErrorResponse) => {
-      if (error.errorMessage) {
-        alert(error.errorMessage);
-      }
+      alert(error.errorMessage || '댓글 작성에 실패했습니다.');
     },
   });
 };

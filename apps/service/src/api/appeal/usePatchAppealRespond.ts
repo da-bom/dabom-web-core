@@ -27,9 +27,7 @@ export const usePatchAppealRespond = (appealId: number) => {
       queryClient.invalidateQueries({ queryKey: ['appealDetail', appealId] });
     },
     onError: (error: ApiErrorResponse) => {
-      if (error.errorMessage) {
-        alert(error.errorMessage);
-      }
+      alert(error.errorMessage || '이의 제기 응답 처리에 실패했습니다.');
     },
   });
 };

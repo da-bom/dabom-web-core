@@ -14,7 +14,7 @@ import { getCurrentUserId } from 'src/utils/auth';
 function TimeLimitAppealContent() {
   const router = useRouter();
 
-  const { data: familyData } = useGetFamilyPolicies();
+  const { data: familyData, isLoading, isError, refetch } = useGetFamilyPolicies();
   const currentUserId = getCurrentUserId();
 
   const currentUser = familyData?.customers.find((c) => c.customerId === currentUserId);
@@ -35,6 +35,25 @@ function TimeLimitAppealContent() {
       setEndTime(currentUser.timeLimit.end);
     }
   }, [currentUser?.timeLimit]);
+
+  if (isLoading) {
+    return (
+      <div className="flex h-full min-h-screen items-center justify-center">
+        <p className="text-body1-m">가족 데이터를 불러오는 중...</p>
+      </div>
+    );
+  }
+
+  if (isError || !familyData) {
+    return (
+      <div className="flex h-full min-h-screen flex-col items-center justify-center p-8 text-center">
+        <p className="text-h2-m mb-4">데이터를 불러오는 중 오류가 발생했습니다.</p>
+        <Button size="md" color="light" onClick={() => refetch()}>
+          다시 시도하기
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-background-base flex flex-col">

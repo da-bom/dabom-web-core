@@ -1,14 +1,16 @@
 import { http } from '@shared';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { EmergencyAppealResponseSchema } from './schema';
+import { ApiErrorResponse } from '@shared/type/error';
 
-export const EMERGENCY_ADDITIONAL_BYTES = 314572800;
+import { EMERGENCY_DATA_BYTES } from 'src/constants/appeal';
+
+import { EmergencyAppealResponseSchema } from './schema';
 
 export const postEmergencyAppeal = async (requestReason: string) => {
   const response = await http.post('/appeals/emergency', {
     requestReason,
-    additionalBytes: EMERGENCY_ADDITIONAL_BYTES,
+    additionalBytes: EMERGENCY_DATA_BYTES,
   });
 
   try {
@@ -28,6 +30,9 @@ export const usePostEmergencyAppeal = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['appeals'] });
       queryClient.invalidateQueries({ queryKey: ['familyPolicies'] });
+    },
+    onError: (error: ApiErrorResponse) => {
+      alert(error.errorMessage || '긴급 요청에 실패했습니다.');
     },
   });
 };

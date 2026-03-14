@@ -26,9 +26,7 @@ export const usePostAppeal = () => {
       queryClient.invalidateQueries({ queryKey: ['appeals'] });
     },
     onError: (error: ApiErrorResponse) => {
-      if (error.errorMessage) {
-        alert(error.errorMessage);
-      }
+      alert(error.errorMessage || '이의 제기 생성에 실패했습니다.');
     },
   });
 };

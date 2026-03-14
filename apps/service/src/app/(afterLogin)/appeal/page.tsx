@@ -16,7 +16,7 @@ const AppealPageContent = () => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<'progress' | 'completed'>('progress');
 
-  const { data, isLoading, isError } = useGetAppeals();
+  const { data, isLoading, isError, refetch } = useGetAppeals();
 
   const userRole = getCurrentUserRole();
   const isOwner = userRole === 'OWNER';
@@ -33,7 +33,7 @@ const AppealPageContent = () => {
     return (
       <div className="flex h-full min-h-screen flex-col items-center justify-center p-8 text-center">
         <p className="text-h2-m mb-4">목록을 불러오는 중 오류가 발생했습니다.</p>
-        <Button size="md" color="light" onClick={() => window.location.reload()}>
+        <Button size="md" color="light" onClick={() => refetch()}>
           다시 시도하기
         </Button>
       </div>

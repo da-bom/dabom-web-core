@@ -1,6 +1,7 @@
 'use client';
 
 import React, { Suspense, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { toast } from 'react-hot-toast';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
@@ -88,14 +89,17 @@ function AppealCommentContent() {
       setInputValue('');
     } catch (error) {
       console.error('댓글 작성 실패:', error);
+      toast.error('메시지 전송에 실패했습니다.');
     }
   };
 
   const handleApprove = async () => {
     try {
       await respondAppeal({ action: 'APPROVED', rejectReason: null });
+      toast.success('요청을 승인했습니다.');
     } catch (error) {
       console.error('승인 실패:', error);
+      toast.error('승인 처리 중 오류가 발생했습니다.');
     }
   };
 
