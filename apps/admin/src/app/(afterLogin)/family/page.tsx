@@ -49,9 +49,17 @@ const FamilyPage = () => {
           onClickSearch={() => {}}
         >
           <div className="flex w-fit items-center gap-2">
-            <span className="text-body3-d shrink-0">데이터 사용량</span>
-            <input className="bg-background-base h-8 w-14 rounded-sm" type="number" /> % ~
-            <input className="bg-background-base h-8 w-14 rounded-sm" type="number" /> %
+            <span className="text-body2-d shrink-0">데이터 사용량</span>
+            <input
+              className="bg-background-base outline-brand-dark h-8 w-14 rounded-sm"
+              type="number"
+            />
+            % ~
+            <input
+              className="bg-background-base outline-brand-dark h-8 w-14 rounded-sm"
+              type="number"
+            />{' '}
+            %
           </div>
         </SearchBox>
       </div>

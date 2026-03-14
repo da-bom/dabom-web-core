@@ -36,7 +36,7 @@ const RadioGroup = ({ options, selectedValue, onChange, name }: RadioGroupProps)
               <div className="flex items-center gap-1">
                 {option.isWarning && <ErrorIcon className="text-primary-700 h-3 w-3" />}
                 <span
-                  className={`text-caption-d ${option.isWarning ? 'text-primary-700 font-medium' : 'text-gray-500'}`}
+                  className={`text-caption-d ${option.isWarning ? 'text-primary-700' : 'text-gray-500'}`}
                 >
                   {option.subLabel}
                 </span>

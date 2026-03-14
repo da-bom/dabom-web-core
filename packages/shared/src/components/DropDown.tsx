@@ -47,7 +47,7 @@ const DropDown = ({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex h-full w-full cursor-pointer items-center justify-between gap-3 px-4 outline-none"
+        className="flex h-full w-full cursor-pointer items-center justify-between gap-3 px-3 outline-none"
         aria-label="dropdown"
       >
         <span className="text-body1-m text-gray-800">{selectedOption}</span>
