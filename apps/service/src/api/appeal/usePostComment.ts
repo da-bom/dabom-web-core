@@ -6,11 +6,7 @@ import { ApiErrorResponse } from '@shared/type/error';
 import { CreateCommentRequest, CreateCommentResponseSchema } from './schema';
 
 export const postComment = async (appealId: number, data: CreateCommentRequest) => {
-  console.log(`🌐 댓글 작성 API 호출: /appeals/${appealId}/comments`, data);
-
   const response = await http.post(`/appeals/${appealId}/comments`, data);
-
-  console.log('✅ 댓글 작성 성공 응답:', response);
 
   try {
     const parsed = CreateCommentResponseSchema.parse(response);

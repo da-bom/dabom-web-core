@@ -6,11 +6,7 @@ import { ApiErrorResponse } from '@shared/type/error';
 import { AppealRespondRequest, AppealRespondResponseSchema } from './schema';
 
 export const patchAppealRespond = async (appealId: number, data: AppealRespondRequest) => {
-  console.log(`🌐 이의제기 응답 API 호출: /appeals/${appealId}/respond`, data);
-
   const response = await http.patch(`/appeals/${appealId}/respond`, data);
-
-  console.log('✅ 이의제기 응답 성공 응답:', response);
 
   try {
     const parsed = AppealRespondResponseSchema.parse(response);
