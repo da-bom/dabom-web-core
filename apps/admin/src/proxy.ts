@@ -6,6 +6,12 @@ export function proxy(request: NextRequest) {
   const session = request.cookies.get(cookieName || '');
   const { pathname } = request.nextUrl;
 
+  const showDevtools = process.env.NEXT_PUBLIC_SHOW_QUERY_DEVTOOLS === 'true';
+
+  if (showDevtools) {
+    return NextResponse.next();
+  }
+
   if (session && pathname === '/') {
     return NextResponse.redirect(new URL('/dashboard', request.url));
   }
