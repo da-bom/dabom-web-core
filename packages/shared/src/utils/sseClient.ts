@@ -1,3 +1,5 @@
+import { ACCESS_TOKEN_KEY } from '../constants/auth';
+
 const getFinalUrl = (url: string) => {
   const baseUrl = process.env.NEXT_PUBLIC_NOTIFICATION_API_BASE_URL || '';
   return `${baseUrl.replace(/\/$/, '')}${url}`;
@@ -66,7 +68,7 @@ export const sseClient = {
     const token =
       globalThis.window === undefined
         ? null
-        : globalThis.window.localStorage.getItem('access_token');
+        : globalThis.window.localStorage.getItem(ACCESS_TOKEN_KEY);
 
     const finalUrl = getFinalUrl(url);
 

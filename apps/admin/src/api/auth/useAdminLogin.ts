@@ -1,5 +1,6 @@
-import { http } from '@shared';
+import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY, http } from '@shared';
 import { useMutation } from '@tanstack/react-query';
+import { setCookie } from 'cookies-next';
 
 import { ApiErrorResponse } from '@shared/types/error';
 
@@ -24,13 +25,18 @@ export const login = async (email: string, password: string): Promise<AdminLogin
   }
 };
 
-export const useLogin = () => {
+export const useAdminLogin = () => {
   return useMutation({
     mutationFn: ({ email, password }: AdminLoginRequest) => login(email, password),
 
     onSuccess: (data) => {
-      localStorage.setItem('access_token', data.accessToken);
-      localStorage.setItem('refresh_token', data.refreshToken);
+      localStorage.setItem(ACCESS_TOKEN_KEY, data.accessToken);
+      localStorage.setItem(REFRESH_TOKEN_KEY, data.refreshToken);
+
+      setCookie(ACCESS_TOKEN_KEY, data.accessToken, {
+        path: '/',
+        maxAge: 60 * 60 * 24,
+      });
     },
 
     onError: (error: ApiErrorResponse) => {

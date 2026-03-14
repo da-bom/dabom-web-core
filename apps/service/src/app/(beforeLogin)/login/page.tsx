@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { ErrorIcon } from '@icons';
 import { Button, InputField } from '@shared';
 
-import { useLogin } from 'src/api/auth/useLogin';
+import { useServiceLogin } from 'src/api/auth/useServiceLogin';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -15,7 +15,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [isLoginFailed, setIsLoginFailed] = useState(false);
 
-  const { mutateAsync: login, isPending: isLoading } = useLogin();
+  const { mutateAsync: login, isPending: isLoading } = useServiceLogin();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();

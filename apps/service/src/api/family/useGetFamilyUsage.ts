@@ -1,4 +1,4 @@
-import { QUERY_TIME, http } from '@shared';
+import { ACCESS_TOKEN_KEY, QUERY_TIME, http } from '@shared';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 import { ApiErrorResponse } from '@shared/type/error';
@@ -26,7 +26,7 @@ export const useGetFamilyUsage = (year: number, month: number) => {
     queryFn: () => getFamilyUsage(year, month),
 
     enabled:
-      globalThis.window !== undefined && !!globalThis.window.localStorage.getItem('access_token'),
+      globalThis.window !== undefined && !!globalThis.window.localStorage.getItem(ACCESS_TOKEN_KEY),
     placeholderData: keepPreviousData,
   });
 };
@@ -37,6 +37,6 @@ export const useGetFamilyUsageCurrent = () => {
     queryFn: getFamilyUsageCurrent,
     staleTime: QUERY_TIME.fiveMinutes,
     enabled:
-      globalThis.window !== undefined && !!globalThis.window.localStorage.getItem('access_token'),
+      globalThis.window !== undefined && !!globalThis.window.localStorage.getItem(ACCESS_TOKEN_KEY),
   });
 };
