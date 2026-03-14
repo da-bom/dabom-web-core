@@ -18,12 +18,13 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
     "postcss": "^8.5.6",
+    "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "tailwindcss": "^4.1.18",
     "turbo": "latest",
     "typescript": "^5"
   },
-  "packageManager": "pnpm@9.0.0",
+  "packageManager": "pnpm@10.5.2",
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",

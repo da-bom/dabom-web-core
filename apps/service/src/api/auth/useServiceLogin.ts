@@ -1,5 +1,6 @@
-import { http } from '@shared';
+import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY, http } from '@shared';
 import { useMutation } from '@tanstack/react-query';
+import { setCookie } from 'cookies-next';
 
 import { ApiErrorResponse } from '@shared/type/error';
 
@@ -14,18 +15,27 @@ export const login = async (
     password,
   });
 
-  return ServiceLoginResponseSchema.parse(response);
+  try {
+    const parsed = ServiceLoginResponseSchema.parse(response);
+    return parsed;
+  } catch (error) {
+    console.error('❌ Zod 파싱 실패:', error);
+    throw error;
+  }
 };
 
-export const useLogin = () => {
+export const useServiceLogin = () => {
   return useMutation({
     mutationFn: ({ phoneNumber, password }: ServiceLoginRequest) => login(phoneNumber, password),
 
-    onSuccess: (data: ServiceLoginResponse) => {
-      if (globalThis.window !== undefined) {
-        globalThis.window.localStorage.setItem('access_token', data.accessToken);
-        globalThis.window.localStorage.setItem('refresh_token', data.refreshToken);
-      }
+    onSuccess: (data) => {
+      localStorage.setItem(ACCESS_TOKEN_KEY, data.accessToken);
+      localStorage.setItem(REFRESH_TOKEN_KEY, data.refreshToken);
+
+      setCookie(ACCESS_TOKEN_KEY, data.accessToken, {
+        path: '/',
+        maxAge: 60 * 60 * 24,
+      });
     },
 
     onError: (error: ApiErrorResponse) => {

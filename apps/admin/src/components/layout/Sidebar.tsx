@@ -5,7 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { LogoutIcon } from '@icons';
 import { Logo } from '@shared';
 
-import { logout } from 'src/api/auth/useLogout';
+import { logout } from 'src/api/auth/useAdminLogout';
 import { MENU } from 'src/constants/MENU';
 
 import MenuItem from './MenuItem';

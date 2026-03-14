@@ -6,14 +6,14 @@ import { useRouter } from 'next/navigation';
 
 import { Button, InputField, Logo } from '@shared';
 
-import { useLogin } from 'src/api/auth/useLogin';
+import { useAdminLogin } from 'src/api/auth/useAdminLogin';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
 
-  const { mutateAsync: login, isPending: isLoading } = useLogin();
+  const { mutateAsync: login, isPending: isLoading } = useAdminLogin();
 
   const handleLogin = async () => {
     if (!email || !password) {

@@ -1,4 +1,4 @@
-import { QUERY_TIME, http } from '@shared';
+import { ACCESS_TOKEN_KEY, QUERY_TIME, http } from '@shared';
 import { useQuery } from '@tanstack/react-query';
 
 import { ApiErrorResponse } from '@shared/type/error';
@@ -18,7 +18,7 @@ export const useGetFamilyPolicies = () => {
     queryFn: getFamilyPolicies,
     staleTime: QUERY_TIME.fiveMinutes,
     enabled:
-      globalThis.window !== undefined && !!globalThis.window.localStorage.getItem('access_token'),
+      globalThis.window !== undefined && !!globalThis.window.localStorage.getItem(ACCESS_TOKEN_KEY),
     select: (data) => formatFamilyPolicies(data),
   });
 };
