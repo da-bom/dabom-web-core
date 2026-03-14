@@ -7,7 +7,7 @@ export const MyPageInfoSchema = z.object({
   blockReason: z.string().nullable(),
   monthlyLimitBytes: z.number().nullable(),
   monthlyUsedBytes: z.number(),
-  timeBlock: z.record(z.any()),
+  timeBlock: z.object({ start: z.string(), end: z.string() }).partial().nullable(),
 });
 
 export type MyPageInfo = z.infer<typeof MyPageInfoSchema>;
