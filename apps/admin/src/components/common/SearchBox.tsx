@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import { CancelIcon, SearchIcon } from '@icons';
 import { Button, DropDown, MainBox, RadioGroup } from '@shared';
@@ -15,13 +15,10 @@ interface SearchBoxProps {
   selectedSort: string;
   onSortChange: (value: string) => void;
   sortName: string;
-
   children?: React.ReactNode;
-
   searchOptions: string[];
   onSearch: (type: string, keyword: string) => void;
   onReset?: () => void;
-  onClickSearch: () => void;
 }
 
 const SearchBox = ({
@@ -33,11 +30,15 @@ const SearchBox = ({
   searchOptions,
   onSearch,
   onReset,
-  onClickSearch,
 }: SearchBoxProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedSearchType, setSelectedSearchType] = useState(searchOptions[0]);
   const [keyword, setKeyword] = useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSearch(selectedSearchType, keyword);
+  };
 
   return (
     <MainBox className="flex w-full flex-wrap items-center gap-5 py-3 pr-3 pl-5">
@@ -58,7 +59,7 @@ const SearchBox = ({
         </div>
       )}
 
-      <div className="flex flex-1 items-center gap-2">
+      <form onSubmit={handleSubmit} className="flex flex-1 items-center gap-2">
         <MainBox className="shrink-0">
           <DropDown
             isOpen={isOpen}
@@ -70,14 +71,13 @@ const SearchBox = ({
           />
         </MainBox>
 
-        <SearchIcon sx={{ width: 16 }} className="shrink-0 text-gray-400" />
+        <SearchIcon sx={{ width: 16, height: 16 }} className="text-brand-dark shrink-0" />
 
         <input
           className="outline-brand-dark min-w-0 flex-1 p-1"
           placeholder="검색어 입력"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && onSearch(selectedSearchType, keyword)}
         />
 
         <button
@@ -91,10 +91,10 @@ const SearchBox = ({
           <CancelIcon className="cursor-pointer !text-gray-400" sx={{ width: 16 }} />
         </button>
 
-        <Button size="sm" color="dark" onClick={onClickSearch} className="shrink-0">
+        <Button type="submit" size="sm" color="dark" className="shrink-0">
           검색
         </Button>
-      </div>
+      </form>
     </MainBox>
   );
 };

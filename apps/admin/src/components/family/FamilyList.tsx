@@ -18,7 +18,7 @@ const FamilyList = ({
   selectedFam: number | undefined;
   setSelectedFam: (familyId: number | undefined) => void;
 }) => {
-  const { data, isLoading } = useGetFamilies(params);
+  const { data, isLoading, isFetching } = useGetFamilies(params);
 
   const familyList = data?.content || [];
   const totalElements = data?.numberOfElements || 0;
@@ -27,6 +27,11 @@ const FamilyList = ({
 
   return (
     <div className="flex h-[calc(100vh-250px)] flex-col gap-2">
+      {isFetching && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/50">
+          <Loading />
+        </div>
+      )}
       <span className="text-body1-d">검색 결과 (총 {data?.totalElements}건)</span>
       <Divider />
       <div className="flex flex-col gap-2 overflow-auto py-2">

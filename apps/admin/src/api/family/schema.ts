@@ -14,7 +14,7 @@ export const FamilySearchRequestSchema = z.object({
     .array(
       z.object({
         field: z.string(),
-        direction: z.enum(['asc', 'desc']),
+        direction: z.enum(['ASC', 'DESC']),
       }),
     )
     .optional(),
