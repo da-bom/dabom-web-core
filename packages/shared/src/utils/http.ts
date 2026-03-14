@@ -106,9 +106,7 @@ http.interceptors.response.use(
 
           localStorage.setItem(ACCESS_TOKEN_KEY, newAT);
           localStorage.setItem(REFRESH_TOKEN_KEY, newRT);
-
           setCookie(ACCESS_TOKEN_KEY, newAT, { path: '/' });
-          setCookie(REFRESH_TOKEN_KEY, newRT, { path: '/' });
 
           processQueue(null, newAT);
 
