@@ -1,4 +1,4 @@
-import { http } from '@shared';
+import { ACCESS_TOKEN_KEY, http } from '@shared';
 import { useMutation } from '@tanstack/react-query';
 
 import { ApiErrorResponse } from '@shared/type/error';
@@ -23,7 +23,7 @@ export const useServiceLogin = () => {
 
     onSuccess: (data: ServiceLoginResponse) => {
       if (globalThis.window !== undefined) {
-        globalThis.window.localStorage.setItem('access_token', data.accessToken);
+        globalThis.window.localStorage.setItem(ACCESS_TOKEN_KEY, data.accessToken);
         globalThis.window.localStorage.setItem('refresh_token', data.refreshToken);
       }
     },

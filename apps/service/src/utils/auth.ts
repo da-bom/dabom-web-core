@@ -1,9 +1,11 @@
+import { ACCESS_TOKEN_KEY } from '@shared';
+
 export type UserRole = 'OWNER' | 'MEMBER';
 
 export const getCurrentUserRole = (): UserRole => {
   if (typeof window === 'undefined') return 'MEMBER';
 
-  const token = localStorage.getItem('access_token');
+  const token = localStorage.getItem(ACCESS_TOKEN_KEY);
   if (!token) return 'MEMBER';
 
   try {

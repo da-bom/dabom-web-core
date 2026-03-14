@@ -1,6 +1,9 @@
 import axios, { AxiosError } from 'axios';
 
+import { ACCESS_TOKEN_KEY } from '../constants/auth';
 import { ApiError, ApiErrorResponse, ERROR_CODES, ERROR_MESSAGE_MAP } from '../types/error';
+
+const STORAGE_KEY = process.env.NEXT_PUBLIC_STORAGE_ACCESS_KEY || ACCESS_TOKEN_KEY;
 
 export const http = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
@@ -12,8 +15,8 @@ export const http = axios.create({
 });
 
 http.interceptors.request.use((config) => {
-  if (globalThis.window !== undefined) {
-    const token = globalThis.localStorage.getItem('access_token');
+  if (typeof window !== 'undefined') {
+    const token = localStorage.getItem(STORAGE_KEY);
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -39,11 +42,11 @@ http.interceptors.response.use(
       if (
         (errorCode === ERROR_CODES.AUTH_TOKEN_EXPIRED ||
           errorCode === ERROR_CODES.AUTH_TOKEN_INVALID) &&
-        globalThis.window !== undefined
+        typeof window !== 'undefined'
       ) {
         const currentPath = window.location.pathname;
         if (currentPath !== '/expired' && currentPath !== '/login') {
-          localStorage.removeItem('access_token');
+          localStorage.removeItem(STORAGE_KEY);
           window.location.href = '/expired';
         }
       }

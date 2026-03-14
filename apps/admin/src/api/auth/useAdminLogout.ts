@@ -1,4 +1,4 @@
-import { http } from '@shared';
+import { ACCESS_TOKEN_KEY, http } from '@shared';
 import { useMutation } from '@tanstack/react-query';
 
 import { ApiErrorResponse } from '@shared/types/error';
@@ -10,7 +10,7 @@ export const useAdminLogout = () => {
     mutationFn: () => logout(),
 
     onSuccess: () => {
-      localStorage.removeItem('access_token');
+      localStorage.removeItem(ACCESS_TOKEN_KEY);
       localStorage.removeItem('refresh_token');
     },
 

@@ -1,4 +1,4 @@
-import { http } from '@shared';
+import { ACCESS_TOKEN_KEY, http } from '@shared';
 import { useMutation } from '@tanstack/react-query';
 
 import { ApiErrorResponse } from '@shared/types/error';
@@ -29,7 +29,7 @@ export const useAdminLogin = () => {
     mutationFn: ({ email, password }: AdminLoginRequest) => login(email, password),
 
     onSuccess: (data) => {
-      localStorage.setItem('access_token', data.accessToken);
+      localStorage.setItem(ACCESS_TOKEN_KEY, data.accessToken);
       localStorage.setItem('refresh_token', data.refreshToken);
     },
 
