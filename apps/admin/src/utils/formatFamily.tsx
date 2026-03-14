@@ -3,7 +3,13 @@ import { Switch, formatSize } from '@shared';
 import { FamilyCustomer } from 'src/api/family/schema';
 import DataInput from 'src/components/family/DataInput';
 
-export const formatFamily = ({ customer }: { customer: FamilyCustomer[] }) => {
+interface FormatFamilyProps {
+  customer: FamilyCustomer[];
+  onRoleChange: (customerId: number, nextRole: 'OWNER' | 'MEMBER') => void;
+  onLimitChange: (customerId: number, nextLimit: number | null) => void;
+}
+
+export const formatFamily = ({ customer, onRoleChange, onLimitChange }: FormatFamilyProps) => {
   return customer.map((i) => {
     const usage = formatSize(i.monthlyUsedBytes);
     const limit = i.monthlyLimitBytes ? formatSize(i.monthlyLimitBytes) : null;
@@ -16,7 +22,8 @@ export const formatFamily = ({ customer }: { customer: FamilyCustomer[] }) => {
           type={i.role === 'OWNER' ? 'primary' : 'secondary'}
           size="sm"
           onClick={() => {
-            // TODO: OWNER <> MEMBER 값이 바뀌도록
+            const nextRole = i.role === 'OWNER' ? 'MEMBER' : 'OWNER';
+            onRoleChange(i.customerId, nextRole);
           }}
         >
           {i.role}
@@ -29,10 +36,15 @@ export const formatFamily = ({ customer }: { customer: FamilyCustomer[] }) => {
             {usage.value.toFixed(0)}
             {usage.unit} /
           </span>
-          {limit ? (
-            <DataInput limit={limit} />
-          ) : // TODO: 데이터가 차단된 경우 추가
-          null}
+          {i.monthlyLimitBytes !== null && limit ? (
+            <DataInput
+              limit={limit}
+              onChange={(newByteValue) => onLimitChange(i.customerId, newByteValue)}
+              onBlock={() => onLimitChange(i.customerId, null)}
+            />
+          ) : (
+            <div>한도 없음</div>
+          )}
         </span>,
       ],
     };

@@ -31,7 +31,7 @@ const MenuItem = ({ label, path, icon: Icon, subItems, currentPath }: MenuItemPr
           isMainActive || isParentActive ? 'bg-primary-50 text-primary-600' : 'text-gray-700',
         )}
       >
-        <Icon className="h-5 w-5" />
+        <Icon className="h-5 w-5" sx={{ width: 20, height: 20 }} />
         <span>{label}</span>
       </Link>
 

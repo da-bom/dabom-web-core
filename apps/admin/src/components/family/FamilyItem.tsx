@@ -23,7 +23,7 @@ const FamilyItem = ({ id, customers, isSelected, setSelectedFam }: Readonly<Fami
       <div className="flex w-full items-center justify-between">
         <div className="flex items-center gap-2">
           <Badge className="min-w-24" color={isSelected ? 'white' : 'gray'} size="sm">
-            FAM-{id}
+            FAM-{String(id).padStart(4, '0')}{' '}
           </Badge>
           <span className="text-body3-d">
             {customers[0]?.name} 외 {customers.length - 1}명

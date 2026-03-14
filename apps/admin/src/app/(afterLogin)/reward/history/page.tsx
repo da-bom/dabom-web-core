@@ -79,7 +79,6 @@ const RewardHistoryContent = () => {
         sortName="reward-sort"
         searchOptions={['전화번호', '쿠폰번호']}
         onSearch={handleSearch}
-        onClickSearch={() => {}}
       />
       <div className="flex-1 overflow-auto">
         {isLoading ? (

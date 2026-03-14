@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import { Button, InputField, Logo } from '@shared';
+import { Button, InputField, Logo, Spinner } from '@shared';
 
 import { useAdminLogin } from 'src/api/auth/useAdminLogin';
 
@@ -15,7 +15,9 @@ const Login = () => {
 
   const { mutateAsync: login, isPending: isLoading } = useAdminLogin();
 
-  const handleLogin = async () => {
+  const handleSubmit = async (e?: React.FormEvent<HTMLFormElement>) => {
+    e?.preventDefault();
+
     if (!email || !password) {
       alert('이메일과 비밀번호를 입력해주세요.');
       return;
@@ -31,7 +33,10 @@ const Login = () => {
 
   return (
     <div className="flex h-screen items-center justify-center">
-      <div className="bg-brand-white shadow-default flex w-fit flex-col items-center gap-20 rounded-2xl px-20 py-14">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-brand-white shadow-default flex w-fit flex-col items-center gap-20 rounded-2xl px-20 py-14"
+      >
         <Logo type="admin" />
         <div className="flex w-full flex-col gap-7">
           <InputField
@@ -49,10 +54,10 @@ const Login = () => {
             onValueChange={setPassword}
           />
         </div>
-        <Button size="lg" color="dark" onClick={handleLogin} disabled={isLoading}>
-          로그인
+        <Button size="lg" color="dark" type="submit" disabled={isLoading}>
+          {isLoading ? <Spinner size="sm" /> : '로그인'}
         </Button>
-      </div>
+      </form>
     </div>
   );
 };

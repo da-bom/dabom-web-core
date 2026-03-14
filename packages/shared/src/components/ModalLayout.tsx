@@ -10,9 +10,16 @@ interface ModalLayoutProps {
   onClose: () => void;
   children: React.ReactNode;
   isAdmin?: boolean;
+  className?: string;
 }
 
-const ModalLayout = ({ isOpen, onClose, children, isAdmin = false }: ModalLayoutProps) => {
+const ModalLayout = ({
+  isOpen,
+  onClose,
+  children,
+  isAdmin = false,
+  className,
+}: ModalLayoutProps) => {
   if (!isOpen) return null;
 
   return (
@@ -23,6 +30,7 @@ const ModalLayout = ({ isOpen, onClose, children, isAdmin = false }: ModalLayout
         className={cn(
           'relative z-10 min-h-50 rounded-2xl bg-white',
           isAdmin ? 'w-fit p-10' : 'w-[85%] p-6',
+          className,
         )}
       >
         <button onClick={onClose} className="absolute top-4 right-4 cursor-pointer">

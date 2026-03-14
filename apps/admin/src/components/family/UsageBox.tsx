@@ -19,7 +19,7 @@ const UsageBox = ({ familyDetail }: { familyDetail: FamilyDetail }) => {
       <div className="h-9 w-full rounded-full bg-gray-200">
         <div
           className="bg-primary-600 h-full rounded-full transition-all duration-500"
-          style={{ width: `${familyDetail.usedPercent}%` }}
+          style={{ width: `${familyDetail.usedPercent > 100 ? 100 : familyDetail.usedPercent}%` }}
         />
       </div>
       <p className="flex justify-between">

@@ -18,7 +18,7 @@ export const getFamilies = async (params: FamilySearchRequest) => {
 
 export const useGetFamilies = (params: FamilySearchRequest) => {
   return useQuery({
-    queryKey: ['families', params ?? 'all'],
+    queryKey: ['families', params.filters, params.sort, params.page],
     queryFn: () => getFamilies(params),
     placeholderData: (prev) => prev,
   });

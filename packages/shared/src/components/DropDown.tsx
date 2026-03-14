@@ -47,7 +47,7 @@ const DropDown = ({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex h-full w-full cursor-pointer items-center justify-between gap-3 px-4 outline-none"
+        className="flex h-full w-full cursor-pointer items-center justify-between gap-3 px-3 outline-none"
         aria-label="dropdown"
       >
         <span className="text-body1-m text-gray-800">{selectedOption}</span>
@@ -57,7 +57,7 @@ const DropDown = ({
       </button>
 
       {isOpen && (
-        <div className="bg-brand-white absolute z-20 mt-2 w-full rounded-xl border border-gray-200 shadow-lg">
+        <div className="bg-brand-white absolute z-20 mt-2 w-full overflow-hidden rounded-xl border border-gray-200 shadow-lg">
           {options.map((option) => (
             <button
               type="button"

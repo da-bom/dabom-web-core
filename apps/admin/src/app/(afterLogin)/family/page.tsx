@@ -14,18 +14,55 @@ const INITIAL_FAMILY_SEARCH_PARAMS: FamilySearchRequest = {
   page: 0,
   size: 15,
   filters: {},
-  sort: [{ field: 'createdAt', direction: 'desc' }],
+  sort: [{ field: 'name', direction: 'ASC' }],
 };
 
 const FamilyPage = () => {
   const [selectedFam, setSelectedFam] = useState<number | undefined>(undefined);
-
   const [params, setParams] = useState<FamilySearchRequest>(INITIAL_FAMILY_SEARCH_PARAMS);
+  const [usageRange, setUsageRange] = useState({ min: '', max: '' });
+
+  const handlePageChange = (page: number) => {
+    setParams((prev) => ({ ...prev, page }));
+  };
+
+  const handleSearch = (type: string, keyword: string) => {
+    setParams((prev) => ({
+      ...prev,
+      page: 0,
+      filters: {
+        name: type === '이름' && keyword ? { operator: 'contains', value: keyword } : undefined,
+        phone:
+          type === '전화번호' && keyword ? { operator: 'contains', value: keyword } : undefined,
+        usageRate:
+          usageRange.min || usageRange.max
+            ? {
+                operator: 'between',
+                min: Number(usageRange.min) || 0,
+                max: Number(usageRange.max) || 100,
+              }
+            : undefined,
+      },
+    }));
+  };
+
+  const handleSortChange = (value: string) => {
+    const [field, direction] = value.split('_');
+    setParams((prev) => ({
+      ...prev,
+      sort: [{ field, direction: direction as 'ASC' | 'DESC' }],
+    }));
+  };
 
   const handleReset = () => {
     setSelectedFam(undefined);
     setParams(INITIAL_FAMILY_SEARCH_PARAMS);
+    setUsageRange({ min: '', max: '' });
   };
+
+  const currentSortValue = params.sort?.[0]
+    ? `${params.sort[0].field}_${params.sort[0].direction}`
+    : 'name_ASC';
 
   return (
     <div className="flex h-screen w-full flex-col gap-4 overflow-hidden">
@@ -35,32 +72,49 @@ const FamilyPage = () => {
           <span className="text-body3-d">초기화</span>
         </button>
         <SearchBox
-          // TODO: API 연결 시 실제 값으로 수정
           sortOptions={[
-            { label: '사용량 많은 순', value: 'largest' },
-            { label: '사용량 적은 순', value: 'smallest' },
-            { label: '가나다 순', value: 'abc' },
+            { label: '가나다 순', value: 'name_ASC' },
+            { label: '사용량 많은 순', value: 'usageRate_DESC' },
+            { label: '사용량 적은 순', value: 'usageRate_ASC' },
           ]}
-          selectedSort="largest"
-          onSortChange={() => {}}
+          selectedSort={currentSortValue}
+          onSortChange={handleSortChange}
           sortName="family-sort"
-          searchOptions={['전화번호', '이름']}
-          onSearch={(type, val) => console.log(type, val)}
-          onClickSearch={() => {}}
+          searchOptions={['이름', '전화번호']}
+          onSearch={handleSearch}
+          onReset={handleReset}
         >
           <div className="flex w-fit items-center gap-2">
-            <span className="text-body3-d shrink-0">데이터 사용량</span>
-            <input className="bg-background-base h-8 w-14 rounded-sm" type="number" /> % ~
-            <input className="bg-background-base h-8 w-14 rounded-sm" type="number" /> %
+            <span className="text-body2-d shrink-0">데이터 사용량</span>
+            <input
+              className="bg-background-base outline-brand-dark h-8 w-14 rounded-sm px-1 text-center"
+              type="number"
+              value={usageRange.min}
+              onChange={(e) => setUsageRange((prev) => ({ ...prev, min: e.target.value }))}
+            />
+            <span className="text-body2-d">% ~</span>
+            <input
+              className="bg-background-base outline-brand-dark h-8 w-14 rounded-sm px-1 text-center"
+              type="number"
+              value={usageRange.max}
+              onChange={(e) => setUsageRange((prev) => ({ ...prev, max: e.target.value }))}
+            />
+            <span className="text-body2-d">%</span>
           </div>
         </SearchBox>
       </div>
-      <div className="flex h-full gap-5">
+
+      <div className="flex h-full gap-5 overflow-hidden">
         <MainBox className="h-full w-86 p-4">
-          <FamilyList params={params} selectedFam={selectedFam} setSelectedFam={setSelectedFam} />
+          <FamilyList
+            params={params}
+            selectedFam={selectedFam}
+            setSelectedFam={setSelectedFam}
+            onPageChange={handlePageChange}
+          />
         </MainBox>
-        <MainBox className="h-full w-full flex-1">
-          <FamilyDetail selectedFam={selectedFam} />
+        <MainBox className="h-full w-full flex-1 overflow-auto">
+          <FamilyDetail key={selectedFam} selectedFam={selectedFam} />
         </MainBox>
       </div>
     </div>

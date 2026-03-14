@@ -16,7 +16,7 @@ const RewardProductPage = () => {
   return (
     <div className="flex flex-col gap-4">
       <Link href="/reward/products/create">
-        <Button size="lg" color="light">
+        <Button size="lg" color="white">
           보상 추가하기
         </Button>
       </Link>

@@ -3,7 +3,7 @@
 import { usePathname, useRouter } from 'next/navigation';
 
 import { LogoutIcon } from '@icons';
-import { Logo } from '@shared';
+import { Divider, Logo } from '@shared';
 
 import { logout } from 'src/api/auth/useAdminLogout';
 import { MENU } from 'src/constants/MENU';
@@ -24,25 +24,24 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="bg-brand-white flex h-screen w-62 flex-col justify-between border-r border-gray-100 py-5">
-      <div className="flex w-full flex-col items-center gap-7">
+    <div className="bg-brand-white flex h-screen w-fit flex-shrink-0 flex-col border-r border-gray-100 py-5">
+      <div className="mx-4 flex flex-col items-center gap-7">
         <Logo type="admin" width={152} />
-        <div className="w-38 border border-gray-100" />
-
-        <div className="flex w-full flex-col gap-5 px-2">
-          {MENU.map((item) => {
-            return (
-              <MenuItem
-                key={item.id}
-                path={item.path}
-                label={item.label}
-                icon={item.icon}
-                currentPath={pathname}
-                subItems={'subItems' in item ? item.subItems : undefined}
-              />
-            );
-          })}
-        </div>
+        <Divider />
+      </div>
+      <div className="flex w-full flex-1 flex-col gap-5 px-2">
+        {MENU.map((item) => {
+          return (
+            <MenuItem
+              key={item.id}
+              path={item.path}
+              label={item.label}
+              icon={item.icon}
+              currentPath={pathname}
+              subItems={'subItems' in item ? item.subItems : undefined}
+            />
+          );
+        })}
       </div>
       <button className="flex cursor-pointer gap-2 px-5 text-gray-400" onClick={handleLogout}>
         <LogoutIcon
