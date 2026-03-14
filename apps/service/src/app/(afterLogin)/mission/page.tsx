@@ -30,7 +30,7 @@ const MissionPage = () => {
             description={`보상: ${mission.reward}`}
           >
             {isOwner ? (
-              <OwnerActionButton status={mission.status} />
+              <OwnerActionButton status={mission.status} requestId={mission.id} />
             ) : (
               <MemberActionButton status={mission.status} />
             )}
