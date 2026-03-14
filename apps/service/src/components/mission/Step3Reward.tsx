@@ -16,12 +16,12 @@ const Step3Reward = ({ prevStep, nextStep }: { prevStep: () => void; nextStep: (
 
   const rewardTemplateId = watch('rewardTemplateId');
 
-  const [selectedTypeId, setSelectedTypeId] = useState<number | null>(null);
+  const [selectedType, setSelectedType] = useState<'DATA' | 'GIFTICON' | null>(null);
 
   const detailRef = useRef<HTMLDivElement>(null);
 
-  const handleTypeSelect = (id: number) => {
-    setSelectedTypeId(id);
+  const handleTypeSelect = (type: 'DATA' | 'GIFTICON' | null) => {
+    setSelectedType(type);
     setValue('rewardTemplateId', 0);
   };
 
@@ -30,10 +30,10 @@ const Step3Reward = ({ prevStep, nextStep }: { prevStep: () => void; nextStep: (
   };
 
   useEffect(() => {
-    if (selectedTypeId && detailRef.current) {
+    if (selectedType && detailRef.current) {
       detailRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  }, [selectedTypeId]);
+  }, [selectedType]);
 
   return (
     <div className="flex flex-col pb-40">
@@ -46,15 +46,18 @@ const Step3Reward = ({ prevStep, nextStep }: { prevStep: () => void; nextStep: (
             </header>
 
             <div className="grid grid-cols-2 gap-4">
-              {REWARD_TYPES.map(({ id, label }) => (
+              {REWARD_TYPES.map(({ type, label }) => (
                 <button
-                  key={id}
+                  key={type}
                   type="button"
-                  onClick={() => handleTypeSelect(Number(id))}
+                  onClick={() => {
+                    handleTypeSelect(type);
+                    console.log('클릭!');
+                  }}
                   className={cn(
-                    'text-body1-m h-14 rounded-2xl border transition-all',
-                    selectedTypeId === Number(id)
-                      ? 'bg-primary-100 text-brand-dark border-gray-500 font-bold'
+                    'text-body1-m h-14 cursor-pointer rounded-2xl border transition-all',
+                    selectedType === type
+                      ? 'bg-primary-100 text-brand-dark border-gray-500'
                       : 'border-gray-200 bg-white text-gray-700',
                   )}
                 >
@@ -65,11 +68,10 @@ const Step3Reward = ({ prevStep, nextStep }: { prevStep: () => void; nextStep: (
           </section>
 
           <section ref={detailRef}>
-            {/* id 기반 조건부 렌더링 (REWARD_TYPES의 정의에 따라 1: DATA, 2: GIFTICON 가정) */}
-            {selectedTypeId === 1 && (
+            {selectedType === 'DATA' && (
               <DataReward value={rewardTemplateId} onSelect={handleValueSelect} />
             )}
-            {selectedTypeId === 2 && (
+            {selectedType === 'GIFTICON' && (
               <GifticonReward value={rewardTemplateId} onSelect={handleValueSelect} />
             )}
           </section>

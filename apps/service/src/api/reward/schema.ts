@@ -53,3 +53,15 @@ export const RespondRewardDataSchema = z.object({
 });
 
 export type RespondRewardData = z.infer<typeof RespondRewardDataSchema>;
+
+export const RewardTemplateSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  category: z.enum(['DATA', 'GIFTICON']),
+  thumbnailUrl: z.string().nullable(),
+  price: z.number(),
+});
+
+export const RewardTemplateListSchema = z.array(RewardTemplateSchema);
+
+export type RewardTemplate = z.infer<typeof RewardTemplateSchema>;
