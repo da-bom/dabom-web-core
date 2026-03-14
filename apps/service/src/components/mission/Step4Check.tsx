@@ -12,7 +12,7 @@ import { useCreateMission } from 'src/api/mission/useCreateMission';
 const Step4Check = ({ prevStep }: { prevStep: () => void }) => {
   const router = useRouter();
 
-  const { getValues } = useFormContext<MissionCreate>();
+  const { getValues, reset } = useFormContext<MissionCreate>();
   const { missionText, targetName, rewardName } = getValues();
 
   const { mutate: createMission, isPending } = useCreateMission();
@@ -22,6 +22,7 @@ const Step4Check = ({ prevStep }: { prevStep: () => void }) => {
 
     createMission(finalData, {
       onSuccess: () => {
+        reset();
         router.push('/mission');
       },
       onError: (error) => {

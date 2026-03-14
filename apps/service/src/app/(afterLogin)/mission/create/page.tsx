@@ -23,12 +23,26 @@ function MissionCreateForm() {
     resolver: zodResolver(MissionCreateSchema),
     mode: 'onChange',
   });
+  const { setValue } = methods;
 
   const setStep = (step: number) => {
     router.push(`?step=${step}`);
   };
 
-  const prevStep = () => setStep(currentStep - 1);
+  const prevStep = () => {
+    if (currentStep === 2) {
+      setValue('targetCustomerId', 0);
+      setValue('targetName', '');
+    }
+
+    if (currentStep === 3) {
+      setValue('rewardTemplateId', 0);
+      setValue('rewardName', '');
+    }
+
+    setStep(currentStep - 1);
+  };
+
   const nextStep = () => setStep(currentStep + 1);
 
   return (

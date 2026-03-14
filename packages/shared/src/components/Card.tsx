@@ -20,7 +20,9 @@ const Card = ({ title, subtitle, description, className, children }: CardProps) 
         </div>
         <span className="text-body1-m">{title}</span>
       </div>
-      <span className="text-caption-m text-gray-500">{description}</span>
+      <span className="text-caption-m break-keep whitespace-pre-wrap text-gray-500">
+        {description}
+      </span>
       {children}
     </MainBox>
   );

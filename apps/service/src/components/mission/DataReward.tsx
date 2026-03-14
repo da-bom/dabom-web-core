@@ -31,7 +31,7 @@ const DataReward = ({ value, onSelect }: DataRewardProps) => {
               className={cn(
                 'text-body1-m h-14 rounded-2xl border transition-all',
                 isSelected
-                  ? 'bg-primary-100 text-brand-dark border-gray-500 font-bold'
+                  ? 'bg-primary-100 text-brand-dark border-gray-500'
                   : 'border-gray-200 bg-white text-gray-700',
               )}
             >

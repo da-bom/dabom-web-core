@@ -38,7 +38,7 @@ const MissionPage = () => {
               className="h-55"
               key={mission.missionItemId}
               title={mission.missionText}
-              description={`보상: ${mission.reward.name} (${mission.reward.value}${mission.reward.unit})`}
+              description={`보상: ${mission.reward.name}`}
             >
               {isOwner ? (
                 <OwnerActionButton

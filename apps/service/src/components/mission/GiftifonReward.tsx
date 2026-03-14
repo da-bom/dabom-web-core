@@ -43,9 +43,7 @@ const GifticonReward = ({ value, onSelect }: GifticonRewardProps) => {
               className="w-24 object-contain"
             />
             <p className="flex flex-col text-center">
-              <span className="text-body2-m font-bold break-keep whitespace-pre-wrap">
-                {reward.name}
-              </span>
+              <span className="text-body2-m break-keep whitespace-pre-wrap">{reward.name}</span>
               <span className="text-caption-m text-gray-500">
                 {reward.price.toLocaleString()}원
               </span>
