@@ -4,11 +4,11 @@ import { useRequestMission } from 'src/api/mission/useRequestMission';
 
 import StatusBox from './StatusBox';
 
-const MemberActionButton = ({ id, status }: { id: number; status: string }) => {
+const MemberActionButton = ({ requestId, status }: { requestId: number; status: string }) => {
   const { mutate: requestApproval } = useRequestMission();
 
   const handleRequest = () => {
-    requestApproval(id);
+    requestApproval(requestId);
   };
   if (status === 'PENDING') return <StatusBox>응답 대기 중</StatusBox>;
   return (

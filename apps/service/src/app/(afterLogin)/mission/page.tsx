@@ -41,9 +41,15 @@ const MissionPage = () => {
               description={`보상: ${mission.reward.name} (${mission.reward.value}${mission.reward.unit})`}
             >
               {isOwner ? (
-                <OwnerActionButton id={mission.missionItemId} status={mission.requestStatus} />
+                <OwnerActionButton
+                  requestId={mission.missionItemId}
+                  status={mission.requestStatus}
+                />
               ) : (
-                <MemberActionButton id={mission.missionItemId} status={mission.requestStatus} />
+                <MemberActionButton
+                  requestId={mission.missionItemId}
+                  status={mission.requestStatus}
+                />
               )}
             </Card>
           ))

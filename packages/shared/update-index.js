@@ -20,7 +20,7 @@ directories.forEach((dir) => {
     (file) => (file.endsWith('.tsx') || file.endsWith('.ts')) && file !== 'index.ts',
   );
 
-  if (dir === 'utils' || dir === 'constants') {
+  if (dir === 'utils' || dir === 'constants' || dir === 'hooks') {
     files.forEach((file) => {
       const name = file.replace(/\.(tsx|ts)$/, '');
       mainIndexContent += `export * from './${dir}/${name}';\n`;

@@ -56,6 +56,12 @@ export type FamilyUsageMonthly = z.infer<typeof FamilyUsageMonthlySchema>;
 export type UsageSSEData = z.infer<typeof UsageSSEDataSchema>;
 export type UsageFamilySSEData = z.infer<typeof UsageFamilySSEDataSchema>;
 
+export const UpdateFamilyNameResponseSchema = z.object({
+  familyId: z.number(),
+  name: z.string(),
+  updatedAt: z.string(),
+});
+
 export const FamilyMemberSchema = z.object({
   customerId: z.number(),
   name: z.string(),

@@ -5,20 +5,13 @@ import { MainBox } from '@shared';
 
 import MyInfo from 'src/components/mypage/MyInfo';
 
-const data = {
-  name: '김철수',
-  familyName: '김씨네 가족',
-  usedGB: 30,
-  limitGB: 100,
-};
-
 const MyPage = () => {
   return (
     <div className="m-5 flex flex-col gap-4">
       <MainBox className="flex w-full flex-col gap-7 rounded-2xl px-5 py-4">
-        <MyInfo data={data} />
+        <MyInfo />
       </MainBox>
-      <Link href="/mypage/awards">
+      <Link href="/mypage/rewards">
         <MainBox className="flex cursor-pointer items-center justify-between rounded-2xl p-4">
           <span className="text-body1-m">내가 받은 보상 보기</span>
           <ChevronIcon className="text-gray-800" sx={{ width: 16 }} />
