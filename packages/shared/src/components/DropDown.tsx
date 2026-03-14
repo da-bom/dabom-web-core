@@ -57,7 +57,7 @@ const DropDown = ({
       </button>
 
       {isOpen && (
-        <div className="bg-brand-white absolute z-20 mt-2 w-full rounded-xl border border-gray-200 shadow-lg">
+        <div className="bg-brand-white absolute z-20 mt-2 w-full overflow-hidden rounded-xl border border-gray-200 shadow-lg">
           {options.map((option) => (
             <button
               type="button"

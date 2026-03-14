@@ -10,12 +10,12 @@ interface TableProps {
 
 const Table = ({ headers, rows, className }: TableProps) => {
   return (
-    <div className={cn('h-full w-full overflow-auto border border-gray-100', className)}>
-      <table className="w-full border-collapse">
+    <div className={cn('w-full overflow-hidden rounded-md border border-gray-100', className)}>
+      <table className="w-full">
         <thead className="bg-brand-dark text-brand-white text-body2-d sticky top-0 z-21 h-11">
           <tr>
             {headers.map((header) => (
-              <th key={header} className="px-4 font-medium">
+              <th key={header} className="text-body2-d px-4">
                 {header}
               </th>
             ))}

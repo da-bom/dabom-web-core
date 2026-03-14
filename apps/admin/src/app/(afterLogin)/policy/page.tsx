@@ -42,11 +42,7 @@ const PolicyContent = () => {
   return (
     <div className="mt-6 flex h-screen flex-col">
       <div className="flex-1 overflow-hidden">
-        <Table
-          headers={['정책', '권한', '기본값', '상태', '관리']}
-          rows={policyRows}
-          className="rounded-md"
-        />
+        <Table headers={['정책', '권한', '기본값', '상태', '관리']} rows={policyRows} />
       </div>
       <Pagination
         currentPage={page + 1}
