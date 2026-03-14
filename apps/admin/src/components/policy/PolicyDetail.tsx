@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { useParams, useRouter } from 'next/navigation';
 
-import { Button, Drawer, DropDown, MainBox, TextField } from '@shared';
+import { Button, Divider, Drawer, DropDown, MainBox, TextField } from '@shared';
 
 import { Policy } from 'src/api/policy/schema';
 import { useGetPolicyDetail } from 'src/api/policy/useGetPolicyDetail';
@@ -76,11 +76,14 @@ const PolicyDetailContent = ({ data, policyId }: { data: Policy; policyId: numbe
       <header className="flex flex-col gap-3">
         <Status active={newData.isActive} />
         <h1 className="text-h2-d">{data.name}</h1>
-        <p className="text-body3-d text-gray-700">{newData.description}</p>
+        <input
+          value={newData.description}
+          onChange={(e) => setNewData((prev) => ({ ...prev, description: e.target.value }))}
+          placeholder="정책에 대한 설명을 입력하세요."
+          className="border:none border-gray-800 outline-none focus:border-b"
+        />
       </header>
-
-      <hr className="border-gray-100" />
-
+      <Divider />
       <div className="flex h-full flex-col gap-8">
         <TextField label="권한">
           <MainBox className="rounded-xl border-gray-200 hover:border-gray-300 active:bg-gray-50">
