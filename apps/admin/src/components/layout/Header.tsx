@@ -9,7 +9,7 @@ const Header = () => {
   const menuInfo = getMenu(pathname);
 
   return (
-    <header className="mx-1 flex items-center justify-between">
+    <header className="mx-1 flex h-13 items-center justify-between">
       <div className="flex flex-col">
         <span className="text-h2-d">{menuInfo?.parentLabel}</span>
         <span className="text-body2-d text-gray-800">{menuInfo?.description}</span>
