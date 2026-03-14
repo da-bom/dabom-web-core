@@ -1,39 +1,39 @@
-import { useEffect, useRef } from 'react';
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { Button, cn } from '@shared';
 
-import { MissionForm } from 'src/api/mission/schema';
+import { MissionCreate } from 'src/api/mission/schema';
 import { REWARD_TYPES } from 'src/types/rewardType';
 
 import DataReward from './DataReward';
 import GifticonReward from './GiftifonReward';
 
 const Step3Reward = ({ prevStep, nextStep }: { prevStep: () => void; nextStep: () => void }) => {
-  const { setValue, watch } = useFormContext<MissionForm>();
+  const { setValue, watch } = useFormContext<MissionCreate>();
 
-  const selectedRewardType = watch('reward.type') as 'DATA' | 'GIFTICON' | undefined;
-  const selectedRewardValue = watch('reward.value');
+  const rewardTemplateId = watch('rewardTemplateId');
+
+  const [selectedTypeId, setSelectedTypeId] = useState<number | null>(null);
 
   const detailRef = useRef<HTMLDivElement>(null);
 
-  const handleTypeSelect = (id: string) => {
-    setValue('reward.type', id as 'DATA' | 'GIFTICON', { shouldValidate: true });
-    setValue('reward.value', 0);
+  const handleTypeSelect = (id: number) => {
+    setSelectedTypeId(id);
+    setValue('rewardTemplateId', 0);
   };
 
-  const handleValueSelect = (value: number | string) => {
-    setValue('reward.value', value, { shouldValidate: true });
+  const handleValueSelect = (templateId: number) => {
+    setValue('rewardTemplateId', templateId, { shouldValidate: true });
   };
 
   useEffect(() => {
-    if (selectedRewardType && detailRef.current) {
-      detailRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      });
+    if (selectedTypeId && detailRef.current) {
+      detailRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  }, [selectedRewardType]);
+  }, [selectedTypeId]);
 
   return (
     <div className="flex flex-col pb-40">
@@ -50,11 +50,11 @@ const Step3Reward = ({ prevStep, nextStep }: { prevStep: () => void; nextStep: (
                 <button
                   key={id}
                   type="button"
-                  onClick={() => handleTypeSelect(id)}
+                  onClick={() => handleTypeSelect(Number(id))}
                   className={cn(
-                    'h-14 rounded-2xl border transition-all',
-                    selectedRewardType === id
-                      ? 'bg-primary-100 text-brand-dark border-gray-500'
+                    'text-body1-m h-14 rounded-2xl border transition-all',
+                    selectedTypeId === Number(id)
+                      ? 'bg-primary-100 text-brand-dark border-gray-500 font-bold'
                       : 'border-gray-200 bg-white text-gray-700',
                   )}
                 >
@@ -65,17 +65,12 @@ const Step3Reward = ({ prevStep, nextStep }: { prevStep: () => void; nextStep: (
           </section>
 
           <section ref={detailRef}>
-            {selectedRewardType === 'DATA' && (
-              <DataReward
-                value={typeof selectedRewardValue === 'string' ? selectedRewardValue : null}
-                onSelect={handleValueSelect}
-              />
+            {/* id 기반 조건부 렌더링 (REWARD_TYPES의 정의에 따라 1: DATA, 2: GIFTICON 가정) */}
+            {selectedTypeId === 1 && (
+              <DataReward value={rewardTemplateId} onSelect={handleValueSelect} />
             )}
-            {selectedRewardType === 'GIFTICON' && (
-              <GifticonReward
-                value={typeof selectedRewardValue === 'number' ? selectedRewardValue : null}
-                onSelect={handleValueSelect}
-              />
+            {selectedTypeId === 2 && (
+              <GifticonReward value={rewardTemplateId} onSelect={handleValueSelect} />
             )}
           </section>
         </div>
@@ -90,7 +85,7 @@ const Step3Reward = ({ prevStep, nextStep }: { prevStep: () => void; nextStep: (
           color="dark"
           isFullWidth
           onClick={nextStep}
-          disabled={!selectedRewardType || !selectedRewardValue}
+          disabled={!rewardTemplateId || rewardTemplateId === 0}
         >
           다음
         </Button>

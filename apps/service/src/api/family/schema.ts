@@ -55,3 +55,13 @@ export type FamilyUsageCurrent = z.infer<typeof FamilyUsageCurrentSchema>;
 export type FamilyUsageMonthly = z.infer<typeof FamilyUsageMonthlySchema>;
 export type UsageSSEData = z.infer<typeof UsageSSEDataSchema>;
 export type UsageFamilySSEData = z.infer<typeof UsageFamilySSEDataSchema>;
+
+export const FamilyMemberSchema = z.object({
+  customerId: z.number(),
+  name: z.string(),
+  role: z.enum(['OWNER', 'MEMBER']),
+});
+
+export const FamilyMemberListSchema = z.array(FamilyMemberSchema);
+
+export type FamilyMember = z.infer<typeof FamilyMemberSchema>;

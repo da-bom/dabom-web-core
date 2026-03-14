@@ -1,5 +1,13 @@
 import { z } from 'zod';
 
+export const MissionCreateSchema = z.object({
+  missionText: z.string().max(20, '최대 20자까지 입력 가능합니다.'),
+  targetCustomerId: z.number(),
+  rewardTemplateId: z.number(),
+});
+
+export type MissionCreate = z.infer<typeof MissionCreateSchema>;
+
 export const MissionRequestSchema = z.object({
   cursor: z.string().optional().nullable(),
   size: z.number().int().default(20),
@@ -10,7 +18,7 @@ export type MissionRequest = z.infer<typeof MissionRequestSchema>;
 export const MissionSchema = z.object({
   missionItemId: z.number(),
   missionText: z.string(),
-  requestStatus: z.enum(['CREATED', 'REQUESTED']),
+  requestStatus: z.enum(['CREATED', 'REQUESTED', 'PENDING']),
   target: z.object({
     customerId: z.number(),
     name: z.string(),
@@ -23,8 +31,8 @@ export const MissionSchema = z.object({
     rewardId: z.number(),
     name: z.string(),
     category: z.string(),
-    value: z.number(),
-    unit: z.string(),
+    value: z.number().optional().default(0),
+    unit: z.string().optional().default(''),
     templateId: z.number(),
   }),
   createdAt: z.string(),

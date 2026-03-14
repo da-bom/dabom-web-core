@@ -2,11 +2,11 @@ import { useFormContext } from 'react-hook-form';
 
 import { Button, MainBox } from '@shared';
 
-import { MissionForm } from 'src/api/mission/schema';
+import { MissionCreate } from 'src/api/mission/schema';
 
 const Step4Check = ({ prevStep }: { prevStep: () => void }) => {
-  const { getValues } = useFormContext<MissionForm>();
-  const { title, targetId, reward } = getValues();
+  const { getValues } = useFormContext<MissionCreate>();
+  const { missionText, targetCustomerId, rewardTemplateId } = getValues();
 
   const handleSave = async () => {
     const finalData = getValues();
@@ -24,9 +24,9 @@ const Step4Check = ({ prevStep }: { prevStep: () => void }) => {
 
         <MainBox className="flex justify-center rounded-2xl border-gray-200 p-4 text-center">
           <p className="text-body1-m">
-            {title} 완료 시 <br />
-            {targetId} 에게 <br />
-            <span className="text-primary">{reward ? reward.value : '보상'}</span>
+            {missionText} 완료 시 <br />
+            {targetCustomerId} 에게 <br />
+            <span className="text-primary">{rewardTemplateId ? rewardTemplateId : '보상'}</span>
             을(를) 지급합니다.
           </p>
         </MainBox>

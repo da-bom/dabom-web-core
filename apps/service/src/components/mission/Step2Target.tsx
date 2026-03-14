@@ -1,22 +1,21 @@
+'use client';
+
 import { useFormContext } from 'react-hook-form';
 
 import { Button, cn } from '@shared';
 
-import { MissionForm } from 'src/api/mission/schema';
-
-const MEMBER = [
-  { id: 1, name: '김민지' },
-  { id: 2, name: '김민수' },
-  { id: 3, name: '김길동' },
-];
+import { useGetFamilyMembers } from 'src/api/family/useGetFamilyMembers';
+import { MissionCreate } from 'src/api/mission/schema';
 
 const Step2Target = ({ prevStep, nextStep }: { prevStep: () => void; nextStep: () => void }) => {
-  const { setValue, watch } = useFormContext<MissionForm>();
+  const { setValue, watch } = useFormContext<MissionCreate>();
 
-  const selectedId = watch('targetId');
+  const { data: familyMembers, isLoading } = useGetFamilyMembers();
+
+  const selectedId = watch('targetCustomerId');
 
   const handleSelect = (id: number) => {
-    setValue('targetId', id, { shouldValidate: true });
+    setValue('targetCustomerId', id, { shouldValidate: true });
   };
 
   return (
@@ -28,25 +27,29 @@ const Step2Target = ({ prevStep, nextStep }: { prevStep: () => void; nextStep: (
         </header>
 
         <div className="grid grid-cols-2 gap-4">
-          {MEMBER.map((member) => {
-            const isSelected = selectedId === member.id;
+          {isLoading
+            ? Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="h-14 animate-pulse rounded-2xl bg-gray-100" />
+              ))
+            : familyMembers?.map((member) => {
+                const isSelected = selectedId === member.customerId;
 
-            return (
-              <button
-                key={member.id}
-                type="button"
-                onClick={() => handleSelect(member.id)}
-                className={cn(
-                  'h-14 rounded-2xl border transition-all',
-                  isSelected
-                    ? 'bg-primary-100 text-brand-dark border-gray-500'
-                    : 'border-gray-200 bg-white text-gray-700',
-                )}
-              >
-                {member.name}
-              </button>
-            );
-          })}
+                return (
+                  <button
+                    key={member.customerId}
+                    type="button"
+                    onClick={() => handleSelect(member.customerId)}
+                    className={cn(
+                      'text-body1-m h-14 rounded-2xl border transition-all',
+                      isSelected
+                        ? 'bg-primary-100 text-brand-dark border-gray-500'
+                        : 'border-gray-200 bg-white text-gray-700',
+                    )}
+                  >
+                    {member.name}
+                  </button>
+                );
+              })}
         </div>
       </div>
 
@@ -54,7 +57,13 @@ const Step2Target = ({ prevStep, nextStep }: { prevStep: () => void; nextStep: (
         <Button size="lg" color="light" isFullWidth onClick={prevStep}>
           이전
         </Button>
-        <Button size="lg" color="dark" isFullWidth onClick={nextStep} disabled={!selectedId}>
+        <Button
+          size="lg"
+          color="dark"
+          isFullWidth
+          onClick={nextStep}
+          disabled={!selectedId || isLoading}
+        >
           다음
         </Button>
       </footer>
