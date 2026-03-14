@@ -4,10 +4,10 @@ import { useState } from 'react';
 
 import { Button, Card } from '@shared';
 
-import { useGetReceivedRewards } from 'src/api/reward/useGetRecievedRewards';
+import { useGetReceivedRewards } from 'src/api/reward/useGetReceivedRewards';
 import GifticonModal from 'src/components/mypage/GiftModal';
 
-const AwardPage = () => {
+const RewardPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRequestId, setSelectedRequestId] = useState<number | null>(null);
 
@@ -74,4 +74,4 @@ const AwardPage = () => {
   );
 };
 
-export default AwardPage;
+export default RewardPage;

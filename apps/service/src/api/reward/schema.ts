@@ -9,7 +9,7 @@ export const ReceivedRewardSchema = z.object({
       rewardId: z.number(),
       name: z.string(),
       category: z.string(),
-      thumbnailUrl: z.string(),
+      thumbnailUrl: z.string().nullable(),
       templateId: z.number(),
     }),
   }),
