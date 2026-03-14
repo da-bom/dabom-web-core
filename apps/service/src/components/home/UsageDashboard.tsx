@@ -129,7 +129,7 @@ const UsageDashboard = () => {
   );
 
   return (
-    <div className="flex w-full flex-col items-center gap-7 p-5">
+    <div className="mb-20 flex w-full flex-col items-center gap-7 p-5">
       <div className="relative h-38 w-full">
         <MainBox className="absolute bottom-0 left-0 flex w-full flex-col items-end gap-4 rounded-2xl border border-gray-200 p-5">
           <div className="flex w-42 flex-col items-start gap-4">

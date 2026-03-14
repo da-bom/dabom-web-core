@@ -61,3 +61,13 @@ export const UpdateFamilyNameResponseSchema = z.object({
   name: z.string(),
   updatedAt: z.string(),
 });
+
+export const FamilyMemberSchema = z.object({
+  customerId: z.number(),
+  name: z.string(),
+  role: z.enum(['OWNER', 'MEMBER']),
+});
+
+export const FamilyMemberListSchema = z.array(FamilyMemberSchema);
+
+export type FamilyMember = z.infer<typeof FamilyMemberSchema>;

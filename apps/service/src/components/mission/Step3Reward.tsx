@@ -1,39 +1,41 @@
-import { useEffect, useRef } from 'react';
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { Button, cn } from '@shared';
 
-import { MissionForm } from 'src/api/mission/schema';
+import { MissionCreate } from 'src/api/mission/schema';
 import { REWARD_TYPES } from 'src/types/rewardType';
 
 import DataReward from './DataReward';
 import GifticonReward from './GiftifonReward';
 
 const Step3Reward = ({ prevStep, nextStep }: { prevStep: () => void; nextStep: () => void }) => {
-  const { setValue, watch } = useFormContext<MissionForm>();
+  const { setValue, watch } = useFormContext<MissionCreate>();
 
-  const selectedRewardType = watch('reward.type') as 'DATA' | 'GIFTICON' | undefined;
-  const selectedRewardValue = watch('reward.value');
+  const rewardTemplateId = watch('rewardTemplateId');
+
+  const [selectedType, setSelectedType] = useState<'DATA' | 'GIFTICON' | null>(null);
 
   const detailRef = useRef<HTMLDivElement>(null);
 
-  const handleTypeSelect = (id: string) => {
-    setValue('reward.type', id as 'DATA' | 'GIFTICON', { shouldValidate: true });
-    setValue('reward.value', 0);
+  const handleTypeSelect = (type: 'DATA' | 'GIFTICON') => {
+    setSelectedType(type);
+    setValue('rewardTemplateId', 0);
+    setValue('rewardName', '');
   };
 
-  const handleValueSelect = (value: number | string) => {
-    setValue('reward.value', value, { shouldValidate: true });
+  const handleValueSelect = (templateId: number, templateName: string) => {
+    setValue('rewardTemplateId', templateId, { shouldValidate: true });
+    setValue('rewardName', templateName);
   };
 
   useEffect(() => {
-    if (selectedRewardType && detailRef.current) {
-      detailRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      });
+    if (selectedType && detailRef.current) {
+      detailRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  }, [selectedRewardType]);
+  }, [selectedType]);
 
   return (
     <div className="flex flex-col pb-40">
@@ -46,14 +48,14 @@ const Step3Reward = ({ prevStep, nextStep }: { prevStep: () => void; nextStep: (
             </header>
 
             <div className="grid grid-cols-2 gap-4">
-              {REWARD_TYPES.map(({ id, label }) => (
+              {REWARD_TYPES.map(({ type, label }) => (
                 <button
-                  key={id}
+                  key={type}
                   type="button"
-                  onClick={() => handleTypeSelect(id)}
+                  onClick={() => handleTypeSelect(type as 'DATA' | 'GIFTICON')}
                   className={cn(
-                    'h-14 rounded-2xl border transition-all',
-                    selectedRewardType === id
+                    'text-body1-m h-14 cursor-pointer rounded-2xl border transition-all',
+                    selectedType === type
                       ? 'bg-primary-100 text-brand-dark border-gray-500'
                       : 'border-gray-200 bg-white text-gray-700',
                   )}
@@ -65,17 +67,11 @@ const Step3Reward = ({ prevStep, nextStep }: { prevStep: () => void; nextStep: (
           </section>
 
           <section ref={detailRef}>
-            {selectedRewardType === 'DATA' && (
-              <DataReward
-                value={typeof selectedRewardValue === 'string' ? selectedRewardValue : null}
-                onSelect={handleValueSelect}
-              />
+            {selectedType === 'DATA' && (
+              <DataReward value={rewardTemplateId} onSelect={handleValueSelect} />
             )}
-            {selectedRewardType === 'GIFTICON' && (
-              <GifticonReward
-                value={typeof selectedRewardValue === 'number' ? selectedRewardValue : null}
-                onSelect={handleValueSelect}
-              />
+            {selectedType === 'GIFTICON' && (
+              <GifticonReward value={rewardTemplateId} onSelect={handleValueSelect} />
             )}
           </section>
         </div>
@@ -90,7 +86,7 @@ const Step3Reward = ({ prevStep, nextStep }: { prevStep: () => void; nextStep: (
           color="dark"
           isFullWidth
           onClick={nextStep}
-          disabled={!selectedRewardType || !selectedRewardValue}
+          disabled={!rewardTemplateId || rewardTemplateId === 0}
         >
           다음
         </Button>

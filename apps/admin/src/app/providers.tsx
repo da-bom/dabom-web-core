@@ -7,11 +7,12 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(() => new QueryClient());
+  const showDevtools = process.env.NEXT_PUBLIC_SHOW_QUERY_DEVTOOLS === 'true';
 
   return (
     <QueryClientProvider client={queryClient}>
       {children}
-      <ReactQueryDevtools initialIsOpen={false} buttonPosition="top-left" />
+      {showDevtools && <ReactQueryDevtools initialIsOpen={false} buttonPosition="top-left" />}
     </QueryClientProvider>
   );
 }

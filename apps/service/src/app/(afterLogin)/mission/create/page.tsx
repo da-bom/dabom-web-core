@@ -7,7 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { MissionForm, missionSchema } from 'src/api/mission/schema';
+import { MissionCreate, MissionCreateSchema } from 'src/api/mission/schema';
 import Step1Title from 'src/components/mission/Step1Title';
 import Step2Target from 'src/components/mission/Step2Target';
 import Step3Reward from 'src/components/mission/Step3Reward';
@@ -19,16 +19,30 @@ function MissionCreateForm() {
 
   const currentStep = Number(searchParams.get('step')) || 1;
 
-  const methods = useForm<MissionForm>({
-    resolver: zodResolver(missionSchema),
+  const methods = useForm<MissionCreate>({
+    resolver: zodResolver(MissionCreateSchema),
     mode: 'onChange',
   });
+  const { setValue } = methods;
 
   const setStep = (step: number) => {
     router.push(`?step=${step}`);
   };
 
-  const prevStep = () => setStep(currentStep - 1);
+  const prevStep = () => {
+    if (currentStep === 2) {
+      setValue('targetCustomerId', 0);
+      setValue('targetName', '');
+    }
+
+    if (currentStep === 3) {
+      setValue('rewardTemplateId', 0);
+      setValue('rewardName', '');
+    }
+
+    setStep(currentStep - 1);
+  };
+
   const nextStep = () => setStep(currentStep + 1);
 
   return (

@@ -1,7 +1,6 @@
 'use client';
 
 import { GraphIcon, ListIcon } from '@icons';
-import { cn } from '@shared';
 
 export type ViewMode = 'list' | 'chart';
 
@@ -32,10 +31,7 @@ export const ViewSegment = ({ viewMode, onModeChange }: ViewSegmentProps) => {
           <button
             key={id}
             onClick={() => onModeChange(id)}
-            className={cn(
-              'text-caption-m flex h-5 flex-1 items-center justify-center gap-1 rounded-full transition-colors',
-              isActive ? 'bg-primary-50 text-primary' : 'text-gray-400',
-            )}
+            className={`text-caption-m flex h-5 flex-1 items-center justify-center gap-1 rounded-full transition-colors ${isActive ? 'bg-primary-50 text-primary' : 'text-gray-400'}`}
           >
             <Icon sx={{ fontSize: id === 'list' ? '13px' : '15px' }} />
             <span>{label}</span>

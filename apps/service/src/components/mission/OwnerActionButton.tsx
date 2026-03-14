@@ -6,7 +6,13 @@ import { useRespondReward } from 'src/api/reward/useRespondReward';
 
 import StatusBox from './StatusBox';
 
-const OwnerActionButton = ({ status, requestId }: { status: string; requestId: number }) => {
+const OwnerActionButton = ({
+  status,
+  requestId,
+}: {
+  status: 'PENDING' | 'REJECTED' | null;
+  requestId: number;
+}) => {
   const { mutate: respond, isPending } = useRespondReward();
 
   const handleApprove = () => {
