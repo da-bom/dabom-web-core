@@ -1,17 +1,32 @@
+'use client';
+
 import { useFormContext } from 'react-hook-form';
+
+import { useRouter } from 'next/navigation';
 
 import { Button, MainBox } from '@shared';
 
 import { MissionCreate } from 'src/api/mission/schema';
+import { useCreateMission } from 'src/api/mission/useCreateMission';
 
 const Step4Check = ({ prevStep }: { prevStep: () => void }) => {
+  const router = useRouter();
   const { getValues } = useFormContext<MissionCreate>();
   const { missionText, targetCustomerId, rewardTemplateId } = getValues();
 
+  const { mutate: createMission, isPending } = useCreateMission();
+
   const handleSave = async () => {
     const finalData = getValues();
-    console.log('서버로 전송할 데이터:', finalData);
-    // TODO: API 연동
+
+    createMission(finalData, {
+      onSuccess: () => {
+        router.push('/mission');
+      },
+      onError: (error) => {
+        console.error('미션 생성 실패:', error);
+      },
+    });
   };
 
   return (
@@ -37,7 +52,7 @@ const Step4Check = ({ prevStep }: { prevStep: () => void }) => {
           이전
         </Button>
         <Button size="lg" color="primary" isFullWidth onClick={handleSave}>
-          미션 생성하기
+          {isPending ? '로딩' : '미션 생성하기'}
         </Button>
       </footer>
     </div>
