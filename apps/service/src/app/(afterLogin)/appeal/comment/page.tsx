@@ -2,7 +2,7 @@
 
 import React, { Suspense, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import { ApprovedIcon, RejectedIcon } from '@icons';
 import { Button, formatSize } from '@shared';
@@ -25,6 +25,7 @@ const isValidStatus = (status: string | null): status is AppealStatus => {
 };
 
 function AppealCommentContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const appealId = Number(searchParams.get('id'));
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -98,14 +99,8 @@ function AppealCommentContent() {
     }
   };
 
-  const handleReject = async () => {
-    const reason = '';
-    if (reason === null) return;
-    try {
-      await respondAppeal({ action: 'REJECTED', rejectReason: reason || '사유 없음' });
-    } catch (error) {
-      console.error('거절 실패:', error);
-    }
+  const handleReject = () => {
+    router.push(`/appeal/create/reason?id=${appealId}&action=REJECTED`);
   };
 
   return (

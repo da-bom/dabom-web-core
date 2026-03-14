@@ -36,4 +36,5 @@ export const APPEAL_UI_TEXT = {
   REASON_INPUT_DESCRIPTION: 'description',
   REASON_INPUT_PLACEHOLDER: '입력하세요..',
   REASON_INPUT_ERROR: '사유를 입력해 주세요.',
+  REJECT_REASON_DESCRIPTION: '거절하는 사유를 입력해 주세요.',
 } as const;
