@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import { getVapidPublicKey, subscribePush } from '../api/notification';
 import { getCurrentUserId } from '../utils/auth';
 
@@ -15,7 +17,7 @@ function urlBase64ToUint8Array(base64String: string) {
 }
 
 export const usePushSubscription = () => {
-  const subscribe = async () => {
+  const subscribe = useCallback(async () => {
     if (typeof window === 'undefined' || !('serviceWorker' in navigator)) return;
 
     const customerId = getCurrentUserId();
@@ -50,7 +52,7 @@ export const usePushSubscription = () => {
     } catch (error) {
       console.error('❌ push 구독 중 오류 발생:', error);
     }
-  };
+  }, []);
 
   return { subscribe };
 };
