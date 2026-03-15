@@ -5,7 +5,7 @@ export type UserRole = 'OWNER' | 'MEMBER';
 export const getCurrentUserId = (): number | null => {
   if (typeof window === 'undefined') return null;
 
-  const token = localStorage.getItem('access_token');
+  const token = localStorage.getItem(ACCESS_TOKEN_KEY);
   if (!token) return null;
 
   try {

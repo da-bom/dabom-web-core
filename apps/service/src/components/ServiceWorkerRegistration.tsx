@@ -2,6 +2,8 @@
 
 import { useEffect } from 'react';
 
+import { ACCESS_TOKEN_KEY } from '@shared';
+
 import { usePushSubscription } from '../hooks/usePushSubscription';
 
 export default function ServiceWorkerRegistration() {
@@ -12,7 +14,10 @@ export default function ServiceWorkerRegistration() {
       navigator.serviceWorker
         .register('/sw.js')
         .then(() => {
-          subscribe();
+          const hasToken = !!localStorage.getItem(ACCESS_TOKEN_KEY);
+          if (hasToken) {
+            subscribe();
+          }
         })
         .catch((error) => {
           console.error('서비스 워커 등록 실패: ', error);
