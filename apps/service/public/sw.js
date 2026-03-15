@@ -1,11 +1,13 @@
+importScripts('/sw-constants.js');
+
 const CACHE_NAME = 'dabom-v1';
 
 const APP_SHELL_RESOURCES = [
-  '/',
+  DEFAULT_URL,
   '/offline',
   '/manifest.webmanifest',
   '/favicon.ico',
-  '/icons/icon-192x192.png',
+  DEFAULT_ICON,
   '/icons/icon-512x512.png',
 ];
 
@@ -80,29 +82,29 @@ globalThis.addEventListener('push', (event) => {
 
   if (!event.data) return;
 
-  let title = '다봄';
+  let title = DEFAULT_TITLE;
   let options = {
-    icon: '/icons/icon-192x192.png',
-    badge: '/icons/icon-192x192.png',
+    icon: DEFAULT_ICON,
+    badge: DEFAULT_ICON,
   };
 
   try {
     const data = event.data.json();
-    title = data.title || title;
+    title = data.title || DEFAULT_TITLE;
     options = {
       ...options,
-      body: data.body || '새로운 알림이 도착했습니다.',
+      body: data.body || DEFAULT_BODY,
       data: {
-        url: data.url || '/',
+        url: data.url || DEFAULT_URL,
       },
     };
   } catch (error) {
     const text = event.data.text();
     options = {
       ...options,
-      body: text || '새로운 알림이 도착했습니다.',
+      body: text || DEFAULT_BODY,
       data: {
-        url: '/',
+        url: DEFAULT_URL,
       },
     };
   }
@@ -113,7 +115,7 @@ globalThis.addEventListener('push', (event) => {
 globalThis.addEventListener('notificationclick', (event) => {
   event.notification.close();
 
-  const urlToOpen = event.notification.data.url || '/';
+  const urlToOpen = event.notification.data.url || DEFAULT_URL;
 
   event.waitUntil(
     globalThis.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
