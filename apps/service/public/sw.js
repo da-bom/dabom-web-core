@@ -1,11 +1,13 @@
+importScripts('/sw-constants.js');
+
 const CACHE_NAME = 'dabom-v1';
 
 const APP_SHELL_RESOURCES = [
-  '/',
+  DEFAULT_URL,
   '/offline',
   '/manifest.webmanifest',
   '/favicon.ico',
-  '/icons/icon-192x192.png',
+  DEFAULT_ICON,
   '/icons/icon-512x512.png',
 ];
 
@@ -72,5 +74,59 @@ globalThis.addEventListener('fetch', (event) => {
         const cachedResponse = await caches.match(event.request);
         if (cachedResponse) return cachedResponse;
       }),
+  );
+});
+
+globalThis.addEventListener('push', (event) => {
+  console.log('SW: 푸시 메시지 수신됨!', event.data?.text());
+
+  if (!event.data) return;
+
+  let title = DEFAULT_TITLE;
+  let options = {
+    icon: DEFAULT_ICON,
+    badge: DEFAULT_ICON,
+  };
+
+  try {
+    const data = event.data.json();
+    title = data.title || DEFAULT_TITLE;
+    options = {
+      ...options,
+      body: data.body || DEFAULT_BODY,
+      data: {
+        url: data.url || DEFAULT_URL,
+      },
+    };
+  } catch (error) {
+    const text = event.data.text();
+    options = {
+      ...options,
+      body: text || DEFAULT_BODY,
+      data: {
+        url: DEFAULT_URL,
+      },
+    };
+  }
+
+  event.waitUntil(globalThis.registration.showNotification(title, options));
+});
+
+globalThis.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+
+  const urlToOpen = event.notification.data.url || DEFAULT_URL;
+
+  event.waitUntil(
+    globalThis.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
+      for (const client of windowClients) {
+        if (client.url === urlToOpen && 'focus' in client) {
+          return client.focus();
+        }
+      }
+      if (globalThis.clients.openWindow) {
+        return globalThis.clients.openWindow(urlToOpen);
+      }
+    }),
   );
 });
