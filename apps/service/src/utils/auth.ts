@@ -1,3 +1,4 @@
+// TODO: 파일 제거
 import { ACCESS_TOKEN_KEY } from '@shared';
 
 export type UserRole = 'OWNER' | 'MEMBER';

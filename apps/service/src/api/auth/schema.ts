@@ -8,6 +8,7 @@ export const ServiceLoginRequestSchema = z.object({
 export const ServiceLoginResponseSchema = z.object({
   accessToken: z.string(),
   refreshToken: z.string(),
+  role: z.enum(['OWNER', 'MEMBER']),
 });
 
 export type ServiceLoginRequest = z.infer<typeof ServiceLoginRequestSchema>;

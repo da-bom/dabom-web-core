@@ -4,6 +4,7 @@ import { setCookie } from 'cookies-next';
 
 import { ApiErrorResponse } from '@shared/type/error';
 
+import { useAuthStore } from './authStore';
 import { ServiceLoginRequest, ServiceLoginResponse, ServiceLoginResponseSchema } from './schema';
 
 export const login = async (
@@ -25,6 +26,8 @@ export const login = async (
 };
 
 export const useServiceLogin = () => {
+  const setRole = useAuthStore((state) => state.setRole);
+
   return useMutation({
     mutationFn: ({ phoneNumber, password }: ServiceLoginRequest) => login(phoneNumber, password),
 
@@ -36,10 +39,12 @@ export const useServiceLogin = () => {
         path: '/',
         maxAge: 60 * 60 * 24,
       });
+
+      setRole(data.role);
     },
 
     onError: (error: ApiErrorResponse) => {
-      alert(error.errorMessage);
+      alert(error.errorMessage || '로그인에 실패했습니다.');
     },
   });
 };
