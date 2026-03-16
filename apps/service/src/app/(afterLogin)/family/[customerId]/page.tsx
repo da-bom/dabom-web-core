@@ -1,8 +1,6 @@
 'use client';
 
-import React, { Suspense, useSyncExternalStore } from 'react';
-
-import { useSearchParams } from 'next/navigation';
+import React, { use, useSyncExternalStore } from 'react';
 
 import { FaceIcon } from '@icons';
 import { MainBox, bytesToGB, formatPhoneNumber } from '@shared';
@@ -19,16 +17,19 @@ function useIsClient() {
   );
 }
 
-function PolicyDetailContent() {
-  const searchParams = useSearchParams();
-  const customerId = searchParams.get('customerId');
+interface PolicyDetailPageProps {
+  params: Promise<{ customerId: string }>;
+}
+
+export default function PolicyDetailPage({ params }: PolicyDetailPageProps) {
+  const { customerId } = use(params);
   const isClient = useIsClient();
 
   const { data: familyData, isLoading, isError } = useGetFamilyPolicies();
 
   if (!isClient || isLoading) {
     return (
-      <div className="text-body1-m flex min-h-screen items-center justify-center">
+      <div className="text-body1-m flex items-center justify-center">
         가족 데이터를 불러오는 중입니다...
       </div>
     );
@@ -36,7 +37,7 @@ function PolicyDetailContent() {
 
   if (isError || !familyData?.customers) {
     return (
-      <div className="text-body1-m text-negative flex min-h-screen items-center justify-center">
+      <div className="text-body1-m text-negative flex items-center justify-center">
         데이터를 불러오지 못했습니다.
       </div>
     );
@@ -45,7 +46,7 @@ function PolicyDetailContent() {
 
   if (!customer) {
     return (
-      <div className="text-body1-m flex min-h-screen items-center justify-center">
+      <div className="text-body1-m flex items-center justify-center">
         사용자를 찾을 수 없습니다.
       </div>
     );
@@ -61,7 +62,7 @@ function PolicyDetailContent() {
     : '설정되지 않음';
 
   return (
-    <div className="flex min-h-screen flex-col items-center gap-4 p-4">
+    <div className="flex flex-col items-center gap-4 p-4">
       <MainBox className="flex h-14 w-full flex-row items-center justify-between rounded-2xl p-4">
         <div className="flex flex-row items-center gap-2">
           <FaceIcon sx={{ fontSize: 16, color: 'inherit' }} />
@@ -84,17 +85,5 @@ function PolicyDetailContent() {
         </PolicySimple>
       </MainBox>
     </div>
-  );
-}
-
-export default function PolicyDetailPage() {
-  return (
-    <Suspense
-      fallback={
-        <div className="text-body1-m flex min-h-screen items-center justify-center">로딩 중...</div>
-      }
-    >
-      <PolicyDetailContent />
-    </Suspense>
   );
 }

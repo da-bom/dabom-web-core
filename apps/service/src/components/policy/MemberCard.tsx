@@ -242,7 +242,7 @@ export default function MemberCard({
                   className="flex h-5.25 w-full items-center justify-end gap-1"
                   onClick={(e) => {
                     e.stopPropagation();
-                    router.push(`/family/detail?customerId=${idStr}`);
+                    router.push(`/family/${idStr}`);
                   }}
                 >
                   <span className="text-body2-m">더보기</span>
