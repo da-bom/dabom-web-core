@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 
 import { getVapidPublicKey, subscribePush } from '../api/notification';
-import { getCurrentUserId } from '../utils/auth';
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
@@ -33,7 +32,8 @@ export const usePushSubscription = () => {
       }
     }
 
-    const customerId = getCurrentUserId();
+    // TODO: 로그인 응답 추가
+    const customerId = 1;
     if (!customerId) {
       console.warn('⚠️ 로그인된 사용자 정보를 찾을 수 없습니다. push 구독을 건너뜁니다.');
       return;
