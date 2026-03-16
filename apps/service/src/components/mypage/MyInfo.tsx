@@ -68,7 +68,7 @@ const MyInfo = () => {
   return (
     <>
       <div className="flex items-center gap-4">
-        <DaboIcon usage={displayStatus} width={100} />
+        <DaboIcon usage={displayStatus} type={!limitGB ? 'smile' : undefined} width={100} />
         <div className="flex flex-col justify-center gap-2">
           <div className="flex items-center gap-1">
             <div className="relative flex items-center">
