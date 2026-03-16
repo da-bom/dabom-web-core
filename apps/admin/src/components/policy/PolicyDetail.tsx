@@ -80,7 +80,7 @@ const PolicyDetailContent = ({ data, policyId }: { data: Policy; policyId: numbe
           value={newData.description}
           onChange={(e) => setNewData((prev) => ({ ...prev, description: e.target.value }))}
           placeholder="정책에 대한 설명을 입력하세요."
-          className="border:none border-gray-800 outline-none focus:border-b"
+          className="border-none outline-none focus:border-b focus:border-gray-800"
         />
       </header>
       <Divider />
