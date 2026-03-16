@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
@@ -8,9 +8,9 @@ import { useRouter } from 'next/navigation';
 import { Button, formatSize } from '@shared';
 
 import { useGetAppeals } from 'src/api/appeal/useGetAppeals';
+import { useAuthStore } from 'src/api/auth/authStore';
 import { AppealRequestCard, AppealStatus, FilterSegment } from 'src/components/appeal';
 import { APPEAL_TYPE_LABEL } from 'src/constants/appeal';
-import { getCurrentUserRole } from 'src/utils/auth';
 
 const AppealPageContent = () => {
   const router = useRouter();
@@ -18,8 +18,8 @@ const AppealPageContent = () => {
 
   const { data, isLoading, isError, refetch } = useGetAppeals();
 
-  const userRole = getCurrentUserRole();
-  const isOwner = userRole === 'OWNER';
+  const role = useAuthStore((state) => state.role);
+  const isOwner = role === 'OWNER';
 
   if (isLoading) {
     return (

@@ -12,9 +12,9 @@ import { Comment } from 'src/api/appeal/schema';
 import { useGetAppealDetail } from 'src/api/appeal/useGetAppealDetail';
 import { usePatchAppealRespond } from 'src/api/appeal/usePatchAppealRespond';
 import { usePostComment } from 'src/api/appeal/usePostComment';
+import { useAuthStore } from 'src/api/auth/authStore';
 import { AppealInputBar, ChatBubble, PolicySummaryCard } from 'src/components/appeal';
 import { APPEAL_TYPE_LABEL, APPEAL_UI_TEXT } from 'src/constants/appeal';
-import { getCurrentUserRole } from 'src/utils/auth';
 import { formatChatTime } from 'src/utils/formatTime';
 
 type AppealStatus = 'pending' | 'approved' | 'rejected' | 'cancelled';
@@ -44,8 +44,8 @@ function AppealCommentContent() {
 
   const [inputValue, setInputValue] = useState('');
 
-  const userRole = getCurrentUserRole();
-  const isOwner = userRole === 'OWNER';
+  const role = useAuthStore((state) => state.role);
+  const isOwner = role === 'OWNER';
 
   const sortedComments = useMemo(() => {
     if (!data?.comments?.content) return [];
