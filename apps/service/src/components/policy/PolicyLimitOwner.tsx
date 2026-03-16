@@ -40,7 +40,11 @@ export function PolicyLimitOwner({
             데이터 사용 한도
           </span>
         </div>
-        <Toggle isChecked={!isUnlimited} onToggle={onLimitToggle} disabled={isDisabled} />
+        <Toggle
+          isChecked={!isDisabled && !isUnlimited}
+          onToggle={onLimitToggle}
+          disabled={isDisabled}
+        />
       </div>
 
       <div className="bg-background-sub flex w-full flex-col items-center gap-4 rounded-lg p-4">

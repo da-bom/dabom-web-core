@@ -112,7 +112,7 @@ const MyInfo = () => {
         <div className="flex justify-between">
           <span className="text-caption-m">내 데이터 사용량</span>
           <span className="text-caption-m">
-            {usedGB.toFixed(1)}GB / {limitGB ? `${limitGB}GB` : '무제한'}
+            {Math.round(usedGB)}GB / {limitGB ? `${limitGB}GB` : '무제한'}
           </span>
         </div>
         <ProgressBar value={usagePercent} />

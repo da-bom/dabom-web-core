@@ -79,7 +79,8 @@ export default function MemberCard({
     setLocalLimit(Math.max(LIMIT.MIN, currentLimitGBFromProp ?? 0));
   }, [LIMIT.MIN, currentLimitGBFromProp]);
 
-  const formattedUsed = formatSize(customer.monthlyUsedBytes).total;
+  const usageData = formatSize(customer.monthlyUsedBytes);
+  const formattedUsed = `${Math.round(usageData.value)}${usageData.unit}`;
   const displayedTotalBytes = isUnlimited ? null : gbToBytes(localLimit);
   const formattedTotal = isUnlimited ? '무제한' : formatSize(displayedTotalBytes || 0).total;
 
@@ -146,7 +147,10 @@ export default function MemberCard({
             <div className="flex items-center gap-1">
               <span className="text-body1-m">{customer.name}</span>
               {state.isBlocked && (
-                <Badge color="negative" className="h-4.25 px-2">
+                <Badge
+                  color="negative"
+                  className="text-caption-m h-[17px] w-[83px] px-3 leading-[17px]"
+                >
                   데이터 차단
                 </Badge>
               )}

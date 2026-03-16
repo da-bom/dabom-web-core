@@ -31,7 +31,11 @@ export function PolicyTimeOwner({
             <span className={cn('text-body1-m', isDisabled && 'text-gray-500')}>시간 제한</span>
           </div>
 
-          <Toggle isChecked={!!timeLimit} onToggle={onToggleTime} disabled={isDisabled} />
+          <Toggle
+            isChecked={!isDisabled && !!timeLimit}
+            onToggle={onToggleTime}
+            disabled={isDisabled}
+          />
         </div>
 
         <div className="bg-background-sub flex h-14 w-full flex-col items-center justify-center gap-2 rounded-lg py-4">
