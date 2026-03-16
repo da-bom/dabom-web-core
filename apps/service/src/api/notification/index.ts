@@ -12,7 +12,10 @@ export interface VapidKeyResponse {
   publicKey: string;
 }
 
-const rawBaseUrl = process.env.NEXT_PUBLIC_NOTIFICATION_API_BASE_URL || '';
+const rawBaseUrl = process.env.NEXT_PUBLIC_NOTIFICATION_API_BASE_URL;
+if (!rawBaseUrl) {
+  throw new Error('환경 변수 NEXT_PUBLIC_NOTIFICATION_API_BASE_URL가 설정되지 않았습니다.');
+}
 const BASE_URL = rawBaseUrl.endsWith('/') ? rawBaseUrl.slice(0, -1) : rawBaseUrl;
 
 export const subscribePush = (
