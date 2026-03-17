@@ -58,6 +58,9 @@ function AppealConfirmContent() {
     if (policy === APPEAL_TYPE_LABEL.TIME_BLOCK && start && end) {
       return `${start} ~ ${end}`;
     }
+    if (policy === APPEAL_TYPE_LABEL.MANUAL_BLOCK) {
+      return APPEAL_UI_TEXT.MANUAL_BLOCK;
+    }
     if (policy === APPEAL_TYPE_LABEL.EMERGENCY) {
       return APPEAL_UI_TEXT.EMERGENCY_DATA_AMOUNT;
     }
