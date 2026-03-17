@@ -1,53 +1,32 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
-import { NotificationItem, fetchNotifications } from '@shared/data/notification';
-
+import { useNotificationList } from 'src/api/notification/useNotificationList';
 import NotiBox from 'src/components/notification/NotiBox';
 
 const NOTICE_MESSAGE = '30일이 지난 메세지는 자동 삭제됩니다.';
 
 export default function NotificationPage() {
-  const [notifications, setNotifications] = useState<NotificationItem[]>([]);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const unreadCount = notifications.filter((n) => !n.isRead).length || 0;
+  const {
+    notifications,
+    unreadCount,
+    hasNextPage,
+    isLoading,
+    isFetchingNextPage,
+    fetchNextPage,
+    readAll,
+    readOne,
+    deleteOne,
+  } = useNotificationList();
 
   const observerTarget = useRef<HTMLDivElement>(null);
-
-  const loadData = useCallback(async () => {
-    if (isLoading || !hasMore) return;
-
-    setIsLoading(true);
-    try {
-      const response = await fetchNotifications(page);
-
-      setNotifications((prev) => {
-        const existingIds = new Set(prev.map((item) => item.id));
-        const newItems = response.data.filter((item) => !existingIds.has(item.id));
-        return [...prev, ...newItems];
-      });
-
-      setHasMore(response.hasMore);
-
-      if (response.hasMore) {
-        setPage((prev) => prev + 1);
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [page, hasMore, isLoading]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && hasMore) {
-          loadData();
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
         }
       },
       { threshold: 1.0 },
@@ -60,7 +39,7 @@ export default function NotificationPage() {
     return () => {
       observer.disconnect();
     };
-  }, [loadData, hasMore]);
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
     <section className="bg-background-base flex min-h-screen w-full flex-col">
@@ -70,9 +49,7 @@ export default function NotificationPage() {
           <button
             type="button"
             className="text-body2-m text-primary cursor-pointer border-none bg-transparent p-0"
-            onClick={() => {
-              /* 모두 읽음 처리 로직 */
-            }}
+            onClick={() => readAll()}
           >
             모두 읽음으로 표시
           </button>
@@ -80,15 +57,22 @@ export default function NotificationPage() {
 
         <ul className="flex w-full flex-col gap-4">
           {notifications.map((noti) => (
-            <li key={noti.id} className="w-full">
-              <NotiBox title={noti.title} description={noti.description} isRead={noti.isRead} />
+            <li key={noti.notificationId} className="w-full">
+              <NotiBox
+                notificationId={noti.notificationId}
+                title={noti.title}
+                message={noti.message}
+                isRead={noti.isRead}
+                onRead={(id) => readOne(id)}
+                onDelete={(id) => deleteOne(id)}
+              />
             </li>
           ))}
         </ul>
 
-        {hasMore && (
+        {hasNextPage && (
           <div ref={observerTarget} className="flex w-full items-center justify-center py-4">
-            {isLoading && (
+            {(isLoading || isFetchingNextPage) && (
               <div className="flex items-center gap-2.5">
                 <div className="h-2 w-2 animate-bounce rounded-full bg-gray-600 [animation-delay:-0.3s]" />
                 <div className="h-2 w-2 animate-bounce rounded-full bg-gray-600 [animation-delay:-0.15s]" />
@@ -98,7 +82,7 @@ export default function NotificationPage() {
           </div>
         )}
 
-        {!hasMore && notifications.length > 0 && (
+        {!hasNextPage && notifications.length > 0 && (
           <div className="mt-8 mb-12 flex w-full flex-col items-center gap-1">
             <p className="text-body2-m text-gray-600">{NOTICE_MESSAGE}</p>
           </div>

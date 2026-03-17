@@ -3,25 +3,53 @@ import React, { useState } from 'react';
 import { Badge, cn } from '@shared';
 
 interface NotiBoxProps {
+  notificationId: number;
   title: string;
-  description: string;
+  message: string;
   isRead?: boolean;
   className?: string;
+  onRead?: (id: number) => void;
+  onDelete?: (id: number) => void;
 }
 
-const NotiBox = ({ title, description, isRead = true, className }: NotiBoxProps) => {
+const NotiBox = ({
+  notificationId,
+  title,
+  message,
+  isRead = true,
+  className,
+  onRead,
+  onDelete,
+}: NotiBoxProps) => {
   const [isRevealed, setIsRevealed] = useState(false);
+
+  const handleClick = () => {
+    if (!isRead && onRead) {
+      onRead(notificationId);
+    }
+    setIsRevealed(!isRevealed);
+  };
+
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onDelete) {
+      onDelete(notificationId);
+    }
+  };
 
   return (
     <div className={cn('relative w-full', className)}>
       <div className="absolute top-0 right-0 flex h-full w-16 items-center justify-center">
-        <button className="bg-negative text-body2-m h-full w-full rounded-2xl text-white">
+        <button
+          onClick={handleDelete}
+          className="bg-negative text-body2-m h-full w-full rounded-2xl text-white"
+        >
           삭제
         </button>
       </div>
 
       <div
-        onClick={() => setIsRevealed(!isRevealed)}
+        onClick={handleClick}
         className={cn(
           'bg-brand-white relative z-10 flex w-full cursor-pointer flex-col justify-center rounded-2xl border-2 p-4 transition-transform duration-300 ease-in-out',
           isRead ? 'border-gray-200' : 'border-primary',
@@ -36,7 +64,7 @@ const NotiBox = ({ title, description, isRead = true, className }: NotiBoxProps)
           )}
           <h3 className="text-body1-m truncate">{title}</h3>
         </div>
-        <p className="text-body2-m line-clamp-1 text-gray-700">{description}</p>
+        <p className="text-body2-m line-clamp-1 text-gray-700">{message}</p>
       </div>
     </div>
   );

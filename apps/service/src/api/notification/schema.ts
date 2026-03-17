@@ -14,6 +14,7 @@ export const NotificationTypeSchema = z.enum([
   'APPEAL_APPROVED',
   'APPEAL_REJECTED',
   'EMERGENCY_APPROVED',
+  'ADMIN_PUSH',
 ]);
 
 export const NotificationItemSchema = z.object({
@@ -21,20 +22,16 @@ export const NotificationItemSchema = z.object({
   type: NotificationTypeSchema,
   title: z.string(),
   message: z.string(),
-  payload: z.record(z.any()).optional(),
+  payload: z.union([z.string(), z.record(z.any()), z.null()]).optional(),
   isRead: z.boolean(),
   sentAt: z.string(),
 });
 
 export const NotificationListResponseSchema = z.object({
-  success: z.boolean(),
-  data: z.object({
-    content: z.array(NotificationItemSchema),
-    nextCursor: z.string().nullable(),
-    hasNext: z.boolean(),
-    unreadCount: z.number(),
-  }),
-  timestamp: z.string(),
+  content: z.array(NotificationItemSchema),
+  nextCursor: z.string().nullable(),
+  hasNext: z.boolean(),
+  unreadCount: z.number(),
 });
 
 export interface NotificationFilter {

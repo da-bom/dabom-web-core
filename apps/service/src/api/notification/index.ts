@@ -44,7 +44,7 @@ export const deleteNotification = (notificationId: number): Promise<void> => {
 };
 
 // 읽지 않은 알림 수 조회
-export const getUnreadCount = (): Promise<{ success: boolean; data: { unreadCount: number } }> => {
+export const getUnreadCount = (): Promise<{ unreadCount: number }> => {
   return http.get(`${BASE_URL}/notifications/unread-count`);
 };
 

@@ -24,13 +24,12 @@ export const useNotificationList = (filter: Omit<NotificationFilter, 'cursor'> =
           cursor: pageParam as string | undefined,
         }),
       initialPageParam: undefined as string | undefined,
-      getNextPageParam: (lastPage) =>
-        lastPage.data.hasNext ? lastPage.data.nextCursor : undefined,
+      getNextPageParam: (lastPage) => (lastPage?.hasNext ? lastPage.nextCursor : undefined),
     });
 
   // 알림 목록
-  const notifications = data?.pages.flatMap((page) => page.data.content) ?? [];
-  const unreadCount = data?.pages[0]?.data.unreadCount ?? 0;
+  const notifications = data?.pages.flatMap((page) => page?.content ?? []) ?? [];
+  const unreadCount = data?.pages[0]?.unreadCount ?? 0;
 
   // 전체 알림 읽음 처리
   const readAllMutation = useMutation({
