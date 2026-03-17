@@ -117,10 +117,10 @@ function AppealCommentContent() {
           <PolicySummaryCard
             policyName={selectedPolicy}
             requestedValue={
-              inputAmount
-                ? `${inputAmount}GB`
-                : data.type === 'EMERGENCY'
-                  ? APPEAL_UI_TEXT.EMERGENCY_DATA_AMOUNT
+              selectedPolicy === APPEAL_TYPE_LABEL.EMERGENCY || data.type === 'EMERGENCY'
+                ? APPEAL_UI_TEXT.EMERGENCY_DATA_AMOUNT
+                : inputAmount
+                  ? `${inputAmount}GB`
                   : data.policyType === 'MANUAL_BLOCK'
                     ? APPEAL_UI_TEXT.MANUAL_BLOCK
                     : data.desiredRules?.limitBytes
