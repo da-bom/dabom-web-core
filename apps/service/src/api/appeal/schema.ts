@@ -107,6 +107,25 @@ export const CreateCommentRequestSchema = z.object({
   comment: z.string().min(1),
 });
 
+/** 이의제기 가능 정책 목록 조회 */
+export const ObjectionPolicySchema = z.object({
+  policyAssignmentId: z.number(),
+  policyId: z.number(),
+  policyName: z.string(),
+  policyType: z.enum(['TIME_BLOCK', 'MONTHLY_LIMIT', 'MANUAL_BLOCK']),
+  appliedRules: z.object({
+    startTime: z.string().optional(),
+    endTime: z.string().optional(),
+    limitBytes: z.number().optional(),
+  }),
+  active: z.boolean(),
+  appliedAt: z.string(),
+});
+
+export const ObjectionPoliciesResponseSchema = z.object({
+  policies: z.array(ObjectionPolicySchema),
+});
+
 export type Comment = z.infer<typeof CommentSchema>;
 export type AppealSummary = z.infer<typeof AppealSummarySchema>;
 export type AppealDetail = z.infer<typeof AppealDetailResponseSchema>;
@@ -125,3 +144,6 @@ export type AppealRespondResponse = z.infer<typeof AppealRespondResponseSchema>;
 
 export type CreateCommentRequest = z.infer<typeof CreateCommentRequestSchema>;
 export type CreateCommentResponse = z.infer<typeof CreateCommentResponseSchema>;
+
+export type ObjectionPolicy = z.infer<typeof ObjectionPolicySchema>;
+export type ObjectionPoliciesResponse = z.infer<typeof ObjectionPoliciesResponseSchema>;

@@ -6,16 +6,32 @@ import { useRouter } from 'next/navigation';
 
 import { Button, DropDown, MainBox } from '@shared';
 
-import { APPEAL_TYPE_LABEL, APPEAL_UI_TEXT } from 'src/constants/appeal';
+import { useGetObjectionPolicies } from 'src/api/appeal/useGetObjectionPolicies';
+import { APPEAL_UI_TEXT } from 'src/constants/appeal';
 
 export default function ObjectionPage() {
   const router = useRouter();
+  const { data } = useGetObjectionPolicies();
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<string>(APPEAL_TYPE_LABEL.NORMAL);
+  const [userSelectedOption, setUserSelectedOption] = useState<string>('');
 
-  const options = Object.values(APPEAL_TYPE_LABEL).filter(
-    (label) => label !== APPEAL_TYPE_LABEL.EMERGENCY,
-  );
+  const policies = data?.policies || [];
+  const options = policies.map((p) => p.policyName);
+
+  const currentOption = userSelectedOption || options[0] || '';
+
+  const handleNext = () => {
+    const selectedPolicy = policies.find((p) => p.policyName === currentOption);
+    if (!selectedPolicy) return;
+
+    if (selectedPolicy.policyType === 'MONTHLY_LIMIT' || 'MANUAL_BLOCK') {
+      router.push(`/appeal/create/data?id=${selectedPolicy.policyAssignmentId}`);
+    } else if (selectedPolicy.policyType === 'TIME_BLOCK') {
+      router.push(`/appeal/create/time?id=${selectedPolicy.policyAssignmentId}`);
+    } else {
+      router.push('/appeal');
+    }
+  };
 
   return (
     <main className="mx-auto mt-20 flex w-full flex-col items-center px-5">
@@ -30,8 +46,8 @@ export default function ObjectionPage() {
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             options={options}
-            selectedOption={selectedOption}
-            setSelectedOption={setSelectedOption}
+            selectedOption={currentOption}
+            setSelectedOption={setUserSelectedOption}
             size="sm"
             className="w-full"
           />
@@ -42,19 +58,7 @@ export default function ObjectionPage() {
         <Button size="md-short" color="white" onClick={() => router.back()}>
           이전
         </Button>
-        <Button
-          size="lg"
-          color="dark"
-          onClick={() => {
-            if (selectedOption === APPEAL_TYPE_LABEL.NORMAL) {
-              router.push('/appeal/create/data');
-            } else if (selectedOption === APPEAL_TYPE_LABEL.TIME_BLOCK) {
-              router.push('/appeal/create/time');
-            } else {
-              router.push('/appeal');
-            }
-          }}
-        >
+        <Button size="lg" color="dark" onClick={handleNext} disabled={!currentOption}>
           다음
         </Button>
       </div>
