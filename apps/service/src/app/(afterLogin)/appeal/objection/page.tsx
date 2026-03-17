@@ -24,7 +24,10 @@ export default function ObjectionPage() {
     const selectedPolicy = policies.find((p) => p.policyName === currentOption);
     if (!selectedPolicy) return;
 
-    if (selectedPolicy.policyType === 'MONTHLY_LIMIT' || 'MANUAL_BLOCK') {
+    if (
+      selectedPolicy.policyType === 'MONTHLY_LIMIT' ||
+      selectedPolicy.policyType === 'MANUAL_BLOCK'
+    ) {
       router.push(`/appeal/create/data?id=${selectedPolicy.policyAssignmentId}`);
     } else if (selectedPolicy.policyType === 'TIME_BLOCK') {
       router.push(`/appeal/create/time?id=${selectedPolicy.policyAssignmentId}`);
