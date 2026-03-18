@@ -6,6 +6,7 @@ export * from './utils/sseClient';
 export { default as Badge } from './components/Badge';
 export { default as Button } from './components/Button';
 export { default as Card } from './components/Card';
+export { default as AppIcon } from './components/AppIcon';
 export { default as DaboIcon } from './components/DaboIcon';
 export { default as DaboMoon } from './components/DaboMoon';
 export { default as DaboSun } from './components/DaboSun';
