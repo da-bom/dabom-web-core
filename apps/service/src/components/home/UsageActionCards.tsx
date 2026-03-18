@@ -8,6 +8,7 @@ interface Props {
   onBegClick: () => void;
   isEmergencyUsed: boolean;
   isMember: boolean;
+  isCurrentMonth: boolean;
 }
 
 const UsageActionCards = ({
@@ -16,6 +17,7 @@ const UsageActionCards = ({
   onBegClick,
   isEmergencyUsed,
   isMember,
+  isCurrentMonth,
 }: Props) => {
   return (
     <div className="flex w-full flex-row items-start gap-4">
@@ -37,6 +39,7 @@ const UsageActionCards = ({
       </div>
 
       {isMember &&
+        isCurrentMonth &&
         (!isEmergencyUsed ? (
           <div
             className="border-negative bg-emergency-gradient flex h-30 w-32 cursor-pointer flex-col justify-between rounded-2xl border p-4 transition-transform active:scale-[0.98]"

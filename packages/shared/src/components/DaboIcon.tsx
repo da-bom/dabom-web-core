@@ -6,13 +6,13 @@ import DaboBlockedIcon from '../assets/icons/DaboBlockedIcon.svg';
 import DaboBombIcon from '../assets/icons/DaboBombIcon.svg';
 import DaboDefaultIcon from '../assets/icons/DaboDefaultIcon.svg';
 import DaboHurtIcon from '../assets/icons/DaboHurtIcon.svg';
-import DaboLovedIcon from '../assets/icons/DaboLovedIcon.svg';
 import DaboSadIcon from '../assets/icons/DaboSadIcon.svg';
+import DaboSmileIcon from '../assets/icons/DaboSmileIcon.svg';
 
 interface DaboIconProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   usage?: number;
   isBlocked?: boolean;
-  type?: 'blocked' | 'bomb' | 'default' | 'hurt' | 'loved' | 'sad';
+  type?: 'blocked' | 'bomb' | 'default' | 'hurt' | 'smile' | 'sad';
   sx?: React.CSSProperties;
 }
 
@@ -32,12 +32,12 @@ const DaboIcon = ({ usage = 0, isBlocked, type, sx, style, ...props }: DaboIconP
     if (type === 'hurt') return DaboHurtIcon;
     if (type === 'sad') return DaboSadIcon;
     if (type === 'default') return DaboDefaultIcon;
-    if (type === 'loved') return DaboLovedIcon;
+    if (type === 'smile') return DaboSmileIcon;
 
-    if (usage <= 81) return DaboLovedIcon;
-    if (usage <= 51) return DaboDefaultIcon;
-    if (usage <= 31) return DaboSadIcon;
-    if (usage <= 1) return DaboHurtIcon;
+    if (usage >= 81) return DaboSmileIcon;
+    if (usage >= 51) return DaboDefaultIcon;
+    if (usage >= 31) return DaboSadIcon;
+    if (usage >= 1) return DaboHurtIcon;
     return DaboBombIcon;
   })();
 

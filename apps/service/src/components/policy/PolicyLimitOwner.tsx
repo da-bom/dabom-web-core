@@ -40,28 +40,14 @@ export function PolicyLimitOwner({
             데이터 사용 한도
           </span>
         </div>
-        <Toggle isChecked={!isUnlimited} onToggle={onLimitToggle} disabled={isDisabled} />
+        <Toggle
+          isChecked={!isDisabled && !isUnlimited}
+          onToggle={onLimitToggle}
+          disabled={isDisabled}
+        />
       </div>
 
-      <div className="bg-background-sub flex w-full flex-col items-center gap-4 rounded-lg p-4">
-        <div className="flex w-full items-center justify-center gap-1">
-          <div className="bg flex h-7 items-center justify-center border-gray-400 px-2">
-            <LimitInput
-              value={localLimit}
-              onChange={onInputChange}
-              disabled={isLimitInputDisabled}
-            />
-          </div>
-          <span
-            className={cn(
-              'text-body1-m',
-              isLimitInputDisabled ? 'text-gray-500' : 'text-brand-black',
-            )}
-          >
-            GB
-          </span>
-        </div>
-
+      <div className="bg-background-sub flex w-full flex-col items-center gap-3 rounded-lg p-2">
         <div className="flex w-full flex-col gap-1">
           <Slider
             min={LIMIT.MIN}
@@ -72,13 +58,24 @@ export function PolicyLimitOwner({
           />
           <div
             className={cn(
-              'text-caption-m flex w-full justify-between px-1',
+              'flex h-[17px] w-full items-start justify-between gap-2',
               isLimitInputDisabled ? 'text-gray-700' : 'text-gray-800',
             )}
           >
-            <span>{LIMIT.MIN}GB</span>
-            <span>{LIMIT.MAX}GB</span>
+            <span className="text-caption-m w-fit">{LIMIT.MIN}GB</span>
+            <span className="text-caption-m w-fit">{LIMIT.MAX}GB</span>
           </div>
+        </div>
+
+        <div className="flex w-full items-center justify-center gap-1">
+          <div className="bg flex h-7 items-center justify-center border-gray-400">
+            <LimitInput
+              value={localLimit}
+              onChange={onInputChange}
+              disabled={isLimitInputDisabled}
+            />
+          </div>
+          <span className="text-body1-m">GB</span>
         </div>
       </div>
     </div>

@@ -6,10 +6,10 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { DaboIcon, MainBox, bytesToGB } from '@shared';
 
+import { useGetAppeals } from 'src/api/appeal/useGetAppeals';
 import { useGetFamilyUsage, useGetFamilyUsageCurrent } from 'src/api/family/useGetFamilyUsage';
 import { useSSE } from 'src/api/family/useUsageSSE';
 import { APPEAL_TYPE_LABEL, APPEAL_UI_TEXT } from 'src/constants/appeal';
-import { mockAppealList } from 'src/data/appealList';
 import { getCurrentUserRole } from 'src/utils/auth';
 
 import MonthNavigator from '../common/MonthNavigator';
@@ -41,6 +41,7 @@ const UsageDashboard = () => {
 
   const { data: usageData, isLoading: isMonthlyLoading, isError } = useGetFamilyUsage(year, month);
   const { data: currentData, isLoading: isCurrentLoading } = useGetFamilyUsageCurrent();
+  const { data: appealData } = useGetAppeals(undefined, undefined, 100);
 
   const isCurrentMonth = year === now.getFullYear() && month === now.getMonth() + 1;
   const { totalRealtime, memberRealtime } = useSSE(isCurrentMonth && isClient);
@@ -85,8 +86,6 @@ const UsageDashboard = () => {
       ? 0
       : Math.min(Math.round((displayTotalUsedBytes / displayTotalLimitBytes) * 100), 100);
 
-  const displayDate = `${year}년 ${month}월`;
-
   const updateUrl = (nextYear: number, nextMonth: number, nextView: 'list' | 'chart') => {
     const params = new URLSearchParams(searchParams.toString());
     params.set('year', nextYear.toString());
@@ -124,9 +123,16 @@ const UsageDashboard = () => {
   const userRole = getCurrentUserRole();
   const isMember = userRole === 'MEMBER';
 
-  const isEmergencyUsed = mockAppealList.some(
-    (appeal) => appeal.type === 'EMERGENCY' && appeal.status !== 'CANCELLED',
-  );
+  const isEmergencyUsed =
+    appealData?.appeals.some((appeal) => {
+      const appealDate = new Date(appeal.createdAt);
+      return (
+        appeal.type === 'EMERGENCY' &&
+        appeal.status !== 'CANCELLED' &&
+        appealDate.getFullYear() === year &&
+        appealDate.getMonth() + 1 === month
+      );
+    }) ?? false;
 
   return (
     <div className="mb-20 flex w-full flex-col items-center gap-7 p-5">
@@ -159,23 +165,20 @@ const UsageDashboard = () => {
           )
         }
         onBegClick={() => router.push('/appeal/objection')}
-        isEmergencyUsed={isCurrentMonth && isEmergencyUsed}
+        isEmergencyUsed={isEmergencyUsed}
         isMember={isMember}
+        isCurrentMonth={isCurrentMonth}
       />
 
-      <MonthNavigator
-        currentDateText={displayDate}
-        onPrev={handlePrevMonth}
-        onNext={handleNextMonth}
-      />
+      <MonthNavigator year={year} month={month} onPrev={handlePrevMonth} onNext={handleNextMonth} />
 
       <div className="flex w-full flex-col gap-2">
         <ViewSegment viewMode={viewMode} onModeChange={handleModeChange} />
 
-        {processedCustomers.length === 0 ? (
+        {displayTotalUsedBytes === 0 ? (
           <MainBox className="m-auto w-full rounded-2xl pt-10 pb-5">
             <div className="flex flex-1 items-center justify-center text-gray-400">
-              <p>등록된 가족 구성원이 없어요.</p>
+              <p>해당 월의 사용 내역이 존재하지 않습니다.</p>
             </div>
           </MainBox>
         ) : viewMode === 'list' ? (

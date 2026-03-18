@@ -5,7 +5,7 @@ import { bytesToGB } from '@shared';
 
 import { CustomerListType } from 'src/types/DataUsage';
 
-const WARNING_THRESHOLD = 0.6;
+const WARNING_THRESHOLD = 0.8;
 
 const CustomerItem = ({ customer }: { customer: CustomerListType }) => {
   const usageRatio =
@@ -23,7 +23,9 @@ const CustomerItem = ({ customer }: { customer: CustomerListType }) => {
             </div>
           )}
         </div>
-        <span className="text-body2-d h-6 w-fit">{bytesToGB(customer.monthlyUsedBytes)}GB</span>
+        <span className="text-body2-d h-6 w-fit">
+          {Math.round(bytesToGB(customer.monthlyUsedBytes))}GB
+        </span>
       </div>
 
       {showWarning && (

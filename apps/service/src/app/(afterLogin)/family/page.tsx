@@ -20,7 +20,7 @@ export default function PolicyManagementPage() {
 
   if (!isClient || isLoading) {
     return (
-      <div className="flex min-h-screen w-full items-center justify-center">
+      <div className="flex w-full items-center justify-center">
         <p className="text-body1-m">가족 데이터를 불러오는 중입니다...</p>
       </div>
     );
@@ -28,7 +28,7 @@ export default function PolicyManagementPage() {
 
   if (isError || !familyDetail?.customers) {
     return (
-      <div className="flex min-h-screen w-full items-center justify-center">
+      <div className="flex w-full items-center justify-center">
         <p className="text-body1-m text-red-500">데이터를 불러오는데 실패했습니다.</p>
       </div>
     );

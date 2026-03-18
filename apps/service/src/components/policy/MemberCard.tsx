@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
-import { toast } from 'react-hot-toast';
 
 import { useRouter } from 'next/navigation';
 
 import { ChevronIcon } from '@icons';
 import { Badge, Divider, bytesToGB, cn, formatPhoneNumber, formatSize, gbToBytes } from '@shared';
+
+import { showToast } from 'src/utils/toast';
 
 import { PolicyBlockOwner } from './PolicyBlockOwner';
 import { PolicyLimitOwner } from './PolicyLimitOwner';
@@ -78,7 +79,8 @@ export default function MemberCard({
     setLocalLimit(Math.max(LIMIT.MIN, currentLimitGBFromProp ?? 0));
   }, [LIMIT.MIN, currentLimitGBFromProp]);
 
-  const formattedUsed = formatSize(customer.monthlyUsedBytes).total;
+  const usageData = formatSize(customer.monthlyUsedBytes);
+  const formattedUsed = `${Math.round(usageData.value)}${usageData.unit}`;
   const displayedTotalBytes = isUnlimited ? null : gbToBytes(localLimit);
   const formattedTotal = isUnlimited ? '무제한' : formatSize(displayedTotalBytes || 0).total;
 
@@ -106,23 +108,7 @@ export default function MemberCard({
       try {
         await handlers.onLimitChange(idStr, clampedGB);
       } catch {
-        toast.custom(
-          (t) => (
-            <div
-              className={`${
-                t.visible ? 'animate-enter' : 'animate-leave'
-              } bg-primary-600 flex h-8 w-85 flex-col items-center justify-center rounded-full`}
-            >
-              <span className="text-body2-m text-3.5 text-white">
-                데이터 한도 조절에 실패했습니다.
-              </span>
-            </div>
-          ),
-          {
-            duration: 2000,
-            position: 'bottom-center',
-          },
-        );
+        showToast.error('데이터 한도 조절에 실패했습니다.');
         setLocalLimit(
           currentLimitGBFromProp !== null ? Math.max(LIMIT.MIN, currentLimitGBFromProp) : LIMIT.MIN,
         );
@@ -161,7 +147,10 @@ export default function MemberCard({
             <div className="flex items-center gap-1">
               <span className="text-body1-m">{customer.name}</span>
               {state.isBlocked && (
-                <Badge color="negative" className="h-4.25 px-2">
+                <Badge
+                  color="negative"
+                  className="text-caption-m h-[17px] w-[83px] px-3 leading-[17px]"
+                >
                   데이터 차단
                 </Badge>
               )}
@@ -253,7 +242,7 @@ export default function MemberCard({
                   className="flex h-5.25 w-full items-center justify-end gap-1"
                   onClick={(e) => {
                     e.stopPropagation();
-                    router.push(`/family/detail?customerId=${idStr}`);
+                    router.push(`/family/${idStr}`);
                   }}
                 >
                   <span className="text-body2-m">더보기</span>

@@ -1,6 +1,8 @@
 import { http } from '@shared';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { showToast } from 'src/utils/toast';
+
 import { MissionRequestResponseSchema } from './schema';
 
 export const requestMissionApproval = async (missionId: number) => {
@@ -22,10 +24,10 @@ export const useRequestMission = () => {
     mutationFn: (missionId: number) => requestMissionApproval(missionId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['missions'] });
-      alert('미션 완료 요청을 보냈습니다!');
+      showToast.success('미션 완료 요청을 보냈습니다!');
     },
     onError: () => {
-      alert('미션 요청에 실패했습니다. 다시 시도해 주세요.');
+      showToast.error('미션 요청에 실패했습니다. 다시 시도해 주세요.');
     },
   });
 };

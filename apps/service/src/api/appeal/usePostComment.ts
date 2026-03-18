@@ -3,6 +3,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { ApiErrorResponse } from '@shared/type/error';
 
+import { showToast } from 'src/utils/toast';
+
 import { CreateCommentRequest, CreateCommentResponseSchema } from './schema';
 
 export const postComment = async (appealId: number, data: CreateCommentRequest) => {
@@ -26,7 +28,7 @@ export const usePostComment = (appealId: number) => {
       queryClient.invalidateQueries({ queryKey: ['appealDetail', appealId] });
     },
     onError: (error: ApiErrorResponse) => {
-      alert(error.errorMessage || '댓글 작성에 실패했습니다.');
+      showToast.error(error.errorMessage || '댓글 작성에 실패했습니다.');
     },
   });
 };

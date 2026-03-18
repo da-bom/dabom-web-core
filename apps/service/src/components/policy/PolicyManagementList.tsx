@@ -64,6 +64,7 @@ export default function PolicyManagementList({ customers }: PolicyManagementList
     onLimitChange: (id: string, newGB: number | null) => {
       if (!isOwner) return;
       const newBytes = newGB === null ? null : gbToBytes(newGB);
+      const isActive = newBytes !== null;
 
       setMemberStates((prev) => ({
         ...prev,
@@ -74,7 +75,7 @@ export default function PolicyManagementList({ customers }: PolicyManagementList
           customerId: Number(id),
           type: 'MONTHLY_LIMIT',
           value: { limitBytes: newBytes },
-          isActive: true,
+          isActive,
         },
       });
     },
@@ -187,8 +188,8 @@ export default function PolicyManagementList({ customers }: PolicyManagementList
   const familyName = familyUsage?.familyName ?? '가족 관리';
 
   return (
-    <section className="flex min-h-screen w-full justify-center">
-      <div className="mt-4 w-full px-5 pb-20">
+    <section className="flex w-full justify-center">
+      <div className="mt-4 w-full px-5 pb-10">
         <div className="mb-5 flex flex-col gap-1">
           <div className="text-body1-d">{familyName}</div>
           {isOwner && (

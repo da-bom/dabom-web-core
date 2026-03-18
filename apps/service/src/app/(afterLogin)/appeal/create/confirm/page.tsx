@@ -18,6 +18,7 @@ function AppealConfirmContent() {
   const amount = searchParams.get('amount');
   const start = searchParams.get('start');
   const end = searchParams.get('end');
+  const isUnblock = searchParams.get('unblock') === 'true';
   const reason = searchParams.get('reason') || '';
   const policyAssignmentId = Number(searchParams.get('id')) || 0;
 
@@ -29,19 +30,27 @@ function AppealConfirmContent() {
       if (policy === APPEAL_TYPE_LABEL.EMERGENCY) {
         await postEmergency(reason);
       } else {
-        const desiredRules: { limitBytes?: number; start?: string; end?: string } = {};
+        const desiredRules: { limitBytes?: number | null; startTime?: string; endTime?: string } =
+          {};
 
-        if (policy === APPEAL_TYPE_LABEL.NORMAL && amount) {
-          desiredRules.limitBytes = gbToBytes(Number(amount));
-        } else if (policy === APPEAL_TYPE_LABEL.TIME_BLOCK && start && end) {
-          desiredRules.start = start;
-          desiredRules.end = end;
+        if (isUnblock) {
+          if (policy === APPEAL_TYPE_LABEL.NORMAL) {
+            desiredRules.limitBytes = null;
+          }
+        } else {
+          if (policy === APPEAL_TYPE_LABEL.NORMAL && amount) {
+            desiredRules.limitBytes = gbToBytes(Number(amount));
+          } else if (policy === APPEAL_TYPE_LABEL.TIME_BLOCK && start && end) {
+            desiredRules.startTime = start;
+            desiredRules.endTime = end;
+          }
         }
 
         const requestData = {
           policyAssignmentId,
           requestReason: reason,
-          desiredRules,
+          policyActive: !isUnblock,
+          desiredRules: Object.keys(desiredRules).length > 0 ? desiredRules : null,
         };
         await postAppeal(requestData);
       }
@@ -52,11 +61,17 @@ function AppealConfirmContent() {
   };
 
   const getChangedValue = () => {
+    if (isUnblock) {
+      return APPEAL_UI_TEXT.MANUAL_BLOCK;
+    }
     if (policy === APPEAL_TYPE_LABEL.NORMAL && amount) {
       return `${amount}GB`;
     }
     if (policy === APPEAL_TYPE_LABEL.TIME_BLOCK && start && end) {
       return `${start} ~ ${end}`;
+    }
+    if (policy === APPEAL_TYPE_LABEL.MANUAL_BLOCK) {
+      return APPEAL_UI_TEXT.MANUAL_BLOCK;
     }
     if (policy === APPEAL_TYPE_LABEL.EMERGENCY) {
       return APPEAL_UI_TEXT.EMERGENCY_DATA_AMOUNT;

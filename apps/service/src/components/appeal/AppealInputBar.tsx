@@ -15,7 +15,7 @@ export function AppealInputBar({ value, onChange, onSubmit, disabled }: AppealIn
   return (
     <div
       className={cn(
-        'bg-brand-white flex h-20 w-full items-start gap-4 border-t border-gray-200 p-2',
+        'bg-brand-white flex h-14 w-full items-center gap-4 border-t border-gray-200 p-2',
         disabled && 'bg-white',
       )}
     >

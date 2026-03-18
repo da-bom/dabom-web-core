@@ -1,6 +1,8 @@
 import { http } from '@shared';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { showToast } from 'src/utils/toast';
+
 import { MissionCreate } from './schema';
 
 export const useCreateMission = () => {
@@ -13,7 +15,7 @@ export const useCreateMission = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['missions'] });
-      alert('미션이 성공적으로 생성되었습니다!');
+      showToast.success('미션이 성공적으로 생성되었습니다!');
     },
   });
 };

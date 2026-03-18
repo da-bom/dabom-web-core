@@ -4,6 +4,8 @@ import { setCookie } from 'cookies-next';
 
 import { ApiErrorResponse } from '@shared/type/error';
 
+import { showToast } from 'src/utils/toast';
+
 import { ServiceLoginRequest, ServiceLoginResponse, ServiceLoginResponseSchema } from './schema';
 
 export const login = async (
@@ -39,7 +41,7 @@ export const useServiceLogin = () => {
     },
 
     onError: (error: ApiErrorResponse) => {
-      alert(error.errorMessage);
+      showToast.error(error.errorMessage || '로그인에 실패했습니다.');
     },
   });
 };

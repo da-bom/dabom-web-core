@@ -6,7 +6,7 @@ export interface ApiPolicy {
   assignmentId: number;
   policyId: number;
   policyName: string;
-  type: ['MONTHLY_LIMIT' | 'TIME_BLOCK' | 'MANUAL_BLOCK'];
+  type: 'MONTHLY_LIMIT' | 'TIME_BLOCK' | 'MANUAL_BLOCK' | 'APP_BLOCK';
   isActive: boolean;
   rules: {
     limitBytes?: number;

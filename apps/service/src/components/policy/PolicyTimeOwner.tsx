@@ -31,7 +31,11 @@ export function PolicyTimeOwner({
             <span className={cn('text-body1-m', isDisabled && 'text-gray-500')}>시간 제한</span>
           </div>
 
-          <Toggle isChecked={!!timeLimit} onToggle={onToggleTime} disabled={isDisabled} />
+          <Toggle
+            isChecked={!isDisabled && !!timeLimit}
+            onToggle={onToggleTime}
+            disabled={isDisabled}
+          />
         </div>
 
         <div className="bg-background-sub flex h-14 w-full flex-col items-center justify-center gap-2 rounded-lg py-4">
@@ -74,13 +78,15 @@ export function PolicyTimeOwner({
           )}
         </div>
       </div>
-      <div
-        className={cn(
-          'text-caption-m flex items-center justify-center',
-          isDisabled ? 'text-gray-700' : 'text-gray-800',
-        )}
-      >
-        터치하여 시간을 설정하세요.
+      <div className="flex h-[17px] w-full flex-col items-center justify-center gap-1">
+        <span
+          className={cn(
+            'text-caption-m w-fit leading-[17px]',
+            isDisabled ? 'text-gray-500' : 'text-gray-700',
+          )}
+        >
+          터치하여 시간을 설정하세요.
+        </span>
       </div>
     </>
   );

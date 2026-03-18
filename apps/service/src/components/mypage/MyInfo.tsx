@@ -4,13 +4,16 @@ import { useEffect, useRef, useState } from 'react';
 
 import dynamic from 'next/dynamic';
 
-import { EditIcon } from '@icons';
+import { EditIcon, NotificationIcon } from '@icons';
 import { CURRENT_DATE, DaboIcon, Divider, Grade, bytesToGB, cn } from '@shared';
 
 import { useUpdateFamilyName } from 'src/api/family/useUpdateFamilyName';
 import { useGetMyPage } from 'src/api/mypage/useGetMypage';
+import { usePushSubscription } from 'src/hooks/usePushSubscription';
 
+import { Toggle } from '../common/Toggle';
 import PolicySimple from '../policy/PolicySimple';
+import PushConfirmModal from './PushConfirmModal';
 
 const ProgressBar = dynamic(() => import('src/components/common/ProgressBar'), {
   ssr: false,
@@ -19,13 +22,23 @@ const ProgressBar = dynamic(() => import('src/components/common/ProgressBar'), {
 const MyInfo = () => {
   const { data: myPageData, isLoading } = useGetMyPage(CURRENT_DATE.YEAR, CURRENT_DATE.MONTH);
   const { mutate: updateFamilyName } = useUpdateFamilyName();
+  const { subscribe, unsubscribe } = usePushSubscription();
 
   const [familyName, setFamilyName] = useState('');
   const [inputWidth, setInputWidth] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
+  const [isPushEnabled, setIsPushEnabled] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const spanRef = useRef<HTMLSpanElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'Notification' in window) {
+      const isGranted = Notification.permission === 'granted';
+      setTimeout(() => setIsPushEnabled(isGranted), 0);
+    }
+  }, []);
 
   const [isInitialized, setIsInitialized] = useState(false);
   if (myPageData?.familyName && !isInitialized) {
@@ -55,6 +68,23 @@ const MyInfo = () => {
     }, 0);
   };
 
+  const handlePushToggle = async () => {
+    if (isPushEnabled) {
+      setIsModalOpen(true);
+    } else {
+      await subscribe();
+      if (Notification.permission === 'granted') {
+        setIsPushEnabled(true);
+      }
+    }
+  };
+
+  const handleConfirmUnsubscribe = async () => {
+    await unsubscribe();
+    setIsPushEnabled(false);
+    setIsModalOpen(false);
+  };
+
   const handleBlur = () => {
     setIsEditing(false);
 
@@ -68,7 +98,7 @@ const MyInfo = () => {
   return (
     <>
       <div className="flex items-center gap-4">
-        <DaboIcon usage={displayStatus} width={100} />
+        <DaboIcon usage={displayStatus} type={!limitGB ? 'smile' : undefined} width={100} />
         <div className="flex flex-col justify-center gap-2">
           <div className="flex items-center gap-1">
             <div className="relative flex items-center">
@@ -112,11 +142,21 @@ const MyInfo = () => {
         <div className="flex justify-between">
           <span className="text-caption-m">내 데이터 사용량</span>
           <span className="text-caption-m">
-            {usedGB.toFixed(1)}GB / {limitGB ? `${limitGB}GB` : '무제한'}
+            {Math.round(usedGB)}GB / {limitGB ? `${limitGB}GB` : '무제한'}
           </span>
         </div>
         <ProgressBar value={usagePercent} />
       </div>
+      <Divider />
+
+      <div className="flex w-full items-center justify-between">
+        <div className="flex items-center gap-2">
+          <NotificationIcon sx={{ width: 16 }} className="text-primary-500" />
+          <span className="text-body1-m">푸시 알림</span>
+        </div>
+        <Toggle isChecked={isPushEnabled} onToggle={handlePushToggle} />
+      </div>
+
       <Divider />
 
       <PolicySimple>
@@ -132,6 +172,12 @@ const MyInfo = () => {
           disabled={!myPageData.timeBlock?.start}
         />
       </PolicySimple>
+
+      <PushConfirmModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleConfirmUnsubscribe}
+      />
     </>
   );
 };

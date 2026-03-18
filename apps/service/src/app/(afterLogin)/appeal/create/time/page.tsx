@@ -4,9 +4,10 @@ import React, { Suspense, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import { Button, MainBox } from '@shared';
+import { Button, MainBox, cn } from '@shared';
 
 import { useGetFamilyPolicies } from 'src/api/policy/useGetFamilyPolicies';
+import UnblockToggleBox from 'src/components/appeal/UnblockToggleBox';
 import TimeSettingSheet from 'src/components/policy/TimeSettingBottomSheet';
 import { APPEAL_TYPE_LABEL, APPEAL_UI_TEXT } from 'src/constants/appeal';
 import { getCurrentUserId } from 'src/utils/auth';
@@ -25,6 +26,7 @@ function TimeLimitAppealContent() {
 
   const [startTime, setStartTime] = useState(currentStart);
   const [endTime, setEndTime] = useState(currentEnd);
+  const [isUnblockRequested, setIsUnblockRequested] = useState(false);
 
   const [isStartSheetOpen, setIsStartSheetOpen] = useState(false);
   const [isEndSheetOpen, setIsEndSheetOpen] = useState(false);
@@ -60,35 +62,63 @@ function TimeLimitAppealContent() {
       <div className="flex flex-col items-center gap-7 px-5 pt-20">
         <div className="flex w-full flex-col items-start gap-2">
           <h1 className="text-h2-m">{APPEAL_UI_TEXT.TIME_LIMIT_TITLE}</h1>
-          <p className="text-body2-m text-gray-700">{APPEAL_UI_TEXT.TIME_LIMIT_DESCRIPTION}</p>
+          <p className="text-body2-m text-gray-700">
+            {APPEAL_UI_TEXT.CURRENT_TIME_LABEL}: {currentStart} ~ {currentEnd}
+          </p>
         </div>
 
         <div className="flex w-full flex-col gap-4">
-          <div className="bg-background-sub flex h-fit w-full items-center justify-center rounded-2xl border border-gray-200 px-4 py-4">
-            <span className="text-body1-m">
-              {APPEAL_UI_TEXT.CURRENT_TIME_LABEL}: {currentStart} ~ {currentEnd}
-            </span>
-          </div>
+          <UnblockToggleBox
+            isUnblockRequested={isUnblockRequested}
+            onToggle={() => setIsUnblockRequested(!isUnblockRequested)}
+          />
 
-          <MainBox className="bg-brand-white flex h-fit w-full flex-col items-center justify-center gap-4 rounded-2xl border border-gray-200 px-4 py-8">
+          <MainBox
+            className={cn(
+              'flex h-22 w-full flex-col items-center justify-center gap-4 rounded-2xl border transition-colors',
+              isUnblockRequested
+                ? 'bg-background-sub border-gray-200 px-4 py-8'
+                : 'bg-brand-white border-gray-200 px-4 py-8',
+            )}
+          >
             <div className="flex items-center justify-center gap-2">
               <button
                 type="button"
-                onClick={() => setIsStartSheetOpen(true)}
-                className="bg-primary-50 border-primary-200 flex h-6 w-15 items-center justify-center rounded border px-2"
+                onClick={() => !isUnblockRequested && setIsStartSheetOpen(true)}
+                disabled={isUnblockRequested}
+                className={cn(
+                  'flex h-6 w-15 items-center justify-center rounded border px-2 transition-colors',
+                  isUnblockRequested
+                    ? 'border-background-sub bg-gray-100'
+                    : 'bg-primary-50 border-primary-200',
+                )}
               >
-                <span className="text-body1-m">{startTime}</span>
+                <span className={cn('text-body1-m', isUnblockRequested ? 'text-gray-500' : '')}>
+                  {startTime}
+                </span>
               </button>
-              <span className="text-body1-m">{APPEAL_UI_TEXT.FROM}</span>
+              <span className={cn('text-body1-m', isUnblockRequested ? 'text-gray-500' : '')}>
+                {APPEAL_UI_TEXT.FROM}
+              </span>
 
               <button
                 type="button"
-                onClick={() => setIsEndSheetOpen(true)}
-                className="bg-primary-50 border-primary-200 flex h-6 w-15 items-center justify-center rounded border px-2"
+                onClick={() => !isUnblockRequested && setIsEndSheetOpen(true)}
+                disabled={isUnblockRequested}
+                className={cn(
+                  'flex h-6 w-15 items-center justify-center rounded border px-2 transition-colors',
+                  isUnblockRequested
+                    ? 'border-background-sub bg-gray-100'
+                    : 'bg-primary-50 border-primary-200',
+                )}
               >
-                <span className="text-body1-m">{endTime}</span>
+                <span className={cn('text-body1-m', isUnblockRequested ? 'text-gray-500' : '')}>
+                  {endTime}
+                </span>
               </button>
-              <span className="text-body1-m">{APPEAL_UI_TEXT.TO}</span>
+              <span className={cn('text-body1-m', isUnblockRequested ? 'text-gray-500' : '')}>
+                {APPEAL_UI_TEXT.TO}
+              </span>
             </div>
           </MainBox>
         </div>
@@ -103,7 +133,7 @@ function TimeLimitAppealContent() {
           color="dark"
           onClick={() =>
             router.push(
-              `/appeal/create/reason?id=${myPolicyId || ''}&start=${startTime}&end=${endTime}&policy=${encodeURIComponent(APPEAL_TYPE_LABEL.TIME_BLOCK)}`,
+              `/appeal/create/reason?id=${myPolicyId || ''}&start=${startTime}&end=${endTime}&unblock=${isUnblockRequested}&policy=${encodeURIComponent(APPEAL_TYPE_LABEL.TIME_BLOCK)}`,
             )
           }
         >

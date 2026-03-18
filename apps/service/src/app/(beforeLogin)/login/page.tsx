@@ -5,10 +5,11 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { ErrorIcon } from '@icons';
-import { Button, InputField } from '@shared';
+import { Button, InputField, Spinner, formatPhoneNumber } from '@shared';
 
 import { useServiceLogin } from 'src/api/auth/useServiceLogin';
 import { usePushSubscription } from 'src/hooks/usePushSubscription';
+import { showToast } from 'src/utils/toast';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -18,16 +19,22 @@ export default function LoginPage() {
   const { mutateAsync: login, isPending: isLoading } = useServiceLogin();
   const { subscribe } = usePushSubscription();
 
+  const handlePhoneNumberChange = (value: string) => {
+    setPhoneNumber(formatPhoneNumber(value));
+  };
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!phoneNumber || !password) {
-      alert('전화번호와 비밀번호를 입력해주세요.');
+    const purePhoneNumber = phoneNumber.replace(/-/g, '');
+
+    if (!purePhoneNumber || !password) {
+      showToast.error('전화번호와 비밀번호를 입력해주세요.');
       return;
     }
 
     try {
-      await login({ phoneNumber, password });
+      await login({ phoneNumber: purePhoneNumber, password });
       await subscribe();
       router.push('/home');
     } catch (error) {
@@ -46,7 +53,8 @@ export default function LoginPage() {
               type="tel"
               placeholder="전화번호를 입력해주세요"
               value={phoneNumber}
-              onValueChange={(value) => setPhoneNumber(value)}
+              onValueChange={handlePhoneNumberChange}
+              maxLength={13}
             />
 
             <InputField
@@ -72,7 +80,7 @@ export default function LoginPage() {
 
           <div className="flex w-full justify-center">
             <Button type="submit" size="lg" color="dark" disabled={isLoading}>
-              로그인
+              {isLoading ? <Spinner size="sm" /> : '로그인'}
             </Button>
           </div>
         </form>

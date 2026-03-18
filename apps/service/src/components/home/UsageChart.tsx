@@ -111,7 +111,7 @@ const UsageChart = ({
         callbacks: {
           label: (context: TooltipItem<'pie'>) => {
             const val = context.parsed;
-            const displayVal = isCard ? val.toFixed(1) : val;
+            const displayVal = isCard ? val.toFixed(0) : val;
             return ` ${context.label}: ${displayVal}${unit}`;
           },
         },

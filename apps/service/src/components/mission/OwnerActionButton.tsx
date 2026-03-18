@@ -3,6 +3,7 @@
 import { Button } from '@shared';
 
 import { useRespondReward } from 'src/api/reward/useRespondReward';
+import { showToast } from 'src/utils/toast';
 
 import StatusBox from './StatusBox';
 
@@ -29,7 +30,7 @@ const OwnerActionButton = ({
 
     if (reason === null) return;
     if (reason.trim() === '') {
-      alert('거절 사유는 필수입니다.');
+      showToast.error('거절 사유는 필수입니다.');
       return;
     }
 

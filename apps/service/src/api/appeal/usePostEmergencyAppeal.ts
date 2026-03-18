@@ -3,14 +3,13 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { ApiErrorResponse } from '@shared/type/error';
 
-import { EMERGENCY_DATA_BYTES } from 'src/constants/appeal';
+import { showToast } from 'src/utils/toast';
 
 import { EmergencyAppealResponseSchema } from './schema';
 
 export const postEmergencyAppeal = async (requestReason: string) => {
   const response = await http.post('/appeals/emergency', {
     requestReason,
-    additionalBytes: EMERGENCY_DATA_BYTES,
   });
 
   try {
@@ -32,7 +31,7 @@ export const usePostEmergencyAppeal = () => {
       queryClient.invalidateQueries({ queryKey: ['familyPolicies'] });
     },
     onError: (error: ApiErrorResponse) => {
-      alert(error.errorMessage || '긴급 요청에 실패했습니다.');
+      showToast.error(error.errorMessage || '긴급 요청에 실패했습니다.');
     },
   });
 };

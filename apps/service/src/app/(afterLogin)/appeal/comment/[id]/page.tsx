@@ -1,9 +1,8 @@
 'use client';
 
 import React, { Suspense, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { toast } from 'react-hot-toast';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 
 import { ApprovedIcon, RejectedIcon } from '@icons';
 import { Button, formatSize } from '@shared';
@@ -16,6 +15,7 @@ import { useCustomerMe } from 'src/api/auth/useCustomerMe';
 import { AppealInputBar, ChatBubble, PolicySummaryCard } from 'src/components/appeal';
 import { APPEAL_TYPE_LABEL, APPEAL_UI_TEXT } from 'src/constants/appeal';
 import { formatChatTime } from 'src/utils/formatTime';
+import { showToast } from 'src/utils/toast';
 
 type AppealStatus = 'pending' | 'approved' | 'rejected' | 'cancelled';
 
@@ -27,8 +27,9 @@ const isValidStatus = (status: string | null): status is AppealStatus => {
 
 function AppealCommentContent() {
   const router = useRouter();
+  const params = useParams();
+  const appealId = Number(params.id);
   const searchParams = useSearchParams();
-  const appealId = Number(searchParams.get('id'));
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const selectedPolicy = searchParams.get('policy') || APPEAL_TYPE_LABEL.NORMAL;
@@ -89,17 +90,17 @@ function AppealCommentContent() {
       setInputValue('');
     } catch (error) {
       console.error('댓글 작성 실패:', error);
-      toast.error('메시지 전송에 실패했습니다.');
+      showToast.error('메시지 전송에 실패했습니다.');
     }
   };
 
   const handleApprove = async () => {
     try {
       await respondAppeal({ action: 'APPROVED', rejectReason: null });
-      toast.success('요청을 승인했습니다.');
+      showToast.success('요청을 승인했습니다.');
     } catch (error) {
       console.error('승인 실패:', error);
-      toast.error('승인 처리 중 오류가 발생했습니다.');
+      showToast.error('승인 처리 중 오류가 발생했습니다.');
     }
   };
 
@@ -117,13 +118,19 @@ function AppealCommentContent() {
           <PolicySummaryCard
             policyName={selectedPolicy}
             requestedValue={
-              inputAmount
-                ? `${inputAmount}GB`
-                : data.desiredRules?.limitBytes
-                  ? formatSize(data.desiredRules.limitBytes).total
-                  : data.desiredRules?.start && data.desiredRules?.end
-                    ? `${data.desiredRules.start} ~ ${data.desiredRules.end}`
-                    : '-'
+              selectedPolicy === APPEAL_TYPE_LABEL.EMERGENCY || data.type === 'EMERGENCY'
+                ? APPEAL_UI_TEXT.EMERGENCY_DATA_AMOUNT
+                : inputAmount
+                  ? `${inputAmount}GB`
+                  : data.policyType === 'MANUAL_BLOCK'
+                    ? APPEAL_UI_TEXT.MANUAL_BLOCK
+                    : data.policyType === 'APP_BLOCK'
+                      ? APPEAL_UI_TEXT.APP_BLOCK
+                      : data.desiredRules?.limitBytes
+                        ? formatSize(data.desiredRules.limitBytes).total
+                        : data.desiredRules?.startTime && data.desiredRules?.endTime
+                          ? `${data.desiredRules.startTime} ~ ${data.desiredRules.endTime}`
+                          : '-'
             }
             reasonText={
               status === 'rejected' ? (

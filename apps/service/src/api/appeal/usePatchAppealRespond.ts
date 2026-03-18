@@ -3,6 +3,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { ApiErrorResponse } from '@shared/type/error';
 
+import { showToast } from 'src/utils/toast';
+
 import { AppealRespondRequest, AppealRespondResponseSchema } from './schema';
 
 export const patchAppealRespond = async (appealId: number, data: AppealRespondRequest) => {
@@ -27,7 +29,7 @@ export const usePatchAppealRespond = (appealId: number) => {
       queryClient.invalidateQueries({ queryKey: ['appealDetail', appealId] });
     },
     onError: (error: ApiErrorResponse) => {
-      alert(error.errorMessage || '이의 제기 응답 처리에 실패했습니다.');
+      showToast.error(error.errorMessage || '이의 제기 응답 처리에 실패했습니다.');
     },
   });
 };

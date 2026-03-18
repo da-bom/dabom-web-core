@@ -27,7 +27,7 @@ const Slider = ({ min, max, value, onChange, disabled = false, className }: Slid
       <div
         className={cn(
           'col-start-1 row-start-1 h-2 justify-self-start rounded-l-full transition-colors duration-300',
-          disabled ? 'bg-gray-700' : 'bg-primary',
+          disabled ? 'bg-gray-600' : 'bg-primary',
         )}
         style={{ width: `${percentage}%` }}
       />
@@ -39,7 +39,7 @@ const Slider = ({ min, max, value, onChange, disabled = false, className }: Slid
         <div
           className={cn(
             'bg-brand-white h-4 w-4 -translate-x-1/2 rounded-full border-2 shadow-sm transition-colors duration-300',
-            disabled ? 'border-gray-700' : 'border-primary',
+            disabled ? 'border-gray-600' : 'border-primary',
           )}
         />
       </div>

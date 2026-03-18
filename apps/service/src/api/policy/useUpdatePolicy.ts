@@ -3,6 +3,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { ApiErrorResponse } from '@shared/type/error';
 
+import { showToast } from 'src/utils/toast';
+
 import { UpdatePolicyRequest, UpdatePolicyResponse, UpdatePolicyResponseSchema } from './schema';
 
 export const updatePolicy = async (payload: UpdatePolicyRequest): Promise<UpdatePolicyResponse> => {
@@ -19,7 +21,7 @@ export const useUpdatePolicy = () => {
       queryClient.invalidateQueries({ queryKey: ['familyPolicies'] });
     },
     onError: (error: ApiErrorResponse) => {
-      alert(error.errorMessage);
+      showToast.error(error.errorMessage || '정책 수정에 실패했습니다.');
     },
   });
 };

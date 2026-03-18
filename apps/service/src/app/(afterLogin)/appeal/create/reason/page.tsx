@@ -1,7 +1,6 @@
 'use client';
 
 import React, { Suspense, useState } from 'react';
-import { toast } from 'react-hot-toast';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
@@ -10,6 +9,7 @@ import { Button } from '@shared';
 import { usePatchAppealRespond } from 'src/api/appeal/usePatchAppealRespond';
 import { usePostEmergencyAppeal } from 'src/api/appeal/usePostEmergencyAppeal';
 import { APPEAL_TYPE_LABEL, APPEAL_UI_TEXT } from 'src/constants/appeal';
+import { showToast } from 'src/utils/toast';
 
 function AppealReasonContent() {
   const router = useRouter();
@@ -28,7 +28,7 @@ function AppealReasonContent() {
 
   const handleComplete = async () => {
     if (!reason.trim()) {
-      toast.error(APPEAL_UI_TEXT.REASON_INPUT_ERROR);
+      showToast.error(APPEAL_UI_TEXT.REASON_INPUT_ERROR);
       return;
     }
 

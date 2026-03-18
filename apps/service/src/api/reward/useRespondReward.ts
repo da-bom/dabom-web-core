@@ -1,6 +1,8 @@
 import { http } from '@shared';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { showToast } from 'src/utils/toast';
+
 import { RespondRewardDataSchema } from './schema';
 
 interface RespondPayload {
@@ -36,7 +38,7 @@ export const useRespondReward = () => {
     },
     onError: (error) => {
       console.error('보상 처리 실패:', error);
-      alert('보상 처리에 실패했습니다.');
+      showToast.error('보상 처리에 실패했습니다.');
     },
   });
 };

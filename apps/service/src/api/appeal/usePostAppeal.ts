@@ -3,6 +3,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { ApiErrorResponse } from '@shared/type/error';
 
+import { showToast } from 'src/utils/toast';
+
 import { AppealCreateRequest, AppealCreateResponseSchema } from './schema';
 
 export const postAppeal = async (data: AppealCreateRequest) => {
@@ -26,7 +28,7 @@ export const usePostAppeal = () => {
       queryClient.invalidateQueries({ queryKey: ['appeals'] });
     },
     onError: (error: ApiErrorResponse) => {
-      alert(error.errorMessage || '이의 제기 생성에 실패했습니다.');
+      showToast.error(error.errorMessage || '이의 제기 생성에 실패했습니다.');
     },
   });
 };
