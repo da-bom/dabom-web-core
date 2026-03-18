@@ -1,51 +1,40 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
-import { NotificationItem, fetchNotifications } from '@shared/data/notification';
-
+import { useNotificationList } from 'src/api/notification/useNotificationList';
+import { useNotificationSSE } from 'src/api/notification/useNotificationSSE';
 import NotiBox from 'src/components/notification/NotiBox';
 
 const NOTICE_MESSAGE = '30일이 지난 메세지는 자동 삭제됩니다.';
 
 export default function NotificationPage() {
-  const [notifications, setNotifications] = useState<NotificationItem[]>([]);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
+  useNotificationSSE(true);
+
+  const {
+    notifications,
+    unreadCount,
+    hasNextPage,
+    isLoading,
+    isFetchingNextPage,
+    fetchNextPage,
+    readAll,
+    readOne,
+    deleteOne,
+  } = useNotificationList();
+
+  const sortedNotifications = useMemo(
+    () => [...notifications].sort((a, b) => b.id - a.id),
+    [notifications],
+  );
 
   const observerTarget = useRef<HTMLDivElement>(null);
-
-  const loadData = useCallback(async () => {
-    if (isLoading || !hasMore) return;
-
-    setIsLoading(true);
-    try {
-      const response = await fetchNotifications(page);
-
-      setNotifications((prev) => {
-        const existingIds = new Set(prev.map((item) => item.id));
-        const newItems = response.data.filter((item) => !existingIds.has(item.id));
-        return [...prev, ...newItems];
-      });
-
-      setHasMore(response.hasMore);
-
-      if (response.hasMore) {
-        setPage((prev) => prev + 1);
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [page, hasMore, isLoading]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && hasMore) {
-          loadData();
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
         }
       },
       { threshold: 1.0 },
@@ -58,22 +47,46 @@ export default function NotificationPage() {
     return () => {
       observer.disconnect();
     };
-  }, [loadData, hasMore]);
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
-    <section className="bg-background-base flex min-h-full w-full flex-col">
-      <div className="mt-14 w-full px-4 pb-10">
-        <ul className="flex flex-col gap-4">
-          {notifications.map((noti) => (
-            <li key={noti.id}>
-              <NotiBox title={noti.title} description={noti.description} isRead={noti.isRead} />
+    <section className="bg-background-base flex w-full flex-col">
+      <div className="flex flex-col items-start gap-4 p-5">
+        <div className="flex w-full items-center justify-between">
+          <span className="text-body2-m text-brand-black">새 알림 ({unreadCount})</span>
+          <button
+            type="button"
+            className="text-body2-m text-primary cursor-pointer border-none bg-transparent p-0"
+            onClick={() => readAll()}
+          >
+            모두 읽음으로 표시
+          </button>
+        </div>
+
+        <ul className="flex w-full flex-col gap-4">
+          {sortedNotifications.map((noti, index) => (
+            <li
+              key={noti.id}
+              className="w-full transition-all duration-300"
+              style={{
+                zIndex: notifications.length - index,
+              }}
+            >
+              <NotiBox
+                id={noti.id}
+                title={noti.title}
+                message={noti.message}
+                isRead={noti.isRead}
+                onRead={(id) => readOne(id)}
+                onDelete={(id) => deleteOne(id)}
+              />
             </li>
           ))}
         </ul>
 
-        {hasMore && (
+        {hasNextPage && (
           <div ref={observerTarget} className="flex w-full items-center justify-center py-4">
-            {isLoading && (
+            {(isLoading || isFetchingNextPage) && (
               <div className="flex items-center gap-2.5">
                 <div className="h-2 w-2 animate-bounce rounded-full bg-gray-600 [animation-delay:-0.3s]" />
                 <div className="h-2 w-2 animate-bounce rounded-full bg-gray-600 [animation-delay:-0.15s]" />
@@ -83,9 +96,10 @@ export default function NotificationPage() {
           </div>
         )}
 
-        {!hasMore && (
-          // 알람 리스트의 개수가 많아 화면을 가득 채울 때 바텀의 도달점?을 일단 임의로 정했습니다. mt-8, mb-12
-          <p className="text-body2-m mt-8 mb-12 text-center text-gray-500">{NOTICE_MESSAGE}</p>
+        {!hasNextPage && notifications.length > 0 && (
+          <div className="mt-8 mb-12 flex w-full flex-col items-center gap-1">
+            <p className="text-body2-m text-gray-600">{NOTICE_MESSAGE}</p>
+          </div>
         )}
       </div>
     </section>

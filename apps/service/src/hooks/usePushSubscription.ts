@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 
-import { getVapidPublicKey, subscribePush } from '../api/notification';
-import { getCurrentUserId } from '../utils/auth';
+import { getVapidPublicKey, subscribePush, unsubscribePush } from 'src/api/notification';
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
@@ -33,14 +32,8 @@ export const usePushSubscription = () => {
       }
     }
 
-    const customerId = getCurrentUserId();
-    if (!customerId) {
-      console.warn('⚠️ 로그인된 사용자 정보를 찾을 수 없습니다. push 구독을 건너뜁니다.');
-      return;
-    }
-
     try {
-      const { publicKey } = await getVapidPublicKey(customerId);
+      const { publicKey } = await getVapidPublicKey();
       const applicationServerKey = urlBase64ToUint8Array(publicKey);
       const registration = await navigator.serviceWorker.ready;
       const subscription = await registration.pushManager.subscribe({
@@ -50,16 +43,13 @@ export const usePushSubscription = () => {
 
       const subJson = subscription.toJSON();
       if (subJson.endpoint && subJson.keys?.p256dh && subJson.keys?.auth) {
-        await subscribePush(
-          {
-            endpoint: subJson.endpoint,
-            keys: {
-              p256dh: subJson.keys.p256dh,
-              auth: subJson.keys.auth,
-            },
+        await subscribePush({
+          endpoint: subJson.endpoint,
+          keys: {
+            p256dh: subJson.keys.p256dh,
+            auth: subJson.keys.auth,
           },
-          customerId,
-        );
+        });
         console.log('✅ push 구독이 완료되었으며 서버와 동기화되었습니다.');
       }
     } catch (error) {
@@ -67,5 +57,22 @@ export const usePushSubscription = () => {
     }
   }, []);
 
-  return { subscribe };
+  const unsubscribe = useCallback(async () => {
+    if (typeof window === 'undefined' || !('serviceWorker' in navigator)) return;
+
+    try {
+      const registration = await navigator.serviceWorker.ready;
+      const subscription = await registration.pushManager.getSubscription();
+
+      if (subscription) {
+        await subscription.unsubscribe();
+        await unsubscribePush();
+        console.log('✅ push 구독 해제가 완료되었습니다.');
+      }
+    } catch (error) {
+      console.error('❌ push 구독 해제 중 오류 발생:', error);
+    }
+  }, []);
+
+  return { subscribe, unsubscribe };
 };
