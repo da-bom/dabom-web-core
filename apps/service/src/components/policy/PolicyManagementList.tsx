@@ -64,6 +64,7 @@ export default function PolicyManagementList({ customers }: PolicyManagementList
     onLimitChange: (id: string, newGB: number | null) => {
       if (!isOwner) return;
       const newBytes = newGB === null ? null : gbToBytes(newGB);
+      const isActive = newBytes !== null;
 
       setMemberStates((prev) => ({
         ...prev,
@@ -74,7 +75,7 @@ export default function PolicyManagementList({ customers }: PolicyManagementList
           customerId: Number(id),
           type: 'MONTHLY_LIMIT',
           value: { limitBytes: newBytes },
-          isActive: true,
+          isActive,
         },
       });
     },

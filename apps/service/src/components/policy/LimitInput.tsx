@@ -25,7 +25,7 @@ export default function LimitInput({ value, onChange, disabled = false }: LimitI
         disabled={disabled}
         className={cn(
           'text-body1-m h-6 w-full text-center transition-colors outline-none',
-          disabled ? 'bg-gray-100 text-gray-700' : 'bg-brand-white text-brand-black',
+          disabled ? 'bg-gray-100 text-gray-700' : 'bg-brand-white text-gray-800',
         )}
       />
     </div>

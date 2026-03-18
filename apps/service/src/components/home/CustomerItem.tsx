@@ -5,7 +5,7 @@ import { bytesToGB } from '@shared';
 
 import { CustomerListType } from 'src/types/DataUsage';
 
-const WARNING_THRESHOLD = 0.6;
+const WARNING_THRESHOLD = 0.8;
 
 const CustomerItem = ({ customer }: { customer: CustomerListType }) => {
   const usageRatio =

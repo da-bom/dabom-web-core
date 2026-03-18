@@ -4,6 +4,8 @@ export const APPEAL_TYPE_LABEL = {
   EMERGENCY: '긴급 요청',
   NORMAL: '데이터 한도',
   TIME_BLOCK: '시간 제한',
+  MANUAL_BLOCK: '데이터 차단',
+  APP_BLOCK: '앱 차단',
 } as const;
 
 export const APPEAL_STATUS_LABEL = {
@@ -21,7 +23,8 @@ export const APPEAL_UI_TEXT = {
   DATA_LIMIT_TITLE: '변경을 원하는 한도는 얼마인가요?',
   DATA_LIMIT_DESCRIPTION: 'description',
   CURRENT_LIMIT_LABEL: '현재 한도',
-  TIME_LIMIT_TITLE: '변경을 원하는 시간은 언제인가요?',
+  UNBLOCK: '한도를 해제해 주세요.',
+  TIME_LIMIT_TITLE: '변경을 원하는 시간대를 알려주세요?',
   TIME_LIMIT_DESCRIPTION: 'description',
   CURRENT_TIME_LABEL: '현재 제한',
   FROM: '부터',
@@ -33,6 +36,8 @@ export const APPEAL_UI_TEXT = {
   POLICY_PREFIX: '정책: ',
   CHANGE_PREFIX: '변경: ',
   REASON_PREFIX: '요청 사유: ',
+  MANUAL_BLOCK: '차단 해제',
+  APP_BLOCK: '앱 차단 해제',
   EMERGENCY_DATA_AMOUNT: '300MB',
   REASON_INPUT_TITLE: '사유를 입력해 주세요.',
   REASON_INPUT_DESCRIPTION: 'description',

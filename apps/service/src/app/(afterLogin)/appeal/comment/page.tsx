@@ -117,13 +117,19 @@ function AppealCommentContent() {
           <PolicySummaryCard
             policyName={selectedPolicy}
             requestedValue={
-              inputAmount
-                ? `${inputAmount}GB`
-                : data.desiredRules?.limitBytes
-                  ? formatSize(data.desiredRules.limitBytes).total
-                  : data.desiredRules?.start && data.desiredRules?.end
-                    ? `${data.desiredRules.start} ~ ${data.desiredRules.end}`
-                    : '-'
+              selectedPolicy === APPEAL_TYPE_LABEL.EMERGENCY || data.type === 'EMERGENCY'
+                ? APPEAL_UI_TEXT.EMERGENCY_DATA_AMOUNT
+                : inputAmount
+                  ? `${inputAmount}GB`
+                  : data.policyType === 'MANUAL_BLOCK'
+                    ? APPEAL_UI_TEXT.MANUAL_BLOCK
+                    : data.policyType === 'APP_BLOCK'
+                      ? APPEAL_UI_TEXT.APP_BLOCK
+                      : data.desiredRules?.limitBytes
+                        ? formatSize(data.desiredRules.limitBytes).total
+                        : data.desiredRules?.startTime && data.desiredRules?.endTime
+                          ? `${data.desiredRules.startTime} ~ ${data.desiredRules.endTime}`
+                          : '-'
             }
             reasonText={
               status === 'rejected' ? (

@@ -4,10 +4,11 @@ import React, { useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import { Button, MainBox, bytesToGB } from '@shared';
+import { Button, MainBox, bytesToGB, cn } from '@shared';
 
 import { useGetFamilyUsageCurrent } from 'src/api/family/useGetFamilyUsage';
 import { useGetFamilyPolicies } from 'src/api/policy/useGetFamilyPolicies';
+import UnblockToggleBox from 'src/components/appeal/UnblockToggleBox';
 import Slider from 'src/components/common/Slider';
 import LimitInput from 'src/components/policy/LimitInput';
 import { APPEAL_TYPE_LABEL, APPEAL_UI_TEXT } from 'src/constants/appeal';
@@ -56,6 +57,7 @@ function DataLimitForm({
 }) {
   const router = useRouter();
   const [selectedLimit, setSelectedLimit] = useState(currentLimit);
+  const [isUnblockRequested, setIsUnblockRequested] = useState(false);
 
   const handleInputChange = (value: string) => {
     const numericValue = value.replace(/\D/g, '');
@@ -68,17 +70,23 @@ function DataLimitForm({
       <div className="flex flex-col items-center gap-7 px-5 pt-20">
         <div className="flex w-full flex-col items-start gap-2">
           <h1 className="text-h2-m">{APPEAL_UI_TEXT.DATA_LIMIT_TITLE}</h1>
-          <p className="text-body2-m text-gray-700">{APPEAL_UI_TEXT.DATA_LIMIT_DESCRIPTION}</p>
+          <p className="text-body2-m text-gray-700">
+            {APPEAL_UI_TEXT.CURRENT_LIMIT_LABEL}: {currentLimit}GB
+          </p>
         </div>
 
         <div className="flex w-full flex-col gap-4">
-          <div className="bg-background-sub flex h-fit w-full items-center justify-center rounded-2xl border border-gray-200 p-4">
-            <span className="text-body1-m">
-              {APPEAL_UI_TEXT.CURRENT_LIMIT_LABEL}: {currentLimit}GB
-            </span>
-          </div>
+          <UnblockToggleBox
+            isUnblockRequested={isUnblockRequested}
+            onToggle={() => setIsUnblockRequested(!isUnblockRequested)}
+          />
 
-          <MainBox className="bg-brand-white flex h-fit w-full flex-col items-center gap-4 rounded-2xl border border-gray-200 px-4 py-8">
+          <MainBox
+            className={cn(
+              'flex h-fit w-full flex-col items-center gap-4 rounded-2xl border border-gray-200 px-4 py-8 transition-colors',
+              isUnblockRequested ? 'bg-background-sub' : 'bg-brand-white',
+            )}
+          >
             <div className="flex h-fit w-full flex-col gap-1">
               <Slider
                 key={maxLimit}
@@ -86,6 +94,7 @@ function DataLimitForm({
                 max={maxLimit}
                 value={selectedLimit}
                 onChange={setSelectedLimit}
+                disabled={isUnblockRequested}
               />
               <div className="text-caption-m flex w-full justify-between px-1 text-gray-800">
                 <span>{MIN_LIMIT}GB</span>
@@ -94,7 +103,11 @@ function DataLimitForm({
             </div>
 
             <div className="flex h-fit w-full items-center justify-center gap-1">
-              <LimitInput value={selectedLimit} onChange={handleInputChange} />
+              <LimitInput
+                value={selectedLimit}
+                onChange={handleInputChange}
+                disabled={isUnblockRequested}
+              />
               <span className="text-body1-m text-gray-800">GB</span>
             </div>
           </MainBox>
@@ -110,7 +123,7 @@ function DataLimitForm({
           color="dark"
           onClick={() =>
             router.push(
-              `/appeal/create/reason?id=${myPolicyId || ''}&amount=${selectedLimit}&policy=${encodeURIComponent(APPEAL_TYPE_LABEL.NORMAL)}`,
+              `/appeal/create/reason?id=${myPolicyId || ''}&amount=${selectedLimit}&unblock=${isUnblockRequested}&policy=${encodeURIComponent(APPEAL_TYPE_LABEL.NORMAL)}`,
             )
           }
         >

@@ -11,24 +11,14 @@ import {
   UsageSSEDataSchema,
 } from './schema';
 
-export const connectUsageSSE = (
-  onMessage: (eventName: string, rawData: string) => void,
-  signal: AbortSignal,
-) => {
-  const ENDPOINT = '/families/usage/sse';
-  return sseClient.connect(ENDPOINT, onMessage, signal);
-};
-
 export const useSSE = (enabled: boolean) => {
   const [totalRealtime, setTotalRealtime] = useState<UsageSSEData | null>(null);
   const [memberRealtime, setMemberRealtime] = useState<UsageFamilySSEData | null>(null);
 
   useEffect(() => {
-    if (!enabled || globalThis.window === undefined) return;
+    if (!enabled || typeof window === 'undefined') return;
 
-    const abortController = new AbortController();
-
-    connectUsageSSE((eventName, rawData) => {
+    return sseClient.subscribe((eventName, rawData) => {
       if (!rawData || !rawData.startsWith('{')) return;
 
       try {
@@ -37,20 +27,12 @@ export const useSSE = (enabled: boolean) => {
         if (eventName === 'usage-updated') {
           const validated = UsageSSEDataSchema.parse(parsedData);
           setTotalRealtime(validated);
-        }
-
-        if (eventName === 'usage-update-by-member') {
+        } else if (eventName === 'usage-update-by-member') {
           const validated = UsageFamilySSEDataSchema.parse(parsedData);
           setMemberRealtime(validated);
         }
-      } catch (error) {
-        console.error('SSE 파싱/검증 에러:', error);
-      }
-    }, abortController.signal).catch((error) => console.error(error));
-
-    return () => {
-      abortController.abort();
-    };
+      } catch {}
+    });
   }, [enabled]);
 
   return { totalRealtime, memberRealtime };
