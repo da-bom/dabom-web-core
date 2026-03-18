@@ -5,16 +5,16 @@ import Link from 'next/link';
 import { ChevronIcon } from '@icons';
 import { Button, Card, MainBox } from '@shared';
 
+import { useCustomerMe } from 'src/api/auth/useCustomerMe';
 import { Mission } from 'src/api/mission/schema';
 import { useGetMissions } from 'src/api/mission/useGetMissions';
 import MemberActionButton from 'src/components/mission/MemberActionButton';
 import OwnerActionButton from 'src/components/mission/OwnerActionButton';
 
-// TODO: API 응답값으로 수정
-const isOwner = false;
-
 const MissionPage = () => {
   const { data, isLoading, isError } = useGetMissions({ size: 20 });
+  const { data: user } = useCustomerMe();
+  const isOwner = user?.role === 'OWNER';
 
   if (isLoading) return <div className="m-5 text-center">미션을 불러오는 중...</div>;
   if (isError)
@@ -66,11 +66,14 @@ const MissionPage = () => {
           <ChevronIcon className="text-gray-800" sx={{ width: 16 }} />
         </MainBox>
       </Link>
-      <Link className="fixed right-0 bottom-25 left-0 mx-5" href="/mission/create">
-        <Button size="lg" color="dark" isFullWidth>
-          미션 만들기
-        </Button>
-      </Link>
+
+      {isOwner && (
+        <Link className="fixed right-0 bottom-25 left-0 mx-5" href="/mission/create">
+          <Button size="lg" color="dark" isFullWidth>
+            미션 만들기
+          </Button>
+        </Link>
+      )}
     </div>
   );
 };

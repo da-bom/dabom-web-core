@@ -11,9 +11,9 @@ import { Comment } from 'src/api/appeal/schema';
 import { useGetAppealDetail } from 'src/api/appeal/useGetAppealDetail';
 import { usePatchAppealRespond } from 'src/api/appeal/usePatchAppealRespond';
 import { usePostComment } from 'src/api/appeal/usePostComment';
+import { useCustomerMe } from 'src/api/auth/useCustomerMe';
 import { AppealInputBar, ChatBubble, PolicySummaryCard } from 'src/components/appeal';
 import { APPEAL_TYPE_LABEL, APPEAL_UI_TEXT } from 'src/constants/appeal';
-import { getCurrentUserRole } from 'src/utils/auth';
 import { formatChatTime } from 'src/utils/formatTime';
 import { showToast } from 'src/utils/toast';
 
@@ -45,8 +45,8 @@ function AppealCommentContent() {
 
   const [inputValue, setInputValue] = useState('');
 
-  const userRole = getCurrentUserRole();
-  const isOwner = userRole === 'OWNER';
+  const { data: user } = useCustomerMe();
+  const isOwner = user?.role === 'OWNER';
 
   const sortedComments = useMemo(() => {
     if (!data?.comments?.content) return [];

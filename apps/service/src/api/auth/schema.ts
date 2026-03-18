@@ -12,3 +12,13 @@ export const ServiceLoginResponseSchema = z.object({
 
 export type ServiceLoginRequest = z.infer<typeof ServiceLoginRequestSchema>;
 export type ServiceLoginResponse = z.infer<typeof ServiceLoginResponseSchema>;
+
+export const customerMeSchema = z.object({
+  customerId: z.number(),
+  name: z.string(),
+  phoneNumber: z.string(),
+  familyId: z.number(),
+  role: z.enum(['OWNER', 'MEMBER']),
+});
+
+export type CustomerMe = z.infer<typeof customerMeSchema>;

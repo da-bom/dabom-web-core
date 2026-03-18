@@ -7,6 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 
+import { useCustomerMe } from 'src/api/auth/useCustomerMe';
 import { MissionCreate, MissionCreateSchema } from 'src/api/mission/schema';
 import Step1Title from 'src/components/mission/Step1Title';
 import Step2Target from 'src/components/mission/Step2Target';
@@ -60,6 +61,18 @@ function MissionCreateForm() {
 }
 
 export default function MissionCreatePage() {
+  const { data: user, isLoading } = useCustomerMe();
+  const isOwner = user?.role === 'OWNER';
+
+  if (isLoading) {
+    return <div className="p-5 text-center">사용자 정보를 불러오는 중...</div>;
+  }
+
+  if (!isOwner) {
+    <div className="text-body2 flex items-center justify-center">
+      미션 생성은 OWNER만 가능합니다.
+    </div>;
+  }
   return (
     <Suspense fallback={<div className="p-5 text-center">로딩 중...</div>}>
       <MissionCreateForm />

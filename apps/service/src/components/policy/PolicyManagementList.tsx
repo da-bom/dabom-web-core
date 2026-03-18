@@ -1,15 +1,15 @@
 'use client';
 
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { gbToBytes } from '@shared';
 
+import { useCustomerMe } from 'src/api/auth/useCustomerMe';
 import { useGetFamilyUsageCurrent } from 'src/api/family/useGetFamilyUsage';
 import { ServiceCustomerDetail } from 'src/api/policy/schema';
 import { useUpdatePolicy } from 'src/api/policy/useUpdatePolicy';
 import MemberCard from 'src/components/policy/MemberCard';
 import TimeSettingBottomSheet from 'src/components/policy/TimeSettingBottomSheet';
-import { UserRole, getCurrentUserRole } from 'src/utils/auth';
 
 export interface CustomerState {
   customerId: number;
@@ -32,8 +32,8 @@ export default function PolicyManagementList({ customers }: PolicyManagementList
   const { mutate: updatePolicy } = useUpdatePolicy();
   const { data: familyUsage } = useGetFamilyUsageCurrent();
 
-  const [currentUserRole] = useState<UserRole>(getCurrentUserRole);
-  const isOwner = currentUserRole === 'OWNER';
+  const { data: user } = useCustomerMe();
+  const isOwner = user?.role === 'OWNER';
 
   const [memberStates, setMemberStates] = useState<Record<string, CustomerState>>(() => {
     const initial: Record<string, CustomerState> = {};
