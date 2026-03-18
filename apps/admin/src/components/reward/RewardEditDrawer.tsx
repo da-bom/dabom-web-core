@@ -7,14 +7,22 @@ import { useParams, useRouter } from 'next/navigation';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ImageIcon } from '@icons';
-import { Button, Drawer, Input, MainBox, TextField, useUploadImage } from '@shared';
+import {
+  Button,
+  CloseConfirmModal,
+  Drawer,
+  Input,
+  MainBox,
+  ModalLayout,
+  TextField,
+  useUploadImage,
+} from '@shared';
 
 import { RewardUpdate, RewardUpdateSchema } from 'src/api/reward/schema';
 import { useDeleteRewardTemplate } from 'src/api/reward/useDeleteRewardTemplate';
 import { useGetRewardDetail } from 'src/api/reward/useGetRewardDetail';
 import { useUpdateReward } from 'src/api/reward/useUpdateReward';
 
-import ConfirmModal from '../common/ConfirmModal';
 import Loading from '../common/Loading';
 
 const RewardEditDrawer = () => {
@@ -23,11 +31,13 @@ const RewardEditDrawer = () => {
   const targetId = Number(id);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // 상태 관리
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // 삭제 모달용
+  const [showExitConfirm, setShowExitConfirm] = useState(false); // 취소 확인 모달용
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const { data: rewardData, isLoading: isDetailLoading } = useGetRewardDetail(targetId);
-
   const { mutate: updateReward, isPending: isUpdating } = useUpdateReward();
   const { mutate: deleteReward, isPending: isDeleting } = useDeleteRewardTemplate();
   const { mutateAsync: uploadImage, isPending: isUploading } = useUploadImage();
@@ -68,25 +78,20 @@ const RewardEditDrawer = () => {
   };
 
   const onSubmit = (data: RewardUpdate) => {
-    updateReward(
-      { id: targetId, payload: data },
-      {
-        onSuccess: () => router.back(),
-      },
-    );
+    updateReward({ id: targetId, payload: data }, { onSuccess: () => router.back() });
   };
 
   const onClickDelete = () => {
     deleteReward(targetId, {
       onSuccess: (res) => {
         if (res.success) {
-          setIsModalOpen(false);
+          setIsDeleteModalOpen(false);
           router.push('/reward/products');
         }
       },
       onError: () => {
         alert('보상 삭제에 실패했습니다.');
-        setIsModalOpen(false);
+        setIsDeleteModalOpen(false);
       },
     });
   };
@@ -105,17 +110,36 @@ const RewardEditDrawer = () => {
 
   return (
     <>
-      <ConfirmModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        buttonText={isDeleting ? '삭제 중...' : '보상 삭제'}
-        onClickButton={onClickDelete}
+      {/* ✅ 1. 삭제 확인 모달 (기존 방식 유지) */}
+      <ModalLayout
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        className="w-fit"
       >
-        <div className="text-body2-d flex flex-col gap-1">
-          <p className="text-negative font-bold">• 삭제한 보상은 복구할 수 없습니다.</p>
-          <p>• 보상이 삭제되어도 유저에게 제공된 보상은 해당 보상의 만료일까지 유효합니다.</p>
+        <div className="flex flex-col gap-6 p-2">
+          <div className="text-body2-d flex flex-col gap-1">
+            <p className="text-negative font-bold">• 삭제한 보상은 복구할 수 없습니다.</p>
+            <p>• 보상이 삭제되어도 유저에게 제공된 보상은 해당 보상의 만료일까지 유효합니다.</p>
+          </div>
+          <div className="flex justify-end gap-2">
+            <Button color="light" size="md-short" onClick={() => setIsDeleteModalOpen(false)}>
+              취소
+            </Button>
+            <Button color="dark" size="md" onClick={onClickDelete}>
+              {isDeleting ? '삭제 중...' : '보상 삭제'}
+            </Button>
+          </div>
         </div>
-      </ConfirmModal>
+      </ModalLayout>
+
+      <CloseConfirmModal
+        showConfirm={showExitConfirm}
+        onClose={() => setShowExitConfirm(false)}
+        onConfirm={() => {
+          setShowExitConfirm(false);
+          router.back();
+        }}
+      />
 
       <Drawer>
         <form onSubmit={handleSubmit(onSubmit)} className="flex h-full flex-col">
@@ -190,13 +214,18 @@ const RewardEditDrawer = () => {
               size="md-short"
               type="button"
               className="text-negative"
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => setIsDeleteModalOpen(true)}
               disabled={isSubmitting}
             >
               삭제
             </Button>
             <div className="flex gap-2">
-              <Button color="light" size="md-short" type="button" onClick={() => router.back()}>
+              <Button
+                color="light"
+                size="md-short"
+                type="button"
+                onClick={() => setShowExitConfirm(true)}
+              >
                 취소
               </Button>
               <Button color="dark" size="md" type="submit" disabled={isSubmitting}>

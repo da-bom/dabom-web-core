@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { ChevronIcon } from '../assets/icons';
-import ConfirmModal from './ConfirmModal';
+import ConfirmModal from './CloseConfirmModal';
 
 const Drawer = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();

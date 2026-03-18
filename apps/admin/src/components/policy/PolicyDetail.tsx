@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { useParams, useRouter } from 'next/navigation';
 
-import { Button, Divider, Drawer, DropDown, MainBox, TextField } from '@shared';
+import { Button, CloseConfirmModal, Divider, Drawer, DropDown, MainBox, TextField } from '@shared';
 
 import { Policy } from 'src/api/policy/schema';
 import { useGetPolicyDetail } from 'src/api/policy/useGetPolicyDetail';
@@ -34,13 +34,12 @@ const PolicyDetailDrawer = () => {
   );
 };
 
-export default PolicyDetailDrawer;
-
 const PolicyDetailContent = ({ data, policyId }: { data: Policy; policyId: number }) => {
   const router = useRouter();
   const { mutate: updatePolicy } = useUpdatePolicy();
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const [newData, setNewData] = useState({
     type: data.type,
@@ -49,6 +48,15 @@ const PolicyDetailContent = ({ data, policyId }: { data: Policy; policyId: numbe
     requiredRole: data.requireRole ?? 'MEMBER',
     isActive: data.isActive,
   });
+
+  const handleCancelAttempt = () => {
+    setShowConfirm(true);
+  };
+
+  const handleConfirmClose = () => {
+    setShowConfirm(false);
+    router.back();
+  };
 
   const handleSave = () => {
     updatePolicy(
@@ -83,13 +91,15 @@ const PolicyDetailContent = ({ data, policyId }: { data: Policy; policyId: numbe
           className="border-none outline-none focus:border-b focus:border-gray-800"
         />
       </header>
+
       <Divider />
+
       <div className="flex h-full flex-col gap-8">
         <TextField label="권한">
           <MainBox className="rounded-xl border-gray-200 hover:border-gray-300 active:bg-gray-50">
             <DropDown
-              isOpen={isOpen}
-              setIsOpen={setIsOpen}
+              isOpen={isDropdownOpen}
+              setIsOpen={setIsDropdownOpen}
               options={['ADMIN', 'OWNER', 'MEMBER']}
               selectedOption={newData.requiredRole}
               setSelectedOption={(option) =>
@@ -120,13 +130,21 @@ const PolicyDetailContent = ({ data, policyId }: { data: Policy; policyId: numbe
       </div>
 
       <div className="mt-auto flex justify-end gap-2">
-        <Button color="light" size="md-short" onClick={() => router.back()}>
+        <Button color="light" size="md-short" onClick={handleCancelAttempt}>
           취소
         </Button>
         <Button color="dark" size="md" onClick={handleSave}>
           변경사항 저장
         </Button>
       </div>
+
+      <CloseConfirmModal
+        showConfirm={showConfirm}
+        onClose={() => setShowConfirm(false)}
+        onConfirm={handleConfirmClose}
+      />
     </>
   );
 };
+
+export default PolicyDetailDrawer;

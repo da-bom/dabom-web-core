@@ -1,13 +1,13 @@
 import Button from './Button';
 import ModalLayout from './ModalLayout';
 
-interface ConfirmModalProps {
+interface CloseConfirmModalProps {
   showConfirm: boolean;
   onClose: () => void;
   onConfirm: () => void;
 }
 
-const ConfirmModal = ({ showConfirm, onClose, onConfirm }: ConfirmModalProps) => {
+const CloseConfirmModal = ({ showConfirm, onClose, onConfirm }: CloseConfirmModalProps) => {
   return (
     <ModalLayout isOpen={showConfirm} onClose={onClose} className="w-[320px]">
       <div className="flex min-h-[140px] flex-col justify-between pt-6">
@@ -30,4 +30,4 @@ const ConfirmModal = ({ showConfirm, onClose, onConfirm }: ConfirmModalProps) =>
   );
 };
 
-export default ConfirmModal;
+export default CloseConfirmModal;
