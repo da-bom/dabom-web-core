@@ -25,6 +25,9 @@ const FamilyList = ({ params, selectedFam, setSelectedFam, onPageChange }: Famil
   const totalPages = data?.totalPages || 0;
   const currentPage = params.page || 0;
 
+  // ✅ 필터가 'name'일 때의 검색어 추출
+  const nameFilterValue = params.filters?.name?.value || '';
+
   if (isLoading) return <Loading />;
 
   return (
@@ -37,7 +40,6 @@ const FamilyList = ({ params, selectedFam, setSelectedFam, onPageChange }: Famil
       <span className="text-body1-d">검색 결과 (총 {totalElements}건)</span>
       <Divider />
 
-      {/* 리스트 본문: flex-1을 주어 페이지네이션을 하단으로 밀어냄 */}
       <div className="flex flex-1 flex-col gap-2 overflow-auto py-2">
         {familyList.length > 0 ? (
           familyList.map((f) => (
@@ -47,6 +49,7 @@ const FamilyList = ({ params, selectedFam, setSelectedFam, onPageChange }: Famil
               customers={f.customers}
               isSelected={f.familyId === selectedFam}
               setSelectedFam={setSelectedFam}
+              highlightQuery={nameFilterValue}
             />
           ))
         ) : (
@@ -54,7 +57,6 @@ const FamilyList = ({ params, selectedFam, setSelectedFam, onPageChange }: Famil
         )}
       </div>
 
-      {/* 페이지네이션 영역 */}
       {totalPages > 1 && (
         <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
       )}

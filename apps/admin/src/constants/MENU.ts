@@ -1,4 +1,4 @@
-import { ChartIcon, DashboardIcon, DocumentIcon, GiftIcon, PeopleIcon } from '@icons';
+import { DashboardIcon, DocumentIcon, GiftIcon, PeopleIcon } from '@icons';
 
 export const MENU = [
   {
@@ -40,11 +40,11 @@ export const MENU = [
       },
     ],
   },
-  {
-    id: 'AUDIT_LOG',
-    label: '감사 로그',
-    description: '',
-    path: '/audit-log',
-    icon: ChartIcon,
-  },
+  // {
+  //   id: 'AUDIT_LOG',
+  //   label: '감사 로그',
+  //   description: '',
+  //   path: '/audit-log',
+  //   icon: ChartIcon,
+  // },
 ] as const;
