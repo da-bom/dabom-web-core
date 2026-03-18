@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { DoNotIcon } from '@icons';
 import { AppIcon, Divider, DropDown, MainBox } from '@shared';
 import { cn } from '@shared';
 
 import { Toggle } from 'src/components/common/Toggle';
+import { POLICY_MESSAGES } from 'src/constants/policy';
 
 interface BlockedApp {
   id: number;
@@ -21,6 +22,23 @@ interface AppBlockBoxProps {
   disabled?: boolean;
 }
 
+const ALL_APPS: {
+  name: string;
+  appId: string;
+  type: React.ComponentProps<typeof AppIcon>['type'];
+}[] = [
+  { name: '유튜브', appId: 'com.youtube.app', type: 'youtube' },
+  { name: '넷플릭스', appId: 'com.netflix.app', type: 'netflix' },
+  { name: '인스타그램', appId: 'com.instagram.app', type: 'instagram' },
+  { name: '틱톡', appId: 'com.tiktok.app', type: 'tiktok' },
+  { name: '넥슨', appId: 'com.nexon.game', type: 'nexon' },
+  { name: '넷마블', appId: 'com.netmarble.game', type: 'netmarble' },
+  { name: '카카오톡', appId: 'com.kakao.talk', type: 'kakao' },
+  { name: '라인', appId: 'com.line.app', type: 'line' },
+  { name: '크롬', appId: 'com.chrome.browser', type: 'chrome' },
+  { name: '삼성', appId: 'com.samsung.browser', type: 'internet' },
+];
+
 export const AppBlockBox = ({
   initialBlockedApps = [],
   onUpdate,
@@ -29,27 +47,10 @@ export const AppBlockBox = ({
   const [isAppBlockOn, setIsAppBlockOn] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const allApps: {
-    name: string;
-    appId: string;
-    type: React.ComponentProps<typeof AppIcon>['type'];
-  }[] = [
-    { name: '유튜브', appId: 'com.youtube.app', type: 'youtube' },
-    { name: '넷플릭스', appId: 'com.netflix.app', type: 'netflix' },
-    { name: '인스타그램', appId: 'com.instagram.app', type: 'instagram' },
-    { name: '틱톡', appId: 'com.tiktok.app', type: 'tiktok' },
-    { name: '넥슨', appId: 'com.nexon.game', type: 'nexon' },
-    { name: '넷마블', appId: 'com.netmarble.game', type: 'netmarble' },
-    { name: '카카오톡', appId: 'com.kakao.talk', type: 'kakao' },
-    { name: '라인', appId: 'com.line.app', type: 'line' },
-    { name: '크롬', appId: 'com.chrome.browser', type: 'chrome' },
-    { name: '삼성 인터넷', appId: 'com.samsung.browser', type: 'internet' },
-  ];
-
   const [blockedApps, setBlockedApps] = useState<BlockedApp[]>(() => {
     return initialBlockedApps
       .map((appId) => {
-        const app = allApps.find((a) => a.appId === appId);
+        const app = ALL_APPS.find((a) => a.appId === appId);
         if (app) {
           return { id: Math.random(), ...app };
         }
@@ -58,12 +59,16 @@ export const AppBlockBox = ({
       .filter((app): app is BlockedApp => app !== null);
   });
 
-  const appOptions = allApps
-    .filter((app) => !blockedApps.some((blocked) => blocked.appId === app.appId))
-    .map((app) => app.name);
+  const appOptions = useMemo(
+    () =>
+      ALL_APPS.filter((app) => !blockedApps.some((blocked) => blocked.appId === app.appId)).map(
+        (app) => app.name,
+      ),
+    [blockedApps],
+  );
 
   const handleSelectApp = (appName: string) => {
-    const appToAdd = allApps.find((app) => app.name === appName);
+    const appToAdd = ALL_APPS.find((app) => app.name === appName);
 
     if (appToAdd && !blockedApps.find((app) => app.appId === appToAdd.appId)) {
       const newBlockedApp: BlockedApp = {
@@ -91,7 +96,7 @@ export const AppBlockBox = ({
   };
 
   const renderAppOption = (appName: string) => {
-    const app = allApps.find((a) => a.name === appName);
+    const app = ALL_APPS.find((a) => a.name === appName);
     if (!app) return appName;
     return (
       <div className="flex flex-row items-center gap-3">
@@ -118,7 +123,7 @@ export const AppBlockBox = ({
           <div className="flex h-4 w-4 items-center justify-center">
             <DoNotIcon className="text-primary" sx={{ width: 16 }} />
           </div>
-          <span className="text-body1-m">앱별 차단</span>
+          <span className="text-body1-m">{POLICY_MESSAGES.APP_BLOCK_TITLE}</span>
         </div>
 
         <Toggle
@@ -133,7 +138,7 @@ export const AppBlockBox = ({
           isOpen={isDropdownOpen}
           setIsOpen={setIsDropdownOpen}
           options={appOptions}
-          selectedOption="차단할 앱을 선택하세요."
+          selectedOption={POLICY_MESSAGES.APP_BLOCK_PLACEHOLDER}
           setSelectedOption={handleSelectApp}
           disabled={isDisabled}
           renderOption={renderAppOption}
@@ -145,7 +150,9 @@ export const AppBlockBox = ({
         <>
           <Divider />
 
-          <span className="text-body1-m">차단된 앱 ({blockedApps.length})</span>
+          <span className="text-body1-m">
+            {POLICY_MESSAGES.BLOCKED_APPS_TITLE(blockedApps.length)}
+          </span>
 
           <div className="flex h-fit w-full flex-col items-start gap-3">
             {blockedApps.map((app) => (
@@ -161,7 +168,7 @@ export const AppBlockBox = ({
                   disabled={disabled}
                   className="text-caption-m text-gray-500"
                 >
-                  차단 해제
+                  {POLICY_MESSAGES.UNBLOCK}
                 </button>
               </div>
             ))}
