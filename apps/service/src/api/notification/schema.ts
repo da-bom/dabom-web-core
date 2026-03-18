@@ -22,7 +22,7 @@ export const NotificationItemSchema = z.object({
   type: NotificationTypeSchema,
   title: z.string(),
   message: z.string(),
-  payload: z.union([z.string(), z.record(z.any()), z.null()]).optional(),
+  payload: z.union([z.string(), z.record(z.unknown()), z.null()]).optional(),
   isRead: z.boolean(),
   sentAt: z.string(),
 });

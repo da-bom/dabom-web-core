@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 import { useNotificationList } from 'src/api/notification/useNotificationList';
 import { useNotificationSSE } from 'src/api/notification/useNotificationSSE';
@@ -22,6 +22,11 @@ export default function NotificationPage() {
     readOne,
     deleteOne,
   } = useNotificationList();
+
+  const sortedNotifications = useMemo(
+    () => [...notifications].sort((a, b) => b.id - a.id),
+    [notifications],
+  );
 
   const observerTarget = useRef<HTMLDivElement>(null);
 
@@ -45,7 +50,7 @@ export default function NotificationPage() {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
-    <section className="bg-background-base flex min-h-screen w-full flex-col">
+    <section className="bg-background-base flex w-full flex-col">
       <div className="flex flex-col items-start gap-4 p-5">
         <div className="flex w-full items-center justify-between">
           <span className="text-body2-m text-brand-black">새 알림 ({unreadCount})</span>
@@ -59,26 +64,24 @@ export default function NotificationPage() {
         </div>
 
         <ul className="flex w-full flex-col gap-4">
-          {[...notifications]
-            .sort((a, b) => b.id - a.id)
-            .map((noti, index) => (
-              <li
-                key={noti.id}
-                className="w-full transition-all duration-300"
-                style={{
-                  zIndex: notifications.length - index,
-                }}
-              >
-                <NotiBox
-                  id={noti.id}
-                  title={noti.title}
-                  message={noti.message}
-                  isRead={noti.isRead}
-                  onRead={(id) => readOne(id)}
-                  onDelete={(id) => deleteOne(id)}
-                />
-              </li>
-            ))}
+          {sortedNotifications.map((noti, index) => (
+            <li
+              key={noti.id}
+              className="w-full transition-all duration-300"
+              style={{
+                zIndex: notifications.length - index,
+              }}
+            >
+              <NotiBox
+                id={noti.id}
+                title={noti.title}
+                message={noti.message}
+                isRead={noti.isRead}
+                onRead={(id) => readOne(id)}
+                onDelete={(id) => deleteOne(id)}
+              />
+            </li>
+          ))}
         </ul>
 
         {hasNextPage && (

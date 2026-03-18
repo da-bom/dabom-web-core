@@ -31,7 +31,7 @@ export const ManualPushRequestSchema = z.object({
 // 공통 응답
 export const PushCommonResponseSchema = z.object({
   success: z.boolean(),
-  data: z.any().nullable(),
+  data: z.unknown().nullable(),
   timestamp: z.string(),
 });
 
