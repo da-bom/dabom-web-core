@@ -5,6 +5,7 @@ export const APPEAL_TYPE_LABEL = {
   NORMAL: '데이터 한도',
   TIME_BLOCK: '시간 제한',
   MANUAL_BLOCK: '데이터 차단',
+  APP_BLOCK: '앱 차단',
 } as const;
 
 export const APPEAL_STATUS_LABEL = {
@@ -36,6 +37,7 @@ export const APPEAL_UI_TEXT = {
   CHANGE_PREFIX: '변경: ',
   REASON_PREFIX: '요청 사유: ',
   MANUAL_BLOCK: '차단 해제',
+  APP_BLOCK: '앱 차단 해제',
   EMERGENCY_DATA_AMOUNT: '300MB',
   REASON_INPUT_TITLE: '사유를 입력해 주세요.',
   REASON_INPUT_DESCRIPTION: 'description',

@@ -113,7 +113,7 @@ export const ObjectionPolicySchema = z.object({
   policyAssignmentId: z.number(),
   policyId: z.number(),
   policyName: z.string(),
-  policyType: z.enum(['TIME_BLOCK', 'MONTHLY_LIMIT', 'MANUAL_BLOCK']),
+  policyType: z.enum(['TIME_BLOCK', 'MONTHLY_LIMIT', 'MANUAL_BLOCK', 'APP_BLOCK']),
   appliedRules: z.object({
     startTime: z.string().optional(),
     endTime: z.string().optional(),

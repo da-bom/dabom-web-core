@@ -32,6 +32,10 @@ export default function ObjectionPage() {
       router.push(
         `/appeal/create/reason?id=${selectedPolicy.policyAssignmentId}&policy=${encodeURIComponent(APPEAL_TYPE_LABEL.MANUAL_BLOCK)}&unblock=true`,
       );
+    } else if (selectedPolicy.policyType === 'APP_BLOCK') {
+      router.push(
+        `/appeal/create/reason?id=${selectedPolicy.policyAssignmentId}&policy=${encodeURIComponent(APPEAL_TYPE_LABEL.APP_BLOCK)}&unblock=true`,
+      );
     } else {
       router.push('/appeal');
     }

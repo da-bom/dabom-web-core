@@ -123,11 +123,13 @@ function AppealCommentContent() {
                   ? `${inputAmount}GB`
                   : data.policyType === 'MANUAL_BLOCK'
                     ? APPEAL_UI_TEXT.MANUAL_BLOCK
-                    : data.desiredRules?.limitBytes
-                      ? formatSize(data.desiredRules.limitBytes).total
-                      : data.desiredRules?.startTime && data.desiredRules?.endTime
-                        ? `${data.desiredRules.startTime} ~ ${data.desiredRules.endTime}`
-                        : '-'
+                    : data.policyType === 'APP_BLOCK'
+                      ? APPEAL_UI_TEXT.APP_BLOCK
+                      : data.desiredRules?.limitBytes
+                        ? formatSize(data.desiredRules.limitBytes).total
+                        : data.desiredRules?.startTime && data.desiredRules?.endTime
+                          ? `${data.desiredRules.startTime} ~ ${data.desiredRules.endTime}`
+                          : '-'
             }
             reasonText={
               status === 'rejected' ? (

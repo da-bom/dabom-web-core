@@ -62,16 +62,20 @@ const AppealPageContent = () => {
                     ? `${item.desiredRules.startTime} ~ ${item.desiredRules.endTime}`
                     : item.policyType === 'MANUAL_BLOCK'
                       ? APPEAL_UI_TEXT.MANUAL_BLOCK
-                      : '-';
+                      : item.policyType === 'APP_BLOCK'
+                        ? APPEAL_UI_TEXT.APP_BLOCK
+                        : '-';
 
             const policyType =
               item.type === 'EMERGENCY'
                 ? APPEAL_TYPE_LABEL.EMERGENCY
                 : item.policyType === 'MANUAL_BLOCK'
                   ? APPEAL_TYPE_LABEL.MANUAL_BLOCK
-                  : item.desiredRules?.startTime
-                    ? APPEAL_TYPE_LABEL.TIME_BLOCK
-                    : APPEAL_TYPE_LABEL.NORMAL;
+                  : item.policyType === 'APP_BLOCK'
+                    ? APPEAL_TYPE_LABEL.APP_BLOCK
+                    : item.desiredRules?.startTime
+                      ? APPEAL_TYPE_LABEL.TIME_BLOCK
+                      : APPEAL_TYPE_LABEL.NORMAL;
 
             const uiStatus = (
               item.type === 'EMERGENCY' ? 'emergency' : item.status.toLowerCase()

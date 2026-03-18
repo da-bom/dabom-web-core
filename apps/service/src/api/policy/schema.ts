@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { CustomerDetail } from '@shared/type/familyType';
 
 export const FamilyRoleSchema = z.enum(['OWNER', 'MEMBER']);
-export const PolicyTypeEnum = z.enum(['MONTHLY_LIMIT', 'TIME_BLOCK', 'MANUAL_BLOCK']);
+export const PolicyTypeEnum = z.enum(['MONTHLY_LIMIT', 'TIME_BLOCK', 'MANUAL_BLOCK', 'APP_BLOCK']);
 
 export const ApiPolicyRulesSchema = z.object({
   limitBytes: z.number().nullable().optional(),
@@ -49,12 +49,10 @@ export const FamilyPoliciesDataSchema = z.object({
 });
 
 export const UpdatePolicyRequestSchema = z.object({
-  updateInfo: z.object({
-    customerId: z.number(),
-    type: z.union([PolicyTypeEnum, z.array(PolicyTypeEnum)]),
-    value: ApiPolicyRulesSchema.optional(),
-    isActive: z.boolean().optional(),
-  }),
+  customerId: z.number(),
+  type: z.union([PolicyTypeEnum, z.array(PolicyTypeEnum)]),
+  value: ApiPolicyRulesSchema.optional(),
+  isActive: z.boolean().optional(),
 });
 
 export const UpdatePolicyResponseSchema = z.object({
