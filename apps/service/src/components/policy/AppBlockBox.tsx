@@ -29,12 +29,12 @@ export const AppBlockBox = () => {
     { name: '넷플릭스', appId: 'com.netflix.app', type: 'netflix' },
     { name: '인스타그램', appId: 'com.instagram.app', type: 'instagram' },
     { name: '틱톡', appId: 'com.tiktok.app', type: 'tiktok' },
-    { name: '넥슨 게임', appId: 'com.nexon.game', type: 'nexon' },
-    { name: '넷마블 게임', appId: 'com.netmarble.game', type: 'netmarble' },
+    { name: '넥슨', appId: 'com.nexon.game', type: 'nexon' },
+    { name: '넷마블', appId: 'com.netmarble.game', type: 'netmarble' },
     { name: '카카오톡', appId: 'com.kakao.talk', type: 'kakao' },
     { name: '라인', appId: 'com.line.app', type: 'line' },
-    { name: '크롬 브라우저', appId: 'com.chrome.browser', type: 'chrome' },
-    { name: '삼성 브라우저', appId: 'com.samsung.browser', type: 'internet' },
+    { name: '크롬', appId: 'com.chrome.browser', type: 'chrome' },
+    { name: '삼성 인터넷', appId: 'com.samsung.browser', type: 'internet' },
   ];
 
   const [blockedApps, setBlockedApps] = useState<BlockedApp[]>([
