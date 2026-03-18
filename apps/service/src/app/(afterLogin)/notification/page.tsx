@@ -57,9 +57,9 @@ export default function NotificationPage() {
 
         <ul className="flex w-full flex-col gap-4">
           {notifications.map((noti) => (
-            <li key={noti.notificationId} className="w-full">
+            <li key={noti.id} className="w-full">
               <NotiBox
-                notificationId={noti.notificationId}
+                id={noti.id}
                 title={noti.title}
                 message={noti.message}
                 isRead={noti.isRead}

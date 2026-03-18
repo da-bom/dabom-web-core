@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Badge, cn } from '@shared';
 
 interface NotiBoxProps {
-  notificationId: number;
+  id: number;
   title: string;
   message: string;
   isRead?: boolean;
@@ -13,7 +13,7 @@ interface NotiBoxProps {
 }
 
 const NotiBox = ({
-  notificationId,
+  id,
   title,
   message,
   isRead = true,
@@ -25,7 +25,7 @@ const NotiBox = ({
 
   const handleClick = () => {
     if (!isRead && onRead) {
-      onRead(notificationId);
+      onRead(id);
     }
     setIsRevealed(!isRevealed);
   };
@@ -33,7 +33,7 @@ const NotiBox = ({
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (onDelete) {
-      onDelete(notificationId);
+      onDelete(id);
     }
   };
 

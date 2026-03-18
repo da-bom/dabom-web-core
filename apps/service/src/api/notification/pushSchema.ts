@@ -1,11 +1,14 @@
 import { z } from 'zod';
 
+// VAPID 공개키 데이터
+export const VapidKeyDataSchema = z.object({
+  publicKey: z.string(),
+});
+
 // VAPID 공개키 조회 응답
 export const VapidKeyResponseSchema = z.object({
   success: z.boolean(),
-  data: z.object({
-    publicKey: z.string(),
-  }),
+  data: VapidKeyDataSchema,
   timestamp: z.string(),
 });
 
@@ -32,6 +35,7 @@ export const PushCommonResponseSchema = z.object({
   timestamp: z.string(),
 });
 
+export type VapidKeyData = z.infer<typeof VapidKeyDataSchema>;
 export type VapidKeyResponse = z.infer<typeof VapidKeyResponseSchema>;
 export type PushSubscriptionRequest = z.infer<typeof PushSubscriptionRequestSchema>;
 export type ManualPushRequest = z.infer<typeof ManualPushRequestSchema>;

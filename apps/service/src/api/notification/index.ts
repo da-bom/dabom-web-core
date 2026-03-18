@@ -4,7 +4,7 @@ import {
   ManualPushRequest,
   PushCommonResponse,
   PushSubscriptionRequest,
-  VapidKeyResponse,
+  VapidKeyData,
 } from './pushSchema';
 import { NotificationFilter, NotificationListResponse } from './schema';
 
@@ -34,13 +34,13 @@ export const readAllNotifications = (): Promise<void> => {
 };
 
 // 개별 알림 읽음 처리
-export const readNotification = (notificationId: number): Promise<void> => {
-  return http.patch(`${BASE_URL}/notifications/${notificationId}/read`);
+export const readNotification = (id: number): Promise<void> => {
+  return http.patch(`${BASE_URL}/notifications/${id}/read`);
 };
 
 // 알림 삭제 (소프트 삭제)
-export const deleteNotification = (notificationId: number): Promise<void> => {
-  return http.delete(`${BASE_URL}/notifications/${notificationId}`);
+export const deleteNotification = (id: number): Promise<void> => {
+  return http.delete(`${BASE_URL}/notifications/${id}`);
 };
 
 // 읽지 않은 알림 수 조회
@@ -48,7 +48,7 @@ export const getUnreadCount = (): Promise<{ unreadCount: number }> => {
   return http.get(`${BASE_URL}/notifications/unread-count`);
 };
 
-export const getVapidPublicKey = (): Promise<VapidKeyResponse> => {
+export const getVapidPublicKey = (): Promise<VapidKeyData> => {
   return http.get(`${BASE_URL}/push/vapid-public-key`);
 };
 

@@ -33,8 +33,7 @@ export const usePushSubscription = () => {
     }
 
     try {
-      const response = await getVapidPublicKey();
-      const { publicKey } = response.data;
+      const { publicKey } = await getVapidPublicKey();
       const applicationServerKey = urlBase64ToUint8Array(publicKey);
       const registration = await navigator.serviceWorker.ready;
       const subscription = await registration.pushManager.subscribe({
