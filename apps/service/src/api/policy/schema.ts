@@ -11,6 +11,7 @@ export const ApiPolicyRulesSchema = z.object({
   end: z.string().optional(),
   timezone: z.string().optional(),
   reason: z.string().optional(),
+  blockedApps: z.array(z.string()).optional(),
 });
 
 export const ApiPolicySchema = z.object({
