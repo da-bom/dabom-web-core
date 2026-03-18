@@ -15,7 +15,17 @@ interface BlockedApp {
   type: React.ComponentProps<typeof AppIcon>['type'];
 }
 
-export const AppBlockBox = () => {
+interface AppBlockBoxProps {
+  initialBlockedApps?: string[];
+  onUpdate?: (blockedApps: string[]) => void;
+  disabled?: boolean;
+}
+
+export const AppBlockBox = ({
+  initialBlockedApps = [],
+  onUpdate,
+  disabled = false,
+}: AppBlockBoxProps) => {
   const [isAppBlockOn, setIsAppBlockOn] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -36,9 +46,17 @@ export const AppBlockBox = () => {
     { name: '삼성 인터넷', appId: 'com.samsung.browser', type: 'internet' },
   ];
 
-  const [blockedApps, setBlockedApps] = useState<BlockedApp[]>([
-    { id: 1, name: '유튜브', appId: 'com.youtube.app', type: 'youtube' },
-  ]);
+  const [blockedApps, setBlockedApps] = useState<BlockedApp[]>(() => {
+    return initialBlockedApps
+      .map((appId) => {
+        const app = allApps.find((a) => a.appId === appId);
+        if (app) {
+          return { id: Math.random(), ...app };
+        }
+        return null;
+      })
+      .filter((app): app is BlockedApp => app !== null);
+  });
 
   const appOptions = allApps
     .filter((app) => !blockedApps.some((blocked) => blocked.appId === app.appId))
@@ -54,22 +72,22 @@ export const AppBlockBox = () => {
         appId: appToAdd.appId,
         type: appToAdd.type,
       };
-      setBlockedApps((prev) => [...prev, newBlockedApp]);
+      const newBlockedApps = [...blockedApps, newBlockedApp];
+      setBlockedApps(newBlockedApps);
 
-      const currentPolicyValue = {
-        blockedApps: [...blockedApps, newBlockedApp].map((app) => app.appId),
-      };
-      console.log('APP_BLOCK 정책 반영 데이터:', JSON.stringify(currentPolicyValue));
+      const appIds = newBlockedApps.map((app) => app.appId);
+      onUpdate?.(appIds);
+      console.log('APP_BLOCK 정책 반영 데이터:', JSON.stringify({ blockedApps: appIds }));
     }
   };
 
   const handleUnblock = (appId: string) => {
-    setBlockedApps((prev) => prev.filter((app) => app.appId !== appId));
+    const newBlockedApps = blockedApps.filter((app) => app.appId !== appId);
+    setBlockedApps(newBlockedApps);
 
-    const updatedPolicyValue = {
-      blockedApps: blockedApps.filter((app) => app.appId !== appId).map((app) => app.appId),
-    };
-    console.log('APP_BLOCK 정책 업데이트(해제):', JSON.stringify(updatedPolicyValue));
+    const appIds = newBlockedApps.map((app) => app.appId);
+    onUpdate?.(appIds);
+    console.log('APP_BLOCK 정책 업데이트(해제):', JSON.stringify({ blockedApps: appIds }));
   };
 
   const renderAppOption = (appName: string) => {
@@ -85,11 +103,14 @@ export const AppBlockBox = () => {
     );
   };
 
+  const isDisabled = disabled || !isAppBlockOn;
+
   return (
     <MainBox
       className={cn(
-        'box-border flex w-[350px] flex-col items-start gap-5 rounded-2xl border border-gray-200 p-4 transition-all duration-200',
+        'box-border flex w-full flex-col items-start gap-5 rounded-2xl border p-4 transition-all duration-200',
         isAppBlockOn ? 'h-fit' : 'h-31',
+        disabled && 'pointer-events-none opacity-50',
       )}
     >
       <div className="flex h-6 w-full flex-row items-center justify-between gap-1">
@@ -100,7 +121,11 @@ export const AppBlockBox = () => {
           <span className="text-body1-m">앱별 차단</span>
         </div>
 
-        <Toggle isChecked={isAppBlockOn} onToggle={() => setIsAppBlockOn(!isAppBlockOn)} />
+        <Toggle
+          isChecked={isAppBlockOn}
+          onToggle={() => setIsAppBlockOn(!isAppBlockOn)}
+          disabled={disabled}
+        />
       </div>
 
       <div className="flex h-12 w-full">
@@ -110,7 +135,7 @@ export const AppBlockBox = () => {
           options={appOptions}
           selectedOption="차단할 앱을 선택하세요."
           setSelectedOption={handleSelectApp}
-          disabled={!isAppBlockOn}
+          disabled={isDisabled}
           renderOption={renderAppOption}
           className="!w-full !min-w-0 rounded-2xl border border-gray-200"
         />
@@ -133,6 +158,7 @@ export const AppBlockBox = () => {
                 </div>
                 <button
                   onClick={() => handleUnblock(app.appId)}
+                  disabled={disabled}
                   className="text-caption-m text-gray-500"
                 >
                   차단 해제

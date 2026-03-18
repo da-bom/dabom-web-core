@@ -6,6 +6,8 @@ import { FaceIcon } from '@icons';
 import { MainBox, bytesToGB, formatPhoneNumber } from '@shared';
 
 import { useGetFamilyPolicies } from 'src/api/policy/useGetFamilyPolicies';
+import { useUpdatePolicy } from 'src/api/policy/useUpdatePolicy';
+import { AppBlockBox } from 'src/components/policy/AppBlockBox';
 import PolicySimple from 'src/components/policy/PolicySimple';
 
 const emptySubscribe = () => () => {};
@@ -26,6 +28,7 @@ export default function PolicyDetailPage({ params }: PolicyDetailPageProps) {
   const isClient = useIsClient();
 
   const { data: familyData, isLoading, isError } = useGetFamilyPolicies();
+  const { mutate: updatePolicy } = useUpdatePolicy();
 
   if (!isClient || isLoading) {
     return (
@@ -61,6 +64,20 @@ export default function PolicyDetailPage({ params }: PolicyDetailPageProps) {
     ? `${customer.timeLimit.start} ~ ${customer.timeLimit.end}`
     : '설정되지 않음';
 
+  const appBlockPolicy = customer.policies.find((p) => p.type === 'APP_BLOCK');
+  const initialBlockedApps = appBlockPolicy?.rules?.blockedApps ?? [];
+
+  const handleAppBlockUpdate = (blockedApps: string[]) => {
+    updatePolicy({
+      updateInfo: {
+        customerId: Number(customerId),
+        type: 'APP_BLOCK',
+        value: { blockedApps },
+        isActive: true,
+      },
+    });
+  };
+
   return (
     <div className="flex flex-col items-center gap-4 p-4">
       <MainBox className="flex h-14 w-full flex-row items-center justify-between rounded-2xl p-4">
@@ -84,6 +101,12 @@ export default function PolicyDetailPage({ params }: PolicyDetailPageProps) {
           />
         </PolicySimple>
       </MainBox>
+
+      <AppBlockBox
+        initialBlockedApps={initialBlockedApps}
+        onUpdate={handleAppBlockUpdate}
+        disabled={customer.isBlocked}
+      />
     </div>
   );
 }
