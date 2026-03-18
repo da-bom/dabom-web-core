@@ -11,6 +11,7 @@ import { Toggle } from 'src/components/common/Toggle';
 interface BlockedApp {
   id: number;
   name: string;
+  appId: string;
   type: React.ComponentProps<typeof AppIcon>['type'];
 }
 
@@ -19,44 +20,58 @@ export const AppBlockBox = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedApp, setSelectedApp] = useState('');
 
-  const allApps: { name: string; type: React.ComponentProps<typeof AppIcon>['type'] }[] = [
-    { name: 'Youtube', type: 'youtube' },
-    { name: 'Instagram', type: 'instagram' },
-    { name: '넥슨', type: 'nexon' },
-    { name: '카카오톡', type: 'kakao' },
-    { name: '넷플릭스', type: 'netflix' },
-    { name: '네이버', type: 'naver' },
-    { name: '크롬', type: 'chrome' },
-    { name: '틱톡', type: 'tiktok' },
-    { name: '라인', type: 'line' },
-    { name: '넷마블', type: 'netmarble' },
-    { name: '날씨', type: 'weather' },
-    { name: '인터넷', type: 'internet' },
+  const allApps: {
+    name: string;
+    appId: string;
+    type: React.ComponentProps<typeof AppIcon>['type'];
+  }[] = [
+    { name: '유튜브', appId: 'com.youtube.app', type: 'youtube' },
+    { name: '넷플릭스', appId: 'com.netflix.app', type: 'netflix' },
+    { name: '인스타그램', appId: 'com.instagram.app', type: 'instagram' },
+    { name: '틱톡', appId: 'com.tiktok.app', type: 'tiktok' },
+    { name: '넥슨 게임', appId: 'com.nexon.game', type: 'nexon' },
+    { name: '넷마블 게임', appId: 'com.netmarble.game', type: 'netmarble' },
+    { name: '카카오톡', appId: 'com.kakao.talk', type: 'kakao' },
+    { name: '라인', appId: 'com.line.app', type: 'line' },
+    { name: '크롬 브라우저', appId: 'com.chrome.browser', type: 'chrome' },
+    { name: '삼성 브라우저', appId: 'com.samsung.browser', type: 'internet' },
   ];
 
   const [blockedApps, setBlockedApps] = useState<BlockedApp[]>([
-    { id: 1, name: 'Youtube', type: 'youtube' },
-    { id: 2, name: 'Instagram', type: 'instagram' },
-    { id: 3, name: '넥슨', type: 'nexon' },
+    { id: 1, name: '유튜브', appId: 'com.youtube.app', type: 'youtube' },
   ]);
 
   const appOptions = allApps
-    .filter((app) => !blockedApps.some((blocked) => blocked.name === app.name))
+    .filter((app) => !blockedApps.some((blocked) => blocked.appId === app.appId))
     .map((app) => app.name);
 
   const handleSelectApp = (appName: string) => {
     setSelectedApp(appName);
     const appToAdd = allApps.find((app) => app.name === appName);
-    if (appToAdd && !blockedApps.find((app) => app.name === appName)) {
-      setBlockedApps((prev) => [
-        ...prev,
-        { id: Date.now(), name: appToAdd.name, type: appToAdd.type },
-      ]);
+
+    if (appToAdd && !blockedApps.find((app) => app.appId === appToAdd.appId)) {
+      const newBlockedApp: BlockedApp = {
+        id: Date.now(),
+        name: appToAdd.name,
+        appId: appToAdd.appId,
+        type: appToAdd.type,
+      };
+      setBlockedApps((prev) => [...prev, newBlockedApp]);
+
+      const currentPolicyValue = {
+        blockedApps: [...blockedApps, newBlockedApp].map((app) => app.appId),
+      };
+      console.log('APP_BLOCK 정책 반영 데이터:', JSON.stringify(currentPolicyValue));
     }
   };
 
-  const handleUnblock = (id: number) => {
-    setBlockedApps((prev) => prev.filter((app) => app.id !== id));
+  const handleUnblock = (appId: string) => {
+    setBlockedApps((prev) => prev.filter((app) => app.appId !== appId));
+
+    const updatedPolicyValue = {
+      blockedApps: blockedApps.filter((app) => app.appId !== appId).map((app) => app.appId),
+    };
+    console.log('APP_BLOCK 정책 업데이트(해제):', JSON.stringify(updatedPolicyValue));
   };
 
   const renderAppOption = (appName: string) => {
@@ -64,7 +79,7 @@ export const AppBlockBox = () => {
     if (!app) return appName;
     return (
       <div className="flex flex-row items-center gap-3">
-        <div className="bg-brand-white relative flex h-7 w-7 items-center justify-center overflow-hidden rounded">
+        <div className="bg-brand-white relative flex h-7 w-7 items-center justify-center overflow-hidden rounded-[7px]">
           <AppIcon type={app.type} className="h-full w-full object-cover" />
         </div>
         <span>{app.name}</span>
@@ -119,7 +134,7 @@ export const AppBlockBox = () => {
                   <span className="text-body2-m flex-none text-center">{app.name}</span>
                 </div>
                 <button
-                  onClick={() => handleUnblock(app.id)}
+                  onClick={() => handleUnblock(app.appId)}
                   className="text-caption-m text-gray-500"
                 >
                   차단 해제
