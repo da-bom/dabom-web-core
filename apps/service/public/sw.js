@@ -78,8 +78,6 @@ globalThis.addEventListener('fetch', (event) => {
 });
 
 globalThis.addEventListener('push', (event) => {
-  console.log('SW: 푸시 메시지 수신됨!', event.data?.text());
-
   if (!event.data) return;
 
   let title = DEFAULT_TITLE;
@@ -108,8 +106,14 @@ globalThis.addEventListener('push', (event) => {
       },
     };
   }
-
-  event.waitUntil(globalThis.registration.showNotification(title, options));
+event.waitUntil(
+  Promise.all([
+    globalThis.registration.showNotification(title, options),
+    globalThis.clients.matchAll({ type: 'window' }).then((clients) => {
+      clients.forEach((client) => client.postMessage({ type: 'PUSH_RECEIVED' }));
+    }),
+  ]),
+);
 });
 
 globalThis.addEventListener('notificationclick', (event) => {

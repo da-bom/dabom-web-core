@@ -3,7 +3,6 @@ import { Toaster } from 'react-hot-toast';
 
 import Header from 'src/components/common/Header';
 import NavBar from 'src/components/common/NavBar';
-import { SSEInit } from 'src/components/common/SSEInit';
 
 export default function MainLayout({
   children,
@@ -16,7 +15,6 @@ export default function MainLayout({
         <Header />
       </div>
       <main className="scrollbar-hide relative w-full flex-1 overflow-y-auto">
-        <SSEInit />
         {children}
 
         <Toaster position="bottom-center" containerClassName="!bottom-32" reverseOrder={false} />

@@ -3,11 +3,14 @@
 import { useEffect, useRef } from 'react';
 
 import { useNotificationList } from 'src/api/notification/useNotificationList';
+import { useNotificationSSE } from 'src/api/notification/useNotificationSSE';
 import NotiBox from 'src/components/notification/NotiBox';
 
 const NOTICE_MESSAGE = '30일이 지난 메세지는 자동 삭제됩니다.';
 
 export default function NotificationPage() {
+  useNotificationSSE(true);
+
   const {
     notifications,
     unreadCount,
@@ -56,18 +59,26 @@ export default function NotificationPage() {
         </div>
 
         <ul className="flex w-full flex-col gap-4">
-          {notifications.map((noti) => (
-            <li key={noti.id} className="w-full">
-              <NotiBox
-                id={noti.id}
-                title={noti.title}
-                message={noti.message}
-                isRead={noti.isRead}
-                onRead={(id) => readOne(id)}
-                onDelete={(id) => deleteOne(id)}
-              />
-            </li>
-          ))}
+          {[...notifications]
+            .sort((a, b) => b.id - a.id)
+            .map((noti, index) => (
+              <li
+                key={noti.id}
+                className="w-full transition-all duration-300"
+                style={{
+                  zIndex: notifications.length - index,
+                }}
+              >
+                <NotiBox
+                  id={noti.id}
+                  title={noti.title}
+                  message={noti.message}
+                  isRead={noti.isRead}
+                  onRead={(id) => readOne(id)}
+                  onDelete={(id) => deleteOne(id)}
+                />
+              </li>
+            ))}
         </ul>
 
         {hasNextPage && (
