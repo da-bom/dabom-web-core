@@ -2,11 +2,34 @@
 
 import { useEffect, useMemo, useRef } from 'react';
 
+import { Box, Skeleton } from '@mui/material';
+
 import { useNotificationList } from 'src/api/notification/useNotificationList';
 import { useNotificationSSE } from 'src/api/notification/useNotificationSSE';
 import NotiBox from 'src/components/notification/NotiBox';
 
 const NOTICE_MESSAGE = '30일이 지난 메세지는 자동 삭제됩니다.';
+
+const NotificationSkeleton = () => (
+  <div className="flex w-full flex-col items-start gap-4 p-5">
+    <div className="mb-2 flex w-full items-center justify-between">
+      <Skeleton variant="text" width="80px" height={24} />
+      <Skeleton variant="text" width="100px" height={24} />
+    </div>
+
+    <ul className="flex w-full flex-col gap-4">
+      {[1, 2, 3, 4, 5].map((i) => (
+        <Box
+          key={i}
+          className="flex h-[88px] w-full flex-col gap-2 rounded-2xl border border-gray-100 bg-white p-4"
+        >
+          <Skeleton variant="text" width="40%" height={24} />
+          <Skeleton variant="text" width="90%" height={20} />
+        </Box>
+      ))}
+    </ul>
+  </div>
+);
 
 export default function NotificationPage() {
   useNotificationSSE(true);
@@ -49,6 +72,14 @@ export default function NotificationPage() {
     };
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
+  if (isLoading && notifications.length === 0) {
+    return (
+      <section className="bg-background-base flex h-full min-h-screen w-full flex-col">
+        <NotificationSkeleton />
+      </section>
+    );
+  }
+
   return (
     <section className="bg-background-base flex w-full flex-col">
       <div className="flex flex-col items-start gap-4 p-5">
@@ -84,17 +115,20 @@ export default function NotificationPage() {
           ))}
         </ul>
 
-        {hasNextPage && (
-          <div ref={observerTarget} className="flex w-full items-center justify-center py-4">
-            {(isLoading || isFetchingNextPage) && (
-              <div className="flex items-center gap-2.5">
-                <div className="h-2 w-2 animate-bounce rounded-full bg-gray-600 [animation-delay:-0.3s]" />
-                <div className="h-2 w-2 animate-bounce rounded-full bg-gray-600 [animation-delay:-0.15s]" />
-                <div className="h-2 w-2 animate-bounce rounded-full bg-gray-600" />
-              </div>
-            )}
-          </div>
-        )}
+        <div ref={observerTarget} className="flex w-full flex-col gap-4 py-4">
+          {isFetchingNextPage && (
+            <>
+              <Box className="flex h-[88px] w-full flex-col gap-2 rounded-2xl border border-gray-100 bg-white p-4 opacity-50">
+                <Skeleton variant="text" width="40%" height={24} />
+                <Skeleton variant="text" width="90%" height={20} />
+              </Box>
+              <Box className="flex h-[88px] w-full flex-col gap-2 rounded-2xl border border-gray-100 bg-white p-4 opacity-30">
+                <Skeleton variant="text" width="40%" height={24} />
+                <Skeleton variant="text" width="90%" height={20} />
+              </Box>
+            </>
+          )}
+        </div>
 
         {!hasNextPage && notifications.length > 0 && (
           <div className="mt-8 mb-12 flex w-full flex-col items-center gap-1">

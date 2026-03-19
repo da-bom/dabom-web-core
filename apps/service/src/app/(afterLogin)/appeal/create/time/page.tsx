@@ -4,6 +4,7 @@ import React, { Suspense, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
+import { Box, Skeleton } from '@mui/material';
 import { Button, MainBox, cn } from '@shared';
 
 import { useGetFamilyPolicies } from 'src/api/policy/useGetFamilyPolicies';
@@ -12,9 +13,41 @@ import TimeSettingSheet from 'src/components/policy/TimeSettingBottomSheet';
 import { APPEAL_TYPE_LABEL, APPEAL_UI_TEXT } from 'src/constants/appeal';
 import { getCurrentUserId } from 'src/utils/auth';
 
+const TimeLimitSkeleton = () => (
+  <div className="bg-background-base flex flex-col gap-7 px-5 pt-20">
+    <div className="flex w-full flex-col items-start gap-2">
+      <Skeleton variant="text" width="60%" height={40} />
+      <Skeleton variant="text" width="45%" height={24} />
+    </div>
+
+    <div className="flex w-full flex-col gap-4">
+      <Skeleton
+        variant="rectangular"
+        width="100%"
+        height={80}
+        sx={{ borderRadius: '16px' }}
+        animation="wave"
+      />
+
+      <Box className="flex h-[120px] w-full items-center justify-center gap-4 rounded-2xl border border-gray-100 bg-white p-8">
+        <div className="flex items-center gap-2">
+          <Skeleton variant="rectangular" width={60} height={32} sx={{ borderRadius: '4px' }} />
+          <Skeleton variant="text" width={20} />
+          <Skeleton variant="rectangular" width={60} height={32} sx={{ borderRadius: '4px' }} />
+          <Skeleton variant="text" width={20} />
+        </div>
+      </Box>
+    </div>
+
+    <div className="fixed bottom-24 left-0 flex w-full gap-2 px-5">
+      <Skeleton variant="rectangular" width="30%" height={52} sx={{ borderRadius: '12px' }} />
+      <Skeleton variant="rectangular" width="70%" height={52} sx={{ borderRadius: '12px' }} />
+    </div>
+  </div>
+);
+
 function TimeLimitAppealContent() {
   const router = useRouter();
-
   const { data: familyData, isLoading, isError, refetch } = useGetFamilyPolicies();
   const currentUserId = getCurrentUserId();
 
@@ -38,13 +71,7 @@ function TimeLimitAppealContent() {
     }
   }, [currentUser?.timeLimit]);
 
-  if (isLoading) {
-    return (
-      <div className="flex h-full min-h-screen items-center justify-center">
-        <p className="text-body1-m">가족 데이터를 불러오는 중...</p>
-      </div>
-    );
-  }
+  if (isLoading) return <TimeLimitSkeleton />;
 
   if (isError || !familyData) {
     return (
@@ -162,7 +189,7 @@ function TimeLimitAppealContent() {
 
 export default function TimeLimitAppealPage() {
   return (
-    <Suspense fallback={<div className="bg-background-base h-full min-h-screen" />}>
+    <Suspense fallback={<TimeLimitSkeleton />}>
       <TimeLimitAppealContent />
     </Suspense>
   );

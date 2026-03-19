@@ -1,10 +1,11 @@
 'use client';
 
-import React, { Suspense, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 
 import { ApprovedIcon, RejectedIcon } from '@icons';
+import { Skeleton } from '@mui/material';
 import { Button, formatSize } from '@shared';
 
 import { Comment } from 'src/api/appeal/schema';
@@ -18,12 +19,43 @@ import { formatChatTime } from 'src/utils/formatTime';
 import { showToast } from 'src/utils/toast';
 
 type AppealStatus = 'pending' | 'approved' | 'rejected' | 'cancelled';
-
 const VALID_STATUSES: AppealStatus[] = ['pending', 'approved', 'rejected', 'cancelled'];
 
 const isValidStatus = (status: string | null): status is AppealStatus => {
   return VALID_STATUSES.includes(status?.toLowerCase() as AppealStatus);
 };
+
+const AppealDetailSkeleton = () => (
+  <div className="flex w-full flex-col items-center gap-6 p-5">
+    <Skeleton
+      variant="rectangular"
+      width="100%"
+      height={160}
+      sx={{ borderRadius: '12px' }}
+      animation="wave"
+    />
+    <div className="mt-4 flex w-full flex-col gap-4">
+      <div className="flex flex-col items-end gap-1">
+        <Skeleton variant="text" width="30%" height={20} />
+        <Skeleton
+          variant="rectangular"
+          width="60%"
+          height={60}
+          sx={{ borderRadius: '12px 12px 0 12px' }}
+        />
+      </div>
+      <div className="flex flex-col items-start gap-1">
+        <Skeleton variant="text" width="30%" height={20} />
+        <Skeleton
+          variant="rectangular"
+          width="50%"
+          height={45}
+          sx={{ borderRadius: '12px 12px 12px 0' }}
+        />
+      </div>
+    </div>
+  </div>
+);
 
 function AppealCommentContent() {
   const router = useRouter();
@@ -59,13 +91,7 @@ function AppealCommentContent() {
     }
   }, [sortedComments]);
 
-  if (isLoading) {
-    return (
-      <div className="flex h-full min-h-screen items-center justify-center">
-        <p className="text-body1-m">이의제기 정보를 불러오는 중...</p>
-      </div>
-    );
-  }
+  if (isLoading) return <AppealDetailSkeleton />;
 
   if (isError || !data) {
     return (
@@ -184,7 +210,7 @@ function AppealCommentContent() {
 
 export default function AppealCommentPage() {
   return (
-    <Suspense fallback={<div className="h-full min-h-screen" />}>
+    <Suspense fallback={<AppealDetailSkeleton />}>
       <AppealCommentContent />
     </Suspense>
   );

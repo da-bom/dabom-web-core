@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 
 import { EditIcon, NotificationIcon } from '@icons';
+import { Box, Skeleton } from '@mui/material';
 import { CURRENT_DATE, DaboIcon, Divider, Grade, bytesToGB, cn } from '@shared';
 
 import { useUpdateFamilyName } from 'src/api/family/useUpdateFamilyName';
@@ -18,6 +19,51 @@ import PushConfirmModal from './PushConfirmModal';
 const ProgressBar = dynamic(() => import('src/components/common/ProgressBar'), {
   ssr: false,
 });
+
+const MyInfoSkeleton = () => (
+  <div className="flex w-full flex-col gap-6">
+    <div className="flex items-center gap-4">
+      <Skeleton variant="circular" width={100} height={100} />
+      <div className="flex flex-1 flex-col gap-2">
+        <div className="flex items-center gap-2">
+          <Skeleton variant="text" width="60px" height={24} />
+          <Skeleton variant="circular" width={16} height={16} />
+        </div>
+        <div className="flex items-center gap-2">
+          <Skeleton variant="text" width="100px" height={40} />
+          <Skeleton variant="rectangular" width={40} height={20} sx={{ borderRadius: '4px' }} />
+        </div>
+      </div>
+    </div>
+
+    {/* 데이터 사용량 영역 */}
+    <div className="flex w-full flex-col gap-2">
+      <div className="flex justify-between">
+        <Skeleton variant="text" width="80px" />
+        <Skeleton variant="text" width="100px" />
+      </div>
+      <Skeleton variant="rectangular" width="100%" height={8} sx={{ borderRadius: '4px' }} />
+    </div>
+
+    <Divider />
+
+    <div className="flex w-full items-center justify-between">
+      <div className="flex items-center gap-2">
+        <Skeleton variant="circular" width={16} height={16} />
+        <Skeleton variant="text" width="60px" />
+      </div>
+      <Skeleton variant="rectangular" width={40} height={24} sx={{ borderRadius: '12px' }} />
+    </div>
+
+    <Divider />
+
+    <Box className="flex flex-col gap-4">
+      <Skeleton variant="rectangular" height={50} sx={{ borderRadius: '8px' }} />
+      <Skeleton variant="rectangular" height={50} sx={{ borderRadius: '8px' }} />
+      <Skeleton variant="rectangular" height={50} sx={{ borderRadius: '8px' }} />
+    </Box>
+  </div>
+);
 
 const MyInfo = () => {
   const { data: myPageData, isLoading } = useGetMyPage(CURRENT_DATE.YEAR, CURRENT_DATE.MONTH);
@@ -52,7 +98,7 @@ const MyInfo = () => {
     }
   }, [familyName]);
 
-  if (isLoading) return <div>로딩</div>;
+  if (isLoading) return <MyInfoSkeleton />;
   if (!myPageData) return null;
 
   const usedGB = bytesToGB(myPageData.monthlyUsedBytes);
@@ -133,7 +179,7 @@ const MyInfo = () => {
           </div>
           <div className="flex gap-1">
             <span className="text-h2-m">{myPageData.name}</span>
-            <Grade grade="NORMAL" />
+            <Grade grade="VIP" />
           </div>
         </div>
       </div>

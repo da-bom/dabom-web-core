@@ -4,7 +4,8 @@ import { useSyncExternalStore } from 'react';
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-import { DaboIcon, MainBox, bytesToGB } from '@shared';
+import { Box, Skeleton } from '@mui/material';
+import { Button, DaboIcon, MainBox, bytesToGB } from '@shared';
 
 import { useGetAppeals } from 'src/api/appeal/useGetAppeals';
 import { useGetFamilyUsage, useGetFamilyUsageCurrent } from 'src/api/family/useGetFamilyUsage';
@@ -28,6 +29,59 @@ function useIsClient() {
   );
 }
 
+const DashboardSkeleton = () => (
+  <div className="mb-20 flex w-full flex-col items-center gap-7 p-5">
+    <div className="relative h-38 w-full">
+      <Box className="absolute bottom-0 left-0 flex w-full flex-col items-end gap-4 rounded-2xl border border-gray-100 bg-white p-5">
+        <div className="flex w-42 flex-col items-start gap-2">
+          <Skeleton variant="text" width="100px" height={20} />
+          <div className="flex items-end gap-1">
+            <Skeleton variant="text" width="60px" height={40} />
+          </div>
+        </div>
+        <Skeleton variant="rectangular" width="100%" height={8} sx={{ borderRadius: '4px' }} />
+      </Box>
+      <div className="absolute -top-5 left-5 z-10">
+        <Skeleton variant="circular" width={130} height={130} animation="wave" />
+      </div>
+    </div>
+
+    <div className="flex w-full gap-3">
+      {[1, 2].map((i) => (
+        <Skeleton
+          key={i}
+          variant="rectangular"
+          width="100%"
+          height={100}
+          sx={{ borderRadius: '16px' }}
+        />
+      ))}
+    </div>
+
+    <div className="flex w-full items-center justify-center gap-6">
+      <Skeleton variant="rectangular" width={200} height={30} sx={{ borderRadius: '12px' }} />
+    </div>
+
+    <div className="flex w-full flex-col gap-4">
+      <Skeleton variant="rectangular" width="100%" height={48} sx={{ borderRadius: '12px' }} />
+      <Box className="flex w-full flex-col gap-4 rounded-2xl border border-gray-100 bg-white p-4">
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="flex items-center justify-between py-2">
+            <div className="flex items-center gap-3">
+              <Skeleton variant="circular" width={40} height={40} />
+              <div className="flex flex-col gap-1">
+                <Skeleton variant="text" width="60px" />
+                <Skeleton variant="text" width="40px" />
+              </div>
+            </div>
+            <Skeleton variant="text" width="80px" />
+          </div>
+        ))}
+      </Box>
+    </div>
+  </div>
+);
+
 const UsageDashboard = () => {
   const router = useRouter();
   const pathname = usePathname();
@@ -47,17 +101,16 @@ const UsageDashboard = () => {
   const { totalRealtime, memberRealtime } = useSSE(isCurrentMonth && isClient);
 
   if (!isClient || isMonthlyLoading || (isCurrentMonth && isCurrentLoading)) {
-    return (
-      <div className="flex min-h-screen w-full items-center justify-center">
-        <p className="text-body1-m">가족 데이터를 불러오는 중입니다...</p>
-      </div>
-    );
+    return <DashboardSkeleton />;
   }
 
   if (isError || !usageData?.customers) {
     return (
-      <div className="flex min-h-screen w-full items-center justify-center">
-        <p className="text-body1-m text-red-500">데이터를 불러오는데 실패했습니다.</p>
+      <div className="flex min-h-screen w-full flex-col items-center justify-center p-5 text-center">
+        <p className="text-body1-m mb-4 text-red-500">데이터를 불러오는데 실패했습니다.</p>
+        <Button size="md" color="light" onClick={() => window.location.reload()}>
+          다시 시도
+        </Button>
       </div>
     );
   }
@@ -115,9 +168,7 @@ const UsageDashboard = () => {
   };
 
   const handleModeChange = (mode: 'list' | 'chart') => {
-    if (viewMode !== mode) {
-      updateUrl(year, month, mode);
-    }
+    if (viewMode !== mode) updateUrl(year, month, mode);
   };
 
   const userRole = getCurrentUserRole();
@@ -145,7 +196,6 @@ const UsageDashboard = () => {
               <span className="text-body2-m h-fit w-fit text-gray-500">/ {totalLimitGB}GB</span>
             </div>
           </div>
-
           <div className="h-2 w-full">
             <ProgressBar value={usagePercent} />
           </div>
