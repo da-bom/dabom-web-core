@@ -10,15 +10,20 @@ import GifticonModal from 'src/components/mypage/GiftModal';
 const RewardPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRequestId, setSelectedRequestId] = useState<number | null>(null);
+  const [usedRewardIds, setUsedRewardIds] = useState<Set<number>>(new Set());
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useGetReceivedRewards(10);
 
   const allRewards = data?.pages.flatMap((page) => page.rewards) ?? [];
 
-  const handleCardClick = (requestId: number) => {
+  const handleCardClick = (requestId: number, category: string) => {
     setSelectedRequestId(requestId);
     setIsModalOpen(true);
+
+    if (category === 'DATA') {
+      setUsedRewardIds((prev) => new Set(prev).add(requestId));
+    }
   };
 
   if (isLoading) {
@@ -32,6 +37,7 @@ const RewardPage = () => {
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-[repeat(auto-fill,minmax(200px,1fr))]">
         {allRewards.map((item) => {
           const { reward } = item.missionItem;
+          const isUsed = usedRewardIds.has(item.requestId);
 
           return (
             <Card
@@ -45,9 +51,14 @@ const RewardPage = () => {
                 size="sm"
                 color="light"
                 isFullWidth
-                onClick={() => handleCardClick(item.requestId)}
+                onClick={() => handleCardClick(item.requestId, reward.category)}
+                disabled={reward.category === 'DATA' && isUsed}
               >
-                {reward.category === 'DATA' ? '데이터 사용하기' : '기프티콘 보기'}
+                {reward.category === 'DATA'
+                  ? isUsed
+                    ? '사용 완료'
+                    : '데이터 사용하기'
+                  : '기프티콘 보기'}
               </Button>
             </Card>
           );
