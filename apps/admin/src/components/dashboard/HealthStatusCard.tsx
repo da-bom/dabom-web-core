@@ -26,16 +26,14 @@ const HealthStatusCard = ({ systemHealth }: HealthStatusCardProps) => {
       <div className="bg-background-base w-full rounded px-8 py-3">
         <div className="flex w-full items-center justify-between">
           {systems.map(({ key, label }) => {
-            // 상태값에 따른 색상 결정 (보통 'UP', 'HEALTHY', 'OK' 등)
             const status = systemHealth[key]?.toUpperCase();
-            const isHealthy = status === 'UP' || status === 'HEALTHY' || status === 'OK';
+            const isHealthy = status === 'ON';
 
             return (
               <div key={key} className="flex items-center gap-2">
-                {/* 🟢 상태 인디케이터 (불빛) */}
                 <div
                   className={cn(
-                    'h-2 w-2 animate-pulse rounded-full', // 깜빡이는 효과 추가 가능
+                    'h-2 w-2 animate-pulse rounded-full',
                     isHealthy ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]' : 'bg-red-500',
                   )}
                 />

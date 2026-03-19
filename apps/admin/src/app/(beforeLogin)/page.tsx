@@ -25,7 +25,7 @@ const Login = () => {
 
     try {
       await login({ email, password });
-      router.push('/policy');
+      router.push('/dashboard');
     } catch (error) {
       console.error('로그인 실패:', error);
     }
