@@ -158,12 +158,12 @@ function AppealCommentContent() {
                         : data.policyType === 'MONTHLY_LIMIT' &&
                             data.desiredRules?.limitBytes === null
                           ? APPEAL_UI_TEXT.UNBLOCK_LIMIT
-                          : data.desiredRules?.startTime !== undefined &&
-                              data.desiredRules?.startTime !== null
-                            ? `${data.desiredRules.startTime} ~ ${data.desiredRules.endTime}`
+                          : data.desiredRules?.start !== undefined &&
+                              data.desiredRules?.start !== null
+                            ? `${data.desiredRules.start} ~ ${data.desiredRules.end}`
                             : data.policyType === 'TIME_BLOCK' &&
-                                (data.desiredRules?.startTime === null ||
-                                  data.desiredRules?.startTime === undefined)
+                                (data.desiredRules?.start === null ||
+                                  data.desiredRules?.start === undefined)
                               ? APPEAL_UI_TEXT.UNBLOCK_LIMIT
                               : '-'
             }

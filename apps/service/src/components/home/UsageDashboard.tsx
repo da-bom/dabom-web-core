@@ -116,10 +116,16 @@ const UsageDashboard = () => {
   }
 
   const processedCustomers = usageData.customers.map((customer) => {
+    const baseCustomer = {
+      ...customer,
+      monthlyLimitBytes: customer.monthlyLimitBytes ?? null,
+      isBlocked: !!customer.isBlocked,
+    };
+
     if (memberRealtime && customer.customerId === memberRealtime.customerId) {
-      return { ...customer, monthlyUsedBytes: memberRealtime.monthlyUsedBytes };
+      return { ...baseCustomer, monthlyUsedBytes: memberRealtime.monthlyUsedBytes };
     }
-    return customer;
+    return baseCustomer;
   });
 
   const displayTotalUsedBytes =

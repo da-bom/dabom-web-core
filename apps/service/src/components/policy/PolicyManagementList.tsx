@@ -211,7 +211,7 @@ export default function PolicyManagementList({ customers }: PolicyManagementList
                 isSelected={selectedId === customerIdStr}
                 isOwner={isOwner}
                 isEditingByOther={false}
-                totalQuotaBytes={familyUsage?.totalQuotaBytes}
+                totalQuotaBytes={familyUsage?.totalQuotaBytes ?? undefined}
                 handlers={handlers}
               />
             );
