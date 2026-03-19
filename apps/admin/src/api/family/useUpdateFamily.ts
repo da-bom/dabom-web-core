@@ -8,7 +8,7 @@ export const updateFamily = async (
   body: UpdateFamilyRequest,
 ): Promise<UpdateFamilyResponse> => {
   try {
-    const response = await http.patch<UpdateFamilyResponse & { timestamp?: string }>(
+    const response = await http.post<UpdateFamilyResponse & { timestamp?: string }>(
       `/admin/families/${familyId}`,
       body,
     );
