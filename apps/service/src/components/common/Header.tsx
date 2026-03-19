@@ -23,8 +23,8 @@ const Header = ({
   const router = useRouter();
   const pathname = usePathname();
 
-  const HIDE_BACK_BTN_PATHS = ['/home', '/notification', '/policy'];
-  const HIDE_NOTI_BTN_PATHS = ['/notification', '/policy'];
+  const HIDE_BACK_BTN_PATHS = ['/home', '/notification', '/family'];
+  const HIDE_NOTI_BTN_PATHS = ['/notification'];
 
   const shouldShowBack = isBackVisible ?? !HIDE_BACK_BTN_PATHS.includes(pathname);
   const shouldShowNoti = isNotiVisible ?? !HIDE_NOTI_BTN_PATHS.includes(pathname);
