@@ -30,22 +30,21 @@ function AppealConfirmContent() {
       if (policy === APPEAL_TYPE_LABEL.EMERGENCY) {
         await postEmergency(reason);
       } else {
-        const desiredRules: { limitBytes?: number | null; startTime?: string; endTime?: string } =
-          {};
+        const desiredRules: { limitBytes?: number | null; start?: string; end?: string } = {};
 
         if (isUnblock) {
           if (policy === APPEAL_TYPE_LABEL.NORMAL) {
             desiredRules.limitBytes = null;
           } else if (policy === APPEAL_TYPE_LABEL.TIME_BLOCK) {
-            desiredRules.startTime = undefined;
-            desiredRules.endTime = undefined;
+            desiredRules.start = undefined;
+            desiredRules.end = undefined;
           }
         } else {
           if (policy === APPEAL_TYPE_LABEL.NORMAL && amount) {
             desiredRules.limitBytes = gbToBytes(Number(amount));
           } else if (policy === APPEAL_TYPE_LABEL.TIME_BLOCK && start && end) {
-            desiredRules.startTime = start;
-            desiredRules.endTime = end;
+            desiredRules.start = start;
+            desiredRules.end = end;
           }
         }
 

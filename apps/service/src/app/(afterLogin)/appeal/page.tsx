@@ -79,12 +79,11 @@ const AppealPageContent = () => {
                   ? formatSize(item.desiredRules.limitBytes).total
                   : item.policyType === 'MONTHLY_LIMIT' && item.desiredRules?.limitBytes === null
                     ? APPEAL_UI_TEXT.UNBLOCK_LIMIT
-                    : item.desiredRules?.startTime !== undefined &&
-                        item.desiredRules?.startTime !== null
-                      ? `${item.desiredRules.startTime} ~ ${item.desiredRules.endTime}`
+                    : item.desiredRules?.start !== undefined && item.desiredRules?.start !== null
+                      ? `${item.desiredRules.start} ~ ${item.desiredRules.end}`
                       : item.policyType === 'TIME_BLOCK' &&
-                          (item.desiredRules?.startTime === null ||
-                            item.desiredRules?.startTime === undefined)
+                          (item.desiredRules?.start === null ||
+                            item.desiredRules?.start === undefined)
                         ? APPEAL_UI_TEXT.UNBLOCK_LIMIT
                         : item.policyType === 'MANUAL_BLOCK'
                           ? APPEAL_UI_TEXT.MANUAL_BLOCK
