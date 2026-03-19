@@ -48,7 +48,7 @@ function MissionCreateForm() {
 
   return (
     <FormProvider {...methods}>
-      <div className="flex flex-col pb-24">
+      <div className="flex flex-col pb-40">
         <div className="flex-1 px-5 pt-10">
           {currentStep === 1 && <Step1Title nextStep={nextStep} />}
           {currentStep === 2 && <Step2Target prevStep={prevStep} nextStep={nextStep} />}

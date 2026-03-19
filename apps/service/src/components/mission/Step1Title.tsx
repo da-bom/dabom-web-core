@@ -33,12 +33,10 @@ const Step1Title = ({ nextStep }: { nextStep: () => void }) => {
         {errors.missionText && <span className="text-negative">{errors.missionText.message}</span>}
       </div>
 
-      <footer className="fixed right-0 bottom-25 left-0 mx-5">
-        <div className="mx-auto">
-          <Button size="lg" color="dark" isFullWidth onClick={nextStep} disabled={!missionText}>
-            다음
-          </Button>
-        </div>
+      <footer className="from-background-base via-background-base fixed right-0 bottom-16 left-0 z-10 bg-gradient-to-t to-transparent px-5 pt-10 pb-9">
+        <Button size="lg" color="dark" isFullWidth onClick={nextStep} disabled={!missionText}>
+          다음
+        </Button>
       </footer>
     </div>
   );

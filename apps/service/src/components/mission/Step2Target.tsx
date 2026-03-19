@@ -69,7 +69,7 @@ const Step2Target = ({ prevStep, nextStep }: { prevStep: () => void; nextStep: (
         )}
       </div>
 
-      <footer className="fixed right-0 bottom-25 left-0 mx-5 flex gap-2">
+      <footer className="from-background-base via-background-base fixed right-0 bottom-16 left-0 z-10 flex gap-2 bg-gradient-to-t to-transparent px-5 pt-10 pb-9">
         <Button size="lg" color="light" isFullWidth onClick={prevStep}>
           이전
         </Button>

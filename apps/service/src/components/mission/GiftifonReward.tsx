@@ -40,7 +40,7 @@ const GifticonReward = ({ value, onSelect }: GifticonRewardProps) => {
             <img
               src={reward.thumbnailUrl ?? ''}
               alt={reward.name}
-              className="w-24 object-contain"
+              className="h-24 w-24 object-contain"
             />
             <p className="flex flex-col text-center">
               <span className="text-body2-m break-keep whitespace-pre-wrap">{reward.name}</span>
