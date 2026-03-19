@@ -7,9 +7,7 @@ export function proxy(request: NextRequest) {
   const session = request.cookies.get(ACCESS_TOKEN_KEY);
   const { pathname } = request.nextUrl;
 
-  const showDevtools = process.env.NEXT_PUBLIC_SHOW_QUERY_DEVTOOLS === 'true';
-
-  if (showDevtools) {
+  if (process.env.NEXT_PUBLIC_SHOW_QUERY_DEVTOOLS === 'true') {
     return NextResponse.next();
   }
 
@@ -20,7 +18,7 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  if (!session && (pathname === '/login' || pathname === '/')) {
+  if (!session && pathname !== '/login') {
     const loginUrl = new URL('/login', request.url);
     loginUrl.searchParams.set('from', pathname);
     return NextResponse.redirect(loginUrl);
