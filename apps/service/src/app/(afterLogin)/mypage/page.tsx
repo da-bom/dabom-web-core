@@ -26,8 +26,7 @@ const MyPage = () => {
           </MainBox>
         </Link>
       )}
-      {/* TODO: 약관 페이지 구현 후 수정 */}
-      <Link href="#">
+      <Link href="/terms-of-use">
         <MainBox className="flex cursor-pointer items-center justify-between rounded-2xl p-4">
           <span className="text-body1-m">이용 약관</span>
           <ChevronIcon className="text-gray-800" sx={{ width: 16 }} />
