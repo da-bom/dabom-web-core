@@ -55,5 +55,9 @@ export default function PolicyManagementPage() {
 
   const listKey = `policy-list-${familyDetail.customers.length}-${familyDetail.customers.map((c) => c.customerId).join('-')}`;
 
-  return <PolicyManagementList key={listKey} customers={familyDetail.customers} />;
+  return (
+    <div className="pb-20">
+      <PolicyManagementList key={listKey} customers={familyDetail.customers} />
+    </div>
+  );
 }

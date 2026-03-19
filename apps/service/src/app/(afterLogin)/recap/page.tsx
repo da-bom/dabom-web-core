@@ -2,7 +2,8 @@
 
 import React, { Suspense, useMemo, useState } from 'react';
 
-import { IosShareIcon } from '@icons';
+import { useRouter } from 'next/navigation';
+
 import { Button } from '@shared';
 import dayjs from 'dayjs';
 
@@ -21,6 +22,7 @@ import {
 import { RECAP_CONFIG, RECAP_UI_TEXT } from 'src/constants/recap';
 
 function RecapContent() {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);
 
   const { year, month } = useMemo(() => {
@@ -137,13 +139,10 @@ function RecapContent() {
       </div>
 
       {currentStep === totalSteps - 1 && (
-        <div className="pointer-events-none fixed bottom-26 left-0 flex w-full justify-center px-5">
+        <div className="pointer-events-none fixed bottom-26 left-0 z-20 flex w-full justify-center px-5">
           <div className="pointer-events-auto">
-            <Button size="lg" color="light" onClick={() => {}}>
-              <div className="flex items-center gap-2">
-                <IosShareIcon sx={{ fontSize: 16 }} />
-                {RECAP_UI_TEXT.SHARE}
-              </div>
+            <Button size="lg" color="light" onClick={() => router.push('/home')}>
+              <div className="flex items-center">{RECAP_UI_TEXT.BACK_TO_HOME}</div>
             </Button>
           </div>
         </div>

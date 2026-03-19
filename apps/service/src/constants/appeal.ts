@@ -24,6 +24,7 @@ export const APPEAL_UI_TEXT = {
   DATA_LIMIT_DESCRIPTION: 'description',
   CURRENT_LIMIT_LABEL: '현재 한도',
   UNBLOCK: '한도를 해제해 주세요.',
+  UNBLOCK_LIMIT: '한도 해제',
   TIME_LIMIT_TITLE: '변경을 원하는 시간대를 알려주세요?',
   TIME_LIMIT_DESCRIPTION: 'description',
   CURRENT_TIME_LABEL: '현재 제한',

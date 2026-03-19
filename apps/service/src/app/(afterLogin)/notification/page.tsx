@@ -82,7 +82,7 @@ export default function NotificationPage() {
 
   return (
     <section className="bg-background-base flex w-full flex-col">
-      <div className="flex flex-col items-start gap-4 p-5">
+      <div className="flex flex-col items-start gap-4 p-5 pb-20">
         <div className="flex w-full items-center justify-between">
           <span className="text-body2-m text-brand-black">새 알림 ({unreadCount})</span>
           <button

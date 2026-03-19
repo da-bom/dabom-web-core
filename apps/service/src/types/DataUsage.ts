@@ -14,7 +14,7 @@ export interface CustomerListType {
   customerId: number;
   name: string;
   monthlyUsedBytes: number;
-  monthlyLimitBytes: number;
+  monthlyLimitBytes: number | null;
   isBlocked: boolean;
   isMe?: boolean;
   blockReason?: string;

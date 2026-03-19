@@ -4,11 +4,7 @@ export const UsageCustomerSchema = z.object({
   customerId: z.number(),
   name: z.string(),
   monthlyUsedBytes: z.number(),
-  monthlyLimitBytes: z
-    .number()
-    .nullable()
-    .optional()
-    .transform((val) => val ?? 0),
+  monthlyLimitBytes: z.number().nullable().optional(),
   isBlocked: z.boolean().optional().default(false),
   blockReason: z
     .string()
@@ -21,7 +17,7 @@ export const UsageCustomerSchema = z.object({
 export const FamilyUsageCurrentSchema = z.object({
   familyId: z.number(),
   familyName: z.string(),
-  totalQuotaBytes: z.number(),
+  totalQuotaBytes: z.number().nullable().optional(),
   totalUsedBytes: z.number(),
 });
 
@@ -30,11 +26,7 @@ export const FamilyUsageMonthlySchema = z.object({
   year: z.number(),
   month: z.number(),
   customers: z.array(UsageCustomerSchema),
-  totalQuotaBytes: z
-    .number()
-    .nullable()
-    .optional()
-    .transform((val) => val ?? 0),
+  totalQuotaBytes: z.number().nullable().optional(),
 });
 
 export const UsageSSEDataSchema = z.object({

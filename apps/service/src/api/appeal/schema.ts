@@ -9,8 +9,8 @@ export type AppealStatus = z.infer<typeof AppealStatusSchema>;
 const DesiredRulesSchema = z
   .object({
     limitBytes: z.number().nullable().optional(),
-    startTime: z.string().optional(),
-    endTime: z.string().optional(),
+    start: z.string().optional(),
+    end: z.string().optional(),
   })
   .nullable();
 
@@ -114,8 +114,8 @@ export const ObjectionPolicySchema = z.object({
   policyName: z.string(),
   policyType: z.enum(['TIME_BLOCK', 'MONTHLY_LIMIT', 'MANUAL_BLOCK', 'APP_BLOCK']),
   appliedRules: z.object({
-    startTime: z.string().optional(),
-    endTime: z.string().optional(),
+    start: z.string().optional(),
+    end: z.string().optional(),
     limitBytes: z.number().optional(),
   }),
   active: z.boolean(),

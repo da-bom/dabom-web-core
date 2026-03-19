@@ -105,7 +105,7 @@ export default function PolicyDetailPage({ params }: PolicyDetailPageProps) {
   };
 
   return (
-    <div className="flex flex-col items-center gap-4 p-4">
+    <div className="flex flex-col items-center gap-4 p-4 pb-20">
       <MainBox className="flex h-14 w-full flex-row items-center justify-between rounded-2xl p-4">
         <div className="flex flex-row items-center gap-2">
           <FaceIcon sx={{ fontSize: 16, color: 'inherit' }} />

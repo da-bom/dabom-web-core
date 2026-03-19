@@ -20,6 +20,16 @@ interface RecapStep4AngelProps {
 }
 
 export function RecapStep4Angel({ approverName, approvedAppeals }: RecapStep4AngelProps) {
+  if (!approverName) {
+    return (
+      <div className="flex h-fit flex-col items-center gap-10 p-8">
+        <h1 className="text-h1-m h-fit w-full leading-[29px] break-keep whitespace-pre-line">
+          {RECAP_UI_TEXT.STEP4_EMPTY}
+        </h1>
+      </div>
+    );
+  }
+
   return (
     <div className="flex h-fit flex-col items-center gap-10 p-8">
       <h1 className="text-h1-m h-fit w-full leading-[29px] break-keep whitespace-pre-line">

@@ -11,40 +11,42 @@ const OwnerActionButton = ({
   status,
   requestId,
 }: {
-  status: 'PENDING' | 'REJECTED' | null;
+  status: 'PENDING' | 'REJECTED' | 'APPROVED' | null;
   requestId: number;
 }) => {
   const { mutate: respond, isPending } = useRespondReward();
 
   const handleApprove = () => {
-    if (window.confirm('보상을 수락하시겠습니까?')) {
-      respond({
-        requestId,
-        payload: { status: 'APPROVED' },
-      });
+    if (!requestId) {
+      showToast.error('요청이 실패되었습니다.');
+      return;
     }
+    respond({
+      requestId,
+      payload: { status: 'APPROVED' },
+    });
   };
 
   const handleReject = () => {
-    const reason = window.prompt('거절 사유를 입력해주세요.');
-
-    if (reason === null) return;
-    if (reason.trim() === '') {
-      showToast.error('거절 사유는 필수입니다.');
+    if (!requestId) {
+      showToast.error('요청이 실패되었습니다.');
       return;
     }
-
     respond({
       requestId,
       payload: {
         status: 'REJECTED',
-        rejectReason: reason,
+        rejectReason: '.',
       },
     });
   };
 
-  if (status === 'PENDING') {
+  if (status === null) {
     return <StatusBox>진행 중</StatusBox>;
+  }
+
+  if (status === 'REJECTED') {
+    return <StatusBox>거절됨</StatusBox>;
   }
 
   return (

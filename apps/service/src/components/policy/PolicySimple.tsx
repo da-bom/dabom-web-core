@@ -31,13 +31,20 @@ export const PolicyItem = ({ icon, label, value, disabled }: PolicyItemProps) =>
 interface BlockProps {
   isBlocked: boolean;
   onToggle?: () => void;
+  type?: 'toggle' | 'text';
 }
 
-export const PolicyBlock = ({ isBlocked, onToggle }: BlockProps) => (
+export const PolicyBlock = ({ isBlocked, onToggle, type = 'toggle' }: BlockProps) => (
   <PolicyItem
     icon={<DoNotIcon sx={{ width: 16 }} />}
     label="데이터 사용 차단"
-    value={<Toggle isChecked={isBlocked} onToggle={onToggle ?? (() => {})} disabled={!onToggle} />}
+    value={
+      type === 'text' ? (
+        <span className="text-body1-m">{isBlocked ? 'ON' : 'OFF'}</span>
+      ) : (
+        <Toggle isChecked={isBlocked} onToggle={onToggle ?? (() => {})} disabled={!onToggle} />
+      )
+    }
   />
 );
 

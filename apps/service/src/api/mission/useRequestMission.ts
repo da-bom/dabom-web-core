@@ -22,8 +22,8 @@ export const useRequestMission = () => {
 
   return useMutation({
     mutationFn: (missionId: number) => requestMissionApproval(missionId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['missions'] });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['missions'] });
       showToast.success('미션 완료 요청을 보냈습니다!');
     },
     onError: () => {

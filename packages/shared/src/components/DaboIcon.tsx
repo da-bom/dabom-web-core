@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import DaboBlockedIcon from '../assets/icons/DaboBlockedIcon.svg';
 import DaboBombIcon from '../assets/icons/DaboBombIcon.svg';
 import DaboDefaultIcon from '../assets/icons/DaboDefaultIcon.svg';
+import DaboGoodIcon from '../assets/icons/DaboGood.svg';
 import DaboHurtIcon from '../assets/icons/DaboHurtIcon.svg';
 import DaboSadIcon from '../assets/icons/DaboSadIcon.svg';
 import DaboSmileIcon from '../assets/icons/DaboSmileIcon.svg';
@@ -12,7 +13,7 @@ import DaboSmileIcon from '../assets/icons/DaboSmileIcon.svg';
 interface DaboIconProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   usage?: number;
   isBlocked?: boolean;
-  type?: 'blocked' | 'bomb' | 'default' | 'hurt' | 'smile' | 'sad';
+  type?: 'blocked' | 'bomb' | 'default' | 'hurt' | 'smile' | 'sad' | 'good';
   sx?: React.CSSProperties;
 }
 
@@ -33,6 +34,7 @@ const DaboIcon = ({ usage = 0, isBlocked, type, sx, style, ...props }: DaboIconP
     if (type === 'sad') return DaboSadIcon;
     if (type === 'default') return DaboDefaultIcon;
     if (type === 'smile') return DaboSmileIcon;
+    if (type === 'good') return DaboGoodIcon;
 
     if (usage >= 81) return DaboSmileIcon;
     if (usage >= 51) return DaboDefaultIcon;

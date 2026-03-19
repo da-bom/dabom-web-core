@@ -9,16 +9,17 @@ const MemberActionButton = ({
   status,
 }: {
   requestId: number;
-  status: 'PENDING' | 'REJECTED' | null;
+  status: 'PENDING' | 'REJECTED' | 'APPROVED' | null;
 }) => {
-  const { mutate: requestApproval } = useRequestMission();
+  const { mutate: requestApproval, isPending } = useRequestMission();
 
   const handleRequest = () => {
     requestApproval(requestId);
   };
   if (status === 'PENDING') return <StatusBox>응답 대기 중</StatusBox>;
+
   return (
-    <Button size="sm" color="dark" isFullWidth onClick={handleRequest}>
+    <Button size="sm" color="dark" isFullWidth onClick={handleRequest} disabled={isPending}>
       보상 요청하기
     </Button>
   );

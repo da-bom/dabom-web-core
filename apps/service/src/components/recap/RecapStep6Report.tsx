@@ -2,6 +2,8 @@
 
 import React from 'react';
 
+import { DaboIcon } from '@shared';
+
 import { RECAP_UI_TEXT } from 'src/constants/recap';
 
 interface RecapStep6ReportProps {
@@ -9,7 +11,8 @@ interface RecapStep6ReportProps {
 }
 
 export function RecapStep6Report({ score }: RecapStep6ReportProps) {
-  const title = score >= 70 ? RECAP_UI_TEXT.STEP6_HIGH_SCORE : RECAP_UI_TEXT.STEP6_LOW_SCORE;
+  const isHighScore = score >= 70;
+  const title = isHighScore ? RECAP_UI_TEXT.STEP6_HIGH_SCORE : RECAP_UI_TEXT.STEP6_LOW_SCORE;
 
   return (
     <div className="flex flex-1 flex-col items-center gap-16 p-8">
@@ -17,13 +20,8 @@ export function RecapStep6Report({ score }: RecapStep6ReportProps) {
         {title}
       </h1>
 
-      {/* 추가 예정이라서 색상 코드는 하드코딩으로 하겠습니다 */}
-      <div className="flex h-36 w-36 flex-none flex-col items-center justify-center bg-[#D9D9D9]">
-        <span className="text-h1-m text-center">
-          일러스트
-          <br />
-          추가 예정
-        </span>
+      <div className="flex flex-none flex-col items-center justify-center">
+        <DaboIcon type={isHighScore ? 'good' : 'smile'} sx={{ width: 180 }} />
       </div>
     </div>
   );

@@ -21,7 +21,7 @@ interface ChartDataItem {
 interface Props {
   customers?: CustomerListType[];
   totalUsageGB?: number;
-  totalQuotaBytes?: number;
+  totalQuotaBytes?: number | null;
 
   items?: ChartDataItem[];
   unit?: string;
@@ -75,7 +75,7 @@ const UsageChart = ({
 
   const chartData: ChartDataItem[] = [...chartDataRaw];
 
-  if (totalQuotaBytes !== undefined && totalUsageGB !== undefined) {
+  if (totalQuotaBytes && totalUsageGB !== undefined) {
     const totalQuotaGB = bytesToGB(totalQuotaBytes);
     const remainingTotalGB = Math.max(0, totalQuotaGB - totalUsageGB);
     chartData.push({

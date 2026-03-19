@@ -173,7 +173,8 @@ function TimeColumn({ items, selectedItem, onSelect }: Readonly<TimeColumnProps>
         return (
           <li
             key={item}
-            className="flex h-11 w-full shrink-0 snap-center items-center justify-center"
+            onClick={() => onSelect(item)}
+            className="flex h-11 w-full shrink-0 cursor-pointer snap-center items-center justify-center"
           >
             <span
               className={cn(

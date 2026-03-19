@@ -32,9 +32,13 @@ export const useRespondReward = () => {
 
   return useMutation({
     mutationFn: respondRewardRequest,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['rewardRequests'] });
-      queryClient.invalidateQueries({ queryKey: ['receivedRewards'] });
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['rewardRequests'] }),
+        queryClient.invalidateQueries({ queryKey: ['receivedRewards'] }),
+        queryClient.invalidateQueries({ queryKey: ['missions'] }),
+      ]);
+      showToast.success('요청이 처리되었습니다!');
     },
     onError: (error) => {
       console.error('보상 처리 실패:', error);

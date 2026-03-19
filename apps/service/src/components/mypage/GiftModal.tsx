@@ -26,26 +26,35 @@ const GifticonModal = ({ isOpen, onClose, data }: GifticonModalProps) => {
       {!data || !rewardInfo ? (
         renderErrorView()
       ) : (
-        <div className="flex flex-col items-center gap-4 px-4 py-2">
-          <div className="relative h-40 w-40">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={rewardInfo.thumbnailUrl}
-              alt={rewardInfo.name}
-              className="h-full w-full object-contain"
-            />
-          </div>
-
+        <div className="flex flex-col items-center gap-4 px-4 py-6">
+          {rewardInfo.category !== 'DATA' && (
+            <div className="relative h-40 w-40">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={rewardInfo.thumbnailUrl ?? undefined}
+                alt={rewardInfo.name}
+                className="h-full w-full object-contain"
+              />
+            </div>
+          )}
           <div className="text-center">
             <h3 className="text-h2-m">
-              {rewardInfo.category === 'DATA' ? 'U+ 데이터' : '기프티콘'}
+              {rewardInfo.category === 'DATA'
+                ? `${rewardInfo.name} 쿠폰을 사용했습니다.`
+                : '기프티콘'}
             </h3>
-            <p className="text-body2-m">{rewardInfo.name}</p>
+            {rewardInfo.category !== 'DATA' && <p className="text-body2-m">{rewardInfo.name}</p>}
           </div>
-
           {rewardInfo.category !== 'DATA' && (
-            <span className="text-barcode mt-2">0000 0000 0000</span>
-          )}
+            <div className="mt-4 flex w-full justify-center overflow-hidden px-2">
+              <span
+                className="text-barcode whitespace-nowrap"
+                style={{ fontSize: 'min(12vw, 60px)' }}
+              >
+                0000 0000 0000
+              </span>
+            </div>
+          )}{' '}
         </div>
       )}
     </ModalLayout>

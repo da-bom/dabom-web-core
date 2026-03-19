@@ -108,6 +108,16 @@ export const AppBlockBox = ({
     );
   };
 
+  const handleToggleBlock = () => {
+    const nextState = !isAppBlockOn;
+    setIsAppBlockOn(nextState);
+
+    if (!nextState) {
+      setBlockedApps([]);
+      onUpdate?.([]);
+    }
+  };
+
   const isDisabled = disabled || !isAppBlockOn;
 
   return (
@@ -126,11 +136,7 @@ export const AppBlockBox = ({
           <span className="text-body1-m">{POLICY_MESSAGES.APP_BLOCK_TITLE}</span>
         </div>
 
-        <Toggle
-          isChecked={isAppBlockOn}
-          onToggle={() => setIsAppBlockOn(!isAppBlockOn)}
-          disabled={disabled}
-        />
+        <Toggle isChecked={isAppBlockOn} onToggle={handleToggleBlock} disabled={disabled} />
       </div>
 
       <div className="flex h-12 w-full">
@@ -158,7 +164,7 @@ export const AppBlockBox = ({
             {blockedApps.map((app) => (
               <div key={app.id} className="flex w-full flex-row items-center justify-between">
                 <div className="flex flex-row items-center gap-2">
-                  <div className="bg-brand-white relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-[9.6px]">
+                  <div className="bg-brand-white relative flex h-9 w-9 items-center justify-center rounded-[9.6px] shadow-[0px_0px_3.42857px_rgba(0,0,0,0.2)]">
                     <AppIcon type={app.type} className="h-full w-full object-cover" />
                   </div>
                   <span className="text-body2-m flex-none text-center">{app.name}</span>

@@ -20,7 +20,8 @@ export type MissionRequest = z.infer<typeof MissionRequestSchema>;
 export const MissionSchema = z.object({
   missionItemId: z.number(),
   missionText: z.string(),
-  requestStatus: z.enum(['PENDING', 'REJECTED']).nullable(),
+  requestStatus: z.enum(['PENDING', 'REJECTED', 'APPROVED']).nullable(),
+  requestId: z.number().nullable().optional(),
   target: z.object({
     customerId: z.number(),
     name: z.string(),

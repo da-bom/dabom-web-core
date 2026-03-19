@@ -8,9 +8,12 @@ import { CustomerListType } from 'src/types/DataUsage';
 const WARNING_THRESHOLD = 0.8;
 
 const CustomerItem = ({ customer }: { customer: CustomerListType }) => {
+  const isUnlimited = !customer.monthlyLimitBytes || customer.monthlyLimitBytes <= 0;
   const usageRatio =
-    customer.monthlyLimitBytes > 0 ? customer.monthlyUsedBytes / customer.monthlyLimitBytes : 0;
-  const showWarning = usageRatio >= WARNING_THRESHOLD;
+    customer.monthlyLimitBytes && customer.monthlyLimitBytes > 0
+      ? customer.monthlyUsedBytes / customer.monthlyLimitBytes
+      : 0;
+  const showWarning = !isUnlimited && usageRatio >= WARNING_THRESHOLD;
 
   return (
     <li className="flex h-12 w-full flex-col items-end">

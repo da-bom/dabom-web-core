@@ -20,7 +20,9 @@ const MissionPage = () => {
   if (isError)
     return <div className="m-5 text-center text-red-500">데이터를 불러오지 못했습니다.</div>;
 
-  const missions = data?.missions ?? [];
+  const missions = (data?.missions ?? []).filter(
+    (mission: Mission) => mission.requestStatus !== 'APPROVED',
+  );
 
   return (
     <div className="m-5 flex flex-col gap-5 pb-40">
@@ -43,7 +45,7 @@ const MissionPage = () => {
             >
               {isOwner ? (
                 <OwnerActionButton
-                  requestId={mission.missionItemId}
+                  requestId={mission.requestId as number}
                   status={mission.requestStatus}
                 />
               ) : (
@@ -68,11 +70,13 @@ const MissionPage = () => {
       </Link>
 
       {isOwner && (
-        <Link className="fixed right-0 bottom-25 left-0 mx-5" href="/mission/create">
-          <Button size="lg" color="dark" isFullWidth>
-            미션 만들기
-          </Button>
-        </Link>
+        <div className="from-background-base via-background-base fixed right-0 bottom-16 left-0 z-10 bg-gradient-to-t to-transparent px-5 pt-10 pb-9">
+          <Link href="/mission/create">
+            <Button size="lg" color="dark" isFullWidth>
+              미션 만들기
+            </Button>
+          </Link>
+        </div>
       )}
     </div>
   );

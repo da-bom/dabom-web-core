@@ -116,10 +116,16 @@ const UsageDashboard = () => {
   }
 
   const processedCustomers = usageData.customers.map((customer) => {
+    const baseCustomer = {
+      ...customer,
+      monthlyLimitBytes: customer.monthlyLimitBytes ?? null,
+      isBlocked: !!customer.isBlocked,
+    };
+
     if (memberRealtime && customer.customerId === memberRealtime.customerId) {
-      return { ...customer, monthlyUsedBytes: memberRealtime.monthlyUsedBytes };
+      return { ...baseCustomer, monthlyUsedBytes: memberRealtime.monthlyUsedBytes };
     }
-    return customer;
+    return baseCustomer;
   });
 
   const displayTotalUsedBytes =
@@ -133,11 +139,13 @@ const UsageDashboard = () => {
     usageData.totalQuotaBytes;
 
   const totalUsageGB = Math.floor(bytesToGB(displayTotalUsedBytes));
-  const totalLimitGB = Math.floor(bytesToGB(displayTotalLimitBytes));
-  const usagePercent =
-    displayTotalLimitBytes === 0
-      ? 0
-      : Math.min(Math.round((displayTotalUsedBytes / displayTotalLimitBytes) * 100), 100);
+  const totalLimitGB =
+    displayTotalLimitBytes && displayTotalLimitBytes > 0
+      ? Math.floor(bytesToGB(displayTotalLimitBytes))
+      : null;
+  const usagePercent = !displayTotalLimitBytes
+    ? 0
+    : Math.min(Math.round((displayTotalUsedBytes / displayTotalLimitBytes) * 100), 100);
 
   const updateUrl = (nextYear: number, nextMonth: number, nextView: 'list' | 'chart') => {
     const params = new URLSearchParams(searchParams.toString());
@@ -193,7 +201,9 @@ const UsageDashboard = () => {
             <span className="text-body1-m h-fit w-fit">현재 데이터 사용량</span>
             <div className="flex h-fit w-fit items-end gap-1">
               <span className="text-main-m h-fit w-fit">{totalUsageGB}GB</span>
-              <span className="text-body2-m h-fit w-fit text-gray-500">/ {totalLimitGB}GB</span>
+              <span className="text-body2-m h-fit w-fit text-gray-500">
+                / {totalLimitGB !== null ? `${totalLimitGB}GB` : '무제한'}
+              </span>
             </div>
           </div>
           <div className="h-2 w-full">

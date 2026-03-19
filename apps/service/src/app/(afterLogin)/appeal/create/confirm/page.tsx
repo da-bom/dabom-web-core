@@ -30,19 +30,21 @@ function AppealConfirmContent() {
       if (policy === APPEAL_TYPE_LABEL.EMERGENCY) {
         await postEmergency(reason);
       } else {
-        const desiredRules: { limitBytes?: number | null; startTime?: string; endTime?: string } =
-          {};
+        const desiredRules: { limitBytes?: number | null; start?: string; end?: string } = {};
 
         if (isUnblock) {
           if (policy === APPEAL_TYPE_LABEL.NORMAL) {
             desiredRules.limitBytes = null;
+          } else if (policy === APPEAL_TYPE_LABEL.TIME_BLOCK) {
+            desiredRules.start = undefined;
+            desiredRules.end = undefined;
           }
         } else {
           if (policy === APPEAL_TYPE_LABEL.NORMAL && amount) {
             desiredRules.limitBytes = gbToBytes(Number(amount));
           } else if (policy === APPEAL_TYPE_LABEL.TIME_BLOCK && start && end) {
-            desiredRules.startTime = start;
-            desiredRules.endTime = end;
+            desiredRules.start = start;
+            desiredRules.end = end;
           }
         }
 
@@ -62,6 +64,15 @@ function AppealConfirmContent() {
 
   const getChangedValue = () => {
     if (isUnblock) {
+      if (policy === APPEAL_TYPE_LABEL.NORMAL) {
+        return APPEAL_UI_TEXT.UNBLOCK_LIMIT;
+      }
+      if (policy === APPEAL_TYPE_LABEL.TIME_BLOCK) {
+        return APPEAL_UI_TEXT.UNBLOCK_LIMIT;
+      }
+      if (policy === APPEAL_TYPE_LABEL.APP_BLOCK) {
+        return APPEAL_UI_TEXT.APP_BLOCK;
+      }
       return APPEAL_UI_TEXT.MANUAL_BLOCK;
     }
     if (policy === APPEAL_TYPE_LABEL.NORMAL && amount) {

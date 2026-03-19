@@ -12,7 +12,6 @@ import { useGetAppeals } from 'src/api/appeal/useGetAppeals';
 import { useCustomerMe } from 'src/api/auth/useCustomerMe';
 import { AppealRequestCard, AppealStatus, FilterSegment } from 'src/components/appeal';
 import { APPEAL_TYPE_LABEL, APPEAL_UI_TEXT } from 'src/constants/appeal';
-import { getCurrentUserRole } from 'src/utils/auth';
 
 const AppealPageContent = () => {
   const router = useRouter();
@@ -54,71 +53,96 @@ const AppealPageContent = () => {
   }
 
   const filteredItems = data.appeals.filter((item) => {
+    const isMyAppeal = item.requesterId === user?.customerId;
+    const roleMatches = isOwner || isMyAppeal;
+
+    if (!roleMatches) return false;
+
     if (activeTab === 'progress') return item.status === 'PENDING';
     if (activeTab === 'completed') return item.status !== 'PENDING';
     return true;
   });
 
   return (
-    <div className="flex h-full flex-col px-5 py-5">
+    <div className="flex min-h-full flex-col px-5 pt-5 pb-30">
       <div className="flex flex-col gap-5">
         <FilterSegment activeTab={activeTab} onTabChange={setActiveTab} />
 
         <div className="flex flex-col gap-2">
-          {filteredItems.map((item) => {
-            const displayValue =
-              item.type === 'EMERGENCY'
-                ? APPEAL_UI_TEXT.EMERGENCY_DATA_AMOUNT
-                : item.desiredRules?.limitBytes
-                  ? formatSize(item.desiredRules.limitBytes).total
-                  : item.desiredRules?.startTime
-                    ? `${item.desiredRules.startTime} ~ ${item.desiredRules.endTime}`
-                    : item.policyType === 'MANUAL_BLOCK'
-                      ? APPEAL_UI_TEXT.MANUAL_BLOCK
-                      : item.policyType === 'APP_BLOCK'
-                        ? APPEAL_UI_TEXT.APP_BLOCK
-                        : '-';
+          {filteredItems.length > 0 ? (
+            filteredItems.map((item) => {
+              const displayValue =
+                item.type === 'EMERGENCY'
+                  ? APPEAL_UI_TEXT.EMERGENCY_DATA_AMOUNT
+                  : item.desiredRules?.limitBytes !== undefined &&
+                      item.desiredRules?.limitBytes !== null
+                    ? formatSize(item.desiredRules.limitBytes).total
+                    : item.policyType === 'MONTHLY_LIMIT' && item.desiredRules?.limitBytes === null
+                      ? APPEAL_UI_TEXT.UNBLOCK_LIMIT
+                      : item.desiredRules?.start !== undefined && item.desiredRules?.start !== null
+                        ? `${item.desiredRules.start} ~ ${item.desiredRules.end}`
+                        : item.policyType === 'TIME_BLOCK' &&
+                            (item.desiredRules?.start === null ||
+                              item.desiredRules?.start === undefined)
+                          ? APPEAL_UI_TEXT.UNBLOCK_LIMIT
+                          : item.policyType === 'MANUAL_BLOCK'
+                            ? APPEAL_UI_TEXT.MANUAL_BLOCK
+                            : item.policyType === 'APP_BLOCK'
+                              ? APPEAL_UI_TEXT.APP_BLOCK
+                              : '-';
 
-            const policyType =
-              item.type === 'EMERGENCY'
-                ? APPEAL_TYPE_LABEL.EMERGENCY
-                : item.policyType === 'MANUAL_BLOCK'
-                  ? APPEAL_TYPE_LABEL.MANUAL_BLOCK
-                  : item.policyType === 'APP_BLOCK'
-                    ? APPEAL_TYPE_LABEL.APP_BLOCK
-                    : item.desiredRules?.startTime
+              const policyType =
+                item.type === 'EMERGENCY'
+                  ? APPEAL_TYPE_LABEL.EMERGENCY
+                  : item.policyType === 'MONTHLY_LIMIT'
+                    ? APPEAL_TYPE_LABEL.NORMAL
+                    : item.policyType === 'TIME_BLOCK'
                       ? APPEAL_TYPE_LABEL.TIME_BLOCK
-                      : APPEAL_TYPE_LABEL.NORMAL;
+                      : item.policyType === 'MANUAL_BLOCK'
+                        ? APPEAL_TYPE_LABEL.MANUAL_BLOCK
+                        : item.policyType === 'APP_BLOCK'
+                          ? APPEAL_TYPE_LABEL.APP_BLOCK
+                          : APPEAL_TYPE_LABEL.NORMAL;
 
-            const uiStatus = (
-              item.type === 'EMERGENCY' ? 'emergency' : item.status.toLowerCase()
-            ) as AppealStatus;
+              const uiStatus = (
+                item.type === 'EMERGENCY' ? 'emergency' : item.status.toLowerCase()
+              ) as AppealStatus;
 
-            return (
-              <AppealRequestCard
-                key={item.appealId}
-                policyType={policyType}
-                dataLimit={displayValue}
-                reason={item.requestReason}
-                status={uiStatus}
-                requesterName={isOwner ? item.requesterName : undefined}
-                onClick={() => {
-                  router.push(
-                    `/appeal/comment/${item.appealId}?policy=${encodeURIComponent(policyType)}&status=${item.status}`,
-                  );
-                }}
-              />
-            );
-          })}
+              return (
+                <AppealRequestCard
+                  key={item.appealId}
+                  policyType={policyType}
+                  dataLimit={displayValue}
+                  reason={item.requestReason}
+                  status={uiStatus}
+                  requesterName={isOwner ? item.requesterName : undefined}
+                  onClick={() => {
+                    router.push(
+                      `/appeal/comment/${item.appealId}?policy=${encodeURIComponent(policyType)}&status=${item.status}`,
+                    );
+                  }}
+                />
+              );
+            })
+          ) : (
+            <div className="flex h-40 items-center justify-center">
+              <p className="text-body1-m text-gray-400">
+                {activeTab === 'progress'
+                  ? '진행중인 이의제기가 없습니다.'
+                  : '완료된 이의제기가 없습니다.'}
+              </p>
+            </div>
+          )}
         </div>
       </div>
 
       {!isOwner && (
-        <div className="fixed bottom-24 left-0 flex w-full items-center justify-center gap-2 px-5">
+        <div className="from-background-base via-background-base pointer-events-none fixed right-0 bottom-16 left-0 z-10 bg-gradient-to-t to-transparent px-5 pt-10 pb-8">
           <Button
             size="lg"
             color="dark"
             isFullWidth
+            className="pointer-events-auto"
             onClick={() => router.push('/appeal/objection')}
           >
             이의 제기 하기
