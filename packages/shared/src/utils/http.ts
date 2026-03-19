@@ -19,7 +19,8 @@ interface FailedRequest {
 }
 
 export const http = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
+  // baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
+  baseURL: '/api',
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
@@ -106,7 +107,8 @@ http.interceptors.response.use(
 
         try {
           const { data: refreshRes } = await axios.post<RefreshResponse>(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL}${refreshUrl}`,
+            // `${process.env.NEXT_PUBLIC_API_BASE_URL}${refreshUrl}`,
+            `/api${refreshUrl}`,
             { refreshToken },
           );
 
