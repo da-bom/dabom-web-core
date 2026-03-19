@@ -2,10 +2,25 @@
 
 import { useFormContext } from 'react-hook-form';
 
+import { Skeleton } from '@mui/material';
 import { Button, cn } from '@shared';
 
 import { useGetFamilyMembers } from 'src/api/family/useGetFamilyMembers';
 import { MissionCreate } from 'src/api/mission/schema';
+
+const TargetSkeleton = () => (
+  <div className="grid grid-cols-2 gap-4">
+    {[1, 2, 3, 4].map((i) => (
+      <Skeleton
+        key={i}
+        variant="rectangular"
+        height={56}
+        sx={{ borderRadius: '16px' }}
+        animation="wave"
+      />
+    ))}
+  </div>
+);
 
 const Step2Target = ({ prevStep, nextStep }: { prevStep: () => void; nextStep: () => void }) => {
   const { setValue, watch } = useFormContext<MissionCreate>();
@@ -27,31 +42,31 @@ const Step2Target = ({ prevStep, nextStep }: { prevStep: () => void; nextStep: (
           <p className="text-body2-m text-gray-700">미션의 대상을 선택해 주세요.</p>
         </header>
 
-        <div className="grid grid-cols-2 gap-4">
-          {isLoading
-            ? Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="h-14 animate-pulse rounded-2xl bg-gray-100" />
-              ))
-            : familyMembers?.map((member) => {
-                const isSelected = selectedId === member.customerId;
+        {isLoading ? (
+          <TargetSkeleton />
+        ) : (
+          <div className="grid grid-cols-2 gap-4">
+            {familyMembers?.map((member) => {
+              const isSelected = selectedId === member.customerId;
 
-                return (
-                  <button
-                    key={member.customerId}
-                    type="button"
-                    onClick={() => handleSelect(member.customerId, member.name)}
-                    className={cn(
-                      'text-body1-m h-14 rounded-2xl border transition-all',
-                      isSelected
-                        ? 'bg-primary-100 text-brand-dark border-gray-500'
-                        : 'border-gray-200 bg-white text-gray-700',
-                    )}
-                  >
-                    {member.name}
-                  </button>
-                );
-              })}
-        </div>
+              return (
+                <button
+                  key={member.customerId}
+                  type="button"
+                  onClick={() => handleSelect(member.customerId, member.name)}
+                  className={cn(
+                    'text-body1-m h-14 rounded-2xl border transition-all',
+                    isSelected
+                      ? 'bg-primary-100 text-brand-dark border-gray-500'
+                      : 'border-gray-200 bg-white text-gray-700',
+                  )}
+                >
+                  {member.name}
+                </button>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       <footer className="fixed right-0 bottom-25 left-0 mx-5 flex gap-2">

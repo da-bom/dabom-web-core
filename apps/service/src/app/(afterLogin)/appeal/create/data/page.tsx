@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
+import { Box, Skeleton } from '@mui/material';
 import { Button, MainBox, bytesToGB, cn } from '@shared';
 
 import { useGetFamilyUsageCurrent } from 'src/api/family/useGetFamilyUsage';
@@ -16,17 +17,48 @@ import { getCurrentUserId } from 'src/utils/auth';
 
 const MIN_LIMIT = 1;
 
+const DataLimitSkeleton = () => (
+  <div className="bg-background-base flex flex-col gap-7 px-5 pt-20">
+    <div className="flex w-full flex-col items-start gap-2">
+      <Skeleton variant="text" width="60%" height={40} />
+      <Skeleton variant="text" width="40%" height={24} />
+    </div>
+
+    <div className="flex w-full flex-col gap-4">
+      <Skeleton
+        variant="rectangular"
+        width="100%"
+        height={80}
+        sx={{ borderRadius: '16px' }}
+        animation="wave"
+      />
+
+      <Box className="flex flex-col items-center gap-8 rounded-2xl border border-gray-100 bg-white p-8">
+        <div className="flex w-full flex-col gap-2">
+          <Skeleton variant="rectangular" width="100%" height={10} sx={{ borderRadius: '5px' }} />
+          <div className="flex justify-between">
+            <Skeleton variant="text" width="30px" />
+            <Skeleton variant="text" width="30px" />
+          </div>
+        </div>
+        <Skeleton variant="rectangular" width="120px" height={50} sx={{ borderRadius: '8px' }} />
+      </Box>
+    </div>
+
+    <div className="fixed bottom-24 left-0 flex w-full gap-2 px-5">
+      <Skeleton variant="rectangular" width="30%" height={52} sx={{ borderRadius: '12px' }} />
+      <Skeleton variant="rectangular" width="70%" height={52} sx={{ borderRadius: '12px' }} />
+    </div>
+  </div>
+);
+
 export default function DataLimitAppealPage() {
   const { data: familyPolicies, isLoading: isPoliciesLoading } = useGetFamilyPolicies();
   const { data: currentUsage, isLoading: isUsageLoading } = useGetFamilyUsageCurrent();
   const currentUserId = getCurrentUserId();
 
   if (isPoliciesLoading || isUsageLoading || !familyPolicies || !currentUsage) {
-    return (
-      <div className="bg-background-base flex h-full min-h-screen items-center justify-center">
-        <p className="text-body1-m text-gray-500">정보를 불러오는 중...</p>
-      </div>
-    );
+    return <DataLimitSkeleton />;
   }
 
   const currentUser = familyPolicies.customers.find((c) => c.customerId === currentUserId);

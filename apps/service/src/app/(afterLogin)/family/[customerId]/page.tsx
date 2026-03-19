@@ -3,12 +3,41 @@
 import React, { use, useSyncExternalStore } from 'react';
 
 import { FaceIcon } from '@icons';
+import { Skeleton } from '@mui/material';
 import { MainBox, bytesToGB, formatPhoneNumber } from '@shared';
 
 import { useGetFamilyPolicies } from 'src/api/policy/useGetFamilyPolicies';
 import { useUpdatePolicy } from 'src/api/policy/useUpdatePolicy';
 import { AppBlockBox } from 'src/components/policy/AppBlockBox';
 import PolicySimple from 'src/components/policy/PolicySimple';
+
+const PolicyDetailSkeleton = () => (
+  <div className="flex flex-col items-center gap-4 p-4">
+    <Skeleton
+      variant="rectangular"
+      width="100%"
+      height={56}
+      sx={{ borderRadius: '16px' }}
+      animation="wave"
+    />
+
+    <Skeleton
+      variant="rectangular"
+      width="100%"
+      height={100}
+      sx={{ borderRadius: '16px' }}
+      animation="wave"
+    />
+
+    <Skeleton
+      variant="rectangular"
+      width="100%"
+      height={300}
+      sx={{ borderRadius: '16px' }}
+      animation="wave"
+    />
+  </div>
+);
 
 const emptySubscribe = () => () => {};
 function useIsClient() {
@@ -31,25 +60,22 @@ export default function PolicyDetailPage({ params }: PolicyDetailPageProps) {
   const { mutate: updatePolicy } = useUpdatePolicy();
 
   if (!isClient || isLoading) {
-    return (
-      <div className="text-body1-m flex items-center justify-center">
-        가족 데이터를 불러오는 중입니다...
-      </div>
-    );
+    return <PolicyDetailSkeleton />;
   }
 
   if (isError || !familyData?.customers) {
     return (
-      <div className="text-body1-m text-negative flex items-center justify-center">
+      <div className="text-body1-m text-negative flex h-full min-h-screen items-center justify-center">
         데이터를 불러오지 못했습니다.
       </div>
     );
   }
+
   const customer = familyData.customers.find((c) => c.customerId.toString() === customerId);
 
   if (!customer) {
     return (
-      <div className="text-body1-m flex items-center justify-center">
+      <div className="text-body1-m flex h-full min-h-screen items-center justify-center">
         사용자를 찾을 수 없습니다.
       </div>
     );
