@@ -102,7 +102,7 @@ const AppealPageContent = () => {
       </div>
 
       {!isOwner && (
-        <div className="fixed bottom-24 left-0 flex w-full items-center justify-center gap-2 px-5">
+        <div className="from-background-base via-background-base pointer-events-none fixed right-0 bottom-16 left-0 z-10 bg-gradient-to-t to-transparent px-5 pt-10 pb-8">
           <Button
             size="lg"
             color="dark"

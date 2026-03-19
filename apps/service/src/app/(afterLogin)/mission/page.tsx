@@ -68,11 +68,13 @@ const MissionPage = () => {
       </Link>
 
       {isOwner && (
-        <Link className="fixed right-0 bottom-25 left-0 mx-5" href="/mission/create">
-          <Button size="lg" color="dark" isFullWidth>
-            미션 만들기
-          </Button>
-        </Link>
+        <div className="from-background-base via-background-base fixed right-0 bottom-16 left-0 z-10 bg-gradient-to-t to-transparent px-5 pt-10 pb-9">
+          <Link href="/mission/create">
+            <Button size="lg" color="dark" isFullWidth>
+              미션 만들기
+            </Button>
+          </Link>
+        </div>
       )}
     </div>
   );
