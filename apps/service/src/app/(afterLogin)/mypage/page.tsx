@@ -6,14 +6,16 @@ import { ChevronIcon } from '@icons';
 import { MainBox } from '@shared';
 
 import { useCustomerMe } from 'src/api/auth/useCustomerMe';
+import { useServiceLogout } from 'src/api/auth/useServiceLogout';
 import MyInfo from 'src/components/mypage/MyInfo';
 
 const MyPage = () => {
   const { data: user } = useCustomerMe();
+  const { mutate: handleLogout } = useServiceLogout();
   const isOwner = user?.role === 'OWNER';
 
   return (
-    <div className="m-5 flex flex-col gap-4">
+    <div className="m-5 flex flex-col gap-4 pb-20">
       <MainBox className="flex w-full flex-col gap-7 rounded-2xl px-5 py-4">
         <MyInfo />
       </MainBox>
@@ -33,7 +35,12 @@ const MyPage = () => {
           <ChevronIcon className="text-gray-800" sx={{ width: 16 }} />
         </MainBox>
       </Link>
-      <button className="text-body2-m ml-2 flex text-gray-800 underline">로그아웃</button>
+      <button
+        className="text-body2-m ml-2 flex text-gray-800 underline"
+        onClick={() => handleLogout()}
+      >
+        로그아웃
+      </button>
     </div>
   );
 };
