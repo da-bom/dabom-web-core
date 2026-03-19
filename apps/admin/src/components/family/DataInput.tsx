@@ -41,7 +41,7 @@ const DataInput = ({ limit, onChange }: DataInputProps) => {
   };
 
   return (
-    <div className="flex w-fit items-center overflow-hidden rounded-lg border border-gray-600">
+    <div className="flex w-fit items-center rounded-lg border border-gray-600">
       <input
         type="number"
         value={limit.value}

@@ -10,12 +10,17 @@ interface TableProps {
 
 const Table = ({ headers, rows, className }: TableProps) => {
   return (
-    <div className={cn('w-full overflow-hidden rounded-md border border-gray-100', className)}>
-      <table className="w-full">
-        <thead className="bg-brand-dark text-brand-white text-body2-d sticky top-0 z-21 h-11">
+    <div
+      className={cn(
+        'max-h-[500px] w-full overflow-y-auto rounded-md border border-gray-100',
+        className,
+      )}
+    >
+      <table className="w-full border-separate border-spacing-0">
+        <thead className="bg-brand-dark text-brand-white text-body2-d sticky top-0 z-20 h-11">
           <tr>
             {headers.map((header) => (
-              <th key={header} className="text-body2-d px-4">
+              <th key={header} className={cn('text-body2-d px-4 font-semibold', 'bg-brand-dark')}>
                 {header}
               </th>
             ))}
@@ -30,9 +35,15 @@ const Table = ({ headers, rows, className }: TableProps) => {
             </tr>
           ) : (
             rows.map((row) => (
-              <tr key={row.id} className="text-body2-d h-11 border-t border-gray-100">
+              <tr
+                key={row.id}
+                className="text-body2-d h-11 border-t border-gray-100 transition-colors hover:bg-gray-50"
+              >
                 {row.cells.map((cell, cellIndex) => (
-                  <td key={`${String(row.id)}-${cellIndex}`} className="px-4 py-2">
+                  <td
+                    key={`${String(row.id)}-${cellIndex}`}
+                    className="border-t border-gray-100 px-4 py-2"
+                  >
                     <div className="flex items-center justify-center">{cell}</div>
                   </td>
                 ))}
