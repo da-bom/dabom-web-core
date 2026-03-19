@@ -20,7 +20,7 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  if (!session && pathname !== '/login') {
+  if (!session && (pathname === '/login' || pathname === '/')) {
     const loginUrl = new URL('/login', request.url);
     loginUrl.searchParams.set('from', pathname);
     return NextResponse.redirect(loginUrl);
