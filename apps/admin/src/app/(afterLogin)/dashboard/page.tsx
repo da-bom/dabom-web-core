@@ -16,7 +16,7 @@ const DashboardContent = () => {
   const { data, refetch } = useGetDashboard();
 
   return (
-    <div className="flex h-screen flex-col gap-4">
+    <div className="flex h-[calc(100vh-110px)] flex-col gap-4">
       <div className="flex w-full items-center justify-end gap-1 text-gray-800">
         <button
           onClick={() => refetch()}
@@ -62,9 +62,7 @@ const DashboardContent = () => {
         </MainBox>
 
         <MainBox className="flex w-full flex-col items-center gap-4 overflow-hidden px-10 py-5">
-          <span className="text-body1-d decoration-brand-primary/30 font-bold underline">
-            최근 차단 내역
-          </span>
+          <span className="text-body1-d font-bold">최근 차단 내역</span>
           <div className="flex w-full flex-col gap-4 overflow-y-auto pr-2">
             {data.recentBlocks.length > 0 ? (
               data.recentBlocks.map((item) => (
