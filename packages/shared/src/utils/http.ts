@@ -20,7 +20,7 @@ interface FailedRequest {
 
 export const http = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
-  timeout: 5000,
+  timeout: 50000,
   headers: {
     'Content-Type': 'application/json',
     'Accept-Version': '1.0',
@@ -53,8 +53,16 @@ http.interceptors.request.use((config) => {
 
 http.interceptors.response.use(
   (response) => {
-    if (response.data?.success) {
-      return response.data.data;
+    const { success, data, timestamp } = response.data;
+
+    if (success) {
+      if (data && typeof data === 'object' && !Array.isArray(data)) {
+        return {
+          ...data,
+          timestamp,
+        };
+      }
+      return data;
     }
     return response;
   },

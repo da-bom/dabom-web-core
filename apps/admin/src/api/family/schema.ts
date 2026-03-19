@@ -73,3 +73,22 @@ export type Family = z.infer<typeof FamilySchema>;
 export type FamilyResponse = z.infer<typeof FamilyResponseSchema>;
 export type FamilyCustomer = z.infer<typeof FamilyCustomerSchema>;
 export type FamilyDetail = z.infer<typeof FamilyDetailDataSchema>;
+
+export const UpdateFamilyMemberSchema = z.object({
+  customerId: z.number(),
+  role: z.enum(['OWNER', 'MEMBER']),
+  monthlyLimitBytes: z.number(),
+});
+
+export const UpdateFamilyRequestSchema = z.object({
+  members: z.array(UpdateFamilyMemberSchema),
+});
+
+export const UpdateFamilyResponseSchema = z.object({
+  familyId: z.number(),
+  updatedCount: z.number(),
+});
+
+export type UpdateFamilyMember = z.infer<typeof UpdateFamilyMemberSchema>;
+export type UpdateFamilyRequest = z.infer<typeof UpdateFamilyRequestSchema>;
+export type UpdateFamilyResponse = z.infer<typeof UpdateFamilyResponseSchema>;

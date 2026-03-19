@@ -2,8 +2,6 @@
 
 import React from 'react';
 
-import { cn } from '../utils/cn';
-
 export type ToastStyle = 'positive' | 'default' | 'negative';
 
 interface ToastProps {
@@ -30,19 +28,10 @@ const STYLE_CONFIG = {
 export default function Toast({ message, style = 'default', visible }: ToastProps) {
   return (
     <div
-      className={cn(
-        'bg-brand-white flex items-center justify-center rounded-full border transition-all duration-300 ease-in-out',
-        'h-8 w-fit px-10 md:h-10 md:px-20',
-        STYLE_CONFIG[style].container,
-        visible ? 'animate-enter opacity-100' : 'animate-leave opacity-0',
-      )}
+      className={`'bg-brand-white md:px-20' flex h-8 w-fit items-center justify-center rounded-full border px-10 transition-all duration-300 ease-in-out md:h-10 ${STYLE_CONFIG[style].container} ${visible ? 'animate-enter opacity-100' : 'animate-leave opacity-0'} `}
     >
       <span
-        className={cn(
-          'px-4 text-center whitespace-nowrap select-none',
-          'text-body2-m md:text-body1-d',
-          STYLE_CONFIG[style].text,
-        )}
+        className={`text-body2-m md:text-body1-d px-4 text-center whitespace-nowrap select-none ${STYLE_CONFIG[style].text} `}
       >
         {message}
       </span>

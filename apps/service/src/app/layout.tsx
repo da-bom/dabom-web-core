@@ -4,7 +4,6 @@ import '@globalstyles';
 import { COLORS } from '@shared';
 
 import ServiceWorkerRegistration from 'src/components/ServiceWorkerRegistration';
-import UserInitializer from 'src/components/common/UserInitializer';
 
 import { Providers } from './providers';
 
@@ -29,10 +28,7 @@ export default function RootLayout({
     <html lang="ko">
       <body>
         <ServiceWorkerRegistration />
-        <Providers>
-          <UserInitializer />
-          {children}
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
