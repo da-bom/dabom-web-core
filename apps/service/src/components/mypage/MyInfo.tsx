@@ -206,7 +206,7 @@ const MyInfo = () => {
       <Divider />
 
       <PolicySimple>
-        <PolicySimple.Block isBlocked={myPageData.isBlocked} />
+        <PolicySimple.Block isBlocked={myPageData.isBlocked} type="text" />
         <PolicySimple.Limit text={limitGB ? `${limitGB}GB` : '무제한'} disabled={!limitGB} />
         <PolicySimple.Time
           text={
