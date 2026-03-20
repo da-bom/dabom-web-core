@@ -18,7 +18,9 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  if (!session && pathname !== '/login') {
+  const isPublicRoute = pathname === '/login' || pathname === '/';
+
+  if (!session && !isPublicRoute) {
     const loginUrl = new URL('/login', request.url);
     loginUrl.searchParams.set('from', pathname);
     return NextResponse.redirect(loginUrl);
