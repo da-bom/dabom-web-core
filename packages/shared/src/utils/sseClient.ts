@@ -2,6 +2,8 @@ import { ACCESS_TOKEN_KEY } from '../constants/auth';
 
 type SSEHandler = (eventName: string, data: string) => void;
 
+const MAX_RETRY_COUNT = 3;
+
 const getFinalUrl = (url: string) => {
   const baseUrl = process.env.NEXT_PUBLIC_NOTIFICATION_API_BASE_URL || '';
   return `${baseUrl.replace(/\/$/, '')}${url}`;
@@ -78,16 +80,20 @@ const connectInternal = async () => {
     if (error instanceof Error && error.name !== 'AbortError') {
       retryCount++;
 
-      if (retryCount >= 3) {
-        console.error('[SSE] 3회 연속 연결 실패, 페이지를 새로고침합니다.');
+      if (retryCount >= MAX_RETRY_COUNT) {
+        console.error(`[SSE] ${MAX_RETRY_COUNT}회 연속 연결 실패, 페이지를 새로고침합니다.`);
         if (typeof window !== 'undefined') {
           window.location.reload();
         }
         return;
       }
 
-      console.error(`[SSE] 연결 오류 (시도 ${retryCount}/3), 1초 후 재시도...`, error.message);
-      setTimeout(connectInternal, 1000);
+      const delay = Math.pow(2, retryCount - 1) * 1000;
+      console.error(
+        `[SSE] 연결 오류 (시도 ${retryCount}/${MAX_RETRY_COUNT}), ${delay / 1000}초 후 재시도...`,
+        error.message,
+      );
+      setTimeout(connectInternal, delay);
     }
   } finally {
     isConnecting = false;
