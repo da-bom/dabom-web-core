@@ -2,6 +2,8 @@ import { ACCESS_TOKEN_KEY } from '../constants/auth';
 
 type SSEHandler = (eventName: string, data: string) => void;
 
+const MAX_RETRY_COUNT = 3;
+
 const getFinalUrl = (url: string) => {
   const baseUrl = process.env.NEXT_PUBLIC_NOTIFICATION_API_BASE_URL || '';
   return `${baseUrl.replace(/\/$/, '')}${url}`;
@@ -10,6 +12,7 @@ const getFinalUrl = (url: string) => {
 let abortController: AbortController | null = null;
 const handlers = new Set<SSEHandler>();
 let isConnecting = false;
+let retryCount = 0;
 
 const processSSEStream = async (
   reader: ReadableStreamDefaultReader<Uint8Array>,
@@ -68,13 +71,29 @@ const connectInternal = async () => {
 
     if (!response.ok || !response.body) throw new Error('SSE connection failed');
 
+    retryCount = 0;
+
     await processSSEStream(response.body.getReader(), (event, data) => {
       handlers.forEach((handler) => handler(event, data));
     });
   } catch (error: unknown) {
     if (error instanceof Error && error.name !== 'AbortError') {
-      console.error('[SSE] 연결 오류, 5초 후 재시도...', error.message);
-      setTimeout(connectInternal, 5000);
+      retryCount++;
+
+      if (retryCount >= MAX_RETRY_COUNT) {
+        console.error(`[SSE] ${MAX_RETRY_COUNT}회 연속 연결 실패, 페이지를 새로고침합니다.`);
+        if (typeof window !== 'undefined') {
+          window.location.reload();
+        }
+        return;
+      }
+
+      const delay = Math.pow(2, retryCount - 1) * 1000;
+      console.error(
+        `[SSE] 연결 오류 (시도 ${retryCount}/${MAX_RETRY_COUNT}), ${delay / 1000}초 후 재시도...`,
+        error.message,
+      );
+      setTimeout(connectInternal, delay);
     }
   } finally {
     isConnecting = false;
@@ -90,6 +109,7 @@ export const sseClient = {
       if (handlers.size === 0) {
         abortController?.abort();
         abortController = null;
+        retryCount = 0;
       }
     };
   },
